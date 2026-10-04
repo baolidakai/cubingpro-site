@@ -1,0 +1,671 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Cubing Pro</title>
+
+  <meta name="author" content="Bowen Deng">
+  <meta name="description" content="Home for competitive speedcubers.">
+  <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs, face turning octahedron, fto">
+
+  <link rel="stylesheet" href="../../static/css/main.css">
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+  <script src="../../static/js/main.js" type="text/javascript"></script>
+  <script src="../../static/js/vendor/jquery.ba-replacetext.min.js"></script>
+  <script src="../../static/js/clock.js" type="text/javascript"></script>
+  <script src="../../static/js/pyraminx.js" type="text/javascript"></script>
+  <script src="../../static/js/big_cube.js" type="text/javascript"></script>
+  <script src="../../static/js/skewb.js" type="text/javascript"></script>
+  <script src="../../static/js/sq1.js" type="text/javascript"></script>
+  <script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+  <script type="module">
+    import "https://cdn.cubing.net/v0/js/cubing/twisty";
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.__SITE_PREFIX__="../../";</script>
+  <script>
+    function getImageSrc(filename) {
+      const id = filename.toLowerCase().replace('.', '_'); // e.g., "fmc.jpg" -> "fmc_jpg"
+      const img = document.getElementById(id);
+      return img ? img.src : null;
+    }
+    fetch("../../static/sidebar.json")
+      .then(response => response.json())
+      .then(menuData => {
+        function buildMenu(menuContainer, menuData) {
+          // State
+          let inCategoryView = false;
+
+          function renderCategories(data) {
+            menuContainer.innerHTML = ''; // Clear previous
+
+            data.forEach(entry => {
+              const card = document.createElement('div');
+              card.className = 'category-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(entry.category_logo);
+              img.alt = entry.category;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = entry.category;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                renderItems(entry.category, entry.items);
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = false;
+          }
+
+          function renderItems(category, items) {
+            menuContainer.innerHTML = '';
+
+            // Back button
+            const backButton = document.createElement('button');
+            backButton.textContent = '← Back';
+            backButton.className = 'back-button';
+            backButton.onclick = () => renderCategories(menuData);
+            menuContainer.appendChild(backButton);
+
+            items.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'item-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(item.logo);
+              img.alt = item.title;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = item.title;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                window.location.href = window.__SITE_PREFIX__ + item.url.replace(/^\//, "");
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = true;
+          }
+
+          // Initial render
+          renderCategories(menuData);
+
+          // Add copyright
+          const copyright = document.createElement('div');
+          copyright.className = 'copyright';
+          copyright.textContent = '© 2025 Bowen Deng';
+          menuContainer.appendChild(copyright);
+        }
+
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const indexPage = document.getElementById('index-page');
+
+        if (sidebarMenu) {
+          buildMenu(sidebarMenu, menuData);
+        }
+        if (indexPage) {
+          buildMenu(indexPage, menuData);
+        }
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</head>
+
+<body>
+  <button id="nav-toggle"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1000; font-size: 1.5em; padding: 16px 32px;">Navigate</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navToggle = document.getElementById('nav-toggle');
+      const sidebar = document.getElementById('sidebar-menu');
+      navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if (sidebar.classList.contains('active')) {
+          sidebar.style.minHeight = '800px';
+        } else {
+          sidebar.style.minHeight = '';
+        }
+      });
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+        });
+      });
+    });
+  </script>
+  <div id="container">
+    <div id="header">
+      <h1 class="title" style="position: fixed; top: 0; left: 50%; margin: 0; padding: 10px;">
+        <div
+          style="position: absolute; top: 50px; left: 50%; transform: translateX(-80%); font-size: 15px; color: #e91e63; pointer-events: none;">
+          &lt;- Can I get a forehead pat?
+        </div>
+        <button onclick="rainStars(this)"
+          style="border: none; background: none; padding: 0; display: inline-block; line-height: 0; cursor: grab;">
+          <img src="../../static/fox_with_cube.png" alt="" width="85" style="display: block;">
+        </button>
+        <a href="../../">Cubing for Professionals</a>
+      </h1>
+    </div>
+
+    <!-- To check the feedback from the solver app -->
+    <!-- http://localhost:5006/execute_sql/ -->
+
+    <div id="sidebar">
+      <nav>
+        <div id="sidebar-menu" class="sidebar-menu">
+        </div>
+      </nav>
+      </nav>
+    </div>
+
+    <div id="content" class="home">
+      <div id="home">
+
+        <h1 class="watermark">cubingpro.com</h1>
+
+        <div id="star-container"></div>
+
+        
+<h1>
+    SQ-1 Orient Both Layers (OBL)
+</h1>
+
+<h2>
+    Introduction
+</h2>
+
+<p>
+    OBL stands for “Orient Both Layers”. Vandenbergh method consists of:
+</p>
+<ol>
+    <li>Cubeshape</li>
+    <li>Corner orientation</li>
+    <li>Edge orientation</li>
+    <li>Corner permutation</li>
+    <li>Edge permutation</li>
+</ol>
+
+<p>There is an advanced technique to combine corner and edge permutation, called PBL (permute both layers).</p>
+<p>This page introduces an advanced method which combines corner and edge orientation.</p>
+
+<p>Further reference: <a href="https://sq1obl.com/" target="_blank">SQ1 OBL Homepage</a></p>
+
+<h2>
+    Face mnemonics
+</h2>
+
+<p>
+    Each OBL case can be represented by a pair of face mnemonics, one for top layer and one for bottom layer.
+</p>
+<p>
+    Each face can be characterized by two numbers: number of white corners and number of white edges.
+</p>
+<p>
+    Due to symmetry, we may treat 0C4E and 4C0E as the same case.
+</p>
+<p>
+    Hence, there are following 12 categories:
+</p>
+<ol>
+    <li>0C1E</li>
+    <li>0C2E</li>
+    <li>0C3E</li>
+    <li>0C4E</li>
+    <li>1C0E</li>
+    <li>1C1E</li>
+    <li>1C2E</li>
+    <li>1C3E</li>
+    <li>2C0E</li>
+    <li>2C1E</li>
+    <li>2C2E</li>
+    <li>3C0E</li>
+</ol>
+<p>
+    If the top layer is 2C0E, then the bottom layer must be 2C0E as well. In general, only same categories can be
+    paired.
+</p>
+<div style="display: flex; gap: 24px; flex-wrap: wrap;">
+    <div style="flex: 1 1 0;">
+        <table border="1" class="obl-table">
+            <tr>
+                <th>Case Category</th>
+                <th>Case Name</th>
+                <th>Case Visualization</th>
+            </tr>
+            <tr>
+                <td>0C1E</td>
+                <td>1E</td>
+                <td><img src="../../static/obl/1e.jpg" alt="0C1E"></td>
+            </tr>
+            <tr>
+                <td rowspan="2">0C2E</td>
+                <td>2E Adj</td>
+                <td><img src="../../static/obl/eadj.jpg" alt="0C2E Type A"></td>
+            </tr>
+            <tr>
+                <td>2E Opp</td>
+                <td><img src="../../static/obl/eopp.jpg" alt="0C2E Type B"></td>
+            </tr>
+            <tr>
+                <td>0C3E</td>
+                <td>3E</td>
+                <td><img src="../../static/obl/3e.jpg" alt="0C3E"></td>
+            </tr>
+            <tr>
+                <td>0C4E</td>
+                <td>4E</td>
+                <td><img src="../../static/obl/4e.jpg" alt="0C4E"></td>
+            </tr>
+            <tr>
+                <td>1C0E</td>
+                <td>1C</td>
+                <td><img src="../../static/obl/1c.jpg" alt="1C0E"></td>
+            </tr>
+            <tr>
+                <td rowspan="2">1C1E</td>
+                <td>Tent</td>
+                <td><img src="../../static/obl/tent.jpg" alt="1C1E Type A"></td>
+            </tr>
+            <tr>
+                <td>Whale</td>
+                <td><img src="../../static/obl/whale.jpg" alt="1C1E Type B"></td>
+            </tr>
+            <tr>
+                <td rowspan="4">1C2E</td>
+                <td>Axe</td>
+                <td><img src="../../static/obl/axe.jpg" alt="1C2E Type A"></td>
+            </tr>
+            <tr>
+                <td>Gem</td>
+                <td><img src="../../static/obl/gem.jpg" alt="1C2E Type B"></td>
+            </tr>
+            <tr>
+                <td>Spill</td>
+                <td><img src="../../static/obl/spill.jpg" alt="1C2E Type C"></td>
+            </tr>
+            <tr>
+                <td>Squid</td>
+                <td><img src="../../static/obl/squid.jpg" alt="1C2E Type D"></td>
+            </tr>
+            <tr>
+                <td rowspan="2">1C3E</td>
+                <td>Bunny</td>
+                <td><img src="../../static/obl/bunny.jpg" alt="1C3E Type A"></td>
+            </tr>
+            <tr>
+                <td>Thumb</td>
+                <td><img src="../../static/obl/thumb.jpg" alt="1C3E Type B"></td>
+            </tr>
+        </table>
+    </div>
+    <div style="flex: 1 1 0;">
+        <table border="1" class="obl-table">
+            <tr>
+                <th>Case Category</th>
+                <th>Case Name</th>
+                <th>Case Visualization</th>
+            </tr>
+            <tr>
+                <td rowspan="2">2C0E</td>
+                <td>2C adj</td>
+                <td><img src="../../static/obl/cadj.jpg" alt="2C0E Type A"></td>
+            </tr>
+            <tr>
+                <td>2C diag</td>
+                <td><img src="../../static/obl/copp.jpg" alt="2C0E Type B"></td>
+            </tr>
+            <tr>
+                <td rowspan="4">2C1E</td>
+                <td>Bird</td>
+                <td><img src="../../static/obl/bird.jpg" alt="2C1E Type A"></td>
+            </tr>
+            <tr>
+                <td>Y</td>
+                <td><img src="../../static/obl/hazard.jpg" alt="2C1E Type B"></td>
+            </tr>
+            <tr>
+                <td>Dog</td>
+                <td><img src="../../static/obl/dog.jpg" alt="2C1E Type C"></td>
+            </tr>
+            <tr>
+                <td>Shell</td>
+                <td><img src="../../static/obl/shell.jpg" alt="2C1E Type D"></td>
+            </tr>
+            <tr>
+                <td rowspan="5">2C2E</td>
+                <td>Cut</td>
+                <td><img src="../../static/obl/cut.jpg" alt="2C2E Type A"></td>
+            </tr>
+            <tr>
+                <td>Kite</td>
+                <td><img src="../../static/obl/kite.jpg" alt="2C2E Type B"></td>
+            </tr>
+            <tr>
+                <td>Fan</td>
+                <td><img src="../../static/obl/pinwheel.jpg" alt="2C2E Type C"></td>
+            </tr>
+            <tr>
+                <td>Tie</td>
+                <td><img src="../../static/obl/tie.jpg" alt="2C2E Type D"></td>
+            </tr>
+            <tr>
+                <td>Tree</td>
+                <td><img src="../../static/obl/tree.jpg" alt="2C2E Type E"></td>
+            </tr>
+            <tr>
+                <td>3C0E</td>
+                <td>3C</td>
+                <td><img src="../../static/obl/3c.jpg" alt="3C0E"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<h2>
+    Tips
+</h2>
+
+<p>The best way to learn OBL is to start with 2 slash (meaning you make two slice moves to solve OBL) and 3 slash cases,
+    and understand how to convert the case into a familiar one.</p>
+<p>This strategy is very similar to the cubeshape.</p>
+<p>During actual solve, if you don't recognize a case, you may always use the standard method. So it's very easy to
+    practice OBL during regular solves.</p>
+<p>74 cases might sound like a lot, but similarly to cubeshape, each case has a parent case closer to fully solved, and
+    they form a tree. Instead of memorizing the whole moves for each case, you only need to understand how to go to its
+    parent.</p>
+
+<h2>
+    Cases
+</h2>
+
+<p>
+    There are 74 cases in total. We list all cases here with their full algorithms and the linkage to parent.
+</p>
+<p>During learning, you may filter by number of slashes away. You may also filter cases by E/C category so you can focus
+    on one of the categories.</p>
+<p>When you want to deep dive a case, we show a special view which shows you all the way from the current case to each
+    parent cases.</p>
+<p>When we use a "Mirror &lt;Case Name&gt;", we refer to the pattern mirroring that case.</p>
+<p>Special note for Tie and Tree: 2C2E case is special because if flipping all its color it's also 2C2E. Therefore, if you get a tree on top side, it's possible you can get a tree of exactly the same color, or of the opposite color. We will differentiate those two cases with Same Tree / Tree or Tree / Tree or Same Tie / Tree. It's important to understand this differentiation during learning, knowing the differentiation and understand visually is more important than understanding the term "Same".</p>
+<p>For up to 3 slashes cases, we present all cases including left/right mirrors (e.g. Fan / Kite and Mirror Fan / Mirror Kite) and top/bottom mirrors (e.g. Kite / Fan and Fan / Kite are both shown).</p>
+<p>For cases from 4 slashes, we only show one case for each left/right. The rest should be derived intuitively.</p>
+
+<div class="obl-table-container">
+    <table id="obl-cases-table" class="obl-table">
+        <thead>
+            <tr>
+                <th>Case Category</th>
+                <th>Case Name</th>
+                <th>Image</th>
+                <th>Algorithm</th>
+                <th>Parent</th>
+                <th>Memo</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<script>
+    const table_data = JSON.parse('[{"case_number": "0", "case_category": "0C0E", "case_name": "Solved", "alg": "", "parent": "N/A", "memo": "", "null": [""], "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbbbbbb-wwwwwwww", "slash_count": 0}, {"case_number": "1", "case_category": "2C2E", "case_name": "Kite / Kite", "alg": "0,-1/0,1", "parent": "Solved", "memo": "intuitive", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wwwwbbbb-wbbbbwww", "slash_count": 1}, {"case_number": "2", "case_category": "2C2E", "case_name": "Mirror Kite / Mirror Kite", "alg": "1,0/-1,0", "parent": "Solved", "memo": "intuitive", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbwwwwb-wwwwbbbb", "slash_count": 1}, {"case_number": "4", "case_category": "0C2E", "case_name": "2E Opp / 2E Opp", "alg": "1,0/-1,-1/0,1", "parent": "Kite / Kite", "memo": "M2", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbwbbbw-bwwwbwww", "slash_count": 2}, {"case_number": "6", "case_category": "1C1E", "case_name": "Tent / Tent", "alg": "3,-4/-3,0/0,1", "parent": "Kite / Kite", "memo": "Tent is two move", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbwwbbbb-wwwbbwww", "slash_count": 2}, {"case_number": "9", "case_category": "1C1E", "case_name": "Mirror Tent / Mirror Tent", "alg": "1,6/-3,0/-1,0", "parent": "Mirror Kite / Mirror Kite", "memo": "Tent is two move", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbwwbbb-wwwwbbww", "slash_count": 2}, {"case_number": "7", "case_category": "1C3E", "case_name": "Thumb / Thumb", "alg": "1,6/-4,-1/0,1", "parent": "Kite / Kite", "memo": "Thumb is two move", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbwwwbw-bwwwbbbw", "slash_count": 2}, {"case_number": "8", "case_category": "1C3E", "case_name": "Mirror Fan / Mirror Fan", "alg": "1,0/-3,-3/-1,0", "parent": "Mirror Kite / Mirror Kite", "memo": "Fan is two move", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwwbbwwb-wwbbwwbb", "slash_count": 2}, {"case_number": "10", "case_category": "1C3E", "case_name": "Mirror Thumb / Mirror Thumb", "alg": "6,-1/4,1/-1,0", "parent": "Mirror Kite / Mirror Kite", "memo": "Thumb is two move", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwwwbbbw-bwbbbwww", "slash_count": 2}, {"case_number": "3", "case_category": "2C0E", "case_name": "2C Diag / 2C Diag", "alg": "1,0/2,2/0,1", "parent": "Kite / Kite", "memo": "2C is two move", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbwbbbwb-wwwbwwwb", "slash_count": 2}, {"case_number": "5", "case_category": "2C2E", "case_name": "Fan / Fan", "alg": "0,-1/-3,-3/0,1", "parent": "Kite / Kite", "memo": "Fan is two move", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wwbbwwbb-wbbwwbbw", "slash_count": 2}, {"case_number": "39", "case_category": "1C1E", "case_name": "Tent / Mirror Whale", "alg": "1,0/-1,-4/1,4/-1,0", "parent": "Mirror Thumb / Mirror Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbwwbbbb-wbwwwwbw", "slash_count": 3}, {"case_number": "40", "case_category": "1C1E", "case_name": "Mirror Whale / Tent", "alg": "1,0/-4,-1/4,1/-1,0", "parent": "Mirror Thumb / Mirror Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbbbwbb-wwwbbwww", "slash_count": 3}, {"case_number": "41", "case_category": "1C1E", "case_name": "Mirror Tent / Whale", "alg": "0,-1/4,1/-1,-4/0,1", "parent": "Thumb / Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbwwbbb-wwbwwwwb", "slash_count": 3}, {"case_number": "42", "case_category": "1C1E", "case_name": "Whale / Mirror Tent", "alg": "0,-1/1,4/-4,-1/0,1", "parent": "Thumb / Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwbbbbwb-wwwwbbww", "slash_count": 3}, {"case_number": "43", "case_category": "1C1E", "case_name": "Whale / Whale", "alg": "3,2/-5,1/3,0/-1,0", "parent": "Mirror Tent / Mirror Tent", "memo": "Convert to tent", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwbbbbwb-wwbwwwwb", "slash_count": 3}, {"case_number": "44", "case_category": "1C1E", "case_name": "Mirror Whale / Mirror Whale", "alg": "4,3/5,-1/-3,0/0,1", "parent": "Tent / Tent", "memo": "Convert to tent", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbbbwbb-wbwwwwbw", "slash_count": 3}, {"case_number": "11", "case_category": "1C2E", "case_name": "Gem / Axe", "alg": "4,6/-3,0/2,-1/0,1", "parent": "Tent / Tent", "memo": "Convert to tent", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbbbwww-bwwwbwwb", "slash_count": 3}, {"case_number": "12", "case_category": "1C2E", "case_name": "Axe / Gem", "alg": "-5,3/2,-1/-3,0/0,1", "parent": "Tent / Tent", "memo": "Convert to tent", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbwbbww-bwwwwwbb", "slash_count": 3}, {"case_number": "13", "case_category": "1C2E", "case_name": "Gem / Mirror Axe", "alg": "6,-1/1,-2/0,3/-1,0", "parent": "Mirror Tent / Mirror Tent", "memo": "Convert to tent", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbbbwww-bbwwbwww", "slash_count": 3}, {"case_number": "14", "case_category": "1C2E", "case_name": "Mirror Axe / Gem", "alg": "0,5/-2,1/3,0/-1,0", "parent": "Mirror Tent / Mirror Tent", "memo": "Convert to tent", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbwbbbw-bwwwwwbb", "slash_count": 3}, {"case_number": "15", "case_category": "1C2E", "case_name": "Axe / Spill", "alg": "6,-1/0,-3/1,4/-1,0", "parent": "Mirror Thumb / Mirror Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbwbbww-bbwwwwbw", "slash_count": 3}, {"case_number": "16", "case_category": "1C2E", "case_name": "Spill / Axe", "alg": "0,5/-3,0/4,1/-1,0", "parent": "Mirror Thumb / Mirror Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbbbwbw-bwwwbwwb", "slash_count": 3}, {"case_number": "17", "case_category": "1C2E", "case_name": "Mirror Axe / Mirror Spill", "alg": "1,6/0,3/-1,-4/0,1", "parent": "Thumb / Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbwbbbw-bwbwwwwb", "slash_count": 3}, {"case_number": "18", "case_category": "1C2E", "case_name": "Mirror Spill / Mirror Axe", "alg": "-5,0/3,0/-4,-1/0,1", "parent": "Thumb / Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwbbbbww-bbwwbwww", "slash_count": 3}, {"case_number": "23", "case_category": "1C3E", "case_name": "Bunny / Bunny", "alg": "-5,6/3,-3/-4,-1/0,1", "parent": "Thumb / Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwbwwbbw-bwbwbbww", "slash_count": 3}, {"case_number": "24", "case_category": "1C3E", "case_name": "Mirror Bunny / Mirror Bunny", "alg": "0,-1/-3,3/4,1/-1,0", "parent": "Mirror Thumb / Mirror Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbwwbwbw-bwwbbwbw", "slash_count": 3}, {"case_number": "19", "case_category": "2C1E", "case_name": "Bird / Mirror Dog", "alg": "4,3/0,-3/-1,-4/0,1", "parent": "Thumb / Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wwbbbbwb-wbwwbbww", "slash_count": 3}, {"case_number": "20", "case_category": "2C1E", "case_name": "Mirror Dog / Bird", "alg": "4,3/-3,0/-4,-1/0,1", "parent": "Thumb / Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbwwbbb-wbbwwwwb", "slash_count": 3}, {"case_number": "21", "case_category": "2C1E", "case_name": "Mirror Bird / Dog", "alg": "3,2/0,3/1,4/-1,0", "parent": "Mirror Thumb / Mirror Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbbbwwb-wwwbbwwb", "slash_count": 3}, {"case_number": "22", "case_category": "2C1E", "case_name": "Dog / Mirror Bird", "alg": "3,2/3,0/4,1/-1,0", "parent": "Mirror Thumb / Mirror Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbwwbbwb-wbwwwwbb", "slash_count": 3}, {"case_number": "35", "case_category": "2C1E", "case_name": "Dog / Shell", "alg": "1,0/3,0/2,-1/0,1", "parent": "Tent / Tent", "memo": "Block building CO", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbwwbbwb-bbwwwwwb", "slash_count": 3}, {"case_number": "36", "case_category": "2C1E", "case_name": "Shell / Dog", "alg": "1,0/-1,2/0,3/0,1", "parent": "Tent / Tent", "memo": "Block building CO", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbbbbww-wwwbbwwb", "slash_count": 3}, {"case_number": "37", "case_category": "2C1E", "case_name": "Mirror Dog / Shell", "alg": "6,-1/-2,1/-3,0/-1,0", "parent": "Mirror Tent / Mirror Tent", "memo": "Block building CO", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbwwbbb-bbwwwwwb", "slash_count": 3}, {"case_number": "38", "case_category": "2C1E", "case_name": "Shell / Mirror Dog", "alg": "0,5/1,-2/0,-3/-1,0", "parent": "Mirror Tent / Mirror Tent", "memo": "Block building CO", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbbbbww-wbwwbbww", "slash_count": 3}, {"case_number": "25", "case_category": "2C2E", "case_name": "Cut / Cut", "alg": "6,5/-2,4/-1,-1/0,1", "parent": "2E Opp / 2E Opp", "memo": "One move to M2", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbwwbwbb-wbwbbwbw", "slash_count": 3}, {"case_number": "26", "case_category": "2C2E", "case_name": "Mirror Cut / Mirror Cut", "alg": "1,0/-3,3/-1,-1/0,1", "parent": "2E Opp / 2E Opp", "memo": "One move to M2", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwbwwbwb-wwbwbbwb", "slash_count": 3}, {"case_number": "27", "case_category": "2C2E", "case_name": "Cut / Mirror Kite", "alg": "-2,0/-1,-1/-3,0/0,1", "parent": "Tent / Tent", "memo": "Convert to tent", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbwwbwbb-wwwwbbbb", "slash_count": 3}, {"case_number": "28", "case_category": "2C2E", "case_name": "Mirror Kite / Cut", "alg": "1,-3/-1,-1/0,-3/0,1", "parent": "Tent / Tent", "memo": "Convert to tent", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbwwwwb-wbwbbwbw", "slash_count": 3}, {"case_number": "29", "case_category": "2C2E", "case_name": "Mirror Cut / Kite", "alg": "-3,5/1,1/3,0/-1,0", "parent": "Mirror Tent / Mirror Tent", "memo": "Convert to tent", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwbwwbwb-wbbbbwww", "slash_count": 3}, {"case_number": "30", "case_category": "2C2E", "case_name": "Kite / Mirror Cut", "alg": "0,2/1,1/0,3/-1,0", "parent": "Mirror Tent / Mirror Tent", "memo": "Convert to tent", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wwwwbbbb-wwbwbbwb", "slash_count": 3}, {"case_number": "31", "case_category": "2C2E", "case_name": "Kite / Fan", "alg": "0,-1/0,3/0,3/0,1", "parent": "Tent / Tent", "memo": "CO", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wwwwbbbb-wbbwwbbw", "slash_count": 3}, {"case_number": "32", "case_category": "2C2E", "case_name": "Fan / Kite", "alg": "3,-1/-3,0/-3,0/0,1", "parent": "Tent / Tent", "memo": "CO", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wwbbwwbb-wbbbbwww", "slash_count": 3}, {"case_number": "33", "case_category": "2C2E", "case_name": "Mirror Kite / Mirror Fan", "alg": "1,0/0,3/0,3/-1,0", "parent": "Mirror Tent / Mirror Tent", "memo": "CO", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbwwwwb-wwbbwwbb", "slash_count": 3}, {"case_number": "34", "case_category": "2C2E", "case_name": "Mirror Fan / Mirror Kite", "alg": "1,0/-3,0/-3,0/-1,0", "parent": "Mirror Tent / Mirror Tent", "memo": "CO", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwwbbwwb-wwwwbbbb", "slash_count": 3}, {"case_number": "45", "case_category": "2C2E", "case_name": "Same Tie / Tie", "alg": "-2,3/0,3/2,2/0,1", "parent": "2C Diag / 2C Diag", "memo": "Convert to 2C diag", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wwbwwbbb-bwwbwwbb", "slash_count": 3}, {"case_number": "46", "case_category": "2C2E", "case_name": "Tie / Tree", "alg": "-2,-3/2,-1/4,1/-1,0", "parent": "Mirror Thumb / Mirror Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbwbbwww-wwbbwbbw", "slash_count": 3}, {"case_number": "47", "case_category": "2C2E", "case_name": "Tree / Tie", "alg": "-2,-3/-1,2/1,4/-1,0", "parent": "Mirror Thumb / Mirror Thumb", "memo": "Convert to thumb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwwbwwbb-bwwbwwbb", "slash_count": 3}, {"case_number": "48", "case_category": "2C2E", "case_name": "Same Tree / Tree", "alg": "4,-3/-3,0/-1,-1/0,1", "parent": "2E Opp / 2E Opp", "memo": "One move to M2", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbwbbww-wwbbwbbw", "slash_count": 3}, {"case_number": "51", "case_category": "0C2E", "case_name": "2E Adj / 2E Adj", "alg": "-5,0/3,0/-1,-1/-3,0/0,1", "parent": "Cut / Mirror Kite", "memo": "Standard EO", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwbbbbbw-bwbwwwww", "slash_count": 4}, {"case_number": "49", "case_category": "0C4E", "case_name": "4E / 4E", "alg": "1,0/-1,-1/-2,4/-1,-1/0,1", "parent": "Cut / Cut", "memo": "Standard EO", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwbwbwbw-bwbwbwbw", "slash_count": 4}, {"case_number": "52", "case_category": "1C2E", "case_name": "Gem / Gem", "alg": "-2,6/-4,-1/-2,1/-3,0/-1,0", "parent": "Mirror Dog / Shell", "memo": "Convert to Mirror Dog / Shell", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbbbwww-bwwwwwbb", "slash_count": 4}, {"case_number": "53", "case_category": "1C2E", "case_name": "Gem / Spill", "alg": "-5,3/2,-1/4,1/-4,-1/0,1", "parent": "Mirror Whale / Mirror Tent", "memo": "", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbbbwww-bbwwwwbw", "slash_count": 4}, {"case_number": "54", "case_category": "1C2E", "case_name": "Gem / Squid", "alg": "-3,2/-3,0/0,3/1,1/-1,0", "parent": "Same Tree / Tree", "memo": "CO into M2", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbbbwww-wwbwbwwb", "slash_count": 4}, {"case_number": "58", "case_category": "1C2E", "case_name": "Axe / Mirror Spill", "alg": "0,2/1,1/-4,-1/-3,0/0,1", "parent": "Mirror Dog / Shell", "memo": "", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbwbbww-bwbwwwwb", "slash_count": 4}, {"case_number": "59", "case_category": "1C3E", "case_name": "Axe / Squid", "alg": "6,-4/0,-3/1,-2/-1,-4/0,1", "parent": "Tree / Tie", "memo": "Use an axe to cut a squid, on the tree.", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bbbwbbww-wwbwbwwb", "slash_count": 4}, {"case_number": "63", "case_category": "1C3E", "case_name": "Bunny / Thumb", "alg": "-2,6/-4,-1/-5,1/3,0/-1,0", "parent": "Whale / Whale", "memo": "", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwbwwbbw-bwwwbbbw", "slash_count": 4}, {"case_number": "64", "case_category": "1C3E", "case_name": "Bunny / Mirror Thumb", "alg": "1,0/3,0/-3,0/-4,-1/0,1", "parent": "Dog / Bird", "memo": "", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "bwbwwbbw-bwbbbwww", "slash_count": 4}, {"case_number": "50", "case_category": "2C0E", "case_name": "2C Adj / 2C Adj", "alg": "-2,3/-3,0/-1,-1/-3,0/0,1", "parent": "Cut / Mirror Kite", "memo": "Convert to Cut / Mirror", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbbbbwb-wbwwwwwb", "slash_count": 4}, {"case_number": "55", "case_category": "2C1E", "case_name": "Y / Bird", "alg": "0,2/0,3/1,4/-4,-1/0,1", "parent": "Whale / Mirror Tent", "memo": "", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbwbbwb-wbbwwwwb", "slash_count": 4}, {"case_number": "56", "case_category": "2C1E", "case_name": "Y / Dog", "alg": "-3,-1/0,-3/-3,3/4,1/-1,0", "parent": "Mirror Bunny / Mirror Bunny", "memo": "Why dog? To catch bunnies!", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbwbbwb-wwwbbwwb", "slash_count": 4}, {"case_number": "57", "case_category": "2C1E", "case_name": "Y / Shell", "alg": "0,-1/-2,1/3,0/-4,-1/0,1", "parent": "Mirror Spill / Mirror Axe", "memo": "", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbbwbbwb-bbwwwwwb", "slash_count": 4}, {"case_number": "60", "case_category": "2C1E", "case_name": "Bird / Dog", "alg": "3,2/-2,-2/-3,0/2,-1/0,1", "parent": "Gem / Axe", "memo": "", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wwbbbbwb-wwwbbwwb", "slash_count": 4}, {"case_number": "61", "case_category": "2C1E", "case_name": "Bird / Mirror Bird", "alg": "-5,3/-3,0/2,-1/-3,0/0,1", "parent": "Axe / Gem", "memo": "", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wwbbbbwb-wbwwwwbb", "slash_count": 4}, {"case_number": "62", "case_category": "2C1E", "case_name": "Bird / Shell", "alg": "-5,0/3,0/-4,-1/4,1/-1,0", "parent": "Mirror Whale / Tent", "memo": "See a bird and a shell, near a whale.", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wwbbbbwb-bbwwwwwb", "slash_count": 4}, {"case_number": "65", "case_category": "2C2E", "case_name": "Cut / Fan", "alg": "1,0/-1,-4/-3,3/4,1/-1,0", "parent": "Mirror Bunny / Mirror Bunny", "memo": "", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbwwbwbb-wbbwwbbw", "slash_count": 4}, {"case_number": "66", "case_category": "2C2E", "case_name": "Cut / Tie", "alg": "3,-4/1,4/0,-3/-4,-1/0,1", "parent": "Mirror Dog / Bird", "memo": "", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": "", "viz": "wbwwbwbb-bwwbwwbb", "slash_count": 4}]');
+    const tbody = document.querySelector('#obl-cases-table tbody');
+    table_data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-slash-count', row.slash_count);
+        tr.setAttribute('data-case-category', row.case_category);
+        tr.innerHTML = `
+            <td>${row.case_category}</td>
+            <td>${row.case_name}</td>
+            <td><canvas id="square-${row.viz}" width="100" height="200"></canvas></td>
+            <td>${row.alg}</td>
+            <td>${row.parent}</td>
+            <td>${row.memo}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    // Find all canvas elements with id starting with "square-"
+    document.querySelectorAll('canvas[id^="square-"]').forEach(canvas => {
+        const id = canvas.id;
+        // Expect id format: square-<pattern1>-<pattern2>
+        const match = id.match(/^square-([a-z0-9]+)-([a-z0-9]+)$/);
+        if (match) {
+            const pattern1 = match[1];
+            const pattern2 = match[2];
+            drawTwoSquareShapes(id, "21212121", pattern1, "12121212", pattern2, align = true);
+        }
+    });
+</script>
+
+<div id="filter-toolkit">
+  <div class="filter-group">
+    <strong>Slash Count</strong>
+    <div class="checkboxes" id="slash-count-filter">
+      <label><input type="checkbox" value="0" checked> 0</label>
+      <label><input type="checkbox" value="1" checked> 1</label>
+      <label><input type="checkbox" value="2" checked> 2</label>
+      <label><input type="checkbox" value="3" checked> 3</label>
+      <label><input type="checkbox" value="4" checked> 4</label>
+      <label><input type="checkbox" value="5" checked> 5</label>
+      <label><input type="checkbox" value="6" checked> 6</label>
+      <label><input type="checkbox" value="7" checked> 7</label>
+    </div>
+    <button onclick="selectAll('slash-count-filter')">Select All</button>
+    <button onclick="selectNone('slash-count-filter')">Select None</button>
+  </div>
+
+  <div class="filter-group">
+    <strong>Case Category</strong>
+    <div class="checkboxes" id="case-category-filter">
+      <label><input type="checkbox" value="0C0E" checked> 0C0E</label>
+      <label><input type="checkbox" value="0C1E" checked> 0C1E</label>
+      <label><input type="checkbox" value="0C2E" checked> 0C2E</label>
+      <label><input type="checkbox" value="0C3E" checked> 0C3E</label>
+      <label><input type="checkbox" value="0C4E" checked> 0C4E</label>
+      <label><input type="checkbox" value="1C0E" checked> 1C0E</label>
+      <label><input type="checkbox" value="1C1E" checked> 1C1E</label>
+      <label><input type="checkbox" value="1C2E" checked> 1C2E</label>
+      <label><input type="checkbox" value="1C3E" checked> 1C3E</label>
+      <label><input type="checkbox" value="2C0E" checked> 2C0E</label>
+      <label><input type="checkbox" value="2C1E" checked> 2C1E</label>
+      <label><input type="checkbox" value="2C2E" checked> 2C2E</label>
+      <label><input type="checkbox" value="3C0E" checked> 3C0E</label>
+    </div>
+    <button onclick="selectAll('case-category-filter')">Select All</button>
+    <button onclick="selectNone('case-category-filter')">Select None</button>
+  </div>
+</div>
+
+<script>
+function selectAll(groupId) {
+    document.querySelectorAll(`#${groupId} input[type="checkbox"]`).forEach(cb => cb.checked = true);
+    filterTable();
+}
+
+function selectNone(groupId) {
+    document.querySelectorAll(`#${groupId} input[type="checkbox"]`).forEach(cb => cb.checked = false);
+    filterTable();
+}
+
+function getCheckedValues(groupId) {
+    return Array.from(document.querySelectorAll(`#${groupId} input[type="checkbox"]:checked`))
+        .map(cb => cb.value);
+}
+
+function filterTable() {
+    const allowedSlashCounts = getCheckedValues('slash-count-filter');
+    const allowedCategories = getCheckedValues('case-category-filter');
+
+    const rows = document.querySelectorAll('#obl-cases-table tbody tr');
+    rows.forEach(row => {
+        const slashCount = row.dataset.slashCount;
+        const category = row.dataset.caseCategory;
+
+        const show = allowedSlashCounts.includes(slashCount) &&
+                     allowedCategories.includes(category);
+
+        row.style.display = show ? '' : 'none';
+    });
+}
+
+// Attach live event listeners
+document.querySelectorAll('#filter-toolkit input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', filterTable);
+});
+</script>
+
+
+
+        <style>
+        .discount-banner {
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #2d6a2e 0%, #4CAF50 50%, #57B647 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+        }
+        .discount-banner h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #e8f5e9;
+            position: relative;
+        }
+        .discount-banner .discount-code {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border: 2px dashed rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 28px;
+            font-size: 1.6em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discount-banner .discount-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .discount-banner .discount-label {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .discount-banner .discount-shops {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.85);
+            position: relative;
+        }
+        </style>
+
+        <div class="discount-banner">
+            <div class="discount-label">🎉 5% OFF</div>
+            <h3>Use my discount code at TheCubicle & SpeedCubeShop</h3>
+            <div class="discount-code" onclick="navigator.clipboard.writeText('CUBINGPRO'); this.textContent='COPIED!'; setTimeout(() => this.textContent='CUBINGPRO', 1500);">CUBINGPRO</div>
+            <div class="discount-shops">Click the code to copy • Works at checkout on both stores</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- /container -->
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850"
+    crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CK6MWC01K0');
+  </script>
+
+  <div id="phantom-images" style="display: none;">
+    <!-- Unique image files -->
+    <img id="3x3x3_png" src="../../static/3x3x3.png" />
+    <img id="timer_png" src="../../static/timer.png" />
+    <img id="2x2x2_png" src="../../static/2x2x2.png" />
+    <img id="4x4x4_jpg" src="../../static/4x4x4.jpg" />
+    <img id="clock_png" src="../../static/clock.png" />
+    <img id="pyraminx_png" src="../../static/pyraminx.png" />
+    <img id="skewb_png" src="../../static/skewb.png" />
+    <img id="fto_png" src="../../static/fto.png" />
+    <img id="sq1_jpg" src="../../static/sq1.jpg" />
+    <img id="wca_png" src="../../static/wca.png" />
+    <img id="misc_png" src="../../static/misc.png" />
+    <img id="solver_png" src="../../static/solver.png" />
+    <img id="3bld_png" src="../../static/3bld.png" />
+    <img id="5bld_png" src="../../static/5bld.png" />
+    <img id="fmc_jpg" src="../../static/fmc.jpg" />
+    <img id="eg_png" src="../../static/eg.png" />
+    <img id="yau_png" src="../../static/yau.png" />
+    <img id="4bld_jpg" src="../../static/4bld.jpg" />
+    <img id="7simul_png" src="../../static/7simul.png" />
+    <img id="clock_math_png" src="../../static/clock_math.png" />
+    <img id="corner_first_png" src="../../static/corner_first.png" />
+    <img id="v_first_png" src="../../static/v_first.png" />
+    <img id="sarah_png" src="../../static/sarah.png" />
+    <img id="cubeshape_jpg" src="../../static/cubeshape.jpg" />
+    <img id="eo_png" src="../../static/eo.png" />
+    <img id="wca_viz_png" src="../../static/wca_viz.png" />
+    <img id="mini_comp_jpg" src="../../static/mini_comp.jpg" />
+    <img id="geoguesser_png" src="../../static/misc.png" />
+    <img id="auto_interviewer_png" src="../../static/misc.png" />
+    <img id="tutorial_viewer_png" src="../../static/misc.png" />
+    <img id="tutorial_editor_png" src="../../static/misc.png" />
+  </div>
+
+
+</body>
+
+</html>

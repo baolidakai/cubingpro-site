@@ -1,0 +1,1464 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Cubing Pro</title>
+
+  <meta name="author" content="Bowen Deng">
+  <meta name="description" content="Home for competitive speedcubers.">
+  <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs, face turning octahedron, fto">
+
+  <link rel="stylesheet" href="../../static/css/main.css">
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+  <script src="../../static/js/main.js" type="text/javascript"></script>
+  <script src="../../static/js/vendor/jquery.ba-replacetext.min.js"></script>
+  <script src="../../static/js/clock.js" type="text/javascript"></script>
+  <script src="../../static/js/pyraminx.js" type="text/javascript"></script>
+  <script src="../../static/js/big_cube.js" type="text/javascript"></script>
+  <script src="../../static/js/skewb.js" type="text/javascript"></script>
+  <script src="../../static/js/sq1.js" type="text/javascript"></script>
+  <script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+  <script type="module">
+    import "https://cdn.cubing.net/v0/js/cubing/twisty";
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.__SITE_PREFIX__="../../";</script>
+  <script>
+    function getImageSrc(filename) {
+      const id = filename.toLowerCase().replace('.', '_'); // e.g., "fmc.jpg" -> "fmc_jpg"
+      const img = document.getElementById(id);
+      return img ? img.src : null;
+    }
+    fetch("../../static/sidebar.json")
+      .then(response => response.json())
+      .then(menuData => {
+        function buildMenu(menuContainer, menuData) {
+          // State
+          let inCategoryView = false;
+
+          function renderCategories(data) {
+            menuContainer.innerHTML = ''; // Clear previous
+
+            data.forEach(entry => {
+              const card = document.createElement('div');
+              card.className = 'category-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(entry.category_logo);
+              img.alt = entry.category;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = entry.category;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                renderItems(entry.category, entry.items);
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = false;
+          }
+
+          function renderItems(category, items) {
+            menuContainer.innerHTML = '';
+
+            // Back button
+            const backButton = document.createElement('button');
+            backButton.textContent = '← Back';
+            backButton.className = 'back-button';
+            backButton.onclick = () => renderCategories(menuData);
+            menuContainer.appendChild(backButton);
+
+            items.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'item-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(item.logo);
+              img.alt = item.title;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = item.title;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                window.location.href = window.__SITE_PREFIX__ + item.url.replace(/^\//, "");
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = true;
+          }
+
+          // Initial render
+          renderCategories(menuData);
+
+          // Add copyright
+          const copyright = document.createElement('div');
+          copyright.className = 'copyright';
+          copyright.textContent = '© 2025 Bowen Deng';
+          menuContainer.appendChild(copyright);
+        }
+
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const indexPage = document.getElementById('index-page');
+
+        if (sidebarMenu) {
+          buildMenu(sidebarMenu, menuData);
+        }
+        if (indexPage) {
+          buildMenu(indexPage, menuData);
+        }
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</head>
+
+<body>
+  <button id="nav-toggle"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1000; font-size: 1.5em; padding: 16px 32px;">Navigate</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navToggle = document.getElementById('nav-toggle');
+      const sidebar = document.getElementById('sidebar-menu');
+      navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if (sidebar.classList.contains('active')) {
+          sidebar.style.minHeight = '800px';
+        } else {
+          sidebar.style.minHeight = '';
+        }
+      });
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+        });
+      });
+    });
+  </script>
+  <div id="container">
+    <div id="header">
+      <h1 class="title" style="position: fixed; top: 0; left: 50%; margin: 0; padding: 10px;">
+        <div
+          style="position: absolute; top: 50px; left: 50%; transform: translateX(-80%); font-size: 15px; color: #e91e63; pointer-events: none;">
+          &lt;- Can I get a forehead pat?
+        </div>
+        <button onclick="rainStars(this)"
+          style="border: none; background: none; padding: 0; display: inline-block; line-height: 0; cursor: grab;">
+          <img src="../../static/fox_with_cube.png" alt="" width="85" style="display: block;">
+        </button>
+        <a href="../../">Cubing for Professionals</a>
+      </h1>
+    </div>
+
+    <!-- To check the feedback from the solver app -->
+    <!-- http://localhost:5006/execute_sql/ -->
+
+    <div id="sidebar">
+      <nav>
+        <div id="sidebar-menu" class="sidebar-menu">
+        </div>
+      </nav>
+      </nav>
+    </div>
+
+    <div id="content" class="home">
+      <div id="home">
+
+        <h1 class="watermark">cubingpro.com</h1>
+
+        <div id="star-container"></div>
+
+        
+
+<h1>
+    EG algorithms <a href="../../static/cubingpro.com_2x2x2_eg_alg.pdf" target="_blank" class="button">Printable Version</a>
+</h1>
+
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Case</th>
+            <th>CLL</th>
+            <th>EG1</th>
+            <th>EG2</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr>
+            <td>H-1</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R2 U2 R U2 R2 y z2"></twisty-player>
+                    R2 U2 R U2 R2<br>
+                    AUF: Left bar goes front
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F R2 U&#x27; R2 U&#x27; F U R y z2"></twisty-player>
+                    R&#x27; F (R2 U&#x27; R2&#x27; U&#x27;) F U R<br>
+                    AUF: Left bar goes right
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R2 F U2 F2 R2 F&#x27; R2 y z2"></twisty-player>
+                    R2 F U2 F2 R2 F&#x27; R2<br>
+                    AUF: Back bar goes right
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>H-2</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; F R&#x27; F&#x27; R2 U&#x27; R&#x27; F R&#x27; F&#x27; R y z2"></twisty-player>
+                    RU&#x27;R&#x27;FR&#x27;F&#x27;R2U&#x27;R&#x27;FR&#x27;F&#x27;R<br>
+                    AUF: Right bar goes right
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F&#x27; U R U&#x27; R2 F2 R U&#x27; F y z2"></twisty-player>
+                    F&#x27; U (R U&#x27; R2&#x27; F2) R U&#x27; F<br>
+                    AUF: Back bar goes front
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R2 U2 R U2 B2 R2 y z2"></twisty-player>
+                    R2U2RU2B2R2<br>
+                    AUF: Front bar goes front
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>H-3</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R&#x27; U R U R&#x27; F R&#x27; F&#x27; R y z2"></twisty-player>
+                    RUR&#x27;URUR&#x27;FR&#x27;F&#x27;R<br>
+                    AUF: Bar goes right
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U&#x27; R&#x27; F2 U F&#x27; R F&#x27; y z2"></twisty-player>
+                    R&#x27;U&#x27;R&#x27;F2UF&#x27;RF&#x27;<br>
+                    AUF: Bar goes front
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U&#x27; R U2 R2 F&#x27; R U&#x27; F R y z2"></twisty-player>
+                    R&#x27;U&#x27;RU2R2F&#x27;RU&#x27;FR<br>
+                    AUF: Bar goes right
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>H-4</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R2 U&#x27; R2 U&#x27; R2 U R2 F&#x27; y z2"></twisty-player>
+                    FR2U&#x27;R2U&#x27;R2UR2F&#x27;<br>
+                    AUF: Bar goes to back
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R&#x27; F&#x27; R U R&#x27; U&#x27; R U R&#x27; y z2"></twisty-player>
+                    RUR&#x27;F&#x27;RUR&#x27;U&#x27;RUR&#x27;<br>
+                    AUF: Bar goes to front
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U2 B2 R&#x27; U R U&#x27; B R&#x27; y z2"></twisty-player>
+                    RU2B2R&#x27;URU&#x27;BR&#x27;<br>
+                    AUF: Bar goes to back
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>Pi-1</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R2 U R2 U R2 U&#x27; R y z2"></twisty-player>
+                    RU&#x27;R2UR2UR2U&#x27;R<br>
+                    AUF: Bar goes to left
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R2 B2 R&#x27; U R&#x27; U&#x27; R U2 R U&#x27; R2 y z2"></twisty-player>
+                    R2B2R&#x27;UR&#x27;U&#x27;RU2RU&#x27;R2<br>
+                    AUF: Bar goes to right
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F U&#x27; R U2 R U&#x27; R&#x27; U R&#x27; F&#x27; y z2"></twisty-player>
+                    FU&#x27;RU2RU&#x27;R&#x27;UR&#x27;F&#x27;<br>
+                    AUF: Bar goes to left
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>Pi-2</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U&#x27; R&#x27; F R F&#x27; R U&#x27; R&#x27; U2 R y z2"></twisty-player>
+                    R&#x27;U&#x27;R&#x27;FRF&#x27;RU&#x27;R&#x27;U2R<br>
+                    AUF: Bar goes to back
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F R2 U&#x27; R2 F R y z2"></twisty-player>
+                    R&#x27;FR2U&#x27;R2FR<br>
+                    AUF: Bar goes to front
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U2 R2 U&#x27; R&#x27; F2 R2 F&#x27; y z2"></twisty-player>
+                    R&#x27;U2R2U&#x27;R&#x27;F2R2F&#x27;<br>
+                    AUF: Bar goes to front
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>Pi-3</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F R F&#x27; R U&#x27; R&#x27; U&#x27; R U&#x27; R&#x27; y z2"></twisty-player>
+                    R&#x27;FRF&#x27;RU&#x27;R&#x27;U&#x27;RU&#x27;R&#x27;<br>
+                    AUF: Adjacent bar goes to right
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R&#x27; F U&#x27; F2 R U R y z2"></twisty-player>
+                    FR&#x27;FU&#x27;F2RUR<br>
+                    AUF: Adjacent bar goes to right
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F&#x27; U R&#x27; F R2 U2 R&#x27; U R y z2"></twisty-player>
+                    R&#x27;F&#x27;UR&#x27;FR2U2R&#x27;UR<br>
+                    AUF: Adjacent bar goes to right
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>Pi-4</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R U&#x27; R&#x27; U R&#x27; F R2 F&#x27; y z2"></twisty-player>
+                    RU&#x27;RU&#x27;R&#x27;UR&#x27;FR2F&#x27;<br>
+                    AUF: Slash goes to right
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; U R U&#x27; R&#x27; F R U&#x27; R&#x27; y z2"></twisty-player>
+                    RU&#x27;R&#x27;URU&#x27;R&#x27;FRU&#x27;R&#x27;<br>
+                    AUF: Slash goes to front
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F U&#x27; R U R&#x27; F2 U2 R y z2"></twisty-player>
+                    R&#x27;FU&#x27;RUR&#x27;F2U2R<br>
+                    AUF: Slash goes to front
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>Pi-5</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U2 R&#x27; U&#x27; R U R&#x27; U2 R&#x27; F R F&#x27; y z2"></twisty-player>
+                    RU2R&#x27;U&#x27;RUR&#x27;U2R&#x27;FRF&#x27;<br>
+                    AUF: Slash goes to back
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R&#x27; U R U&#x27; R2 F&#x27; R F R&#x27; F&#x27; R y z2"></twisty-player>
+                    RUR&#x27;URU&#x27;R2F&#x27;RFR&#x27;F&#x27;R<br>
+                    AUF: Slash goes to front
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L U2 L&#x27; U L2 F2 L&#x27; F&#x27; L&#x27; y z2"></twisty-player>
+                    LU2L&#x27;UL2F2L&#x27;F&#x27;L&#x27;<br>
+                    AUF: Slash goes to back; if treat left as primary then go to front
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>Pi-6</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U2 L U L&#x27; U&#x27; L U2 R U&#x27; R&#x27; F y z2"></twisty-player>
+                    L&#x27;U2LUL&#x27;U&#x27;LU2RU&#x27;R&#x27;F<br>
+                    AUF: Slash goes to back
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F R F&#x27; R&#x27; F R2 U R&#x27; U&#x27; R U&#x27; R&#x27; y z2"></twisty-player>
+                    R&#x27;FRF&#x27;R&#x27;FR2UR&#x27;U&#x27;RU&#x27;R&#x27;<br>
+                    AUF: Slash goes to front
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U2 R U&#x27; R2 F2 R F R y z2"></twisty-player>
+                    R&#x27;U2RU&#x27;R2F2RFR<br>
+                    AUF: Slash goes to front
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>U-1</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R U R&#x27; U&#x27; F&#x27; y z2"></twisty-player>
+                    FRUR&#x27;U&#x27;F&#x27;<br>
+                    AUF: Use the bar Bar goes to right
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R2 F R2 U R&#x27; U&#x27; R U&#x27; R&#x27; y z2"></twisty-player>
+                    RU&#x27;R2FR2UR&#x27;U&#x27;RU&#x27;R&#x27;<br>
+                    AUF: Bar goes to left
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U R&#x27; F U&#x27; R U&#x27; R U2 R2 y z2"></twisty-player>
+                    R&#x27;UR&#x27;FU&#x27;RU&#x27;RU2R2<br>
+                    AUF: Bar goes to front (If need to go to back can replace R with R&#x27;)
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>U-2</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U&#x27; R2 U R&#x27; U2 R U2 R&#x27; U R&#x27; y z2"></twisty-player>
+                    R&#x27;U&#x27;R2UR&#x27;U2RU2R&#x27;UR&#x27;<br>
+                    AUF: Use the bar
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; U R U&#x27; R&#x27; F R U2 R&#x27; F R&#x27; F&#x27; R y z2"></twisty-player>
+                    RU&#x27;R&#x27;URU&#x27;R&#x27;FRU2R&#x27;FR&#x27;F&#x27;R<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R U R&#x27; U&#x27; F R2 B2 z2 y z2"></twisty-player>
+                    FRUR&#x27;U&#x27;FR2B2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>U-3</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U2 R U&#x27; R&#x27; F R&#x27; F2 U&#x27; F y z2"></twisty-player>
+                    RU2RU&#x27;R&#x27;FR&#x27;F2U&#x27;F<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R2 F2 R F&#x27; U R U R&#x27; y z2"></twisty-player>
+                    RU&#x27;R2F2RF&#x27;URUR&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R&#x27; U&#x27; R B2 R&#x27; U R U&#x27; R&#x27; y z2"></twisty-player>
+                    RUR&#x27;U&#x27;RB2R&#x27;URU&#x27;R&#x27;<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>U-4</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R&#x27; F&#x27; R U&#x27; R U&#x27; R&#x27; U2 R U&#x27; R&#x27; y z2"></twisty-player>
+                    FR&#x27;F&#x27;RU&#x27;RU&#x27;R&#x27;U2RU&#x27;R&#x27;<br>
+                    AUF: Use the far (backslash) sticker
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F R F&#x27; R&#x27; F R2 U&#x27; R&#x27; y z2"></twisty-player>
+                    R&#x27;FRF&#x27;R&#x27;FR2U&#x27;R&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R2 F2 R U R U2 R2 F R F&#x27; R y z2"></twisty-player>
+                    R2F2RURU2R2FRF&#x27;R<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>U-5</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R2 F R F&#x27; R U R&#x27; U&#x27; R U R&#x27; y z2"></twisty-player>
+                    RU&#x27;R2FRF&#x27;RUR&#x27;U&#x27;RUR&#x27;<br>
+                    AUF: Use the slash sticker
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R2 F R D&#x27; L&#x27; U&#x27; L y z2"></twisty-player>
+                    RU&#x27;R2FRD&#x27;L&#x27;U&#x27;L<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; U2 L U L&#x27; U2 R U&#x27; R&#x27; y z2"></twisty-player>
+                    RU&#x27;R&#x27;U2LUL&#x27;U2RU&#x27;R&#x27;<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>U-6</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U L2 F&#x27; L&#x27; F L&#x27; U&#x27; L U L&#x27; U&#x27; L y z2"></twisty-player>
+                    L&#x27;UL2F&#x27;L&#x27;FL&#x27;U&#x27;LUL&#x27;U&#x27;L<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U L2 F&#x27; L&#x27; D R U R&#x27; y z2"></twisty-player>
+                    L&#x27;UL2F&#x27;L&#x27;DRUR&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U L U2 R&#x27; U&#x27; R U2 L&#x27; U L y z2"></twisty-player>
+                    L&#x27;ULU2R&#x27;U&#x27;RU2L&#x27;UL<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>T-1</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R&#x27; U&#x27; R&#x27; F R F&#x27; y z2"></twisty-player>
+                    RUR&#x27;U&#x27;R&#x27;FRF&#x27;<br>
+                    AUF: Use the sticker which appears twice
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R U&#x27; R2 F&#x27; R U R&#x27; F&#x27; R y z2"></twisty-player>
+                    FRU&#x27;R2F&#x27;RUR&#x27;F&#x27;R<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U&#x27; L U L F&#x27; L&#x27; F&#x27; R2 B2 z2 y z2"></twisty-player>
+                    L&#x27;U&#x27;LULF&#x27;L&#x27;F&#x27;R2B2<br>
+                    AUF: The bottom of U sticker remains attached
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>T-2</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U&#x27; L U L F&#x27; L&#x27; F y z2"></twisty-player>
+                    L&#x27;U&#x27;LULF&#x27;L&#x27;F<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F&#x27; L&#x27; U L2 F L&#x27; U&#x27; R U R&#x27; y z2"></twisty-player>
+                    F&#x27;L&#x27;UL2FL&#x27;U&#x27;RUR&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R&#x27; U&#x27; R&#x27; F R F R2 B2 z2 y z2"></twisty-player>
+                    RUR&#x27;U&#x27;R&#x27;FRFR2B2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>T-3</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U2 R2 F R F&#x27; R U&#x27; R&#x27; U R U2 R&#x27; y z2"></twisty-player>
+                    RU2R2FRF&#x27;RU&#x27;R&#x27;URU2R&#x27;<br>
+                    AUF: Use the furthest sticker (assume top at right)
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R2 F R U R U2 R&#x27; y z2"></twisty-player>
+                    RU&#x27;R2FRURU2R&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U R&#x27; F U&#x27; R U R2 y z2"></twisty-player>
+                    R&#x27;UR&#x27;FU&#x27;RUR2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>T-4</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; U R U&#x27; R&#x27; F R&#x27; F&#x27; R F R&#x27; F&#x27; R y z2"></twisty-player>
+                    RU&#x27;R&#x27;URU&#x27;R&#x27;FR&#x27;F&#x27;RFR&#x27;F&#x27;R<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R2 F&#x27; R F R&#x27; F&#x27; R2 U&#x27; R&#x27; F R&#x27; F&#x27; R y z2"></twisty-player>
+                    RUR2F&#x27;RFR&#x27;F&#x27;R2U&#x27;R&#x27;FR&#x27;F&#x27;R<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R2 B2 R2 F R U R&#x27; U&#x27; F&#x27; y z2"></twisty-player>
+                    R2B2R2FRUR&#x27;U&#x27;F&#x27;<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>T-5</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R&#x27; U2 R U R&#x27; U R&#x27; F R F&#x27; y z2"></twisty-player>
+                    RUR&#x27;U2RUR&#x27;UR&#x27;FRF&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R2 F&#x27; R F R&#x27; F&#x27; R y z2"></twisty-player>
+                    RUR2F&#x27;RFR&#x27;F&#x27;R<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U R U2 R2 F R F&#x27; R&#x27; F2 R2 y z2"></twisty-player>
+                    R&#x27;URU2R2FRF&#x27;R&#x27;F2R2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>T-6</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U R U2 R2 F R F&#x27; R y z2"></twisty-player>
+                    R&#x27;URU2R2FRF&#x27;R<br>
+                    AUF: Use the furthest sticker
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; U2 F R U2 R&#x27; F y z2"></twisty-player>
+                    RU&#x27;R&#x27;U2FRU2R&#x27;F<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U2 R&#x27; F2 R F2 R y z2"></twisty-player>
+                    R&#x27;U2R&#x27;F2RF2R<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>L-1</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F&#x27; R U R&#x27; U&#x27; R&#x27; F R y z2"></twisty-player>
+                    F&#x27;RUR&#x27;U&#x27;R&#x27;FR<br>
+                    AUF: Use the L facing me
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; U L F&#x27; L2 U&#x27; L F y z2"></twisty-player>
+                    RU&#x27;R&#x27;ULF&#x27;L2U&#x27;LF<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R2 B2 R2 F R&#x27; F&#x27; R U R U&#x27; R&#x27; y z2"></twisty-player>
+                    R2B2R2FR&#x27;F&#x27;RURU&#x27;R&#x27;<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>L-2</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R&#x27; F&#x27; R U R U&#x27; R&#x27; y z2"></twisty-player>
+                    FR&#x27;F&#x27;RURU&#x27;R&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U L U&#x27; R&#x27; F R2 U R&#x27; F&#x27; y z2"></twisty-player>
+                    L&#x27;ULU&#x27;R&#x27;FR2UR&#x27;F&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R2 B2 R2 F&#x27; R U R&#x27; U&#x27; R&#x27; F R y z2"></twisty-player>
+                    R2B2R2F&#x27;RUR&#x27;U&#x27;R&#x27;FR<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>L-3</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U2 R2 F R F&#x27; R U2 R&#x27; y z2"></twisty-player>
+                    RU2R2FRF&#x27;RU2R&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U R2 U&#x27; R2 U&#x27; F R2 U&#x27; R&#x27; y z2"></twisty-player>
+                    R&#x27;UR2U&#x27;R2U&#x27;FR2U&#x27;R&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U&#x27; F2 R U2 R&#x27; U2 F R y z2"></twisty-player>
+                    R&#x27;U&#x27;F2RU2R&#x27;U2FR<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>L-4</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R2 U&#x27; R U2 R&#x27; U2 R U&#x27; R2 y z2"></twisty-player>
+                    R2U&#x27;RU2R&#x27;U2RU&#x27;R2<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F R2 U R&#x27; F&#x27; R U2 R&#x27; y z2"></twisty-player>
+                    R&#x27;FR2UR&#x27;F&#x27;RU2R&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; U&#x27; R U R&#x27; F&#x27; R U R&#x27; U&#x27; R&#x27; F&#x27; R2 y z2"></twisty-player>
+                    R&#x27;U&#x27;RUR&#x27;F&#x27;RUR&#x27;U&#x27;R&#x27;F&#x27;R2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>L-5</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; U R U&#x27; R&#x27; F R&#x27; F&#x27; R2 U R&#x27; y z2"></twisty-player>
+                    RU&#x27;R&#x27;URU&#x27;R&#x27;FR&#x27;F&#x27;R2UR&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R&#x27; F&#x27; R U R&#x27; U&#x27; F R&#x27; F&#x27; R y z2"></twisty-player>
+                    RUR&#x27;F&#x27;RUR&#x27;U&#x27;FR&#x27;F&#x27;R<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R&#x27; F&#x27; R U R U&#x27; R B2 R2 y z2"></twisty-player>
+                    FR&#x27;F&#x27;RURU&#x27;RB2R2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>L-6</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F&#x27; R U R&#x27; U&#x27; R&#x27; F R2 U&#x27; R&#x27; U2 R y z2"></twisty-player>
+                    R&#x27;F&#x27;RUR&#x27;U&#x27;R&#x27;FR2U&#x27;R&#x27;U2R<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U&#x27; L F L&#x27; U&#x27; L U F&#x27; L F L&#x27; y z2"></twisty-player>
+                    L&#x27;U&#x27;LFL&#x27;U&#x27;LUF&#x27;LFL&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F&#x27; R U R&#x27; U&#x27; R&#x27; F R&#x27; F2 R2 y z2"></twisty-player>
+                    F&#x27;RUR&#x27;U&#x27;R&#x27;FR&#x27;F2R2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>S-1</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R&#x27; U R U2 R&#x27; y z2"></twisty-player>
+                    RUR&#x27;URU2R&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="B&#x27; U L2 F2 U F&#x27; z2 y z2"></twisty-player>
+                    B&#x27;UL2F2UF&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F R2 F&#x27; U&#x27; R&#x27; U&#x27; R2 U R B2 R2 y z2"></twisty-player>
+                    R&#x27;FR2F&#x27;U&#x27;R&#x27;U&#x27;R2URB2R2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>S-2</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F R2 F&#x27; U&#x27; R&#x27; U&#x27; R2 U R&#x27; y z2"></twisty-player>
+                    R&#x27;FR2F&#x27;U&#x27;R&#x27;U&#x27;R2UR&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R&#x27; F2 U F R U R&#x27; y z2"></twisty-player>
+                    RUR&#x27;F2UFRUR&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U R&#x27; U R U2 R B2 R2 y z2"></twisty-player>
+                    RUR&#x27;URU2RB2R2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>S-3</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R&#x27; F&#x27; R U2 R U2 R&#x27; y z2"></twisty-player>
+                    FR&#x27;F&#x27;RU2RU2R&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R&#x27; F&#x27; R U L&#x27; U&#x27; L2 F L&#x27; y z2"></twisty-player>
+                    FR&#x27;F&#x27;RUL&#x27;U&#x27;L2FL&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; F R&#x27; F&#x27; R&#x27; F2 R2 y z2"></twisty-player>
+                    RU&#x27;R&#x27;FR&#x27;F&#x27;R&#x27;F2R2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>S-4</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; F R&#x27; F&#x27; R y z2"></twisty-player>
+                    RU&#x27;R&#x27;FR&#x27;F&#x27;R<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F&#x27; R&#x27; F R2 U R&#x27; U&#x27; F R&#x27; F&#x27; R y z2"></twisty-player>
+                    F&#x27;R&#x27;FR2UR&#x27;U&#x27;FR&#x27;F&#x27;R<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R&#x27; F&#x27; R U2 R U2 R B2 R2 y z2"></twisty-player>
+                    FR&#x27;F&#x27;RU2RU2RB2R2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>S-5</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F&#x27; R2 U R&#x27; F&#x27; R&#x27; F R2 U&#x27; R&#x27; y z2"></twisty-player>
+                    R&#x27;F&#x27;R2UR&#x27;F&#x27;R&#x27;FR2U&#x27;R&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; U R U&#x27; R&#x27; U&#x27; R&#x27; F&#x27; R F y z2"></twisty-player>
+                    RU&#x27;R&#x27;URU&#x27;R&#x27;U&#x27;R&#x27;F&#x27;RF<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U2 L U2 L F&#x27; L&#x27; F&#x27; L2 F2 y z2"></twisty-player>
+                    L&#x27;U2LU2LF&#x27;L&#x27;F&#x27;L2F2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>S-6</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U2 L U2 L F&#x27; L&#x27; F y z2"></twisty-player>
+                    L&#x27;U2LU2LF&#x27;L&#x27;F<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F R2 U&#x27; R&#x27; U L F&#x27; L&#x27; F y z2"></twisty-player>
+                    R&#x27;FR2U&#x27;R&#x27;ULF&#x27;L&#x27;F<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R&#x27; F&#x27; R2 U R&#x27; F&#x27; R&#x27; F R2 U&#x27; R B2 R2 y z2"></twisty-player>
+                    R&#x27;F&#x27;R2UR&#x27;F&#x27;R&#x27;FR2U&#x27;RB2R2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AS-1</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U&#x27; L U&#x27; L&#x27; U2 L y z2"></twisty-player>
+                    L&#x27;U&#x27;LU&#x27;L&#x27;U2L<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="B U&#x27; R2 F2 U&#x27; F z2 y z2"></twisty-player>
+                    BU&#x27;R2F2U&#x27;F<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L F&#x27; L2 F U L U L2 U&#x27; L&#x27; B2 L2 y z2"></twisty-player>
+                    LF&#x27;L2FULUL2U&#x27;L&#x27;B2L2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AS-2</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L F&#x27; L2 F U L U L2 U&#x27; L y z2"></twisty-player>
+                    LF&#x27;L2FULUL2U&#x27;L<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U&#x27; R&#x27; F&#x27; U&#x27; F2 R U&#x27; R&#x27; y z2"></twisty-player>
+                    RU&#x27;R&#x27;F&#x27;U&#x27;F2RU&#x27;R&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U&#x27; L U&#x27; L&#x27; U2 L&#x27; B2 L2 y z2"></twisty-player>
+                    L&#x27;U&#x27;LU&#x27;L&#x27;U2L&#x27;B2L2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AS-3</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F&#x27; L F L&#x27; U2 L&#x27; U2 L y z2"></twisty-player>
+                    F&#x27;LFL&#x27;U2L&#x27;U2L<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F&#x27; L F L&#x27; U&#x27; R U R2 F&#x27; R y z2"></twisty-player>
+                    F&#x27;LFL&#x27;U&#x27;RUR2F&#x27;R<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U L F&#x27; L F L F2 L2 y z2"></twisty-player>
+                    L&#x27;ULF&#x27;LFLF2L2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AS-4</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U L F&#x27; L F L&#x27; y z2"></twisty-player>
+                    L&#x27;ULF&#x27;LFL&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F R U&#x27; R2 F&#x27; R U F&#x27; L F L&#x27; y z2"></twisty-player>
+                    FRU&#x27;R2F&#x27;RUF&#x27;LFL&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="F&#x27; L F L&#x27; U2 L&#x27; U2 L&#x27; B2 L2 y z2"></twisty-player>
+                    F&#x27;LFL&#x27;U2L&#x27;U2L&#x27;B2L2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AS-5</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L F L2 U&#x27; L F L F&#x27; L2 U L y z2"></twisty-player>
+                    LFL2U&#x27;LFLF&#x27;L2UL<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L&#x27; U L U&#x27; L&#x27; U L U L F L&#x27; F&#x27; y z2"></twisty-player>
+                    L&#x27;ULU&#x27;L&#x27;ULULFL&#x27;F&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U2 R&#x27; U2 R&#x27; F R F R2 B2 z2 y z2"></twisty-player>
+                    RU2R&#x27;U2R&#x27;FRFR2B2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AS-6</td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="R U2 R&#x27; U2 R&#x27; F R F&#x27; y z2"></twisty-player>
+                    RU2R&#x27;U2R&#x27;FRF&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L F&#x27; L2 U L U&#x27; R&#x27; F R F&#x27; y z2"></twisty-player>
+                    LF&#x27;L2ULU&#x27;R&#x27;FRF&#x27;<br>
+                    
+                </div>
+            </td>
+            <td>
+                <div style="text-align: center;">
+                    <twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="2x2x2"
+                        background="none" control-panel="none" alg="L F L2 U&#x27; L F L F&#x27; L2 U L&#x27; B2 L2 y z2"></twisty-player>
+                    LFL2U&#x27;LFLF&#x27;L2UL&#x27;B2L2<br>
+                    
+                </div>
+            </td>
+        </tr>
+        
+    </tbody>
+</table>
+
+
+
+        <style>
+        .discount-banner {
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #2d6a2e 0%, #4CAF50 50%, #57B647 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+        }
+        .discount-banner h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #e8f5e9;
+            position: relative;
+        }
+        .discount-banner .discount-code {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border: 2px dashed rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 28px;
+            font-size: 1.6em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discount-banner .discount-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .discount-banner .discount-label {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .discount-banner .discount-shops {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.85);
+            position: relative;
+        }
+        </style>
+
+        <div class="discount-banner">
+            <div class="discount-label">🎉 5% OFF</div>
+            <h3>Use my discount code at TheCubicle & SpeedCubeShop</h3>
+            <div class="discount-code" onclick="navigator.clipboard.writeText('CUBINGPRO'); this.textContent='COPIED!'; setTimeout(() => this.textContent='CUBINGPRO', 1500);">CUBINGPRO</div>
+            <div class="discount-shops">Click the code to copy • Works at checkout on both stores</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- /container -->
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850"
+    crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CK6MWC01K0');
+  </script>
+
+  <div id="phantom-images" style="display: none;">
+    <!-- Unique image files -->
+    <img id="3x3x3_png" src="../../static/3x3x3.png" />
+    <img id="timer_png" src="../../static/timer.png" />
+    <img id="2x2x2_png" src="../../static/2x2x2.png" />
+    <img id="4x4x4_jpg" src="../../static/4x4x4.jpg" />
+    <img id="clock_png" src="../../static/clock.png" />
+    <img id="pyraminx_png" src="../../static/pyraminx.png" />
+    <img id="skewb_png" src="../../static/skewb.png" />
+    <img id="fto_png" src="../../static/fto.png" />
+    <img id="sq1_jpg" src="../../static/sq1.jpg" />
+    <img id="wca_png" src="../../static/wca.png" />
+    <img id="misc_png" src="../../static/misc.png" />
+    <img id="solver_png" src="../../static/solver.png" />
+    <img id="3bld_png" src="../../static/3bld.png" />
+    <img id="5bld_png" src="../../static/5bld.png" />
+    <img id="fmc_jpg" src="../../static/fmc.jpg" />
+    <img id="eg_png" src="../../static/eg.png" />
+    <img id="yau_png" src="../../static/yau.png" />
+    <img id="4bld_jpg" src="../../static/4bld.jpg" />
+    <img id="7simul_png" src="../../static/7simul.png" />
+    <img id="clock_math_png" src="../../static/clock_math.png" />
+    <img id="corner_first_png" src="../../static/corner_first.png" />
+    <img id="v_first_png" src="../../static/v_first.png" />
+    <img id="sarah_png" src="../../static/sarah.png" />
+    <img id="cubeshape_jpg" src="../../static/cubeshape.jpg" />
+    <img id="eo_png" src="../../static/eo.png" />
+    <img id="wca_viz_png" src="../../static/wca_viz.png" />
+    <img id="mini_comp_jpg" src="../../static/mini_comp.jpg" />
+    <img id="geoguesser_png" src="../../static/misc.png" />
+    <img id="auto_interviewer_png" src="../../static/misc.png" />
+    <img id="tutorial_viewer_png" src="../../static/misc.png" />
+    <img id="tutorial_editor_png" src="../../static/misc.png" />
+  </div>
+
+
+</body>
+
+</html>

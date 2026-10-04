@@ -1,0 +1,520 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Cubing Pro</title>
+
+  <meta name="author" content="Bowen Deng">
+  <meta name="description" content="Home for competitive speedcubers.">
+  <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs, face turning octahedron, fto">
+
+  <link rel="stylesheet" href="../static/css/main.css">
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+  <script src="../static/js/main.js" type="text/javascript"></script>
+  <script src="../static/js/vendor/jquery.ba-replacetext.min.js"></script>
+  <script src="../static/js/clock.js" type="text/javascript"></script>
+  <script src="../static/js/pyraminx.js" type="text/javascript"></script>
+  <script src="../static/js/big_cube.js" type="text/javascript"></script>
+  <script src="../static/js/skewb.js" type="text/javascript"></script>
+  <script src="../static/js/sq1.js" type="text/javascript"></script>
+  <script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+  <script type="module">
+    import "https://cdn.cubing.net/v0/js/cubing/twisty";
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.__SITE_PREFIX__="../";</script>
+  <script>
+    function getImageSrc(filename) {
+      const id = filename.toLowerCase().replace('.', '_'); // e.g., "fmc.jpg" -> "fmc_jpg"
+      const img = document.getElementById(id);
+      return img ? img.src : null;
+    }
+    fetch("../static/sidebar.json")
+      .then(response => response.json())
+      .then(menuData => {
+        function buildMenu(menuContainer, menuData) {
+          // State
+          let inCategoryView = false;
+
+          function renderCategories(data) {
+            menuContainer.innerHTML = ''; // Clear previous
+
+            data.forEach(entry => {
+              const card = document.createElement('div');
+              card.className = 'category-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(entry.category_logo);
+              img.alt = entry.category;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = entry.category;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                renderItems(entry.category, entry.items);
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = false;
+          }
+
+          function renderItems(category, items) {
+            menuContainer.innerHTML = '';
+
+            // Back button
+            const backButton = document.createElement('button');
+            backButton.textContent = '← Back';
+            backButton.className = 'back-button';
+            backButton.onclick = () => renderCategories(menuData);
+            menuContainer.appendChild(backButton);
+
+            items.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'item-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(item.logo);
+              img.alt = item.title;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = item.title;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                window.location.href = window.__SITE_PREFIX__ + item.url.replace(/^\//, "");
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = true;
+          }
+
+          // Initial render
+          renderCategories(menuData);
+
+          // Add copyright
+          const copyright = document.createElement('div');
+          copyright.className = 'copyright';
+          copyright.textContent = '© 2025 Bowen Deng';
+          menuContainer.appendChild(copyright);
+        }
+
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const indexPage = document.getElementById('index-page');
+
+        if (sidebarMenu) {
+          buildMenu(sidebarMenu, menuData);
+        }
+        if (indexPage) {
+          buildMenu(indexPage, menuData);
+        }
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</head>
+
+<body>
+  <button id="nav-toggle"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1000; font-size: 1.5em; padding: 16px 32px;">Navigate</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navToggle = document.getElementById('nav-toggle');
+      const sidebar = document.getElementById('sidebar-menu');
+      navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if (sidebar.classList.contains('active')) {
+          sidebar.style.minHeight = '800px';
+        } else {
+          sidebar.style.minHeight = '';
+        }
+      });
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+        });
+      });
+    });
+  </script>
+  <div id="container">
+    <div id="header">
+      <h1 class="title" style="position: fixed; top: 0; left: 50%; margin: 0; padding: 10px;">
+        <div
+          style="position: absolute; top: 50px; left: 50%; transform: translateX(-80%); font-size: 15px; color: #e91e63; pointer-events: none;">
+          &lt;- Can I get a forehead pat?
+        </div>
+        <button onclick="rainStars(this)"
+          style="border: none; background: none; padding: 0; display: inline-block; line-height: 0; cursor: grab;">
+          <img src="../static/fox_with_cube.png" alt="" width="85" style="display: block;">
+        </button>
+        <a href="../">Cubing for Professionals</a>
+      </h1>
+    </div>
+
+    <!-- To check the feedback from the solver app -->
+    <!-- http://localhost:5006/execute_sql/ -->
+
+    <div id="sidebar">
+      <nav>
+        <div id="sidebar-menu" class="sidebar-menu">
+        </div>
+      </nav>
+      </nav>
+    </div>
+
+    <div id="content" class="home">
+      <div id="home">
+
+        <h1 class="watermark">cubingpro.com</h1>
+
+        <div id="star-container"></div>
+
+        
+
+<h1>
+    Yau method for big cubes
+</h1>
+
+<h2>Introduction</h2>
+
+<p>Yau method is a very popular speedsolving method for big cubes (4x4x4, 5x5x5, 6x6x6, 7x7x7).</p>
+<p>The steps for Yau4 method and Yau5+ method are very similar, with some adjustment needed.</p>
+<p>It's highly recommended to learn the redux (reduction) method first, which reduce a big cube into a 3x3x3 cube, and then apply normal 3x3x3 methods, and optionally handles special cases called parity (cases that would not appear for 3x3x3 cube, but possible on big cubes).</p>
+<p>The Yau method consists of the following steps:</p>
+<ol>
+    <li>Solve centers of two opposite colors</li>
+    <li>Solve three edges on the color you plan to do cross with, called cross edges</li>
+    <li>Solve the remaining four centers while preserving the three cross edges</li>
+    <li>Solve the last cross edge</li>
+    <li>Solve the last 8 edges (this is where Yau4 and Yau5+ differs)</li>
+    <li>Solve the 3x3 stage and edge parity</li>
+</ol>
+<p>For this tutorial, we assume white is the cross color.</p>
+
+<h2>Yau Method for 4x4x4</h2>
+
+<h4>Step 1: Solve centers of two opposite colors</p>
+<canvas id="yau4-1" width="300" height="250"></canvas>
+
+<h4>Step 2: Solve three cross edges</p>
+<p>During this step, you should put the cross center on your left.</p>
+<p>Note the three cross edges should be in correct relative order: e.g. for white cross, blue followed by orange, followed by green, in x' order.</p>
+<p>There are tutorials which advice on solving cross edges while deliberately put an edge in incorrect order and eventually fix that during step 4, but it's not recommended because of the hindering on solving flow.</p>
+<canvas id="yau4-2" width="300" height="250"></canvas>
+<p>This step is intuitive, make sure to utilize the fact that only two centers are already solved, and you may be very flexible during the solve.</p>
+<p>For example, you may use Rw U x' to solve the white-red cross edge.</p>
+<canvas id="yau4-2-eg" width="300" height="250"></canvas>
+
+<h4>Step 3: Solve the centers</h4>
+<p>This step is very similar to solving centers in traditional redux method.</p>
+<p>After this step, we have solved all centers and 3 cross edges.</p>
+<p>Note that the centers and cross edges do not need to be aligned (can be shifted). The alignment will be done in next step.</p>
+<canvas id="yau4-3" width="300" height="250"></canvas>
+<p>The only thing is to make sure your solution of the center does not break the cross edges.</p>
+<p>Note that for 4x4x4, lot of the center algorithms are triggers in the form of wide move, U/U'/U2, wide move.</p>
+<p>If the wide move is Rw, e.g. Rw U2 Rw', then this naturally doesn't affect three cross edges (LB, LD, LF).</p>
+<p>If the wide move is Lw, e.g. Lw U Lw', then this as-is breaks a cross edge (LB). To avoid this, replace wide move to slice move, e.g. l U l'.</p>
+<p><strong>Exercise: </strong>what should be the algorithm to solve these last 2 centers? If centers are to be solved, the top should be blue, and the front should be red.</p>
+<canvas id="yau4-3-eg" width="300" height="250"></canvas>
+<p>The answer will be U2 l' U2 Rw.</p>
+
+<h4>Step 4: Solve last cross edge</h4>
+<p>After centers and 3 cross edges are solved, we may solve the last cross edge while preserving the centers.</p>
+<p>The end state is:</p>
+<canvas id="yau4-4" width="300" height="250"></canvas>
+<p>Two cases are very common, you may set up any last cross edge case to one of the two cases (with mirrored algorithm):</p>
+<p>Case 1:</p>
+<canvas id="yau4-4-eg" width="300" height="250"></canvas>
+<p>The algorithm is Rw U' R' U' R U2 Rw' or Rw F' U' F U Rw'</p>
+<p>Case 2:</p>
+<canvas id="yau4-4-eg2" width="300" height="250"></canvas>
+<p>r U R U' Rw' U</p>
+<p>Notice that you don't have to solve the last cross edge with center aligned at cross edge, but you should align them after pairing the last cross edge.</p>
+
+<h4>Step 5: Solve the last 8 edges</h4>
+<p>There are two substeps:</p>
+<ol>
+    <li>Solve three edges using a slice</li>
+    <li>Solve the last 5 edges</li>
+</ol>
+<p>This step is identical to that of the standard reduction method.</p>
+<p>For substep 1,</p>
+<p>first make an Uw move, then insert edge at right slot and rotate cube with y', for three times.</p>
+<p>For example, to pair FR edge's bottom wing with FL edge's top wing, you may apply R U' R'. Then y' and try to pair the new FR bottom wing to new FL top wing (old FR top wing).</p>
+<canvas id="yau4-5-1" width="300" height="250"></canvas>
+<p>After inserting three times, apply a Uw' move, which will solve three edges except for one.</p>
+<p>Now move on to substep 2,</p>
+<p>the idea is the same, keep unsolved edge at FL. Then insert an edge to pair with the top wing of FL.</p>
+<p>The next step is very intuitive: Uw' to pair these two wings, then insert an edge to pair with the top wing of FR (now at top wing of BR), apply Uw.</p>
+<p>This paradigm solves 2 edges.</p>
+<p>Optionally, you may have exactly 2 edges unsolved at the end. There are L2E algorithms available, but you may start with learning the following algorithm. Insert the other unsolved edge from top layer to FR, then apply this algorithm:</p>
+<p>Uw' R U R' F R' F' R Uw</p>
+<canvas id="yau4-5-3" width="300" height="250"></canvas>
+
+<h4>Step 6: Solve the 3x3 stage and edge parity</h4>
+<p>Since the cross is already solved, you may start from F2L directly.</p>
+<p>The rest on parity is same as the redux method.</p>
+<p>Some helpful tips are:</p>
+<ul>
+    <li>Start inspecting F2L during step 5 to avoid a long pause at this step.</li>
+    <li>Try to identify OLL parity during the last F2L solve to reduce pausing.</li>
+    <li>Polish parity algorithms' fingertrick.</li>
+</ul>
+
+<h2>Yau Method for 5x5x5</h2>
+<p>We will skip the part that is identical to Yau 4x4x4, and focus on the unique parts for Yau5.</p>
+<h4>Step 5: Solve the last 8 edges</h4>
+<p>Instead of using a slice to pair up 3 edges first, the Yau5 L8E follows:</p>
+<ol>
+    <li>Repeat 4 times: put three wings of an edge on E layer and align them with Uw and Dw moves, then insert an unsolved top edge (which aligns with unsolved wings as the start of next step) which automatically sends this solved edge to the top layer. Make sure there are at least 2 E-layer edges that are solved during this step, by picking at least 2 of them deliberately.</li>
+    <li>Solve 2 F2L pairs for the solved E-layer edges. If the two pairs are diagonal, then apply a single R' move or R move so that the unsolved E-layer edges are on the same face (rotate it to the front).</li>
+    <li>Pair the rest of edges one by one using standard edge pairing.</li>
+    <li>Solve the L2E which is similar as redux. You may start with solving one edge, and optionally (if parity occurs) send the parity edge to the top layer then apply OLL parity algorithm for the last edge.</li>
+</ol>
+
+<h3>Yau L2E</h3>
+<p>flip: R U R' F R' F' R</p>
+<table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+        <td>
+            <canvas id="yau5-case1" width="300" height="250"></canvas>
+            <p>Uw' + flip + Uw</p>
+        </td>
+        <td>
+            <canvas id="yau5-case2" width="300" height="250"></canvas>
+            <p>3Dw + flip + Uw'</p>
+        </td>
+        <td>
+            <canvas id="yau5-case3" width="300" height="250"></canvas>
+            <p>flip + 3Dw + flip + Uw'</p>
+        </td>
+        <td>
+            <canvas id="yau5-case4" width="300" height="250"></canvas>
+            <p>flip + 3Uw' + flip + 3Uw</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <canvas id="yau5-case5" width="300" height="250"></canvas>
+            <p>Uw 3Uw' + flip + 3Uw Uw'</p>
+        </td>
+        <td>
+            <canvas id="yau5-case6" width="300" height="250"></canvas>
+            <p>F x Rw2 B2 U2 Rw2 U2 B2 Rw2 U x'</p>
+        </td>
+        <td>
+            <canvas id="yau5-case7" width="300" height="250"></canvas>
+            <p>Uw' + flip + Uw + 3Dw + flip + Uw'</p>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <canvas id="yau5-parity-case1" width="300" height="250"></canvas>
+            <p>L' U' L + regular parity algorithm</p>
+        </td>
+        <td>Uw' R U' R' Uw R' U R</td>
+        <td>Alternative L2E</td>
+        <td><!-- Add canvas or image if available --></td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>Uw R U R' Uw' R U' R'</td>
+        <td>Alternative mirrored</td>
+        <td><!-- Add canvas or image if available --></td>
+    </tr>
+</table>
+
+<h4>Step 6: Solve the 3x3 stage and edge parity</h4>
+<p>There will be no parity for Yau5 due to the nature of 5x5x5 cube, and parity was guaranteed to be solved during edge pairing (step 5).</p>
+
+<p><u>There is another variant of Yau 5x5x5 step 5, which doesn't enforce two E-layer edges, consider learning that as an alternative approach and experiment which one works best for you.</u></p>
+
+<h2>Yau Method for 6x6x6</h2>
+<p>Yau6 is almost identical to Yau5.</p>
+<p>The only point worth mentioning is the L2E.</p>
+<p>In Yau6, you may first solve one of the edge and deliberately leave the remaining edge unsolved instead of applying a parity algorithm to solve both, and try to influence the solving order through the process so the last (maybe) unsolved edge is a top edge.</p>
+<p>The benefit is that you may leave that unsolved edge remains unsolved until the 3x3x3 stage's last layer, in which you identify whether an inner layer parity should be applied or an outer layer parity should be applied, or there's no OLL parity.</p>
+<p>This trick avoids triple parity where you solve the edge parity during L2E, then get OLL parity, and PLL parity during the 3x3x3 stage.</p>
+
+<h2>Yau Method for 7x7x7</h2>
+<p>Yau7 method is identical to Yau5.</p>
+<p>The only point worth mentioning is still the L2E.</p>
+<p>If the two edge case fits into a standard 5x5x5 L2E case, apply that Yau L2E algorithm.</p>
+<p>Otherwise, only solve one edge, then apply a potential parity algorithm for the last one edge (because there will be no parity during 3x3x3 stage). If the unsolved edge is a top edge, may leave at 3x3x3 last layer stage.</li>
+<p>One tip to consider for Yau6 and Yau7 is to stick with solving the 4 E-layer edges first, the motivation is to have more options and less reaction time for the first two F2L step, and also simplify the inspection during the L4E stage. It also guarantees the parity edge will be for sure a top layer edge, so you may leave it at the very end of the 3x3x3 stage for both Yau6 and Yau7.</p>
+<p>The drawback however is you might miss very easy top-layer edge cases, so be a little flexible when you observe very easy top-layer edge, and practice more to improve weighing the tradeoffs.</p>
+
+<script>
+    render4("yau4-1", "    ,    ,    ,    ;    , ww , ww ,    ;    ,    ,    ,    ;    , yy , yy ,    ;    ,    ,    ,    ");
+    render4("yau4-2", "    ,    ,    ,    ;    ,wwww,wwww, ww ;    ,r   ,r   ,    ;    , yy , yy ,    ;    ,g   ,g   ,    ");
+    render4("yau4-2-eg", "    ,    ,    , r  ;    , www, www, ww ; w  ,g   ,g   ,  r ;    , yy , yy ,    ;  w ,o   ,o   ,    ");
+    render4("yau4-3", "    , bb , bb ,    ;    ,wwww,wwww, ww ;    ,rrr ,rrr ,    ;    , yy , yy ,    ;    ,ggg ,ggg ,    ");
+    render4("yau4-3-eg", "    , rb , rb ,    ;    ,wwww,wwww, ww ;    ,rbr ,rbr ,    ;    , yy , yy ,    ;    ,ggg ,ggg ,    ");
+    render4("yau4-4", "    ,bbb ,bbb ,    ; ww ,wwww,wwww, ww ;    ,rrr ,rrr ,    ;    , yy , yy ,    ;    ,ggg ,ggg ,    ");
+    render4("yau4-4-eg", "    , bb , bb , b  ;    ,wwww,wwww, ww ; w  ,rrr ,rrr ,  b ;    , yy , yy ,    ;  w ,ggg ,ggg ,    ");
+    render4("yau4-4-eg2", "    , bb , bb , b  ;    ,wwww,wwww, ww ; w  ,rrr ,rrrw,    ;    , yy ,byy ,    ;    ,ggg ,ggg ,    ");
+    render4("yau4-5-1", "    , yy , yy , br ;    , rrb, bby, bb ; og ,ogg ,grr , rr ;    , oo , gg , gg ; ww ,wwww,wwww, ww ");
+    render4("yau4-5-3", "    , yy , yy ,    ;    , bbb, bby, bb ;    ,orro,grrg, rr ;    ,bgg ,ygg , gg ; ww ,wwww,wwww, ww ");
+    render5_l2e("yau5-case1", "     ,rrrrr,yrrrg,yrrry, rrr ;gbb,gry,www");
+    render5_l2e("yau5-case2", "     ,yrrry,brrrr,rrrrr, rrr ;byg,bgg,www");
+    render5_l2e("yau5-case3", "     ,brrrr,yrrrr,grrry, rrr ;ybr,ggb,www");
+    render5_l2e("yau5-case4", "     ,grrry,yrrrr,brrrr, rrr ;rby,bgg,www");
+    render5_l2e("yau5-case5", "     ,brrrr,yrrrg,brrrr, rrr ;yby,grg,www");
+    render5_l2e("yau5-case6", "     ,yrrrr,rrrry,yrrrr, rrr ;bgb,gbg,www");
+    render5_l2e("yau5-case7", "     ,brrrg,rrrry,brrrg, rrr ;ygy,rbr,www");
+    render5_l2e("yau5-parity-case1", "     ,brrr ,yrrr ,brrr , rrr ;yby,   ,www");
+</script>
+
+
+
+
+        <style>
+        .discount-banner {
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #2d6a2e 0%, #4CAF50 50%, #57B647 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+        }
+        .discount-banner h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #e8f5e9;
+            position: relative;
+        }
+        .discount-banner .discount-code {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border: 2px dashed rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 28px;
+            font-size: 1.6em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discount-banner .discount-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .discount-banner .discount-label {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .discount-banner .discount-shops {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.85);
+            position: relative;
+        }
+        </style>
+
+        <div class="discount-banner">
+            <div class="discount-label">🎉 5% OFF</div>
+            <h3>Use my discount code at TheCubicle & SpeedCubeShop</h3>
+            <div class="discount-code" onclick="navigator.clipboard.writeText('CUBINGPRO'); this.textContent='COPIED!'; setTimeout(() => this.textContent='CUBINGPRO', 1500);">CUBINGPRO</div>
+            <div class="discount-shops">Click the code to copy • Works at checkout on both stores</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- /container -->
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850"
+    crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CK6MWC01K0');
+  </script>
+
+  <div id="phantom-images" style="display: none;">
+    <!-- Unique image files -->
+    <img id="3x3x3_png" src="../static/3x3x3.png" />
+    <img id="timer_png" src="../static/timer.png" />
+    <img id="2x2x2_png" src="../static/2x2x2.png" />
+    <img id="4x4x4_jpg" src="../static/4x4x4.jpg" />
+    <img id="clock_png" src="../static/clock.png" />
+    <img id="pyraminx_png" src="../static/pyraminx.png" />
+    <img id="skewb_png" src="../static/skewb.png" />
+    <img id="fto_png" src="../static/fto.png" />
+    <img id="sq1_jpg" src="../static/sq1.jpg" />
+    <img id="wca_png" src="../static/wca.png" />
+    <img id="misc_png" src="../static/misc.png" />
+    <img id="solver_png" src="../static/solver.png" />
+    <img id="3bld_png" src="../static/3bld.png" />
+    <img id="5bld_png" src="../static/5bld.png" />
+    <img id="fmc_jpg" src="../static/fmc.jpg" />
+    <img id="eg_png" src="../static/eg.png" />
+    <img id="yau_png" src="../static/yau.png" />
+    <img id="4bld_jpg" src="../static/4bld.jpg" />
+    <img id="7simul_png" src="../static/7simul.png" />
+    <img id="clock_math_png" src="../static/clock_math.png" />
+    <img id="corner_first_png" src="../static/corner_first.png" />
+    <img id="v_first_png" src="../static/v_first.png" />
+    <img id="sarah_png" src="../static/sarah.png" />
+    <img id="cubeshape_jpg" src="../static/cubeshape.jpg" />
+    <img id="eo_png" src="../static/eo.png" />
+    <img id="wca_viz_png" src="../static/wca_viz.png" />
+    <img id="mini_comp_jpg" src="../static/mini_comp.jpg" />
+    <img id="geoguesser_png" src="../static/misc.png" />
+    <img id="auto_interviewer_png" src="../static/misc.png" />
+    <img id="tutorial_viewer_png" src="../static/misc.png" />
+    <img id="tutorial_editor_png" src="../static/misc.png" />
+  </div>
+
+
+</body>
+
+</html>

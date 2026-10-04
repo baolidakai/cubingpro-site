@@ -1,0 +1,645 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Cubing Pro</title>
+
+  <meta name="author" content="Bowen Deng">
+  <meta name="description" content="Home for competitive speedcubers.">
+  <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs, face turning octahedron, fto">
+
+  <link rel="stylesheet" href="../static/css/main.css">
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+  <script src="../static/js/main.js" type="text/javascript"></script>
+  <script src="../static/js/vendor/jquery.ba-replacetext.min.js"></script>
+  <script src="../static/js/clock.js" type="text/javascript"></script>
+  <script src="../static/js/pyraminx.js" type="text/javascript"></script>
+  <script src="../static/js/big_cube.js" type="text/javascript"></script>
+  <script src="../static/js/skewb.js" type="text/javascript"></script>
+  <script src="../static/js/sq1.js" type="text/javascript"></script>
+  <script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+  <script type="module">
+    import "https://cdn.cubing.net/v0/js/cubing/twisty";
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.__SITE_PREFIX__="../";</script>
+  <script>
+    function getImageSrc(filename) {
+      const id = filename.toLowerCase().replace('.', '_'); // e.g., "fmc.jpg" -> "fmc_jpg"
+      const img = document.getElementById(id);
+      return img ? img.src : null;
+    }
+    fetch("../static/sidebar.json")
+      .then(response => response.json())
+      .then(menuData => {
+        function buildMenu(menuContainer, menuData) {
+          // State
+          let inCategoryView = false;
+
+          function renderCategories(data) {
+            menuContainer.innerHTML = ''; // Clear previous
+
+            data.forEach(entry => {
+              const card = document.createElement('div');
+              card.className = 'category-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(entry.category_logo);
+              img.alt = entry.category;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = entry.category;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                renderItems(entry.category, entry.items);
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = false;
+          }
+
+          function renderItems(category, items) {
+            menuContainer.innerHTML = '';
+
+            // Back button
+            const backButton = document.createElement('button');
+            backButton.textContent = '← Back';
+            backButton.className = 'back-button';
+            backButton.onclick = () => renderCategories(menuData);
+            menuContainer.appendChild(backButton);
+
+            items.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'item-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(item.logo);
+              img.alt = item.title;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = item.title;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                window.location.href = window.__SITE_PREFIX__ + item.url.replace(/^\//, "");
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = true;
+          }
+
+          // Initial render
+          renderCategories(menuData);
+
+          // Add copyright
+          const copyright = document.createElement('div');
+          copyright.className = 'copyright';
+          copyright.textContent = '© 2025 Bowen Deng';
+          menuContainer.appendChild(copyright);
+        }
+
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const indexPage = document.getElementById('index-page');
+
+        if (sidebarMenu) {
+          buildMenu(sidebarMenu, menuData);
+        }
+        if (indexPage) {
+          buildMenu(indexPage, menuData);
+        }
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</head>
+
+<body>
+  <button id="nav-toggle"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1000; font-size: 1.5em; padding: 16px 32px;">Navigate</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navToggle = document.getElementById('nav-toggle');
+      const sidebar = document.getElementById('sidebar-menu');
+      navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if (sidebar.classList.contains('active')) {
+          sidebar.style.minHeight = '800px';
+        } else {
+          sidebar.style.minHeight = '';
+        }
+      });
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+        });
+      });
+    });
+  </script>
+  <div id="container">
+    <div id="header">
+      <h1 class="title" style="position: fixed; top: 0; left: 50%; margin: 0; padding: 10px;">
+        <div
+          style="position: absolute; top: 50px; left: 50%; transform: translateX(-80%); font-size: 15px; color: #e91e63; pointer-events: none;">
+          &lt;- Can I get a forehead pat?
+        </div>
+        <button onclick="rainStars(this)"
+          style="border: none; background: none; padding: 0; display: inline-block; line-height: 0; cursor: grab;">
+          <img src="../static/fox_with_cube.png" alt="" width="85" style="display: block;">
+        </button>
+        <a href="../">Cubing for Professionals</a>
+      </h1>
+    </div>
+
+    <!-- To check the feedback from the solver app -->
+    <!-- http://localhost:5006/execute_sql/ -->
+
+    <div id="sidebar">
+      <nav>
+        <div id="sidebar-menu" class="sidebar-menu">
+        </div>
+      </nav>
+      </nav>
+    </div>
+
+    <div id="content" class="home">
+      <div id="home">
+
+        <h1 class="watermark">cubingpro.com</h1>
+
+        <div id="star-container"></div>
+
+        
+<h1>
+    7 Simul Flip Improved (7sf+)
+</h1>
+<p>
+    After reading <a href="../clock/7simul_flip_intro.html">intro to 7 simul flip</a>, you may notice some of the suboptimal part of it.<br>
+    First of all, before x2, there is an instruction to quickly inspect the C - U which will be later applied in solve on the new face.<br>
+    With practice, this might become an instinct, but the number actually remains unchanged throughout the process. Therefore, memorizing C - U as M5 is very simple during inspection.<br>
+    Another suboptimal part is during step 5, we need to align ur to dl, while dl is subject to change. However, this number is simply U - L which could be memorized as M6 during inspection.<br>
+    These are the two optimization that most 7 simul flip solvers adopt for quicker solves.<br>
+    In this page, I will present how to calculate each of the 14 moves during inspection.<br>
+    <u>If you are curious, see the derivations in <a href="../clock/7simul_flip_theory.html">theoretical derivation</a>.</u>
+</p>
+
+<h2>
+    Applications
+</h2>
+<p>
+    The first application, is you may decide to memorize 6 &le; X &le; 14 steps during inspection. So you can more efficiently speed solve the puzzle.<br>
+    The second application, is you may memorize 14 steps and then blindfold the puzzle.<br>
+    Another clock blindfold method would be to remember the position of each of the 14 clock face (corner clock are always identical on both sides). Then solve them one by one using a fixed algorithm.<br>
+    This method would be much faster to execute, although much more calculation during the memorization.
+</p>
+
+<h2>
+    Method
+</h2>
+<p>
+    We now demonstrate this method with the same example as before.
+</p>
+
+<div id="appendable-div">
+</div>
+
+<h2>
+    Summary
+</h2>
+<p>
+    The method is compiled as a table below, and also showing a recommended progression path you may follow for your speedsolve.<br>
+    I personally use milestone 3 which is easy to memorize under 15 seconds with practice, and able to trim down my execution time by about 1 second, compared with milestone 1.<br>
+    <u>Tips: for milestone 3, I have updated the memo order to M1, M2, M4, M3, M5, M6, M8, M7, which reduce the number of x2 during the memo.</u><br>
+</p>
+<p><strong>Milestone 1: Easier than intro</strong></p>
+<table border="1" style="width: 100%; text-align: center;">
+    <thead>
+        <tr>
+            <th>Pin Location</th>
+            <th>Left Dial</th>
+            <th>Right Dial</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>dr</td>
+            <td>M1 = D - R + ul - l</td>
+            <td>M2 = c - u</td>
+        </tr>
+        <tr>
+            <td>L</td>
+            <td>Align D to R</td>
+            <td>M3 = u - l</td>
+        </tr>
+        <tr>
+            <td>UL</td>
+            <td>Align C to R</td>
+            <td>Align DR to R</td>
+        </tr>
+        <tr>
+            <td>(After x2) ur</td>
+            <td>M4 = -r+d-L+UL</td>
+            <td>Before x2, inspect and memorize C - U</td>
+        </tr>
+        <tr>
+            <td>L</td>
+            <td>Align d to r</td>
+            <td>Align ur to dl after left dial is done</td>
+        </tr>
+        <tr>
+            <td>UL</td>
+            <td>Align c to r</td>
+            <td>Align dr to r</td>
+        </tr>
+        <tr>
+            <td>\</td>
+            <td>AUF ul</td>
+            <td>AUF ur</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Milestone 2: Memorize 6 numbers, same as intro</strong></p>
+<table border="1" style="width: 100%; text-align: center;">
+    <thead>
+        <tr>
+            <th>Pin Location</th>
+            <th>Left Dial</th>
+            <th>Right Dial</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>dr</td>
+            <td>M1 = D - R + ul - l</td>
+            <td>M2 = c - u</td>
+        </tr>
+        <tr>
+            <td>L</td>
+            <td>Align D to R</td>
+            <td>M3 = u - l</td>
+        </tr>
+        <tr>
+            <td>UL</td>
+            <td>Align C to R</td>
+            <td>Align DR to R</td>
+        </tr>
+        <tr>
+            <td>(After x2) ur</td>
+            <td>M4 = -r+d-L+UL</td>
+            <td>M5 = C - U</td>
+        </tr>
+        <tr>
+            <td>L</td>
+            <td>Align d to r</td>
+            <td>M6 = U - L</td>
+        </tr>
+        <tr>
+            <td>UL</td>
+            <td>Align c to r</td>
+            <td>Align dr to r</td>
+        </tr>
+        <tr>
+            <td>\</td>
+            <td>AUF ul</td>
+            <td>AUF ur</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Milestone 3: Memorize 8 numbers (highly recommended)</strong></p>
+<table border="1" style="width: 100%; text-align: center;">
+    <thead>
+        <tr>
+            <th>Pin Location</th>
+            <th>Left Dial</th>
+            <th>Right Dial</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>dr</td>
+            <td>M1 = D - R + ul - l</td>
+            <td>M2 = c - u</td>
+        </tr>
+        <tr>
+            <td>L</td>
+            <td>M3 = R - D</td>
+            <td>M4 = u - l</td>
+        </tr>
+        <tr>
+            <td>UL</td>
+            <td>Align C to R</td>
+            <td>Align DR to R</td>
+        </tr>
+        <tr>
+            <td>(After x2) ur</td>
+            <td>M5 = -r+d-L+UL</td>
+            <td>M6 = C - U</td>
+        </tr>
+        <tr>
+            <td>L</td>
+            <td>M7 = r - d</td>
+            <td>M8 = U - L</td>
+        </tr>
+        <tr>
+            <td>UL</td>
+            <td>Align c to r</td>
+            <td>Align dr to r</td>
+        </tr>
+        <tr>
+            <td>\</td>
+            <td>AUF ul</td>
+            <td>AUF ur</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Milestone 4: Memorize 14 numbers (For Clock Speed BLD)</strong></p>
+<table border="1" style="width: 100%; text-align: center;">
+    <thead>
+        <tr>
+            <th>Pin Location</th>
+            <th>Left Dial</th>
+            <th>Right Dial</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>dr</td>
+            <td>M1 = D - R + ul - l</td>
+            <td>M2 = c - u</td>
+        </tr>
+        <tr>
+            <td>L</td>
+            <td>M3 = R - D</td>
+            <td>M4 = u - l</td>
+        </tr>
+        <tr>
+            <td>UL</td>
+            <td>M5 = D - C</td>
+            <td>M6 = R - DR + l - u</td>
+        </tr>
+        <tr>
+            <td>(After x2) ur</td>
+            <td>M7 = d - r + UL - L</td>
+            <td>M8 = C - U</td>
+        </tr>
+        <tr>
+            <td>L</td>
+            <td>M9 = r - d</td>
+            <td>M10 = U - L</td>
+        </tr>
+        <tr>
+            <td>UL</td>
+            <td>M11 = d - c</td>
+            <td>M12 = r - dr + L - U</td>
+        </tr>
+        <tr>
+            <td>\</td>
+            <td>M13 = R + L - UL - DR + c - u - d</td>
+            <td>M14 = U + D - C - DL - UR - l - r</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Skip Cases</h2>
+<p>One key property of the 7 simul flip method, is that except for the 7-th move M13 and M14 in 14 numbers memo, which is not recommended to be memorized for speed solving anyway.</p>
+<p>The clock can be held in any of the 4 directions (North, East, South, West), without affecting the memo.</p>
+<p>Also notice that there are two memos C - U and U - L.</p>
+<p>At the beginning of inspection, you may quickly identify if there is an edge clock identical to center (on either face) or an edge clock identical to an diagonally adjacent edge clock.</p>
+<p>If this is the case, quickly set them up in either C/U position or U/L position. And hold the clock from that angle to start inspection.</p>
+<p>This will guarantee either C - U = 0 or U - L = 0, without too much calculation involved.</p>
+<p>You may choose to setup these positions into c - u, u - l, R - D, r - d. But C/U and U/L position are quite easy to master, and has good value compared to c - u or u - l because first few moves can be easily simultaneously executed if you get prepared for these few moves during inspection. For moves after flip, it's very hard to execute simultaneously due to the flip movement.</p>
+
+<p>We also calculated the probability of such a skip:</p>
+<p>The problem is: There are X1, X2, X3, X4, X5, Y1, Y2, Y3, Y4, Y5. They are independently uniform distribution of {0, 1, 2, ..., 11}. Calculate the probability that at least one of the following is true: X1=X2, X1=X3, X1=X4, X1=X5, X2=X3, X3=X4, X4=X5, X5=X2, Y1=Y2, ... (replace all X to Y and repeat).</p>
+<p>Denote the probability of any of X1=X2, X1=X3, X1=X4, X1=X5, X2=X3, X3=X4, X4=X5, X5=X2 as p. The answer will be $$2p - p^2$$ since X and Y are independent set.</p>
+<p>The probability p can be calculated with the following Python3 program:</p>
+<pre>
+    from itertools import product
+
+    # Define the range of values for X1, X2, X3, X4, X5
+    values = range(12)
+    
+    # Initialize a counter for valid combinations
+    valid_combinations = 0
+    
+    # Total number of combinations
+    total_combinations = 12 ** 5
+    
+    # Iterate through all possible combinations of X1, X2, X3, X4, X5
+    for combination in product(values, repeat=5):
+        X1, X2, X3, X4, X5 = combination
+        # Check if at least one condition is satisfied
+        if (X1 == X2 or X1 == X3 or X1 == X4 or X1 == X5 or
+            X2 == X3 or X3 == X4 or X4 == X5 or X5 == X2):
+            valid_combinations += 1
+    
+    # Calculate the ratio
+    ratio = valid_combinations / total_combinations
+    
+    # Print the results
+    print(f"Number of valid combinations: {valid_combinations}")
+    print(f"Total number of combinations: {total_combinations}")
+    print(f"Ratio: {ratio}")
+</pre>
+<p>The resulting p is 0.5172646604938271</p>
+<p>Therefore 2p - p^2 = 0.7669</p>
+<p>In practice, the chance of getting this skip is more than 3/4.</p>
+
+
+<h2>Further Reading</h2>
+<p>There are some discussion on <a href="https://www.speedsolving.com/threads/clock-blind.93140/">Clock BLD</a> and the author introduced an approach similar to the one introduced here although without theoretical derivation.</p>
+<p><a href="https://www.youtube.com/watch?v=X84OW0Znqg4">This YouTube video</a> explains how to do clock BLD with 7 simul Tommy's version.</p>
+
+<script>
+    // Get Django variable safely into JavaScript
+    const table_data = JSON.parse('[{\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u0022, \u0022change_pins\u0022: \u0022\u0022, \u0022annotation\u0022: \u0022\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003EScramble: UR5+ DR3+ DL3+ UL2+ U5\u002D R1+ D5+ L1+ ALL1\u002D y2 U3\u002D R2+ D3+ L4\u002D ALL1+\u003C/p\u003E\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u0022, \u0022change_pins\u0022: \u0022\u0022, \u0022annotation\u0022: \u0022UL,L,DL,U,C,D,UR,R,DR,ul,l,dl,u,c,d,ur,r,dr\u0022, \u0022paragraph\u0022: \u0022\u005CnMemorize up to 14 numbers using aforementioned arithmetics applying modulo 12.\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,2,,,,,,,,,,,,\u0022, \u0022change_pins\u0022: \u00220,1,0,0\u0022, \u0022annotation\u0022: \u0022\u002D1,,,,,,2,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Col\u003E\u005Cn\u003Cli\u003EMemo 1: memorize M1 \u003D D \u002D R + ul \u002D l. D \u002D R \u003D \u002D1, ul \u002D l \u003D 0 \u003D\u003E M1 \u003D \u002D1\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 2: memorize M2 \u003D c \u002D u. M2 \u003D 2\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 3: memorize M3 \u003D R \u002D D. M3 \u003D 1\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 4: memorize M4 \u003D u \u002D l. M4 \u003D 4\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 5: memorize M5 \u003D D \u002D C. M5 \u003D 3\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 6: memorize M6 \u003D R \u002D DR + l \u002D u. M6 \u003D 1\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 7: memorize M7 \u003D d \u002D r + UL \u002D L. M7 \u003D \u002D5\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 8: memorize M8 \u003D C \u002D U. M8 \u003D 3\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 9: memorize M9 \u003D r \u002D d. M9 \u003D 2\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 10: memorize M10 \u003D U \u002D L. M10 \u003D \u002D1\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 11: memorize M11 \u003D d \u002D c. M11 \u003D 1\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 12: memorize M12 \u003D r \u002D dr + L \u002D U. M12 \u003D \u002D3\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 13: memorize M13 \u003D R + L \u002D UL \u002D DR + c \u002D u \u002D d. M13 \u003D \u002D5. Notice c \u003D 2 instead of 8 since 0 is at the bottom instead of the top, this was not relevant for other memos since we used to always compare two clocks on white side.\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 14: memorize M14 \u003D U + D \u002D C \u002D DL \u002D UR \u002D l \u002D r. M14 \u003D 3. Same as above notice l \u003D 8 instead of 2.\u003C/li\u003E\u005Cn\u003C/ol\u003E\u005Cn\u003Cp\u003ENow we should execute 7 simultaneous moves (14 moves in total).\u003C/p\u003E\u005Cn\u003Cp\u003E\u003Cu\u003EIn our visualization, white pin means the pin is sticking out, otherwise it\u0027s black pin.\u003C/u\u003E\u003C/p\u003E\u005Cn\u003Cp\u003EAs mentioned above, the execution never requires any operation on the two bottom dials.\u003C/p\u003E\u005Cn\u003Cp\u003EWe will use left dial to represent the topleft dial, and right dial to represent the topright dial.\u003C/p\u003E\u005CnStep 1: only press topright pin, then execute M1 with the left dial and M2 with the right dial.\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,2,1,4,,,,,,,,,,\u0022, \u0022change_pins\u0022: \u00220,1,0,1\u0022, \u0022annotation\u0022: \u00221,,,,,,4,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003ERecall M1\u003D\u002D1, M2\u003D2, M3\u003D1, M4\u003D4, M5\u003D3, M6\u003D1, M7\u003D\u002D5, M8\u003D3, M9\u003D2, M10\u003D\u002D1, M11\u003D1, M12\u003D\u002D3, M13\u003D\u002D5, M14\u003D3.\u003C/p\u003E\u005CnStep 2: press also bottomright pin, then execute M3 with left dial, and M4 with right dial.\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,2,1,4,3,1,,,,,,,,\u0022, \u0022change_pins\u0022: \u00220,1,1,1\u0022, \u0022annotation\u0022: \u00223,,,,,,1,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003ERecall M1\u003D\u002D1, M2\u003D2, M3\u003D1, M4\u003D4, M5\u003D3, M6\u003D1, M7\u003D\u002D5, M8\u003D3, M9\u003D2, M10\u003D\u002D1, M11\u003D1, M12\u003D\u002D3, M13\u003D\u002D5, M14\u003D3.\u003C/p\u003E\u005CnStep 3: press also bottomleft pin, then execute M5 with left dial, and M6 with right dial.\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,2,1,4,3,1,\u002D5,3,,,,,,\u0022, \u0022change_pins\u0022: \u00221,1,1,0\u0022, \u0022annotation\u0022: \u0022,,,,,,,,,\u002D5,,,,,,3,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003ERecall M1\u003D\u002D1, M2\u003D2, M3\u003D1, M4\u003D4, M5\u003D3, M6\u003D1, M7\u003D\u002D5, M8\u003D3, M9\u003D2, M10\u003D\u002D1, M11\u003D1, M12\u003D\u002D3, M13\u003D\u002D5, M14\u003D3.\u003C/p\u003E\u005CnStep 4: press down topleft pin and pop up bottomright pin, then execute M7 with left dial, and M8 with right dial.\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,2,1,4,3,1,\u002D5,3,2,\u002D1,,,,\u0022, \u0022change_pins\u0022: \u00221,0,1,0\u0022, \u0022annotation\u0022: \u0022,,,,,,,,,2,,,,,,\u002D1,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003ERecall M1\u003D\u002D1, M2\u003D2, M3\u003D1, M4\u003D4, M5\u003D3, M6\u003D1, M7\u003D\u002D5, M8\u003D3, M9\u003D2, M10\u003D\u002D1, M11\u003D1, M12\u003D\u002D3, M13\u003D\u002D5, M14\u003D3.\u003C/p\u003E\u005CnStep 5: press down bottomright pin, then execute M9 with left dial, and M10 with right dial.\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,2,1,4,3,1,\u002D5,3,2,\u002D1,1,\u002D3,,\u0022, \u0022change_pins\u0022: \u00220,0,1,0\u0022, \u0022annotation\u0022: \u0022,,,,,,,,,1,,,,,,\u002D3,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003ERecall M1\u003D\u002D1, M2\u003D2, M3\u003D1, M4\u003D4, M5\u003D3, M6\u003D1, M7\u003D\u002D5, M8\u003D3, M9\u003D2, M10\u003D\u002D1, M11\u003D1, M12\u003D\u002D3, M13\u003D\u002D5, M14\u003D3.\u003C/p\u003E\u005CnStep 6: press down bottomleft pin, then execute M11 with left dial, and M12 with right dial.\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,2,1,4,3,1,\u002D5,3,2,\u002D1,1,\u002D3,\u002D5,3\u0022, \u0022change_pins\u0022: \u00220,1,1,0\u0022, \u0022annotation\u0022: \u0022,,,,,,,,,\u002D5,,,,,,3,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003ERecall M1\u003D\u002D1, M2\u003D2, M3\u003D1, M4\u003D4, M5\u003D3, M6\u003D1, M7\u003D\u002D5, M8\u003D3, M9\u003D2, M10\u003D\u002D1, M11\u003D1, M12\u003D\u002D3, M13\u003D\u002D5, M14\u003D3.\u003C/p\u003E\u005CnStep 7: now the last step, pop up bottom right pin (keep topleft pin up, a backslash is now sticking out), then execute M12 with left dial, and M14 with right dial.\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}]');
+
+    for (let i = 0; i < table_data.length; i++) {
+        const li = document.createElement("div");
+        li.innerHTML = table_data[i].paragraph;
+        li.id = `item-${i}`;
+        document.getElementById("appendable-div").appendChild(li);
+        const viz = document.createElement("div");
+        viz.style = "max-width: 640px; margin: auto;";
+        const adj = document.createElement("div");
+        adj.id = `adjuster-${i}`;
+        adj.className = "has-text-centered";
+        const canvas = document.createElement("canvas");
+        canvas.id = `canvas-${i}`;
+        adj.appendChild(canvas);
+        viz.appendChild(adj);
+        document.getElementById("appendable-div").appendChild(viz);
+        let scramble = table_data[i].scramble.split(',').map(Number);
+        let operations = table_data[i].operations.split(',').map(Number);
+        let clocks = makeClocks(scramble, operations);
+        if (!table_data[i].annotation) {
+            table_data[i].annotation = null;
+        }
+        if (!table_data[i].operations) {
+            table_data[i].operations = null;
+        }
+        if (!table_data[i].change_pins) {
+            table_data[i].change_pins = null;
+        }
+        let plot_pointer = true;
+        if (table_data[i].annotation && table_data[i].annotation.startsWith("UL")) {
+            plot_pointer = false;
+        }
+        render(clocks, "x2", adj.id, canvas.id, convert_to_matrix(table_data[i].annotation), convert_to_change_pin_matrix(table_data[i].change_pins), plot_pointer);
+    }
+</script>
+
+
+
+        <style>
+        .discount-banner {
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #2d6a2e 0%, #4CAF50 50%, #57B647 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+        }
+        .discount-banner h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #e8f5e9;
+            position: relative;
+        }
+        .discount-banner .discount-code {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border: 2px dashed rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 28px;
+            font-size: 1.6em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discount-banner .discount-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .discount-banner .discount-label {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .discount-banner .discount-shops {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.85);
+            position: relative;
+        }
+        </style>
+
+        <div class="discount-banner">
+            <div class="discount-label">🎉 5% OFF</div>
+            <h3>Use my discount code at TheCubicle & SpeedCubeShop</h3>
+            <div class="discount-code" onclick="navigator.clipboard.writeText('CUBINGPRO'); this.textContent='COPIED!'; setTimeout(() => this.textContent='CUBINGPRO', 1500);">CUBINGPRO</div>
+            <div class="discount-shops">Click the code to copy • Works at checkout on both stores</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- /container -->
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850"
+    crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CK6MWC01K0');
+  </script>
+
+  <div id="phantom-images" style="display: none;">
+    <!-- Unique image files -->
+    <img id="3x3x3_png" src="../static/3x3x3.png" />
+    <img id="timer_png" src="../static/timer.png" />
+    <img id="2x2x2_png" src="../static/2x2x2.png" />
+    <img id="4x4x4_jpg" src="../static/4x4x4.jpg" />
+    <img id="clock_png" src="../static/clock.png" />
+    <img id="pyraminx_png" src="../static/pyraminx.png" />
+    <img id="skewb_png" src="../static/skewb.png" />
+    <img id="fto_png" src="../static/fto.png" />
+    <img id="sq1_jpg" src="../static/sq1.jpg" />
+    <img id="wca_png" src="../static/wca.png" />
+    <img id="misc_png" src="../static/misc.png" />
+    <img id="solver_png" src="../static/solver.png" />
+    <img id="3bld_png" src="../static/3bld.png" />
+    <img id="5bld_png" src="../static/5bld.png" />
+    <img id="fmc_jpg" src="../static/fmc.jpg" />
+    <img id="eg_png" src="../static/eg.png" />
+    <img id="yau_png" src="../static/yau.png" />
+    <img id="4bld_jpg" src="../static/4bld.jpg" />
+    <img id="7simul_png" src="../static/7simul.png" />
+    <img id="clock_math_png" src="../static/clock_math.png" />
+    <img id="corner_first_png" src="../static/corner_first.png" />
+    <img id="v_first_png" src="../static/v_first.png" />
+    <img id="sarah_png" src="../static/sarah.png" />
+    <img id="cubeshape_jpg" src="../static/cubeshape.jpg" />
+    <img id="eo_png" src="../static/eo.png" />
+    <img id="wca_viz_png" src="../static/wca_viz.png" />
+    <img id="mini_comp_jpg" src="../static/mini_comp.jpg" />
+    <img id="geoguesser_png" src="../static/misc.png" />
+    <img id="auto_interviewer_png" src="../static/misc.png" />
+    <img id="tutorial_viewer_png" src="../static/misc.png" />
+    <img id="tutorial_editor_png" src="../static/misc.png" />
+  </div>
+
+
+</body>
+
+</html>

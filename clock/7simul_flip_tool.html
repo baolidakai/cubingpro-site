@@ -1,0 +1,654 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Cubing Pro</title>
+
+  <meta name="author" content="Bowen Deng">
+  <meta name="description" content="Home for competitive speedcubers.">
+  <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs, face turning octahedron, fto">
+
+  <link rel="stylesheet" href="../static/css/main.css">
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+  <script src="../static/js/main.js" type="text/javascript"></script>
+  <script src="../static/js/vendor/jquery.ba-replacetext.min.js"></script>
+  <script src="../static/js/clock.js" type="text/javascript"></script>
+  <script src="../static/js/pyraminx.js" type="text/javascript"></script>
+  <script src="../static/js/big_cube.js" type="text/javascript"></script>
+  <script src="../static/js/skewb.js" type="text/javascript"></script>
+  <script src="../static/js/sq1.js" type="text/javascript"></script>
+  <script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+  <script type="module">
+    import "https://cdn.cubing.net/v0/js/cubing/twisty";
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.__SITE_PREFIX__="../";</script>
+  <script>
+    function getImageSrc(filename) {
+      const id = filename.toLowerCase().replace('.', '_'); // e.g., "fmc.jpg" -> "fmc_jpg"
+      const img = document.getElementById(id);
+      return img ? img.src : null;
+    }
+    fetch("../static/sidebar.json")
+      .then(response => response.json())
+      .then(menuData => {
+        function buildMenu(menuContainer, menuData) {
+          // State
+          let inCategoryView = false;
+
+          function renderCategories(data) {
+            menuContainer.innerHTML = ''; // Clear previous
+
+            data.forEach(entry => {
+              const card = document.createElement('div');
+              card.className = 'category-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(entry.category_logo);
+              img.alt = entry.category;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = entry.category;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                renderItems(entry.category, entry.items);
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = false;
+          }
+
+          function renderItems(category, items) {
+            menuContainer.innerHTML = '';
+
+            // Back button
+            const backButton = document.createElement('button');
+            backButton.textContent = '← Back';
+            backButton.className = 'back-button';
+            backButton.onclick = () => renderCategories(menuData);
+            menuContainer.appendChild(backButton);
+
+            items.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'item-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(item.logo);
+              img.alt = item.title;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = item.title;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                window.location.href = window.__SITE_PREFIX__ + item.url.replace(/^\//, "");
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = true;
+          }
+
+          // Initial render
+          renderCategories(menuData);
+
+          // Add copyright
+          const copyright = document.createElement('div');
+          copyright.className = 'copyright';
+          copyright.textContent = '© 2025 Bowen Deng';
+          menuContainer.appendChild(copyright);
+        }
+
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const indexPage = document.getElementById('index-page');
+
+        if (sidebarMenu) {
+          buildMenu(sidebarMenu, menuData);
+        }
+        if (indexPage) {
+          buildMenu(indexPage, menuData);
+        }
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</head>
+
+<body>
+  <button id="nav-toggle"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1000; font-size: 1.5em; padding: 16px 32px;">Navigate</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navToggle = document.getElementById('nav-toggle');
+      const sidebar = document.getElementById('sidebar-menu');
+      navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if (sidebar.classList.contains('active')) {
+          sidebar.style.minHeight = '800px';
+        } else {
+          sidebar.style.minHeight = '';
+        }
+      });
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+        });
+      });
+    });
+  </script>
+  <div id="container">
+    <div id="header">
+      <h1 class="title" style="position: fixed; top: 0; left: 50%; margin: 0; padding: 10px;">
+        <div
+          style="position: absolute; top: 50px; left: 50%; transform: translateX(-80%); font-size: 15px; color: #e91e63; pointer-events: none;">
+          &lt;- Can I get a forehead pat?
+        </div>
+        <button onclick="rainStars(this)"
+          style="border: none; background: none; padding: 0; display: inline-block; line-height: 0; cursor: grab;">
+          <img src="../static/fox_with_cube.png" alt="" width="85" style="display: block;">
+        </button>
+        <a href="../">Cubing for Professionals</a>
+      </h1>
+    </div>
+
+    <!-- To check the feedback from the solver app -->
+    <!-- http://localhost:5006/execute_sql/ -->
+
+    <div id="sidebar">
+      <nav>
+        <div id="sidebar-menu" class="sidebar-menu">
+        </div>
+      </nav>
+      </nav>
+    </div>
+
+    <div id="content" class="home">
+      <div id="home">
+
+        <h1 class="watermark">cubingpro.com</h1>
+
+        <div id="star-container"></div>
+
+        
+<h1>
+    Rubik's Clock 7 Simul Flip Practice Tool
+</h1>
+
+<p>
+    In this tool, the page will randomly generate a scramble and visualization of the clock.<br>
+    You may memorize the number/letters for this case, then check correctness with the "Reveal Memo" button below.<br>
+    We provided a few preset configurations for the memo, but you may write your custom memo according to the
+    instruction.<br>
+    Similarly, we provide a few preset letter schema, but you may write your own.
+</p>
+<p>
+    Code credit: <a href="https://sanya.sweetduet.info/cube/7simul_trainer/">7 Simul Trainer by kusano_k</a>
+</p>
+
+<div id="appendable-div">
+</div>
+
+<div id="scramble" class="is-family-code has-text-centered is-size-7 has-text-weight-bold has-text-grey"></div>
+<div style="max-width: 320px; margin: auto;">
+    <button id="clock_button" class="button is-primary is-large is-rounded is-fullwidth">New Scramble</button>
+</div>
+
+<button id="reveal-button" class="button">Reveal Memo</button>
+<button id="hide-button" class="button" style="display: none;">Hide Memo</button>
+<div id="memo" class="has-text-centered has-text-weight-bold" display="none"></div>
+
+<script>
+    document.getElementById("reveal-button").addEventListener("click", () => {
+        document.getElementById("memo").style.display = "block";
+        document.getElementById("reveal-button").style.display = "none";
+        document.getElementById("hide-button").style.display = "inline-block";
+    });
+
+    document.getElementById("hide-button").addEventListener("click", () => {
+        document.getElementById("memo").style.display = "none";
+        document.getElementById("hide-button").style.display = "none";
+        document.getElementById("reveal-button").style.display = "inline-block";
+    });
+
+    // Initially hide the memo
+    document.getElementById("memo").style.display = "none";
+</script>
+
+<h2>Settings</h2>
+
+<h3>Memo</h3>
+
+<div class="field">
+    <div class="control">
+        <label class="radio">
+            <input type="radio" name="memo" value="4 letters">
+            4 numbers
+        </label>
+    </div>
+</div>
+
+<div class="field">
+    <div class="control">
+        <label class="radio">
+            <input type="radio" name="memo" value="6 letters">
+            6 numbers
+        </label>
+    </div>
+</div>
+
+<div class="field">
+    <div class="control">
+        <label class="radio">
+            <input type="radio" name="memo" value="8 letters">
+            8 numbers
+        </label>
+    </div>
+</div>
+
+
+<div class="field">
+    <div class="control">
+        <label class="radio">
+            <input type="radio" name="memo" value="14 letters">
+            14 numbers
+        </label>
+    </div>
+</div>
+
+
+<div class="field">
+    <div class="control">
+        <label class="radio">
+            <input type="radio" name="memo" value="custom">
+            Custom
+        </label>
+    </div>
+</div>
+
+<div class="field">
+    <label class="label">Memo</label>
+    <div class="control">
+        <textarea id="memo_config" class="textarea" rows="14"></textarea>
+    </div>
+    <p class="help">
+        Newline separated.
+        Each line must match <code>^((\+|-)(UL|U|UR|L|C|R|DL|D|DR|ul|u|ur|l|c|r|dl|d|dr))+$</code>.
+        The starting + is optional.
+        Note that <code>(x to y)</code> is <code>-x+y</code> or <code>y-x</code>.
+    </p>
+</div>
+
+<h3>Letter Schema</h3>
+
+<div class="field">
+    <div class="control">
+      <label class="radio">
+        <input type="radio" name="letters" value="signed">
+        Signed numbers
+      </label>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <label class="radio">
+        <input type="radio" name="letters" value="unsigned">
+        Unsigned numbers
+      </label>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <label class="radio">
+        <input type="radio" name="letters" value="alphabet">
+        Alphabet
+      </label>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <label class="radio">
+        <input type="radio" name="letters" value="hybrid">
+        Hybrid
+      </label>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <label class="radio">
+        <input type="radio" name="letters" value="custom">
+        Custom
+      </label>
+    </div>
+  </div>
+
+<div class="field">
+    <label class="label">Letters</label>
+    <div class="control">
+        <input id="letters" class="input" type="text">
+    </div>
+</div>
+
+<div id="appendable-div-1">
+</div>
+
+</div>
+
+<script>
+    const visualizeClock = (clocks, annotation, change_pin = null, plot_pointer = true) => {
+        render(clocks, "x2", adj.id, canvas.id, convert_to_matrix(annotation), convert_to_change_pin_matrix(change_pin), plot_pointer);
+    };
+
+    const elmScramble = document.getElementById("scramble");
+    const elmMemo = document.getElementById("memo");
+    const elmMemoConfig = document.getElementById("memo_config");
+    const elmLetters = document.getElementById("letters");
+    elmLetters.value = "0 1 2 3 4 5 6 E D C B A";
+    const elmButton = document.getElementById("clock_button");
+
+    const viz = document.createElement("div");
+    viz.style = "max-width: 640px; margin: auto;";
+    const adj = document.createElement("div");
+    adj.id = `adjuster`;
+    adj.className = "has-text-centered";
+    const canvas = document.createElement("canvas");
+    canvas.id = `canvas`;
+    adj.appendChild(canvas);
+    viz.appendChild(adj);
+    document.getElementById(`appendable-div`).appendChild(viz);
+
+    elmLetters.addEventListener("input", e => {
+        if (elmLetters.value.trim().split(/ +/).length == 12) {
+            elmLetters.classList.remove("is-danger");
+        } else {
+            elmLetters.classList.add("is-danger");
+        }
+
+        update();
+    });
+    elmLetters.removeAttribute("disabled");
+
+    const method = [
+        "D-R+ul-l",
+        "-u+c",
+        "R-D",
+        "u-l",
+        "D-C",
+        "R-DR+l-u",
+        "d-r+UL-L",
+        "C-U",
+        "r-d",
+        "U-L",
+        "d-c",
+        "r-dr+L-U",
+        "R+L-UL-DR+c-u-d",
+        "U+D-C-DL-UR-l-r",
+    ];
+
+    let scramble;
+    let clocks;
+
+    for (const elem of document.querySelectorAll("input[type=radio][name=memo]")) {
+        elem.addEventListener("change", e => {
+            const m = e.target.value;
+            switch (m) {
+                case "4 letters":
+                    elmMemoConfig.value = [method[0], method[1], method[3], method[6]].join("\n");
+                    break;
+                case "6 letters":
+                    elmMemoConfig.value = [method[0], method[1], method[3], method[6], method[7], method[9]].join("\n");
+                    break;
+                case "8 letters":
+                    elmMemoConfig.value = [method[0], method[1], method[2], method[3], method[6], method[7], method[8], method[9]].join("\n");
+                    break;
+                case "14 letters":
+                    elmMemoConfig.value = method.join("\n");
+                    break;
+                case "custom":
+                    elmMemoConfig.value = ["D-R+ul-l", "-u+c", "u-l", "R-D", "d-r+UL-L", "C-U", "U-L", "r-d"].join("\n");
+                    break;
+            }
+
+            if (elmMemo) {
+                elmMemo.innerText = analyze(clocks, "x2", elmMemoConfig.value, elmLetters.value);
+            }
+        });
+    }
+    const eightLettersRadio = document.querySelector("input[name=memo][value='custom']");
+    eightLettersRadio.checked = true;
+    eightLettersRadio.dispatchEvent(new Event("change"));
+
+    elmMemoConfig.addEventListener("input", e => {
+        let ok = true;
+        for (const line of elmMemoConfig.value.split(/\n|\r\n/)) {
+            if (!line.match(/^((\+|-)(UL|U|UR|L|C|R|DL|D|DR|ul|u|ur|l|c|r|dl|d|dr))*$/)) {
+                ok = false;
+            }
+        }
+        if (ok) {
+            elmMemoConfig.classList.remove("is-danger");
+        } else {
+            elmMemoConfig.classList.add("is-danger");
+        }
+
+        elmMemo.innerText = analyze(clocks, "x2", elmMemoConfig.value, elmLetters.value);
+    });
+
+    for (const elem of document.querySelectorAll("input[type=radio][name=letters]")) {
+        elem.addEventListener("change", e => {
+            const l = e.target.value;
+            if (l=="signed") {
+                elmLetters.value = "0 1 2 3 4 5 6 -5 -4 -3 -2 -1";
+            }
+            if (l=="unsigned") {
+                elmLetters.value = "0 1 2 3 4 5 6 7 8 9 10 11";
+            }
+            if (l=="alphabet") {
+                elmLetters.value = "O A B C D E F G H I J K";
+            }
+            if (l=="hybrid") {
+                elmLetters.value = "0 1 2 3 4 5 6 E D C B A";
+            }
+            if (l=="custom") {
+                elmLetters.value = "0 1 2 3 4 5 6 E D C B A";
+            }
+
+            if (elmMemo) {
+                elmMemo.innerText = analyze(clocks, "x2", elmMemoConfig.value, elmLetters.value);
+            }
+        });
+    }
+    const customLetters = document.querySelector("input[name=letters][value='custom']");
+    customLetters.checked = true;
+    customLetters.dispatchEvent(new Event("change"));
+
+    const generateScramble = () => {
+        scramble = Array(14);
+        for (let i = 0; i < 14; i++) {
+            scramble[i] = Math.random() * 12 | 0;
+        }
+        clocks = makeClocks(scramble, null);
+        elmScramble.innerText = scrambleToString(scramble);
+        elmMemo.innerText = analyze(clocks, "x2", elmMemoConfig.value, elmLetters.value);
+        visualizeClock(clocks, "", "", true);
+    };
+
+    generateScramble();
+
+    elmButton.addEventListener("click", e => {
+        generateScramble();
+        document.getElementById("hide-button").click();
+    });
+
+    const visualizeClockLegacy = (index, clocks, annotation, change_pin = null, plot_pointer = true) => {
+        const viz = document.createElement("div");
+        viz.style = "max-width: 640px; margin: auto;";
+        const adj = document.createElement("div");
+        adj.id = `adjuster-${index}`;
+        adj.className = "has-text-centered";
+        const canvas = document.createElement("canvas");
+        canvas.id = `canvas-${index}`;
+        adj.appendChild(canvas);
+        viz.appendChild(adj);
+        document.getElementById(`appendable-div-${index}`).appendChild(viz);
+        render(clocks, "x2", adj.id, canvas.id, convert_to_matrix(annotation), convert_to_change_pin_matrix(change_pin), plot_pointer);
+    };
+
+    visualizeClockLegacy(1, [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]], "UL,L,DL,U,C,D,UR,R,DR,ul,l,dl,u,c,d,ur,r,dr", "", false);
+
+</script>
+
+
+
+        <style>
+        .discount-banner {
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #2d6a2e 0%, #4CAF50 50%, #57B647 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+        }
+        .discount-banner h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #e8f5e9;
+            position: relative;
+        }
+        .discount-banner .discount-code {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border: 2px dashed rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 28px;
+            font-size: 1.6em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discount-banner .discount-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .discount-banner .discount-label {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .discount-banner .discount-shops {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.85);
+            position: relative;
+        }
+        </style>
+
+        <div class="discount-banner">
+            <div class="discount-label">🎉 5% OFF</div>
+            <h3>Use my discount code at TheCubicle & SpeedCubeShop</h3>
+            <div class="discount-code" onclick="navigator.clipboard.writeText('CUBINGPRO'); this.textContent='COPIED!'; setTimeout(() => this.textContent='CUBINGPRO', 1500);">CUBINGPRO</div>
+            <div class="discount-shops">Click the code to copy • Works at checkout on both stores</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- /container -->
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850"
+    crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CK6MWC01K0');
+  </script>
+
+  <div id="phantom-images" style="display: none;">
+    <!-- Unique image files -->
+    <img id="3x3x3_png" src="../static/3x3x3.png" />
+    <img id="timer_png" src="../static/timer.png" />
+    <img id="2x2x2_png" src="../static/2x2x2.png" />
+    <img id="4x4x4_jpg" src="../static/4x4x4.jpg" />
+    <img id="clock_png" src="../static/clock.png" />
+    <img id="pyraminx_png" src="../static/pyraminx.png" />
+    <img id="skewb_png" src="../static/skewb.png" />
+    <img id="fto_png" src="../static/fto.png" />
+    <img id="sq1_jpg" src="../static/sq1.jpg" />
+    <img id="wca_png" src="../static/wca.png" />
+    <img id="misc_png" src="../static/misc.png" />
+    <img id="solver_png" src="../static/solver.png" />
+    <img id="3bld_png" src="../static/3bld.png" />
+    <img id="5bld_png" src="../static/5bld.png" />
+    <img id="fmc_jpg" src="../static/fmc.jpg" />
+    <img id="eg_png" src="../static/eg.png" />
+    <img id="yau_png" src="../static/yau.png" />
+    <img id="4bld_jpg" src="../static/4bld.jpg" />
+    <img id="7simul_png" src="../static/7simul.png" />
+    <img id="clock_math_png" src="../static/clock_math.png" />
+    <img id="corner_first_png" src="../static/corner_first.png" />
+    <img id="v_first_png" src="../static/v_first.png" />
+    <img id="sarah_png" src="../static/sarah.png" />
+    <img id="cubeshape_jpg" src="../static/cubeshape.jpg" />
+    <img id="eo_png" src="../static/eo.png" />
+    <img id="wca_viz_png" src="../static/wca_viz.png" />
+    <img id="mini_comp_jpg" src="../static/mini_comp.jpg" />
+    <img id="geoguesser_png" src="../static/misc.png" />
+    <img id="auto_interviewer_png" src="../static/misc.png" />
+    <img id="tutorial_viewer_png" src="../static/misc.png" />
+    <img id="tutorial_editor_png" src="../static/misc.png" />
+  </div>
+
+
+</body>
+
+</html>

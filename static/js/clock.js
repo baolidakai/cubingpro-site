@@ -1,0 +1,442 @@
+const render = (clocks, flip, adjuster_id, canvas_id, text_matrix = null, change_pin = null, plot_pointer = true) => {
+    const elmAdjuster = document.getElementById(adjuster_id);
+    const elmCanvas = document.getElementById(canvas_id);
+    const ctx = elmCanvas.getContext("2d");
+
+    const width = elmAdjuster.clientWidth;
+    const height = width / 2;
+
+    const dpr = window.devicePixelRatio;
+    if (elmCanvas.width != "" + width * dpr) {
+        elmCanvas.width = "" + width * dpr;
+    }
+    if (elmCanvas.height != "" + height * dpr) {
+        elmCanvas.height = "" + height * dpr;
+    }
+    ctx.save();
+    ctx.scale(dpr, dpr);
+    elmCanvas.style.width = `${width}px`;
+    elmCanvas.style.height = `${height}px`;
+
+    ctx.clearRect(0, 0, width, height);
+
+    for (let f = 0; f < 2; f++) {
+        ctx.save();
+        ctx.scale(height, height);
+        ctx.translate(f, 0);
+
+        // 52 mm
+        ctx.translate(.05, .05);
+        ctx.scale(.9, .9);
+
+        ctx.beginPath();
+        ctx.arc(.5, .5, .5, 0, 2 * Math.PI);
+        if (f == 0) {
+            ctx.fillStyle = "#444";
+            ctx.fill();
+        } else {
+            ctx.lineWidth = 1 / height / .9;
+            ctx.strokeStyle = "#aaa";
+            ctx.stroke();
+        }
+
+        for (let y = 0; y < 2; y++) {
+            for (let x = 0; x < 2; x++) {
+                ctx.beginPath();
+                // 30 mm, 3.35 mm
+                ctx.arc(x * .29 + .355, y * .29 + .355, .032, 0, 2 * Math.PI);
+                if (change_pin) {
+                    ctx.fillStyle = (f == 0) ^ change_pin[f > 0 ? 1 - y : y][x] ? "#fff" : "#111";
+                } else {
+                    ctx.fillStyle = f == 0 ? "#fff" : "#111";
+                }
+                ctx.fill();
+            }
+        }
+
+        for (let y = 0; y < 3; y++) {
+            for (let x = 0; x < 3; x++) {
+                ctx.save();
+
+                // 30 mm, 14.5 mm
+                ctx.translate(x * .29 + .065 + .005, y * .29 + .065 + .005);
+                ctx.scale(.28, .28);
+
+                ctx.beginPath();
+                ctx.arc(.5, .5, .5, 0, 2 * Math.PI);
+                ctx.fillStyle = f == 0 ? "#111" : "#fff";
+                ctx.fill();
+
+                if (f == 1) {
+                    ctx.beginPath();
+                    ctx.arc(.5, .5, .5, 0, 2 * Math.PI);
+                    ctx.lineWidth = 1 / height / .9 / .28;
+                    ctx.strokeStyle = "#ccc";
+                    ctx.stroke();
+                }
+
+                for (let i = 0; i < 12; i++) {
+                    ctx.save();
+                    ctx.translate(.5, .5);
+                    ctx.rotate(i / 12 * 2 * Math.PI);
+
+                    if (
+                        flip == "y2" && i == 0 ||
+                        flip == "x2" && f == 0 && i == 0 ||
+                        flip == "x2" && f == 1 && i == 6
+                    ) {
+                        ctx.fillStyle = "#c22";
+                        ctx.fillRect(-.045, -.46, .03, .08);
+                        ctx.fillRect(.015, -.46, .03, .08);
+                    }
+                    else if (i % 3 == 0) {
+                        ctx.fillStyle = f == 0 ? "#fff" : "#111";
+                        ctx.fillRect(-.015, -.46, .03, .08);
+                    } else {
+                        ctx.beginPath();
+                        // 11.3 mm, 0.62 mm
+                        ctx.arc(.0, -.40, .015, 0, 2 * Math.PI);
+                        ctx.fillStyle = f == 0 ? "#fff" : "#111";
+                        ctx.fill();
+                    }
+
+                    ctx.restore();
+                }
+
+                ctx.beginPath();
+                // 10 mm
+                ctx.arc(.5, .5, .34, 0, 2 * Math.PI);
+                ctx.fillStyle = f == 0 ? "#fff" : "#111";
+                ctx.fill();
+
+                // Optionally, add a text.
+                if (text_matrix && text_matrix.length > 0) {
+                    ctx.translate(.1, .1);
+                    ctx.font = "0.4px Arial";
+                    ctx.fillStyle = "#c22";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.fillText(`${text_matrix[f][x][y]}`, 0.5, 0.5);
+                    ctx.translate(-.1, -.1);
+                }
+
+                if (plot_pointer) {
+                    ctx.save();
+
+                    ctx.translate(.5, .5);
+                    let angle;
+                    if (f == 0) {
+                        angle = clocks[0][y][x];
+                    } else {
+                        if (flip == "y2") {
+                            angle = clocks[1][y][x];
+                        } else {
+                            angle = clocks[1][2 - y][2 - x] + 6;
+                        }
+                    }
+                    ctx.rotate(angle / 12 * 2 * Math.PI);
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(-.05, -.13);
+                    ctx.lineTo(0, -.31);
+                    ctx.lineTo(.05, -.13);
+                    ctx.fillStyle = f == 0 ? "#111" : "#fff";
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.arc(0, 0, .05, 0, 2 * Math.PI);
+                    ctx.fillStyle = f == 0 ? "#111" : "#fff";
+                    ctx.fill();
+
+                    ctx.restore();
+                }
+
+                ctx.restore();
+            }
+        }
+
+        ctx.restore();
+    }
+    ctx.restore();
+};
+const makeClocks = (scramble, operations) => {
+    // [f, x, y]
+    const T = [
+        [[0, 1, 0], [0, 2, 0], [0, 1, 1], [0, 2, 1], [1, 0, 0]], // UR
+        [[0, 1, 1], [0, 2, 1], [0, 1, 2], [0, 2, 2], [1, 0, 2]], // DR
+        [[0, 0, 1], [0, 1, 1], [0, 0, 2], [0, 1, 2], [1, 2, 2]], // DL
+        [[0, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 1], [1, 2, 0]], // UL
+        [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 0, 1], [0, 1, 1], [0, 2, 1], [1, 0, 0], [1, 2, 0]], // U
+        [[0, 1, 0], [0, 2, 0], [0, 1, 1], [0, 2, 1], [0, 1, 2], [0, 2, 2], [1, 0, 0], [1, 0, 2]], // R
+        [[0, 0, 1], [0, 1, 1], [0, 2, 1], [0, 0, 2], [0, 1, 2], [0, 2, 2], [1, 0, 2], [1, 2, 2]], // D
+        [[0, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 1], [0, 0, 2], [0, 1, 2], [1, 2, 0], [1, 2, 2]], // L
+        [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 0, 1], [0, 1, 1], [0, 2, 1], [0, 0, 2], [0, 1, 2], [0, 2, 2], [1, 0, 0], [1, 2, 0], [1, 0, 2], [1, 2, 2]], // ALL
+    ];
+
+    const clocks = [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]];
+
+    for (let i = 0; i < 14; i++) {
+        for (const t of T[i < 9 ? i : i - 9 + 4]) {
+            let [f, x, y] = t;
+            let angle = scramble[i];
+            if (i < 9) {
+                f = 1 - f;
+                angle = -angle;
+            }
+            if (f == 1) {
+                angle = -angle;
+            }
+            clocks[f][y][x] += angle;
+        }
+    }
+
+    // [f, x, y]
+    if (operations && operations.length === 14) {
+        const T_op = [
+            // ur
+            [[0, 2, 0], [0, 0, 2], [0, 2, 2], [1, 0, 0], [1, 1, 0], [1, 0, 1], [1, 1, 1], [1, 2, 1], [1, 0, 2], [1, 1, 2], [1, 2, 2]],
+            [[0, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 1], [1, 2, 0]],
+            // L
+            [[0, 2, 0], [0, 2, 2], [1, 0, 0], [1, 1, 0], [1, 0, 1], [1, 1, 1], [1, 0, 2], [1, 1, 2]],
+            [[0, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 1], [0, 0, 2], [0, 1, 2], [1, 2, 0], [1, 2, 2]],
+            // UL
+            [[0, 2, 0], [1, 0, 0], [1, 1, 0], [1, 0, 1], [1, 1, 1]],
+            [[0, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 1], [0, 2, 1], [0, 0, 2], [0, 1, 2], [0, 2, 2], [1, 2, 0], [1, 0, 2], [1, 2, 2]],
+            // x2
+            // ur
+            [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 0, 1], [0, 1, 1], [0, 2, 1], [0, 1, 2], [0, 2, 2], [1, 0, 0], [1, 2, 0], [1, 0, 2]],
+            [[0, 0, 2], [1, 1, 1], [1, 2, 1], [1, 1, 2], [1, 2, 2]],
+            // L
+            [[0, 1, 0], [0, 2, 0], [0, 1, 1], [0, 2, 1], [0, 1, 2], [0, 2, 2], [1, 0, 0], [1, 0, 2]],
+            [[0, 0, 0], [0, 0, 2], [1, 1, 0], [1, 2, 0], [1, 1, 1], [1, 2, 1], [1, 1, 2], [1, 2, 2]],
+            // UL
+            [[0, 1, 1], [0, 2, 1], [0, 1, 2], [0, 2, 2], [1, 0, 2]],
+            [[0, 0, 0], [0, 2, 0], [0, 0, 2], [1, 0, 0], [1, 1, 0], [1, 2, 0], [1, 0, 1], [1, 1, 1], [1, 2, 1], [1, 1, 2], [1, 2, 2]],
+            // \
+            [[0, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 1], [0, 2, 1], [0, 1, 2], [0, 2, 2], [1, 2, 0], [1, 0, 2]],
+            [[0, 2, 0], [0, 0, 2], [1, 0, 0], [1, 1, 0], [1, 0, 1], [1, 1, 1], [1, 2, 1], [1, 1, 2], [1, 2, 2]],
+        ];
+        for (let i = 0; i < 14; i++) {
+            for (const t of T_op[i]) {
+                let [f, x, y] = t;
+                let angle = operations[i];
+                f = 1 - f;
+                if (i >= 6) {
+                    angle = -angle;
+                }
+                if (f == 1) {
+                    angle = -angle;
+                }
+                clocks[f][y][x] += angle;
+            }
+        }
+    }
+
+    for (let f = 0; f < 2; f++) {
+        for (let y = 0; y < 3; y++) {
+            for (let x = 0; x < 3; x++) {
+                clocks[f][y][x] = (clocks[f][y][x] % 12 + 12) % 12;
+            }
+        }
+    }
+
+    return clocks;
+};
+
+// Tommy's pin order.
+const makeClocks2 = (scramble, operations) => {
+    // [f, x, y]
+    const T = [
+        [[0, 1, 0], [0, 2, 0], [0, 1, 1], [0, 2, 1], [1, 0, 0]], // UR
+        [[0, 1, 1], [0, 2, 1], [0, 1, 2], [0, 2, 2], [1, 0, 2]], // DR
+        [[0, 0, 1], [0, 1, 1], [0, 0, 2], [0, 1, 2], [1, 2, 2]], // DL
+        [[0, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 1], [1, 2, 0]], // UL
+        [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 0, 1], [0, 1, 1], [0, 2, 1], [1, 0, 0], [1, 2, 0]], // U
+        [[0, 1, 0], [0, 2, 0], [0, 1, 1], [0, 2, 1], [0, 1, 2], [0, 2, 2], [1, 0, 0], [1, 0, 2]], // R
+        [[0, 0, 1], [0, 1, 1], [0, 2, 1], [0, 0, 2], [0, 1, 2], [0, 2, 2], [1, 0, 2], [1, 2, 2]], // D
+        [[0, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 1], [0, 0, 2], [0, 1, 2], [1, 2, 0], [1, 2, 2]], // L
+        [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 0, 1], [0, 1, 1], [0, 2, 1], [0, 0, 2], [0, 1, 2], [0, 2, 2], [1, 0, 0], [1, 2, 0], [1, 0, 2], [1, 2, 2]], // ALL
+    ];
+
+    const clocks = [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]];
+
+    for (let i = 0; i < 14; i++) {
+        for (const t of T[i < 9 ? i : i - 9 + 4]) {
+            let [f, x, y] = t;
+            let angle = scramble[i];
+            if (i < 9) {
+                f = 1 - f;
+                angle = -angle;
+            }
+            if (f == 1) {
+                angle = -angle;
+            }
+            clocks[f][y][x] += angle;
+        }
+    }
+
+    // [f, x, y]
+    if (operations && operations.length === 14) {
+        const T_op = [
+            // dl bottomleft
+            [[0, 2, 0], [1, 0, 0], [1, 1, 0], [1, 0, 1], [1, 1, 1]],
+            // dl topright
+            [[0, 0, 0], [0, 0, 1], [0, 0, 2], [0, 1, 0], [0, 1, 1], [0, 1, 2], [0, 2, 1], [0, 2, 2], [1, 0, 2], [1, 2, 0], [1, 2, 2]],
+            // R topleft
+            [[0, 0, 0], [0, 2, 0], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1], [1, 2, 1], [1, 2, 0]],
+            // R topright
+            [[0, 0, 1], [0, 0, 2], [0, 1, 1], [0, 1, 2], [0, 2, 1], [0, 2, 2], [1, 0, 2], [1, 2, 2]],
+            // DR topleft
+            [[0, 0, 0], [0, 0, 2], [0, 2, 0], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1], [1, 1, 2], [1, 2, 0], [1, 2, 1], [1, 2, 2]],
+            // DR bottomright
+            [[0, 1, 1], [0, 1, 2], [0, 2, 1], [0, 2, 2], [1, 0, 2]],
+            // Backslash topleft
+            [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [0, 1, 2], [0, 2, 1], [0, 2, 2], [1, 0, 2], [1, 2, 0]],
+            // Backslash topright
+            [[0, 0, 2], [0, 2, 0], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1], [1, 1, 2], [1, 2, 1], [1, 2, 2]],
+            // UL topleft
+            [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 2, 0]],
+            // UL topright
+            [[0, 0, 2], [0, 2, 0], [0, 2, 2], [1, 0, 0], [1, 0, 1], [1, 0, 2], [1, 1, 0], [1, 1, 1], [1, 1, 2], [1, 2, 1], [1, 2, 2]],
+            // L topleft
+            [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [0, 2, 0], [0, 2, 1], [1, 0, 0], [1, 2, 0]],
+            // L topright
+            [[0, 0, 2], [0, 2, 2], [1, 0, 1], [1, 0, 2], [1, 1, 1], [1, 1, 2], [1, 2, 1], [1, 2, 2]],
+            // ur topleft
+            [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [0, 1, 2], [0, 2, 0], [0, 2, 1], [0, 2, 2], [1, 0, 0], [1, 0, 2], [1, 2, 0]],
+            // ur topright
+            [[0, 0, 2], [1, 1, 1], [1, 1, 2], [1, 2, 1], [1, 2, 2]]
+        ];
+        for (let i = 0; i < 14; i++) {
+            for (const t of T_op[i]) {
+                let [f, row, col] = t;
+                let angle = operations[i];
+                if (f == 1) {
+                    angle = -angle;
+                    row = 2 - row;
+                    col = 2 - col;
+                }
+                clocks[f][row][col] += angle;
+            }
+        }
+    }
+
+    for (let f = 0; f < 2; f++) {
+        for (let y = 0; y < 3; y++) {
+            for (let x = 0; x < 3; x++) {
+                clocks[f][y][x] = (clocks[f][y][x] % 12 + 12) % 12;
+            }
+        }
+    }
+
+    return clocks;
+};
+
+const convert_to_matrix = (str) => {
+    if (!str) {
+        return null;
+    }
+    const flatArray = str.split(',');
+    const matrix = [[], []];
+    for (let f = 0; f < 2; f++) {
+        for (let i = 0; i < 3; i++) {
+            matrix[f].push(flatArray.slice(f * 9 + i * 3, f * 9 + i * 3 + 3));
+        }
+    }
+    return matrix;
+};
+
+const convert_to_change_pin_matrix = (str) => {
+    if (!str) {
+        return null;
+    }
+    const flatArray = str.split(',');
+    const matrix = [];
+    for (let i = 0; i < 2; i++) {
+        matrix.push(flatArray.slice(i * 2, i * 2 + 2));
+    }
+    return matrix;
+};
+const analyze = (clocks, flip, method, letters) => {
+    const T = {
+        "UL": clocks[0][0][0],
+        "U":  clocks[0][0][1],
+        "UR": clocks[0][0][2],
+        "L":  clocks[0][1][0],
+        "C":  clocks[0][1][1],
+        "R":  clocks[0][1][2],
+        "DL": clocks[0][2][0],
+        "D":  clocks[0][2][1],
+        "DR": clocks[0][2][2],
+        "ul": flip=="y2"?clocks[1][0][0]:clocks[1][2][2],
+        "u":  flip=="y2"?clocks[1][0][1]:clocks[1][2][1],
+        "ur": flip=="y2"?clocks[1][0][2]:clocks[1][2][0],
+        "l":  flip=="y2"?clocks[1][1][0]:clocks[1][1][2],
+        "c":  flip=="y2"?clocks[1][1][1]:clocks[1][1][1],
+        "r":  flip=="y2"?clocks[1][1][2]:clocks[1][1][0],
+        "dl": flip=="y2"?clocks[1][2][0]:clocks[1][0][2],
+        "d":  flip=="y2"?clocks[1][2][1]:clocks[1][0][1],
+        "dr": flip=="y2"?clocks[1][2][2]:clocks[1][0][0],
+    };
+    const L = letters.trim().split(/ +/);
+    if (L.length!=12) {
+        return "-";
+    }
+
+    const M = [];
+    for (let line of method.split(/\n|\r\n/)) {
+        if (line=="") {
+            continue;
+        }
+        if (line[0] != "+" && line[0] != "-") {
+            line = "+" + line;
+        }
+        if (!line.match(/^((\+|-)(UL|U|UR|L|C|R|DL|D|DR|ul|u|ur|l|c|r|dl|d|dr))+$/)) {
+            M.push("N/A");
+            continue;
+        }
+
+        let m = 0;
+        for (let i=0; i<line.length;) {
+            let sign = line[i]=="+"?1:-1;
+            i++;
+            for (let c of ["UL", "UR", "DL", "DR", "U", "L", "C", "R", "D", "ul", "ur", "dl", "dr", "u", "l", "c", "r", "d"]) {
+                if (line.substr(i, c.length)==c) {
+                    m += sign*T[c];
+                    i += c.length;
+                    break;
+                }
+            }
+        }
+        M.push(L[(m%12+12)%12]);
+    }
+    return M.join(" ");
+};
+const scrambleToString = scramble => {
+    const a2s = angle => {
+        if (angle<=6) {
+            return angle+"+";
+        } else {
+            return Math.abs(angle-12)+"-";
+        }
+    };
+
+    return [
+        "UR"+a2s(scramble[0]),
+        "DR"+a2s(scramble[1]),
+        "DL"+a2s(scramble[2]),
+        "UL"+a2s(scramble[3]),
+        "U"+a2s(scramble[4]),
+        "R"+a2s(scramble[5]),
+        "D"+a2s(scramble[6]),
+        "L"+a2s(scramble[7]),
+        "ALL"+a2s(scramble[8]),
+        "y2",
+        "U"+a2s(scramble[9]),
+        "R"+a2s(scramble[10]),
+        "D"+a2s(scramble[11]),
+        "L"+a2s(scramble[12]),
+        "ALL"+a2s(scramble[13]),
+    ].join(" ");
+};

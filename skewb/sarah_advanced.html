@@ -1,0 +1,1043 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Cubing Pro</title>
+
+  <meta name="author" content="Bowen Deng">
+  <meta name="description" content="Home for competitive speedcubers.">
+  <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs, face turning octahedron, fto">
+
+  <link rel="stylesheet" href="../static/css/main.css">
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+  <script src="../static/js/main.js" type="text/javascript"></script>
+  <script src="../static/js/vendor/jquery.ba-replacetext.min.js"></script>
+  <script src="../static/js/clock.js" type="text/javascript"></script>
+  <script src="../static/js/pyraminx.js" type="text/javascript"></script>
+  <script src="../static/js/big_cube.js" type="text/javascript"></script>
+  <script src="../static/js/skewb.js" type="text/javascript"></script>
+  <script src="../static/js/sq1.js" type="text/javascript"></script>
+  <script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+  <script type="module">
+    import "https://cdn.cubing.net/v0/js/cubing/twisty";
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.__SITE_PREFIX__="../";</script>
+  <script>
+    function getImageSrc(filename) {
+      const id = filename.toLowerCase().replace('.', '_'); // e.g., "fmc.jpg" -> "fmc_jpg"
+      const img = document.getElementById(id);
+      return img ? img.src : null;
+    }
+    fetch("../static/sidebar.json")
+      .then(response => response.json())
+      .then(menuData => {
+        function buildMenu(menuContainer, menuData) {
+          // State
+          let inCategoryView = false;
+
+          function renderCategories(data) {
+            menuContainer.innerHTML = ''; // Clear previous
+
+            data.forEach(entry => {
+              const card = document.createElement('div');
+              card.className = 'category-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(entry.category_logo);
+              img.alt = entry.category;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = entry.category;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                renderItems(entry.category, entry.items);
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = false;
+          }
+
+          function renderItems(category, items) {
+            menuContainer.innerHTML = '';
+
+            // Back button
+            const backButton = document.createElement('button');
+            backButton.textContent = '← Back';
+            backButton.className = 'back-button';
+            backButton.onclick = () => renderCategories(menuData);
+            menuContainer.appendChild(backButton);
+
+            items.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'item-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(item.logo);
+              img.alt = item.title;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = item.title;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                window.location.href = window.__SITE_PREFIX__ + item.url.replace(/^\//, "");
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = true;
+          }
+
+          // Initial render
+          renderCategories(menuData);
+
+          // Add copyright
+          const copyright = document.createElement('div');
+          copyright.className = 'copyright';
+          copyright.textContent = '© 2025 Bowen Deng';
+          menuContainer.appendChild(copyright);
+        }
+
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const indexPage = document.getElementById('index-page');
+
+        if (sidebarMenu) {
+          buildMenu(sidebarMenu, menuData);
+        }
+        if (indexPage) {
+          buildMenu(indexPage, menuData);
+        }
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</head>
+
+<body>
+  <button id="nav-toggle"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1000; font-size: 1.5em; padding: 16px 32px;">Navigate</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navToggle = document.getElementById('nav-toggle');
+      const sidebar = document.getElementById('sidebar-menu');
+      navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if (sidebar.classList.contains('active')) {
+          sidebar.style.minHeight = '800px';
+        } else {
+          sidebar.style.minHeight = '';
+        }
+      });
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+        });
+      });
+    });
+  </script>
+  <div id="container">
+    <div id="header">
+      <h1 class="title" style="position: fixed; top: 0; left: 50%; margin: 0; padding: 10px;">
+        <div
+          style="position: absolute; top: 50px; left: 50%; transform: translateX(-80%); font-size: 15px; color: #e91e63; pointer-events: none;">
+          &lt;- Can I get a forehead pat?
+        </div>
+        <button onclick="rainStars(this)"
+          style="border: none; background: none; padding: 0; display: inline-block; line-height: 0; cursor: grab;">
+          <img src="../static/fox_with_cube.png" alt="" width="85" style="display: block;">
+        </button>
+        <a href="../">Cubing for Professionals</a>
+      </h1>
+    </div>
+
+    <!-- To check the feedback from the solver app -->
+    <!-- http://localhost:5006/execute_sql/ -->
+
+    <div id="sidebar">
+      <nav>
+        <div id="sidebar-menu" class="sidebar-menu">
+        </div>
+      </nav>
+      </nav>
+    </div>
+
+    <div id="content" class="home">
+      <div id="home">
+
+        <h1 class="watermark">cubingpro.com</h1>
+
+        <div id="star-container"></div>
+
+        
+
+
+
+<div id="extraInfo" style="display: none;">
+    <h1>
+        Notation
+    </h1>
+    <h2>Sledgehammer/Hedgeslammer Notation</h2>
+    <p>The S(Sledgehammer)/H(Hedgeslammer) is not a standard notation method, it's a jargon widely used for Skewb.</p>
+    <p>Majority of Skewb algorithms could be represented with a combination of S and H.</p>
+    <br>
+    <p>Refer to fingertricks in <a href="https://www.youtube.com/watch?v=NnupsJhuRgo&t=70s">this YouTube video</a>.</p>
+    <p>We define f and f' turn to be the clockwise and counterclockwise turn on this corner:</p>
+    <canvas id="sh-f" width="300" height="200"></canvas>
+    <p>We define l and l' turn to be the clockwise and counterclockwise turn on this corner:</p>
+    <canvas id="sh-l" width="300" height="200"></canvas>
+    <p>Here, we define the sledgehammer to be the following four moves:</p>
+    <p>f' l f l'</p>
+    <p>We define the Hedgeslammer to be the following four moves:</p>
+    <p>l f' l' f</p>
+    <br>
+    <h2>Rotation</h2>
+    <p>Rotation is standard, similar to 3x3 cube notations.</p>
+    <img src="../static/skewb_rotation.png" alt="Image unavailable" style="max-width: 50%; height: auto; float: none !important;">        </p>
+    <h2>NS algorithm Notation</h2>
+    <p>For advanced NS algorithm, to enable maximum flexibility, we use a letter to represent each of the 8 corners of skewb.</p>
+    <p>They are notated as following:</p>
+    <img src="../static/skewb_notation.png" alt="Image unavailable" style="max-width: 50%; height: auto; float: none !important;">        </p>
+    <h2>FCN Notation</h2>
+    <p>Let's next learn the standard FCN (fixed corner notation).</p>
+    <p>FCN is the notation used for WCA scrambling and major timer apps. Familiarize with yourself this notation so you
+        may easily understand many discussions or example solves.</p>
+    <p>Similarly to most puzzles, first letter indicates which corner on Skewb to turn; second optional apostrophe
+        indicates whether to turn counter-clockwise.</p>
+    <p>Always start with white at top, green at front, red at right.</p>
+    <p>There are four different corners to turn, the stickers affected by each corner turn is visualized below.</p>
+    <table border="1" style="width: 100%; text-align: center; font-size: 1.2em;">
+        <tr>
+            <th>U corner</th>
+            <th>B corner</th>
+        </tr>
+        <tr>
+            <td> <canvas id="fcn-u" width="300" height="200"></canvas></td>
+            <td> <canvas id="fcn-b" width="300" height="200"></canvas> </td>
+        </tr>
+        <tr>
+            <th>L corner</th>
+            <th>R corner</th>
+        </tr>
+        <tr>
+            <td> <canvas id="fcn-l" width="300" height="200"></canvas> </td>
+            <td><canvas id="fcn-r" width="300" height="200"></canvas> </td>
+        </tr>
+    </table>
+    <script>
+        drawSkewb("sh-f", "  p        p   p         ");
+        drawSkewb("sh-l", "   p  p   p              ");
+        drawSkewb("fcn-u", "pp pppp ppp     p   ppp p");
+        drawSkewb("fcn-b", "p    p ppp   p   p   pppp");
+        drawSkewb("fcn-l", "   p  ppppp ppp   p   p  ");
+        drawSkewb("fcn-r", " p      p   p   ppppp ppp");
+    </script>
+</div>
+
+<input type="checkbox" id="toggleDiv" style="transform: scale(1.5);" />
+<label for="toggleDiv" style="font-size: 1.5em;">Show notation</label>
+
+<script>
+    document.getElementById('toggleDiv').addEventListener('change', function () {
+        const extraInfo = document.getElementById('extraInfo');
+        extraInfo.style.display = this.checked ? 'block' : 'none';
+    });
+</script>
+
+<h1>
+    Sarah's Advanced Method Overview
+    <!-- TODO: Printable version -->
+</h1>
+<p>
+    You are recommended to first read <a href="../skewb/sarah_intermediate.html">Sarah's intermediate method</a> page, if you
+    are not familiar with intermediate method.<br>
+</p>
+<p><u>Step 1: Solve the first side.</u></p>
+<canvas id="sarah-step-1" width="300" height="200"></canvas>
+
+<p><u>Step 2: Solve the opposite side (corners and opposite center) and remaining centers together.</u></p>
+<canvas id="sarah-step-4" width="300" height="200"></canvas>
+
+<script>
+    drawSkewb("sarah-step-1", "wwwwwbb   oo   gg   rr   ");
+    drawSkewb("sarah-step-4", "yyyyyrrrrrgggggooooobbbbb");
+</script>
+
+<h1>
+    Sarah's Intermediate Algorithm Enhanced
+</h1>
+<p>The first improvement from Sarah's intermediate is to memorize an optimized algorithm when the original execution was
+    triple Sledge/Hedge.</p>
+<p>There were three cases with triple S/H, which we provide the optimal algorithm in NS notation.</p>
+<p>Tips: click on show notation above to understand the NS notation.</p>
+
+
+<div class="overview">
+    <canvas id="Pi-F" width="300" height="200"></canvas>
+    <p class="details">y x r&#x27; B R r R&#x27; B r&#x27; B&#x27;</p>
+    <script>
+        drawSkewb("Pi-F", "      yrr   gg y oo yybby");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B" width="300" height="200"></canvas>
+    <p class="details">y x r R&#x27; r B r&#x27; R B</p>
+    <script>
+        drawSkewb("Pi-B", "     y rr yygg  yoo   bby");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="L-U" width="300" height="200"></canvas>
+    <p class="details">x B&#x27; r R&#x27; r&#x27; B r R r&#x27;</p>
+    <script>
+        drawSkewb("L-U", "y y y  rr y gg  yoo   bb ");
+    </script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>The second improvement is to learn the L4C algorithms. (WIP)</p>
+<p>We skip U perm, Z perm, H perm.</p>
+<p>If there are only 3 centers to be swapped, it can be set up to U perm with one set up move, and then reverse.</p>
+<p>It's very straightforward to figure out, but you may experiment whether you want to have a cancellation move at the
+    reverse step.</p>
+<p>All the remaining cases have one side face solved, and top face unsolved.</p>
+<p>They can be setup to the following triple sledge case either with (using NS algorithm notation) L' move S S S L move
+    (cancel one move at the end) or R move S S S R' move (cancen one move at the beginning).</p>
+
+
+
+
+
+
+
+
+<div class="overview">
+    <canvas id="31" width="300" height="200"></canvas>
+    <p class="details">S S S</p>
+    <script>
+        drawSkewb("31", "yyyygrrrroggggyoooorbbbbb");
+    </script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>
+    Sarah's Advanced Method Algorithms (WIP)
+</h1>
+<p>Tips: click on show notation above to understand the notations.</p>
+
+
+<h2>Pi-F</h2>
+
+
+
+
+
+
+
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-1a" width="300" height="200"></canvas>
+    <p>Pi-F-1a</p>
+    <p class="details">y2 H y S y&#x27; H y H</p>
+    <p>right bar</p>
+    <p>FCN notation scramble: U&#x27; R&#x27; U R U L U L&#x27; R</p>
+    <p>NS notation scramble: B&#x27; r&#x27; B r B R r R&#x27; r x&#x27; y2</p>
+    <script>
+        drawSkewb("Pi-F-1a", "rbboryyggygyoogorbboygrrbwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-1b" width="300" height="200"></canvas>
+    <p>Pi-F-1b</p>
+    <p class="details">S y&#x27; H y S y&#x27; S</p>
+    <p>left bar</p>
+    <p>FCN notation scramble: U R U&#x27; L U&#x27; L&#x27; U&#x27; R</p>
+    <p>NS notation scramble: B r B&#x27; R r&#x27; R&#x27; B&#x27; r x&#x27; y</p>
+    <script>
+        drawSkewb("Pi-F-1b", "rbbooyyggygyooborbbrygrrgwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-3c" width="300" height="200"></canvas>
+    <p>Pi-F-3c</p>
+    <p class="details">y&#x27; S y2 H y&#x27; H y&#x27; S</p>
+    <p>right bar + top fill</p>
+    <p>FCN notation scramble: L U L&#x27; R&#x27; B&#x27; R&#x27; B R B&#x27; R B R&#x27;</p>
+    <p>NS notation scramble: R r R&#x27; r&#x27; z&#x27; r&#x27; R&#x27; r R r&#x27; R r R&#x27; x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-F-3c", "rbbobyyggygyoogorbbrygrrowwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-3d" width="300" height="200"></canvas>
+    <p>Pi-F-3d</p>
+    <p class="details">y&#x27; S y2 H y S y S</p>
+    <p>left bar + top fill</p>
+    <p>FCN notation scramble: R&#x27; L&#x27; B R L R B&#x27; L&#x27; U L&#x27; R&#x27; L</p>
+    <p>NS notation scramble: r&#x27; R&#x27; r R z R r R&#x27; r&#x27; R r&#x27; R&#x27; r x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-F-3d", "rbbobyyggygyoororbboygrrgwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-5c" width="300" height="200"></canvas>
+    <p>Pi-F-5c</p>
+    <p class="details">H y S S S</p>
+    <p>top left bar alternative: x&#x27; S y2 S z2 x&#x27; S</p>
+    <p>FCN notation scramble: R&#x27; L&#x27; B R&#x27; B U&#x27; R&#x27; U B L R&#x27; L</p>
+    <p>NS notation scramble: r&#x27; R&#x27; r R&#x27; z R r&#x27; R&#x27; r R r R&#x27; r x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-F-5c", "oggroyybbybyrrgroggbyboorwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-5d" width="300" height="200"></canvas>
+    <p>Pi-F-5d</p>
+    <p class="details">y2 S y&#x27; S S S</p>
+    <p>top right bar</p>
+    <p>FCN notation scramble: U L B&#x27; U B&#x27; R&#x27; L R B&#x27; L R</p>
+    <p>NS notation scramble: B R B&#x27; R r&#x27; R&#x27; r R r&#x27; R r x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-F-5d", "oggrryybbybyrroroggbyboogwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-9a" width="300" height="200"></canvas>
+    <p>Pi-F-9a</p>
+    <p class="details">S S y S y2 S</p>
+    <p>top fill</p>
+    <p>FCN notation scramble: U R&#x27; L U L R L&#x27; U&#x27; L&#x27; R U</p>
+    <p>NS notation scramble: B r&#x27; R r R B R&#x27; r&#x27; R&#x27; r B x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-F-9a", "rbbobyyggygyoooorbbgygrrrwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-11a" width="300" height="200"></canvas>
+    <p>Pi-F-11a</p>
+    <p class="details">H y&#x27; S y2 S</p>
+    <p>right half</p>
+    <p>FCN notation scramble: R&#x27; L&#x27; B U R&#x27; B&#x27; L R L U&#x27;</p>
+    <p>NS notation scramble: r&#x27; R&#x27; r z R r&#x27; R&#x27; r R r R&#x27; x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-F-11a", "oggrryybbybyrrbrogggybooowwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-11b" width="300" height="200"></canvas>
+    <p>Pi-F-11b</p>
+    <p class="details">y&#x27; S y S y2 S</p>
+    <p>left half</p>
+    <p>FCN notation scramble: L U L&#x27; B&#x27; R B R&#x27; B&#x27; R&#x27; B</p>
+    <p>NS notation scramble: R r R&#x27; z&#x27; r&#x27; R r R&#x27; r&#x27; R&#x27; r x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-F-11b", "ggrooyboobyybbybyrrrrogggwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-14b" width="300" height="200"></canvas>
+    <p>Pi-F-14b</p>
+    <p class="details">y S y&#x27; H y H</p>
+    <p>right alt</p>
+    <p>FCN notation scramble: L&#x27; B&#x27; U L R&#x27; L&#x27; U&#x27; B R L</p>
+    <p>NS notation scramble: R&#x27; r&#x27; R r B&#x27; r&#x27; R&#x27; r B R x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-F-14b", "oggrbyybbybyrrrroggoyboogwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-14d" width="300" height="200"></canvas>
+    <p>Pi-F-14d</p>
+    <p class="details">y H y S y&#x27; S</p>
+    <p>left alt</p>
+    <p>FCN notation scramble: R L U L&#x27; R&#x27; L U L&#x27; R&#x27; L U&#x27; L&#x27;</p>
+    <p>NS notation scramble: r R r R&#x27; r&#x27; R r R&#x27; r&#x27; R r&#x27; R&#x27; x&#x27;</p>
+    <script>
+        drawSkewb("Pi-F-14d", "oggrbyybbybyrrgroggrybooowwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-F-15a" width="300" height="200"></canvas>
+    <p>Pi-F-15a</p>
+    <p class="details">S S y&#x27; S S S</p>
+    <p>only back match</p>
+    <p>FCN notation scramble: R L&#x27; B&#x27; R&#x27; L&#x27; R B L&#x27; U&#x27; L&#x27; R</p>
+    <p>NS notation scramble: r R&#x27; r&#x27; z&#x27; r&#x27; R&#x27; r z r R&#x27; r&#x27; R&#x27; r x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-F-15a", "rbbogyyggygyoororbbbygrrowwwww");
+    </script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Pi-B</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-1c" width="300" height="200"></canvas>
+    <p>Pi-B-1c</p>
+    <p class="details">S y S y&#x27; S y H</p>
+    <p>right half</p>
+    <p>FCN notation scramble: L&#x27; B&#x27; U L R U B&#x27; R B&#x27; L&#x27; U L&#x27;</p>
+    <p>NS notation scramble: R&#x27; r&#x27; R r B R B&#x27; R r&#x27; R&#x27; r R&#x27; x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-B-1c", "oggrryybbobyrrbroggyyboogwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-1d" width="300" height="200"></canvas>
+    <p>Pi-B-1d</p>
+    <p class="details">y2 H y&#x27; H y H y&#x27; S</p>
+    <p>left half</p>
+    <p>FCN notation scramble: U&#x27; R&#x27; L B&#x27; R U B L&#x27;</p>
+    <p>NS notation scramble: B&#x27; r&#x27; R B&#x27; r R r R&#x27; x</p>
+    <script>
+        drawSkewb("Pi-B-1d", "oggroyybbrbyrrgroggyyboobwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-3a" width="300" height="200"></canvas>
+    <p>Pi-B-3a</p>
+    <p class="details">y S y2 H y&#x27; S y&#x27; S</p>
+    <p>right alt</p>
+    <p>FCN notation scramble: U&#x27; L&#x27; B R&#x27; B&#x27; U&#x27; L&#x27; R&#x27;</p>
+    <p>NS notation scramble: B&#x27; R&#x27; r R&#x27; B&#x27; r&#x27; R&#x27; r&#x27; x&#x27;</p>
+    <script>
+        drawSkewb("Pi-B-3a", "oggrbyybbrbyrroroggyyboogwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-3b" width="300" height="200"></canvas>
+    <p>Pi-B-3b</p>
+    <p class="details">y S y2 H y H y S</p>
+    <p>left alt</p>
+    <p>FCN notation scramble: R L B&#x27; U B R L U</p>
+    <p>NS notation scramble: r R B&#x27; R r B R B x&#x27; y</p>
+    <script>
+        drawSkewb("Pi-B-3b", "oggrbyybbobyrrgroggyyboorwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-5a" width="300" height="200"></canvas>
+    <p>Pi-B-5a</p>
+    <p class="details">y2 S y S S S</p>
+    <p>left bar</p>
+    <p>FCN notation scramble: L&#x27; B R&#x27; L&#x27; U&#x27; B&#x27; R L&#x27; R</p>
+    <p>NS notation scramble: R&#x27; r R&#x27; r&#x27; z&#x27; r&#x27; R&#x27; r z R&#x27; r x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-B-5a", "rbbooyyggbgyoororbbyygrrgwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-5b" width="300" height="200"></canvas>
+    <p>Pi-B-5b</p>
+    <p class="details">H y&#x27; S S S</p>
+    <p>right bar</p>
+    <p>FCN notation scramble: R L&#x27; B R L R B&#x27; U L&#x27;</p>
+    <p>NS notation scramble: r R&#x27; r R B R B&#x27; r R&#x27; x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-B-5b", "rbboryyggbgyoogorbbyygrrowwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-9b" width="300" height="200"></canvas>
+    <p>Pi-B-9b</p>
+    <p class="details">S S y&#x27; S y2 S</p>
+    <p>nothing</p>
+    <p>FCN notation scramble: R U L&#x27; R&#x27; U&#x27; R&#x27; U L</p>
+    <p>NS notation scramble: r B R&#x27; B&#x27; z&#x27; r&#x27; R&#x27; r B x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-B-9b", "oggrbyybbgbyrrrroggyybooowwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-11c" width="300" height="200"></canvas>
+    <p>Pi-B-11c</p>
+    <p class="details">y2 S y&#x27; S y2 S</p>
+    <p>top left bar</p>
+    <p>FCN notation scramble: U&#x27; L&#x27; B U&#x27; B&#x27; L R&#x27;</p>
+    <p>NS notation scramble: B&#x27; R&#x27; r B&#x27; r&#x27; R r&#x27; x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-B-11c", "rbboryyggggyoooorbbyygrrbwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-11d" width="300" height="200"></canvas>
+    <p>Pi-B-11d</p>
+    <p class="details">H y S y2 S</p>
+    <p>top right bar</p>
+    <p>FCN notation scramble: R L B&#x27; R B L&#x27; U</p>
+    <p>NS notation scramble: r R B&#x27; r z R r&#x27; R x&#x27; y&#x27;</p>
+    <script>
+        drawSkewb("Pi-B-11d", "rbbooyyggggyooborbbyygrrrwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-14a" width="300" height="200"></canvas>
+    <p>Pi-B-14a</p>
+    <p class="details">y&#x27; S y&#x27; S y H</p>
+    <p>right bar top half</p>
+    <p>FCN notation scramble: R&#x27; L&#x27; B R&#x27; L&#x27; R B U&#x27; R&#x27; U B L</p>
+    <p>NS notation scramble: r&#x27; R&#x27; r R&#x27; r&#x27; R r R&#x27; r&#x27; R r R x&#x27;</p>
+    <script>
+        drawSkewb("Pi-B-14a", "rbbobyyggogyoogorbbyygrrrwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-14c" width="300" height="200"></canvas>
+    <p>Pi-B-14c</p>
+    <p class="details">y&#x27; H y H y&#x27; S</p>
+    <p>left bar top half</p>
+    <p>FCN notation scramble: R&#x27; L&#x27; B R U&#x27; R&#x27; B&#x27; L R L U&#x27; L&#x27; R&#x27;</p>
+    <p>NS notation scramble: r&#x27; R&#x27; r R r&#x27; R&#x27; r&#x27; R r R r&#x27; R&#x27; r&#x27; x&#x27; y2</p>
+    <script>
+        drawSkewb("Pi-B-14c", "rbbobyyggrgyoooorbbyygrrgwwwww");
+    </script>
+</div>
+
+
+
+<div class="overview">
+    <canvas id="Pi-B-15b" width="300" height="200"></canvas>
+    <p>Pi-B-15b</p>
+    <p class="details">S S y S S S</p>
+    <p>top half</p>
+    <p>FCN notation scramble: R&#x27; L U L B&#x27; R&#x27; L R B L R&#x27;</p>
+    <p>NS notation scramble: r&#x27; R r R r&#x27; z&#x27; r&#x27; R r z r R r&#x27; x&#x27; y</p>
+    <script>
+        drawSkewb("Pi-B-15b", "oggrgyybbbbyrroroggyyboorwwwww");
+    </script>
+</div>
+
+
+
+
+<h1>
+    <a id="trainer"></a>
+    Sarah's Advanced Method Trainer
+    <a href="#trainer" title="Bookmark link to Trainer section">🔗</a>
+</h1>
+
+<button onclick="regenerateTrainerCase();">New Random Case</button>
+<script>
+    // Pass trainer data from Django as JSON
+    const trainerRows = [{'category': 'C', 'case': 'Pi-F-1a', 'color': 'rbboryyggygyoogorbboygrrbwwwww', 'alg': "y2 H y S y' H y H", 'anno': 'right bar', 'ns': "y2 x r' R r' R' B' r' B' r B", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "B' r' B r B R r R' r x' y2", 'scramble': "U' R' U R U L U L' R"}, {'category': 'C', 'case': 'Pi-F-1b', 'color': 'rbbooyyggygyooborbbrygrrgwwwww', 'alg': "S y' H y S y' S", 'anno': 'left bar', 'ns': "y' x r' B R r R' B r' B'", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "B r B' R r' R' B' r x' y", 'scramble': "U R U' L U' L' U' R"}, {'category': 'C', 'case': 'Pi-F-3c', 'color': 'rbbobyyggygyoogorbbrygrrowwwww', 'alg': "y' S y2 H y' H y' S", 'anno': 'right bar + top fill', 'ns': "y x R r' R' r R' r' R r z r R r' R'", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "R r R' r' z' r' R' r R r' R r R' x' y'", 'scramble': "L U L' R' B' R' B R B' R B R'"}, {'category': 'C', 'case': 'Pi-F-3d', 'color': 'rbbobyyggygyoororbboygrrgwwwww', 'alg': "y' S y2 H y S y S", 'anno': 'left bar + top fill', 'ns': "y x r' R r R' r R r' R' z' R' r' R r", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r' R' r R z R r R' r' R r' R' r x' y'", 'scramble': "R' L' B R L R B' L' U L' R' L"}, {'category': 'C', 'case': 'Pi-F-5c', 'color': 'oggroyybbybyrrgroggbyboorwwwww', 'alg': 'H y S S S', 'anno': "top left bar alternative: x' S y2 S z2 x' S", 'ns': "y x r' R r' R' r' R r R' z' R r' R r", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r' R' r R' z R r' R' r R r R' r x' y'", 'scramble': "R' L' B R' B U' R' U B L R' L"}, {'category': 'C', 'case': 'Pi-F-5d', 'color': 'oggrryybbybyrroroggbyboogwwwww', 'alg': "y2 S y' S S S", 'anno': 'top right bar', 'ns': "y x r' R' r R' r' R r R' B R' B' ", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "B R B' R r' R' r R r' R r x' y'", 'scramble': "U L B' U B' R' L R B' L R"}, {'category': 'C', 'case': 'Pi-F-9a', 'color': 'rbbobyyggygyoooorbbgygrrrwwwww', 'alg': 'S S y S y2 S', 'anno': 'top fill', 'ns': "y x B' r' R r R B' R' r' R' r B'", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "B r' R r R B R' r' R' r B x' y'", 'scramble': "U R' L U L R L' U' L' R U"}, {'category': 'C', 'case': 'Pi-F-11a', 'color': 'oggrryybbybyrrbrogggybooowwwww', 'alg': "H y' S y2 S", 'anno': 'right half', 'ns': "y x R r' R' r' R r R' z' r' R r", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r' R' r z R r' R' r R r R' x' y'", 'scramble': "R' L' B U R' B' L R L U'"}, {'category': 'C', 'case': 'Pi-F-11b', 'color': 'ggrooyboobyybbybyrrrrogggwwwww', 'alg': "y' S y S y2 S", 'anno': 'left half', 'ns': "y x r' R r R r' R' r z R r' R'", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "R r R' z' r' R r R' r' R' r x' y'", 'scramble': "L U L' B' R B R' B' R' B"}, {'category': 'C', 'case': 'Pi-F-14b', 'color': 'oggrbyybbybyrrrroggoyboogwwwww', 'alg': "y S y' H y H", 'anno': 'right alt', 'ns': "y x R' B' r' R r B r' R' r R", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "R' r' R r B' r' R' r B R x' y'", 'scramble': "L' B' U L R' L' U' B R L"}, {'category': 'C', 'case': 'Pi-F-14d', 'color': 'oggrbyybbybyrrgroggrybooowwwww', 'alg': "y H y S y' S", 'anno': 'left alt', 'ns': "x R r R' r R r' R' r R r' R' r'", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r R r R' r' R r R' r' R r' R' x'", 'scramble': "R L U L' R' L U L' R' L U' L'"}, {'category': 'C', 'case': 'Pi-F-15a', 'color': 'rbbogyyggygyoororbbbygrrowwwww', 'alg': "S S y' S S S", 'anno': 'only back match', 'ns': "y x r' R r R r' z' r' R r z r R r'", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r R' r' z' r' R' r z r R' r' R' r x' y'", 'scramble': "R L' B' R' L' R B L' U' L' R"}, {'category': 'C', 'case': 'Pi-B-1c', 'color': 'oggrryybbobyrrbroggyyboogwwwww', 'alg': "S y S y' S y H", 'anno': 'right half', 'ns': "y x R r' R r R' B R' B' r' R' r R", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "R' r' R r B R B' R r' R' r R' x' y'", 'scramble': "L' B' U L R U B' R B' L' U L'"}, {'category': 'C', 'case': 'Pi-B-1d', 'color': 'oggroyybbrbyrrgroggyyboobwwwww', 'alg': "y2 H y' H y H y' S", 'anno': 'left half', 'ns': "x' R r' R' r' B R' r B", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "B' r' R B' r R r R' x", 'scramble': "U' R' L B' R U B L'"}, {'category': 'C', 'case': 'Pi-B-3a', 'color': 'oggrbyybbrbyrroroggyyboogwwwww', 'alg': "y S y2 H y' S y' S", 'anno': 'right alt', 'ns': "x r R r B R r' R B", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "B' R' r R' B' r' R' r' x'", 'scramble': "U' L' B R' B' U' L' R'"}, {'category': 'C', 'case': 'Pi-B-3b', 'color': 'oggrbyybbobyrrgroggyyboorwwwww', 'alg': 'y S y2 H y H y S', 'anno': 'left alt', 'ns': "y' x B' R' B' r' R' B R' r'", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r R B' R r B R B x' y", 'scramble': "R L B' U B R L U"}, {'category': 'C', 'case': 'Pi-B-5a', 'color': 'rbbooyyggbgyoororbbyygrrgwwwww', 'alg': 'y2 S y S S S', 'anno': 'left bar', 'ns': "y x r' R z' r' R r z r R r' R", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "R' r R' r' z' r' R' r z R' r x' y'", 'scramble': "L' B R' L' U' B' R L' R"}, {'category': 'C', 'case': 'Pi-B-5b', 'color': 'rbboryyggbgyoogorbbyygrrowwwww', 'alg': "H y' S S S", 'anno': 'right bar', 'ns': "y x R r' B R' B' R' r' R r'", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r R' r R B R B' r R' x' y'", 'scramble': "R L' B R L R B' U L'"}, {'category': 'C', 'case': 'Pi-B-9b', 'color': 'oggrbyybbgbyrrrroggyybooowwwww', 'alg': "S S y' S y2 S", 'anno': 'nothing', 'ns': "y x B' r' R r z B R B' r'", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r B R' B' z' r' R' r B x' y'", 'scramble': "R U L' R' U' R' U L"}, {'category': 'C', 'case': 'Pi-B-11c', 'color': 'rbboryyggggyoooorbbyygrrbwwwww', 'alg': "y2 S y' S y2 S", 'anno': 'top left bar', 'ns': "y x r R' r B r' R B", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "B' R' r B' r' R r' x' y'", 'scramble': "U' L' B U' B' L R'"}, {'category': 'C', 'case': 'Pi-B-11d', 'color': 'rbbooyyggggyooborbbyygrrrwwwww', 'alg': 'H y S y2 S', 'anno': 'top right bar', 'ns': "y x R' r R' z' r' B R' r'", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r R B' r z R r' R x' y'", 'scramble': "R L B' R B L' U"}, {'category': 'C', 'case': 'Pi-B-14a', 'color': 'rbbobyyggogyoogorbbyygrrrwwwww', 'alg': "y' S y' S y H", 'anno': 'right bar top half', 'ns': "x R' r' R' r R r' R' r R r' R r", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r' R' r R' r' R r R' r' R r R x'", 'scramble': "R' L' B R' L' R B U' R' U B L"}, {'category': 'C', 'case': 'Pi-B-14c', 'color': 'rbbobyyggrgyoooorbbyygrrgwwwww', 'alg': "y' H y H y' S", 'anno': 'left bar top half', 'ns': "y2 x r R r R' r' R' r R r R' r' R r", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r' R' r R r' R' r' R r R r' R' r' x' y2", 'scramble': "R' L' B R U' R' B' L R L U' L' R'"}, {'category': 'C', 'case': 'Pi-B-15b', 'color': 'oggrgyybbbbyrroroggyyboorwwwww', 'alg': 'S S y S S S', 'anno': 'top half', 'ns': "y' x r R' r' z' r' R' r z r R' r' R' r", 'CLL_viz': '', 'CLL_inv': '', 'EG1_viz': '', 'EG1_inv': '', 'EG2_viz': '', 'EG2_inv': '', 'ns_scramble': "r' R r R r' z' r' R r z r R r' x' y", 'scramble': "R' L U L B' R' L R B L R'"}];
+
+    function regenerateTrainerCase() {
+        const randomRow = trainerRows[Math.floor(Math.random() * trainerRows.length)];
+
+        // Update scramble text
+        const scrambleP = document.getElementById('trainer-scramble');
+        scrambleP.innerHTML = 'FCN notation scramble: ' + randomRow.scramble + '<br>' +
+            'NS notation scramble: ' + randomRow.ns_scramble;
+
+
+        // Update canvas
+        let canvas = document.getElementById('trainer-canvas');
+        drawSkewb("trainer-canvas", randomRow.color);
+
+        // Update annotation and algorithm
+        document.getElementById('anno').innerHTML = randomRow.anno;
+        document.getElementById('alg').innerHTML = randomRow.alg;
+        document.getElementById('anno').style.display = 'none';
+        document.getElementById('alg').style.display = 'none';
+    }
+</script>
+
+<p id="trainer-scramble">FCN notation scramble: U R U&#x27; L U&#x27; L&#x27; U&#x27; R<br>NS notation scramble: B r B&#x27; R r&#x27; R&#x27; B&#x27; r x&#x27; y</p>
+<canvas id="trainer-canvas" width="300" height="200"></canvas>
+<img src="../static/skewb_notation.png" alt="Image unavailable"
+    style="max-width: 50%; height: auto; float: none !important;"> </p>
+<button onclick="toggleVisibility('anno')">Show/Hide Annotation</button>
+<button onclick="toggleVisibility('alg')">Show/Hide Algorithm</button>
+<p id="anno" style="display:none;">left bar</p>
+<div id="alg" class="details" style="display:none;">
+    <p>S y&#x27; H y S y&#x27; S</p>
+</div>
+<script>
+    function toggleVisibility(id) {
+        var el = document.getElementById(id);
+        el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+    }
+    drawSkewb("trainer-canvas", "rbbooyyggygyooborbbrygrrgwwwww");
+</script>
+
+
+
+
+        <style>
+        .discount-banner {
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #2d6a2e 0%, #4CAF50 50%, #57B647 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+        }
+        .discount-banner h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #e8f5e9;
+            position: relative;
+        }
+        .discount-banner .discount-code {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border: 2px dashed rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 28px;
+            font-size: 1.6em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discount-banner .discount-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .discount-banner .discount-label {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .discount-banner .discount-shops {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.85);
+            position: relative;
+        }
+        </style>
+
+        <div class="discount-banner">
+            <div class="discount-label">🎉 5% OFF</div>
+            <h3>Use my discount code at TheCubicle & SpeedCubeShop</h3>
+            <div class="discount-code" onclick="navigator.clipboard.writeText('CUBINGPRO'); this.textContent='COPIED!'; setTimeout(() => this.textContent='CUBINGPRO', 1500);">CUBINGPRO</div>
+            <div class="discount-shops">Click the code to copy • Works at checkout on both stores</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- /container -->
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850"
+    crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CK6MWC01K0');
+  </script>
+
+  <div id="phantom-images" style="display: none;">
+    <!-- Unique image files -->
+    <img id="3x3x3_png" src="../static/3x3x3.png" />
+    <img id="timer_png" src="../static/timer.png" />
+    <img id="2x2x2_png" src="../static/2x2x2.png" />
+    <img id="4x4x4_jpg" src="../static/4x4x4.jpg" />
+    <img id="clock_png" src="../static/clock.png" />
+    <img id="pyraminx_png" src="../static/pyraminx.png" />
+    <img id="skewb_png" src="../static/skewb.png" />
+    <img id="fto_png" src="../static/fto.png" />
+    <img id="sq1_jpg" src="../static/sq1.jpg" />
+    <img id="wca_png" src="../static/wca.png" />
+    <img id="misc_png" src="../static/misc.png" />
+    <img id="solver_png" src="../static/solver.png" />
+    <img id="3bld_png" src="../static/3bld.png" />
+    <img id="5bld_png" src="../static/5bld.png" />
+    <img id="fmc_jpg" src="../static/fmc.jpg" />
+    <img id="eg_png" src="../static/eg.png" />
+    <img id="yau_png" src="../static/yau.png" />
+    <img id="4bld_jpg" src="../static/4bld.jpg" />
+    <img id="7simul_png" src="../static/7simul.png" />
+    <img id="clock_math_png" src="../static/clock_math.png" />
+    <img id="corner_first_png" src="../static/corner_first.png" />
+    <img id="v_first_png" src="../static/v_first.png" />
+    <img id="sarah_png" src="../static/sarah.png" />
+    <img id="cubeshape_jpg" src="../static/cubeshape.jpg" />
+    <img id="eo_png" src="../static/eo.png" />
+    <img id="wca_viz_png" src="../static/wca_viz.png" />
+    <img id="mini_comp_jpg" src="../static/mini_comp.jpg" />
+    <img id="geoguesser_png" src="../static/misc.png" />
+    <img id="auto_interviewer_png" src="../static/misc.png" />
+    <img id="tutorial_viewer_png" src="../static/misc.png" />
+    <img id="tutorial_editor_png" src="../static/misc.png" />
+  </div>
+
+
+</body>
+
+</html>

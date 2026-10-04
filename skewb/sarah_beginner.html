@@ -1,0 +1,485 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Cubing Pro</title>
+
+  <meta name="author" content="Bowen Deng">
+  <meta name="description" content="Home for competitive speedcubers.">
+  <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs, face turning octahedron, fto">
+
+  <link rel="stylesheet" href="../static/css/main.css">
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+  <script src="../static/js/main.js" type="text/javascript"></script>
+  <script src="../static/js/vendor/jquery.ba-replacetext.min.js"></script>
+  <script src="../static/js/clock.js" type="text/javascript"></script>
+  <script src="../static/js/pyraminx.js" type="text/javascript"></script>
+  <script src="../static/js/big_cube.js" type="text/javascript"></script>
+  <script src="../static/js/skewb.js" type="text/javascript"></script>
+  <script src="../static/js/sq1.js" type="text/javascript"></script>
+  <script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+  <script type="module">
+    import "https://cdn.cubing.net/v0/js/cubing/twisty";
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.__SITE_PREFIX__="../";</script>
+  <script>
+    function getImageSrc(filename) {
+      const id = filename.toLowerCase().replace('.', '_'); // e.g., "fmc.jpg" -> "fmc_jpg"
+      const img = document.getElementById(id);
+      return img ? img.src : null;
+    }
+    fetch("../static/sidebar.json")
+      .then(response => response.json())
+      .then(menuData => {
+        function buildMenu(menuContainer, menuData) {
+          // State
+          let inCategoryView = false;
+
+          function renderCategories(data) {
+            menuContainer.innerHTML = ''; // Clear previous
+
+            data.forEach(entry => {
+              const card = document.createElement('div');
+              card.className = 'category-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(entry.category_logo);
+              img.alt = entry.category;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = entry.category;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                renderItems(entry.category, entry.items);
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = false;
+          }
+
+          function renderItems(category, items) {
+            menuContainer.innerHTML = '';
+
+            // Back button
+            const backButton = document.createElement('button');
+            backButton.textContent = '← Back';
+            backButton.className = 'back-button';
+            backButton.onclick = () => renderCategories(menuData);
+            menuContainer.appendChild(backButton);
+
+            items.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'item-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(item.logo);
+              img.alt = item.title;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = item.title;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                window.location.href = window.__SITE_PREFIX__ + item.url.replace(/^\//, "");
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = true;
+          }
+
+          // Initial render
+          renderCategories(menuData);
+
+          // Add copyright
+          const copyright = document.createElement('div');
+          copyright.className = 'copyright';
+          copyright.textContent = '© 2025 Bowen Deng';
+          menuContainer.appendChild(copyright);
+        }
+
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const indexPage = document.getElementById('index-page');
+
+        if (sidebarMenu) {
+          buildMenu(sidebarMenu, menuData);
+        }
+        if (indexPage) {
+          buildMenu(indexPage, menuData);
+        }
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</head>
+
+<body>
+  <button id="nav-toggle"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1000; font-size: 1.5em; padding: 16px 32px;">Navigate</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navToggle = document.getElementById('nav-toggle');
+      const sidebar = document.getElementById('sidebar-menu');
+      navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if (sidebar.classList.contains('active')) {
+          sidebar.style.minHeight = '800px';
+        } else {
+          sidebar.style.minHeight = '';
+        }
+      });
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+        });
+      });
+    });
+  </script>
+  <div id="container">
+    <div id="header">
+      <h1 class="title" style="position: fixed; top: 0; left: 50%; margin: 0; padding: 10px;">
+        <div
+          style="position: absolute; top: 50px; left: 50%; transform: translateX(-80%); font-size: 15px; color: #e91e63; pointer-events: none;">
+          &lt;- Can I get a forehead pat?
+        </div>
+        <button onclick="rainStars(this)"
+          style="border: none; background: none; padding: 0; display: inline-block; line-height: 0; cursor: grab;">
+          <img src="../static/fox_with_cube.png" alt="" width="85" style="display: block;">
+        </button>
+        <a href="../">Cubing for Professionals</a>
+      </h1>
+    </div>
+
+    <!-- To check the feedback from the solver app -->
+    <!-- http://localhost:5006/execute_sql/ -->
+
+    <div id="sidebar">
+      <nav>
+        <div id="sidebar-menu" class="sidebar-menu">
+        </div>
+      </nav>
+      </nav>
+    </div>
+
+    <div id="content" class="home">
+      <div id="home">
+
+        <h1 class="watermark">cubingpro.com</h1>
+
+        <div id="star-container"></div>
+
+        
+
+
+
+<div id="extraInfo" style="display: none;">
+    <h1>
+        Notation
+    </h1>
+    <h2>Sledgehammer/Hedgeslammer Notation</h2>
+    <p>The S(Sledgehammer)/H(Hedgeslammer) is not a standard notation method, it's a jargon widely used for Skewb.</p>
+    <p>Majority of Skewb algorithms could be represented with a combination of S and H.</p>
+    <br>
+    <p>Refer to fingertricks in <a href="https://www.youtube.com/watch?v=NnupsJhuRgo&t=70s">this YouTube video</a>.</p>
+    <p>We define f and f' turn to be the clockwise and counterclockwise turn on this corner:</p>
+    <canvas id="sh-f" width="300" height="200"></canvas>
+    <p>We define l and l' turn to be the clockwise and counterclockwise turn on this corner:</p>
+    <canvas id="sh-l" width="300" height="200"></canvas>
+    <p>Here, we define the sledgehammer to be the following four moves:</p>
+    <p>f' l f l'</p>
+    <p>We define the Hedgeslammer to be the following four moves:</p>
+    <p>l f' l' f</p>
+    <br>
+    <h2>Rotation</h2>
+    <p>Rotation is standard, similar to 3x3 cube notations.</p>
+    <img src="../static/skewb_rotation.png" alt="Image unavailable" style="max-width: 50%; height: auto; float: none !important;">        </p>
+    <h2>NS algorithm Notation</h2>
+    <p>For advanced NS algorithm, to enable maximum flexibility, we use a letter to represent each of the 8 corners of skewb.</p>
+    <p>They are notated as following:</p>
+    <img src="../static/skewb_notation.png" alt="Image unavailable" style="max-width: 50%; height: auto; float: none !important;">        </p>
+    <h2>FCN Notation</h2>
+    <p>Let's next learn the standard FCN (fixed corner notation).</p>
+    <p>FCN is the notation used for WCA scrambling and major timer apps. Familiarize with yourself this notation so you
+        may easily understand many discussions or example solves.</p>
+    <p>Similarly to most puzzles, first letter indicates which corner on Skewb to turn; second optional apostrophe
+        indicates whether to turn counter-clockwise.</p>
+    <p>Always start with white at top, green at front, red at right.</p>
+    <p>There are four different corners to turn, the stickers affected by each corner turn is visualized below.</p>
+    <table border="1" style="width: 100%; text-align: center; font-size: 1.2em;">
+        <tr>
+            <th>U corner</th>
+            <th>B corner</th>
+        </tr>
+        <tr>
+            <td> <canvas id="fcn-u" width="300" height="200"></canvas></td>
+            <td> <canvas id="fcn-b" width="300" height="200"></canvas> </td>
+        </tr>
+        <tr>
+            <th>L corner</th>
+            <th>R corner</th>
+        </tr>
+        <tr>
+            <td> <canvas id="fcn-l" width="300" height="200"></canvas> </td>
+            <td><canvas id="fcn-r" width="300" height="200"></canvas> </td>
+        </tr>
+    </table>
+    <script>
+        drawSkewb("sh-f", "  p        p   p         ");
+        drawSkewb("sh-l", "   p  p   p              ");
+        drawSkewb("fcn-u", "pp pppp ppp     p   ppp p");
+        drawSkewb("fcn-b", "p    p ppp   p   p   pppp");
+        drawSkewb("fcn-l", "   p  ppppp ppp   p   p  ");
+        drawSkewb("fcn-r", " p      p   p   ppppp ppp");
+    </script>
+</div>
+
+<input type="checkbox" id="toggleDiv" style="transform: scale(1.5);" />
+<label for="toggleDiv" style="font-size: 1.5em;">Show notation</label>
+
+<script>
+    document.getElementById('toggleDiv').addEventListener('change', function () {
+        const extraInfo = document.getElementById('extraInfo');
+        extraInfo.style.display = this.checked ? 'block' : 'none';
+    });
+</script>
+
+<h1>
+    Sarah's Beginner Method Overview <a href="../static/cubingpro.com_skewb_sarah_beginner_alg.pdf" target="_blank" class="button">Printable Version</a>
+</h1>
+
+<p><u>Step 1: Solve the first side.</u></p>
+<canvas id="sarah-step-1" width="300" height="200"></canvas>
+
+<p>Notice the colors should be aligned, e.g. the following face is not solved due to misalignment of side colors.</p>
+<canvas id="sarah-step-1-incorrect" width="300" height="200"></canvas>
+
+<p>As an extension to Sarah's method, there is actually an additional algorithm set called Skewb EG-2 which solves the
+    first face and then solve the rest with one algorithm.</p>
+
+<p><u>Step 2: Solve the remaining corners.</u></p>
+<p>Notice white center is already solved, but is not shown.</p>
+<canvas id="sarah-step-2" width="300" height="200"></canvas>
+
+<p><u>Step 3: Solve the U center.</u></p>
+<canvas id="sarah-step-3" width="300" height="200"></canvas>
+
+<p><u>Step 4: Solve the remaining centers.</u></p>
+<p>Notice there is no AUF needed for Skewb.</p>
+<canvas id="sarah-step-4" width="300" height="200"></canvas>
+
+<h1>
+    Sarah's Beginner Method Algorithms
+</h1>
+<p><strong>Tips: click on show notation above to understand the notations.</strong></p>
+
+<h2>Step 2: Solve the remaining corners</h2>
+<p>There are two cases for top layer corners (except for already solved):</p>
+<p>Case 1: no top corner is oriented.</p>
+<p>This case can be solved at two angles:</p>
+<table border="1" style="width: 100%; text-align: center; font-size: 1.2em;">
+    <tr>
+        <td><canvas id="sarah-step-2-case-1-angle-1" width="300" height="200"></canvas></td>
+        <td><canvas id="sarah-step-2-case-1-angle-2" width="300" height="200"></canvas></td>
+    </tr>
+    <tr>
+        <td>The algorithm is S (Sledgehammer) = f' l f l'</td>
+        <td>The algorithm is H (Hedgeslammer) = l f' l' f</td>
+    </tr>
+</table>
+<p>Case 2: two top corners are oriented.</p>
+<div class="overview">
+    <canvas id="sarah-step-2-case-2" width="300" height="200"></canvas>
+    <p class="details">S y S</p>
+</div>
+
+<h2>Step 3: Solve the U center</h2>
+<div class="overview">
+    <canvas id="sarah-step-3-case-1" width="300" height="200"></canvas>
+    <p class="details">S y2 S</p>
+</div>
+
+<h2>Step 4: Solve the remaining centers</h2>
+<p>First make rotations to match with one of the following case then apply the corresponding algorithm.</p>
+<div class="overview">
+    <p>U perm</p>
+    <canvas id="sarah-step-4-case-1" width="300" height="200"></canvas>
+    <p class="details">S y2 S</p>
+</div>
+<div class="overview">
+    <p>Z perm</p>
+    <canvas id="sarah-step-4-case-2" width="300" height="200"></canvas>
+    <p class="details">FCN: R L' U' L U L R L' R</p>
+</div>
+<div class="overview">
+    <p>H perm</p>
+    <canvas id="sarah-step-4-case-3" width="300" height="200"></canvas>
+    <p class="details">FCN: L R' U R' L' U R' U</p>
+</div>
+
+<script>
+    drawSkewb("sarah-step-1", "wwwwwbb   oo   gg   rr   ");
+    drawSkewb("sarah-step-1-incorrect", "wwwwwgb   or   gg   ro   ");
+    drawSkewb("sarah-step-2", "yyyy rrrr gggg oooo bbbb ");
+    drawSkewb("sarah-step-3", "yyyyyrrrr gggg oooo bbbb ");
+    drawSkewb("sarah-step-4", "yyyyyrrrrrgggggooooobbbbb");
+    drawSkewb("sarah-step-2-case-1-angle-1", "       rr y gg yyoo  ybb ");
+    drawSkewb("sarah-step-2-case-1-angle-2", "     yyrr  ygg   oo y bb ");
+    drawSkewb("sarah-step-2-case-2", " y y y rr  ygg   oo   bb ");
+    drawSkewb("sarah-step-3-case-1", "yyyy rrrr gggg oooo bbbby");
+    drawSkewb("sarah-step-4-case-1", "ggggowwwwwooooryyyyyrrrrg");
+    drawSkewb("sarah-step-4-case-2", "yyyyyrrrrgggggroooobbbbbo");
+    drawSkewb("sarah-step-4-case-3", "yyyyyrrrroggggboooorbbbbg");
+</script>
+
+
+
+        <style>
+        .discount-banner {
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #2d6a2e 0%, #4CAF50 50%, #57B647 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+        }
+        .discount-banner h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #e8f5e9;
+            position: relative;
+        }
+        .discount-banner .discount-code {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border: 2px dashed rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 28px;
+            font-size: 1.6em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discount-banner .discount-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .discount-banner .discount-label {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .discount-banner .discount-shops {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.85);
+            position: relative;
+        }
+        </style>
+
+        <div class="discount-banner">
+            <div class="discount-label">🎉 5% OFF</div>
+            <h3>Use my discount code at TheCubicle & SpeedCubeShop</h3>
+            <div class="discount-code" onclick="navigator.clipboard.writeText('CUBINGPRO'); this.textContent='COPIED!'; setTimeout(() => this.textContent='CUBINGPRO', 1500);">CUBINGPRO</div>
+            <div class="discount-shops">Click the code to copy • Works at checkout on both stores</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- /container -->
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850"
+    crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CK6MWC01K0');
+  </script>
+
+  <div id="phantom-images" style="display: none;">
+    <!-- Unique image files -->
+    <img id="3x3x3_png" src="../static/3x3x3.png" />
+    <img id="timer_png" src="../static/timer.png" />
+    <img id="2x2x2_png" src="../static/2x2x2.png" />
+    <img id="4x4x4_jpg" src="../static/4x4x4.jpg" />
+    <img id="clock_png" src="../static/clock.png" />
+    <img id="pyraminx_png" src="../static/pyraminx.png" />
+    <img id="skewb_png" src="../static/skewb.png" />
+    <img id="fto_png" src="../static/fto.png" />
+    <img id="sq1_jpg" src="../static/sq1.jpg" />
+    <img id="wca_png" src="../static/wca.png" />
+    <img id="misc_png" src="../static/misc.png" />
+    <img id="solver_png" src="../static/solver.png" />
+    <img id="3bld_png" src="../static/3bld.png" />
+    <img id="5bld_png" src="../static/5bld.png" />
+    <img id="fmc_jpg" src="../static/fmc.jpg" />
+    <img id="eg_png" src="../static/eg.png" />
+    <img id="yau_png" src="../static/yau.png" />
+    <img id="4bld_jpg" src="../static/4bld.jpg" />
+    <img id="7simul_png" src="../static/7simul.png" />
+    <img id="clock_math_png" src="../static/clock_math.png" />
+    <img id="corner_first_png" src="../static/corner_first.png" />
+    <img id="v_first_png" src="../static/v_first.png" />
+    <img id="sarah_png" src="../static/sarah.png" />
+    <img id="cubeshape_jpg" src="../static/cubeshape.jpg" />
+    <img id="eo_png" src="../static/eo.png" />
+    <img id="wca_viz_png" src="../static/wca_viz.png" />
+    <img id="mini_comp_jpg" src="../static/mini_comp.jpg" />
+    <img id="geoguesser_png" src="../static/misc.png" />
+    <img id="auto_interviewer_png" src="../static/misc.png" />
+    <img id="tutorial_viewer_png" src="../static/misc.png" />
+    <img id="tutorial_editor_png" src="../static/misc.png" />
+  </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,3610 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Cubing Pro</title>
+
+  <meta name="author" content="Bowen Deng">
+  <meta name="description" content="Home for competitive speedcubers.">
+  <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs, face turning octahedron, fto">
+
+  <link rel="stylesheet" href="../static/css/main.css">
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+  <script src="../static/js/main.js" type="text/javascript"></script>
+  <script src="../static/js/vendor/jquery.ba-replacetext.min.js"></script>
+  <script src="../static/js/clock.js" type="text/javascript"></script>
+  <script src="../static/js/pyraminx.js" type="text/javascript"></script>
+  <script src="../static/js/big_cube.js" type="text/javascript"></script>
+  <script src="../static/js/skewb.js" type="text/javascript"></script>
+  <script src="../static/js/sq1.js" type="text/javascript"></script>
+  <script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+  <script type="module">
+    import "https://cdn.cubing.net/v0/js/cubing/twisty";
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.__SITE_PREFIX__="../";</script>
+  <script>
+    function getImageSrc(filename) {
+      const id = filename.toLowerCase().replace('.', '_'); // e.g., "fmc.jpg" -> "fmc_jpg"
+      const img = document.getElementById(id);
+      return img ? img.src : null;
+    }
+    fetch("../static/sidebar.json")
+      .then(response => response.json())
+      .then(menuData => {
+        function buildMenu(menuContainer, menuData) {
+          // State
+          let inCategoryView = false;
+
+          function renderCategories(data) {
+            menuContainer.innerHTML = ''; // Clear previous
+
+            data.forEach(entry => {
+              const card = document.createElement('div');
+              card.className = 'category-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(entry.category_logo);
+              img.alt = entry.category;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = entry.category;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                renderItems(entry.category, entry.items);
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = false;
+          }
+
+          function renderItems(category, items) {
+            menuContainer.innerHTML = '';
+
+            // Back button
+            const backButton = document.createElement('button');
+            backButton.textContent = '← Back';
+            backButton.className = 'back-button';
+            backButton.onclick = () => renderCategories(menuData);
+            menuContainer.appendChild(backButton);
+
+            items.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'item-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(item.logo);
+              img.alt = item.title;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = item.title;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                window.location.href = window.__SITE_PREFIX__ + item.url.replace(/^\//, "");
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = true;
+          }
+
+          // Initial render
+          renderCategories(menuData);
+
+          // Add copyright
+          const copyright = document.createElement('div');
+          copyright.className = 'copyright';
+          copyright.textContent = '© 2025 Bowen Deng';
+          menuContainer.appendChild(copyright);
+        }
+
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const indexPage = document.getElementById('index-page');
+
+        if (sidebarMenu) {
+          buildMenu(sidebarMenu, menuData);
+        }
+        if (indexPage) {
+          buildMenu(indexPage, menuData);
+        }
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</head>
+
+<body>
+  <button id="nav-toggle"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1000; font-size: 1.5em; padding: 16px 32px;">Navigate</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navToggle = document.getElementById('nav-toggle');
+      const sidebar = document.getElementById('sidebar-menu');
+      navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if (sidebar.classList.contains('active')) {
+          sidebar.style.minHeight = '800px';
+        } else {
+          sidebar.style.minHeight = '';
+        }
+      });
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+        });
+      });
+    });
+  </script>
+  <div id="container">
+    <div id="header">
+      <h1 class="title" style="position: fixed; top: 0; left: 50%; margin: 0; padding: 10px;">
+        <div
+          style="position: absolute; top: 50px; left: 50%; transform: translateX(-80%); font-size: 15px; color: #e91e63; pointer-events: none;">
+          &lt;- Can I get a forehead pat?
+        </div>
+        <button onclick="rainStars(this)"
+          style="border: none; background: none; padding: 0; display: inline-block; line-height: 0; cursor: grab;">
+          <img src="../static/fox_with_cube.png" alt="" width="85" style="display: block;">
+        </button>
+        <a href="../">Cubing for Professionals</a>
+      </h1>
+    </div>
+
+    <!-- To check the feedback from the solver app -->
+    <!-- http://localhost:5006/execute_sql/ -->
+
+    <div id="sidebar">
+      <nav>
+        <div id="sidebar-menu" class="sidebar-menu">
+        </div>
+      </nav>
+      </nav>
+    </div>
+
+    <div id="content" class="home">
+      <div id="home">
+
+        <h1 class="watermark">cubingpro.com</h1>
+
+        <div id="star-container"></div>
+
+        
+
+<h1>3x3x3 BLD memo</h1>
+
+<h2>Letter Pair Memo with Chinese Word</h2>
+<p>One strategy is to make up Chinese words while memorizing, but that takes a lot of mental effort and often suffers from challenging cases.</p>
+<p>That strategy is potentially okay for MBLD or 4+ BLD, but not suitable for 3BLD.</p>
+<p>The better strategy is to map each letter pair to a Chinese noun word. Then memorize these nouns by imaginging pictures.</p>
+<table>
+    <thead>
+        <tr>
+            <th>Letter Pair</th>
+            <th>Memo</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr>
+            <td>AA</td>
+            <td>
+                AA
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AB</td>
+            <td>
+                安倍
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AD</td>
+            <td>
+                奥迪
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AE</td>
+            <td>
+                阿鹅
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AF</td>
+            <td>
+                阿飞
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AG</td>
+            <td>
+                阿甘
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AH</td>
+            <td>
+                安徽
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AI</td>
+            <td>
+                AI
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AJ</td>
+            <td>
+                阿娇
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AK</td>
+            <td>
+                阿卡
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AL</td>
+            <td>
+                阿里
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AM</td>
+            <td>
+                澳门
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AN</td>
+            <td>
+                Anne
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AP</td>
+            <td>
+                Assistant Professor
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AR</td>
+            <td>
+                Argentina
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AS</td>
+            <td>
+                奥数
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AT</td>
+            <td>
+                Anto
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AW</td>
+            <td>
+                阿歪
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AX</td>
+            <td>
+                阿信
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AY</td>
+            <td>
+                阿姨
+            </td>
+        </tr>
+        
+        <tr>
+            <td>AZ</td>
+            <td>
+                安卓
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BA</td>
+            <td>
+                保安
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BB</td>
+            <td>
+                宝贝
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BC</td>
+            <td>
+                白痴
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BD</td>
+            <td>
+                冰岛
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BE</td>
+            <td>
+                白鹅
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BF</td>
+            <td>
+                蝙蝠
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BG</td>
+            <td>
+                冰棍
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BH</td>
+            <td>
+                壁虎
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BI</td>
+            <td>
+                bi
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BJ</td>
+            <td>
+                北京
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BK</td>
+            <td>
+                本科
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BL</td>
+            <td>
+                巴黎
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BM</td>
+            <td>
+                宝马
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BN</td>
+            <td>
+                伴娘
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BP</td>
+            <td>
+                八婆
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BR</td>
+            <td>
+                白人
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BS</td>
+            <td>
+                博士
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BT</td>
+            <td>
+                变态
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BW</td>
+            <td>
+                博文
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BX</td>
+            <td>
+                巴西
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BY</td>
+            <td>
+                波音
+            </td>
+        </tr>
+        
+        <tr>
+            <td>BZ</td>
+            <td>
+                豹子
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DA</td>
+            <td>
+                答案
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DB</td>
+            <td>
+                大 bian
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DC</td>
+            <td>
+                电池
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DD</td>
+            <td>
+                弟弟
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DE</td>
+            <td>
+                De
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DF</td>
+            <td>
+                豆腐
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DG</td>
+            <td>
+                蛋糕
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DH</td>
+            <td>
+                大海
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DI</td>
+            <td>
+                地
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DJ</td>
+            <td>
+                东京
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DK</td>
+            <td>
+                短裤
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DL</td>
+            <td>
+                灯笼
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DM</td>
+            <td>
+                大麻
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DN</td>
+            <td>
+                电脑
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DP</td>
+            <td>
+                灯泡
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DQ</td>
+            <td>
+                短裙
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DR</td>
+            <td>
+                Dr
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DS</td>
+            <td>
+                电视
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DT</td>
+            <td>
+                地铁
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DW</td>
+            <td>
+                大卫
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DX</td>
+            <td>
+                短信
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DY</td>
+            <td>
+                电影
+            </td>
+        </tr>
+        
+        <tr>
+            <td>DZ</td>
+            <td>
+                德州
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EA</td>
+            <td>
+                Electronic Arts
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EB</td>
+            <td>
+                二百
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ED</td>
+            <td>
+                耳朵
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EE</td>
+            <td>
+                嗯嗯
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EF</td>
+            <td>
+                二房
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EG</td>
+            <td>
+                鹅肝
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EH</td>
+            <td>
+                耳环
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EI</td>
+            <td>
+                诶
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EJ</td>
+            <td>
+                耳机
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EK</td>
+            <td>
+                尔康
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EL</td>
+            <td>
+                二楼
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EM</td>
+            <td>
+                恶魔
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EN</td>
+            <td>
+                二年
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EP</td>
+            <td>
+                恩平
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ER</td>
+            <td>
+                二人
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ES</td>
+            <td>
+                二十
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ET</td>
+            <td>
+                ET
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EW</td>
+            <td>
+                二万
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EX</td>
+            <td>
+                儿媳
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EY</td>
+            <td>
+                鳄鱼
+            </td>
+        </tr>
+        
+        <tr>
+            <td>EZ</td>
+            <td>
+                二张
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FA</td>
+            <td>
+                法案
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FB</td>
+            <td>
+                粉笔
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FC</td>
+            <td>
+                风车
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FD</td>
+            <td>
+                复旦
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FE</td>
+            <td>
+                飞蛾
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FF</td>
+            <td>
+                夫妇
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FG</td>
+            <td>
+                法国
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FH</td>
+            <td>
+                凤凰
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FI</td>
+            <td>
+                Phi
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FJ</td>
+            <td>
+                发胶
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FK</td>
+            <td>
+                妇科
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FL</td>
+            <td>
+                法老
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FM</td>
+            <td>
+                蜂蜜
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FN</td>
+            <td>
+                蜂鸟
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FP</td>
+            <td>
+                飞盘
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FR</td>
+            <td>
+                夫人
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FS</td>
+            <td>
+                风扇
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FT</td>
+            <td>
+                饭团
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FW</td>
+            <td>
+                福娃
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FX</td>
+            <td>
+                佛像
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FY</td>
+            <td>
+                法院
+            </td>
+        </tr>
+        
+        <tr>
+            <td>FZ</td>
+            <td>
+                非洲
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GA</td>
+            <td>
+                瓜
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GB</td>
+            <td>
+                锅巴
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GC</td>
+            <td>
+                广场
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GD</td>
+            <td>
+                广东
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GF</td>
+            <td>
+                Girlfriend
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GH</td>
+            <td>
+                国会
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GI</td>
+            <td>
+                关爱
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GJ</td>
+            <td>
+                公交
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GK</td>
+            <td>
+                高考
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GL</td>
+            <td>
+                咖喱
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GM</td>
+            <td>
+                闺密
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GN</td>
+            <td>
+                公牛
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GP</td>
+            <td>
+                钙片
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GR</td>
+            <td>
+                狗肉
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GS</td>
+            <td>
+                高三
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GT</td>
+            <td>
+                高铁
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GW</td>
+            <td>
+                鬼屋
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GX</td>
+            <td>
+                狗熊
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GY</td>
+            <td>
+                公园
+            </td>
+        </tr>
+        
+        <tr>
+            <td>GZ</td>
+            <td>
+                鸽子
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HA</td>
+            <td>
+                河岸
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HB</td>
+            <td>
+                红包
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HC</td>
+            <td>
+                火车
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HD</td>
+            <td>
+                蝴蝶
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HE</td>
+            <td>
+                河
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HF</td>
+            <td>
+                花粉
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HG</td>
+            <td>
+                韩国
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HH</td>
+            <td>
+                呵呵
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HJ</td>
+            <td>
+                火箭
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HK</td>
+            <td>
+                Hong Kong
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HL</td>
+            <td>
+                葫芦
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HM</td>
+            <td>
+                河马
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HN</td>
+            <td>
+                红牛
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HP</td>
+            <td>
+                黄浦
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HQ</td>
+            <td>
+                虹桥
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HR</td>
+            <td>
+                黑人
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HS</td>
+            <td>
+                黑丝
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HT</td>
+            <td>
+                火腿
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HW</td>
+            <td>
+                华为
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HX</td>
+            <td>
+                火星
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HY</td>
+            <td>
+                火药
+            </td>
+        </tr>
+        
+        <tr>
+            <td>HZ</td>
+            <td>
+                猴子
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IA</td>
+            <td>
+                等价于YI记Yi
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IB</td>
+            <td>
+                IB
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ID</td>
+            <td>
+                ID
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IE</td>
+            <td>
+                IE
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IF</td>
+            <td>
+                爱抚
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IG</td>
+            <td>
+                Instagram
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IH</td>
+            <td>
+                爱护
+            </td>
+        </tr>
+        
+        <tr>
+            <td>II</td>
+            <td>
+                爱爱
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IJ</td>
+            <td>
+                埃及
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IK</td>
+            <td>
+                Ikea
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IL</td>
+            <td>
+                艾伦
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IM</td>
+            <td>
+                暧昧
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IN</td>
+            <td>
+                爱你
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IP</td>
+            <td>
+                爱嫖
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IR</td>
+            <td>
+                爱人
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IS</td>
+            <td>
+                爱神
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IT</td>
+            <td>
+                爱他
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IW</td>
+            <td>
+                爱我
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IX</td>
+            <td>
+                爱心
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IY</td>
+            <td>
+                爱演
+            </td>
+        </tr>
+        
+        <tr>
+            <td>IZ</td>
+            <td>
+                艾滋
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JA</td>
+            <td>
+                家
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JB</td>
+            <td>
+                Ji Ba
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JC</td>
+            <td>
+                警察
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JD</td>
+            <td>
+                鸡蛋
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JE</td>
+            <td>
+                街
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JF</td>
+            <td>
+                机房
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JG</td>
+            <td>
+                金刚
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JH</td>
+            <td>
+                结婚
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JK</td>
+            <td>
+                杰克
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JL</td>
+            <td>
+                吉林
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JM</td>
+            <td>
+                Jim
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JN</td>
+            <td>
+                妓女
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JP</td>
+            <td>
+                街拍
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JR</td>
+            <td>
+                鸡肉
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JS</td>
+            <td>
+                竞赛
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JT</td>
+            <td>
+                鸡腿
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JW</td>
+            <td>
+                街舞
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JX</td>
+            <td>
+                寄信
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JY</td>
+            <td>
+                监狱
+            </td>
+        </tr>
+        
+        <tr>
+            <td>JZ</td>
+            <td>
+                饺子
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KA</td>
+            <td>
+                卡
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KB</td>
+            <td>
+                课本
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KD</td>
+            <td>
+                蝌蚪
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KE</td>
+            <td>
+                壳
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KF</td>
+            <td>
+                咖啡
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KG</td>
+            <td>
+                苦瓜
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KH</td>
+            <td>
+                口红
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KI</td>
+            <td>
+                Kai
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KJ</td>
+            <td>
+                口j
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KK</td>
+            <td>
+                可可
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KL</td>
+            <td>
+                考拉
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KM</td>
+            <td>
+                Kim
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KN</td>
+            <td>
+                柯南
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KP</td>
+            <td>
+                卡片
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KR</td>
+            <td>
+                烤肉
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KS</td>
+            <td>
+                口水
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KT</td>
+            <td>
+                客厅
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KW</td>
+            <td>
+                Kewei
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KX</td>
+            <td>
+                烤箱
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KY</td>
+            <td>
+                烤鸭
+            </td>
+        </tr>
+        
+        <tr>
+            <td>KZ</td>
+            <td>
+                口罩
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LA</td>
+            <td>
+                LA
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LB</td>
+            <td>
+                老板
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LC</td>
+            <td>
+                绿茶
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LD</td>
+            <td>
+                伦敦
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LE</td>
+            <td>
+                老二
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LF</td>
+            <td>
+                牢房
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LG</td>
+            <td>
+                老公
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LH</td>
+            <td>
+                老虎
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LI</td>
+            <td>
+                Li
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LJ</td>
+            <td>
+                垃圾
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LK</td>
+            <td>
+                林肯
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LL</td>
+            <td>
+                乐乐
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LM</td>
+            <td>
+                辣妹
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LN</td>
+            <td>
+                鲁内
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LP</td>
+            <td>
+                老婆
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LR</td>
+            <td>
+                老人
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LS</td>
+            <td>
+                老师
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LT</td>
+            <td>
+                骆驼
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LW</td>
+            <td>
+                礼物
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LX</td>
+            <td>
+                凉鞋
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LY</td>
+            <td>
+                轮椅
+            </td>
+        </tr>
+        
+        <tr>
+            <td>LZ</td>
+            <td>
+                栗子
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MA</td>
+            <td>
+                马
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MB</td>
+            <td>
+                面包
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MC</td>
+            <td>
+                买春
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MD</td>
+            <td>
+                毛豆
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ME</td>
+            <td>
+                马尔
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MF</td>
+            <td>
+                魔方
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MG</td>
+            <td>
+                玫瑰
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MH</td>
+            <td>
+                马航
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MI</td>
+            <td>
+                米
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MJ</td>
+            <td>
+                MJ
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MK</td>
+            <td>
+                Mike
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ML</td>
+            <td>
+                穆雷
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MM</td>
+            <td>
+                妹妹
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MN</td>
+            <td>
+                美女
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MP</td>
+            <td>
+                媒婆
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MR</td>
+            <td>
+                末日
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MS</td>
+            <td>
+                美食
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MT</td>
+            <td>
+                摩托
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MW</td>
+            <td>
+                门卫
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MX</td>
+            <td>
+                梅西
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MY</td>
+            <td>
+                马云
+            </td>
+        </tr>
+        
+        <tr>
+            <td>MZ</td>
+            <td>
+                妹子
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NA</td>
+            <td>
+                娜娜
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NB</td>
+            <td>
+                尿布
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NC</td>
+            <td>
+                奶茶
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ND</td>
+            <td>
+                牛顿
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NE</td>
+            <td>
+                女儿
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NF</td>
+            <td>
+                南非
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NG</td>
+            <td>
+                女鬼
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NH</td>
+            <td>
+                女孩
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NI</td>
+            <td>
+                你
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NJ</td>
+            <td>
+                牛津
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NK</td>
+            <td>
+                耐克
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NL</td>
+            <td>
+                奶酪
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NM</td>
+            <td>
+                柠檬
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NN</td>
+            <td>
+                牛奶
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NP</td>
+            <td>
+                牛排
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NR</td>
+            <td>
+                女人
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NS</td>
+            <td>
+                纳什
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NT</td>
+            <td>
+                奶头
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NW</td>
+            <td>
+                New
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NX</td>
+            <td>
+                奶昔
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NY</td>
+            <td>
+                女友
+            </td>
+        </tr>
+        
+        <tr>
+            <td>NZ</td>
+            <td>
+                哪吒
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PA</td>
+            <td>
+                啪
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PB</td>
+            <td>
+                瀑布
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PC</td>
+            <td>
+                嫖娼
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PD</td>
+            <td>
+                浦东
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PE</td>
+            <td>
+                Pie
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PF</td>
+            <td>
+                泡芙
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PG</td>
+            <td>
+                苹果
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PH</td>
+            <td>
+                PornHub
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PI</td>
+            <td>
+                屁
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PJ</td>
+            <td>
+                啤酒
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PK</td>
+            <td>
+                皮卡
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PL</td>
+            <td>
+                PL
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PM</td>
+            <td>
+                PM
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PN</td>
+            <td>
+                跑男
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PP</td>
+            <td>
+                屁屁
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PR</td>
+            <td>
+                飘柔
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PS</td>
+            <td>
+                菩萨
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PT</td>
+            <td>
+                葡萄
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PW</td>
+            <td>
+                喷雾
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PX</td>
+            <td>
+                螃蟹
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PY</td>
+            <td>
+                朋友
+            </td>
+        </tr>
+        
+        <tr>
+            <td>PZ</td>
+            <td>
+                胖子
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RA</td>
+            <td>
+                RA
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RB</td>
+            <td>
+                日本
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RC</td>
+            <td>
+                人才
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RD</td>
+            <td>
+                瑞典
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RE</td>
+            <td>
+                热
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RF</td>
+            <td>
+                RF
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RG</td>
+            <td>
+                热狗
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RH</td>
+            <td>
+                RH
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RI</td>
+            <td>
+                日
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RJ</td>
+            <td>
+                乳j
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RK</td>
+            <td>
+                热裤
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RL</td>
+            <td>
+                日料
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RM</td>
+            <td>
+                软妹
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RN</td>
+            <td>
+                Run
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RP</td>
+            <td>
+                人皮
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RR</td>
+            <td>
+                人人
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RS</td>
+            <td>
+                瑞士
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RT</td>
+            <td>
+                乳头
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RW</td>
+            <td>
+                日 wo
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RX</td>
+            <td>
+                乳腺
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RY</td>
+            <td>
+                人妖
+            </td>
+        </tr>
+        
+        <tr>
+            <td>RZ</td>
+            <td>
+                肉粽
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SA</td>
+            <td>
+                傻
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SB</td>
+            <td>
+                手表
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SC</td>
+            <td>
+                四川
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SD</td>
+            <td>
+                山东
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SE</td>
+            <td>
+                色
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SF</td>
+            <td>
+                三番
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SG</td>
+            <td>
+                丝瓜
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SH</td>
+            <td>
+                上海
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SI</td>
+            <td>
+                死
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SJ</td>
+            <td>
+                手机
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SK</td>
+            <td>
+                手铐
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SL</td>
+            <td>
+                色狼
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SM</td>
+            <td>
+                SM
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SN</td>
+            <td>
+                酸奶
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SP</td>
+            <td>
+                薯片
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SR</td>
+            <td>
+                死人
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SS</td>
+            <td>
+                姗姗
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ST</td>
+            <td>
+                食堂
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SW</td>
+            <td>
+                丝袜
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SX</td>
+            <td>
+                绍兴
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SY</td>
+            <td>
+                石油
+            </td>
+        </tr>
+        
+        <tr>
+            <td>SZ</td>
+            <td>
+                深圳
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TA</td>
+            <td>
+                TA
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TB</td>
+            <td>
+                淘宝
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TC</td>
+            <td>
+                台城
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TD</td>
+            <td>
+                土豆
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TE</td>
+            <td>
+                胎儿
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TF</td>
+            <td>
+                头发
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TG</td>
+            <td>
+                泰国
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TH</td>
+            <td>
+                鹈鹕
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TI</td>
+            <td>
+                梯
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TJ</td>
+            <td>
+                同济
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TK</td>
+            <td>
+                坦克
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TL</td>
+            <td>
+                螳螂
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TM</td>
+            <td>
+                天猫
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TN</td>
+            <td>
+                鸵鸟
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TP</td>
+            <td>
+                偷拍
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TR</td>
+            <td>
+                天然
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TS</td>
+            <td>
+                天使
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TT</td>
+            <td>
+                兔兔
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TW</td>
+            <td>
+                台湾
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TX</td>
+            <td>
+                同学
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TY</td>
+            <td>
+                太阳
+            </td>
+        </tr>
+        
+        <tr>
+            <td>TZ</td>
+            <td>
+                兔子
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WA</td>
+            <td>
+                袜
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WB</td>
+            <td>
+                微博
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WC</td>
+            <td>
+                王朝
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WD</td>
+            <td>
+                屋顶
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WE</td>
+            <td>
+                我儿
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WF</td>
+            <td>
+                汪峰
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WG</td>
+            <td>
+                乌龟
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WH</td>
+            <td>
+                武汉
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WI</td>
+            <td>
+                我爱
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WJ</td>
+            <td>
+                吴京
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WK</td>
+            <td>
+                悟空
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WL</td>
+            <td>
+                物理
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WM</td>
+            <td>
+                雾霾
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WN</td>
+            <td>
+                蜗牛
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WP</td>
+            <td>
+                外婆
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WR</td>
+            <td>
+                微软
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WS</td>
+            <td>
+                武松
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WT</td>
+            <td>
+                外滩
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WW</td>
+            <td>
+                娃娃
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WX</td>
+            <td>
+                微信
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WY</td>
+            <td>
+                无语
+            </td>
+        </tr>
+        
+        <tr>
+            <td>WZ</td>
+            <td>
+                蚊子
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XA</td>
+            <td>
+                瞎
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XB</td>
+            <td>
+                小宝
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XC</td>
+            <td>
+                香菜
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XD</td>
+            <td>
+                西单
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XE</td>
+            <td>
+                谢
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XF</td>
+            <td>
+                稀饭
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XG</td>
+            <td>
+                西瓜
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XH</td>
+            <td>
+                西湖
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XI</td>
+            <td>
+                习
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XJ</td>
+            <td>
+                香蕉
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XK</td>
+            <td>
+                小可
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XL</td>
+            <td>
+                新郎
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XM</td>
+            <td>
+                熊猫
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XN</td>
+            <td>
+                悉尼
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XP</td>
+            <td>
+                芯片
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XR</td>
+            <td>
+                小人
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XS</td>
+            <td>
+                香水
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XT</td>
+            <td>
+                西天
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XW</td>
+            <td>
+                小伟
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XX</td>
+            <td>
+                谢谢
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XY</td>
+            <td>
+                香烟
+            </td>
+        </tr>
+        
+        <tr>
+            <td>XZ</td>
+            <td>
+                小猪
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YA</td>
+            <td>
+                牙
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YB</td>
+            <td>
+                伊布
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YC</td>
+            <td>
+                牙齿
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YD</td>
+            <td>
+                晕倒
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YE</td>
+            <td>
+                叶
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YF</td>
+            <td>
+                亦菲
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YG</td>
+            <td>
+                英国
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YH</td>
+            <td>
+                银行
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YI</td>
+            <td>
+                Yi
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YJ</td>
+            <td>
+                眼镜
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YK</td>
+            <td>
+                永康
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YL</td>
+            <td>
+                耶鲁
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YM</td>
+            <td>
+                玉米
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YN</td>
+            <td>
+                云南
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YP</td>
+            <td>
+                羊排
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YR</td>
+            <td>
+                羊肉
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YS</td>
+            <td>
+                钥匙
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YT</td>
+            <td>
+                樱桃
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YW</td>
+            <td>
+                鹦鹉
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YX</td>
+            <td>
+                音响
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YY</td>
+            <td>
+                医院
+            </td>
+        </tr>
+        
+        <tr>
+            <td>YZ</td>
+            <td>
+                鸭子
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZA</td>
+            <td>
+                渣
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZB</td>
+            <td>
+                闸北
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZC</td>
+            <td>
+                张成
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZD</td>
+            <td>
+                子弹
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZE</td>
+            <td>
+                泽
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZF</td>
+            <td>
+                郑凡
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZG</td>
+            <td>
+                中国
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZH</td>
+            <td>
+                知乎
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZI</td>
+            <td>
+                障碍
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZJ</td>
+            <td>
+                浙江
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZK</td>
+            <td>
+                中考
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZL</td>
+            <td>
+                总理
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZM</td>
+            <td>
+                直美
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZN</td>
+            <td>
+                渣男
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZP</td>
+            <td>
+                帐篷
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZR</td>
+            <td>
+                侏儒
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZS</td>
+            <td>
+                钻石
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZT</td>
+            <td>
+                总统
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZW</td>
+            <td>
+                自 wei
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZX</td>
+            <td>
+                自信
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZY</td>
+            <td>
+                泽禹
+            </td>
+        </tr>
+        
+        <tr>
+            <td>ZZ</td>
+            <td>
+                智障
+            </td>
+        </tr>
+        
+    </tbody>
+</table>
+
+<h2>Trainer</h2>
+<button id="show-pairs">Show Letter Pairs</button>
+<button id="done" style="display: none;">Test my memo</button>
+<div id="pairs-container" style="margin-top: 10px;"></div>
+<div id="input-container" style="margin-top: 10px; display: none;">
+    <textarea id="user-input" rows="5" cols="50" placeholder="Enter the letter pairs here..."></textarea>
+    <br>
+    <button id="confirm">Confirm</button>
+</div>
+<div id="result-container" style="margin-top: 10px; display: none;"></div>
+<button id="retry" style="display: none; margin-top: 10px;">Retry</button>
+
+<script>
+    const tableData = JSON.parse('[{"pair": "AA", "memo": "AA", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AB", "memo": "\u5b89\u500d", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AD", "memo": "\u5965\u8fea", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AE", "memo": "\u963f\u9e45", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AF", "memo": "\u963f\u98de", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AG", "memo": "\u963f\u7518", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AH", "memo": "\u5b89\u5fbd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AI", "memo": "AI", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AJ", "memo": "\u963f\u5a07", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AK", "memo": "\u963f\u5361", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AL", "memo": "\u963f\u91cc", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AM", "memo": "\u6fb3\u95e8", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AN", "memo": "Anne", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AP", "memo": "Assistant Professor", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AR", "memo": "Argentina", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AS", "memo": "\u5965\u6570", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AT", "memo": "Anto", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AW", "memo": "\u963f\u6b6a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AX", "memo": "\u963f\u4fe1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AY", "memo": "\u963f\u59e8", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "AZ", "memo": "\u5b89\u5353", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BA", "memo": "\u4fdd\u5b89", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BB", "memo": "\u5b9d\u8d1d", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BC", "memo": "\u767d\u75f4", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BD", "memo": "\u51b0\u5c9b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BE", "memo": "\u767d\u9e45", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BF", "memo": "\u8759\u8760", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BG", "memo": "\u51b0\u68cd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BH", "memo": "\u58c1\u864e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BI", "memo": "bi", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BJ", "memo": "\u5317\u4eac", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BK", "memo": "\u672c\u79d1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BL", "memo": "\u5df4\u9ece", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BM", "memo": "\u5b9d\u9a6c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BN", "memo": "\u4f34\u5a18", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BP", "memo": "\u516b\u5a46", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BR", "memo": "\u767d\u4eba", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BS", "memo": "\u535a\u58eb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BT", "memo": "\u53d8\u6001", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BW", "memo": "\u535a\u6587", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BX", "memo": "\u5df4\u897f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BY", "memo": "\u6ce2\u97f3", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "BZ", "memo": "\u8c79\u5b50", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DA", "memo": "\u7b54\u6848", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DB", "memo": "\u5927 bian", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DC", "memo": "\u7535\u6c60", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DD", "memo": "\u5f1f\u5f1f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DE", "memo": "De", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DF", "memo": "\u8c46\u8150", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DG", "memo": "\u86cb\u7cd5", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DH", "memo": "\u5927\u6d77", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DI", "memo": "\u5730", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DJ", "memo": "\u4e1c\u4eac", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DK", "memo": "\u77ed\u88e4", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DL", "memo": "\u706f\u7b3c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DM", "memo": "\u5927\u9ebb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DN", "memo": "\u7535\u8111", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DP", "memo": "\u706f\u6ce1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DQ", "memo": "\u77ed\u88d9", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DR", "memo": "Dr", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DS", "memo": "\u7535\u89c6", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DT", "memo": "\u5730\u94c1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DW", "memo": "\u5927\u536b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DX", "memo": "\u77ed\u4fe1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DY", "memo": "\u7535\u5f71", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "DZ", "memo": "\u5fb7\u5dde", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EA", "memo": "Electronic Arts", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EB", "memo": "\u4e8c\u767e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ED", "memo": "\u8033\u6735", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EE", "memo": "\u55ef\u55ef", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EF", "memo": "\u4e8c\u623f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EG", "memo": "\u9e45\u809d", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EH", "memo": "\u8033\u73af", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EI", "memo": "\u8bf6", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EJ", "memo": "\u8033\u673a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EK", "memo": "\u5c14\u5eb7", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EL", "memo": "\u4e8c\u697c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EM", "memo": "\u6076\u9b54", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EN", "memo": "\u4e8c\u5e74", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EP", "memo": "\u6069\u5e73", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ER", "memo": "\u4e8c\u4eba", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ES", "memo": "\u4e8c\u5341", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ET", "memo": "ET", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EW", "memo": "\u4e8c\u4e07", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EX", "memo": "\u513f\u5ab3", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EY", "memo": "\u9cc4\u9c7c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "EZ", "memo": "\u4e8c\u5f20", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FA", "memo": "\u6cd5\u6848", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FB", "memo": "\u7c89\u7b14", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FC", "memo": "\u98ce\u8f66", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FD", "memo": "\u590d\u65e6", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FE", "memo": "\u98de\u86fe", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FF", "memo": "\u592b\u5987", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FG", "memo": "\u6cd5\u56fd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FH", "memo": "\u51e4\u51f0", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FI", "memo": "Phi", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FJ", "memo": "\u53d1\u80f6", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FK", "memo": "\u5987\u79d1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FL", "memo": "\u6cd5\u8001", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FM", "memo": "\u8702\u871c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FN", "memo": "\u8702\u9e1f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FP", "memo": "\u98de\u76d8", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FR", "memo": "\u592b\u4eba", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FS", "memo": "\u98ce\u6247", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FT", "memo": "\u996d\u56e2", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FW", "memo": "\u798f\u5a03", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FX", "memo": "\u4f5b\u50cf", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FY", "memo": "\u6cd5\u9662", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "FZ", "memo": "\u975e\u6d32", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GA", "memo": "\u74dc", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GB", "memo": "\u9505\u5df4", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GC", "memo": "\u5e7f\u573a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GD", "memo": "\u5e7f\u4e1c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GF", "memo": "Girlfriend", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GH", "memo": "\u56fd\u4f1a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GI", "memo": "\u5173\u7231", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GJ", "memo": "\u516c\u4ea4", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GK", "memo": "\u9ad8\u8003", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GL", "memo": "\u5496\u55b1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GM", "memo": "\u95fa\u5bc6", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GN", "memo": "\u516c\u725b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GP", "memo": "\u9499\u7247", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GR", "memo": "\u72d7\u8089", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GS", "memo": "\u9ad8\u4e09", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GT", "memo": "\u9ad8\u94c1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GW", "memo": "\u9b3c\u5c4b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GX", "memo": "\u72d7\u718a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GY", "memo": "\u516c\u56ed", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "GZ", "memo": "\u9e3d\u5b50", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HA", "memo": "\u6cb3\u5cb8", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HB", "memo": "\u7ea2\u5305", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HC", "memo": "\u706b\u8f66", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HD", "memo": "\u8774\u8776", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HE", "memo": "\u6cb3", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HF", "memo": "\u82b1\u7c89", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HG", "memo": "\u97e9\u56fd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HH", "memo": "\u5475\u5475", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HJ", "memo": "\u706b\u7bad", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HK", "memo": "Hong Kong", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HL", "memo": "\u846b\u82a6", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HM", "memo": "\u6cb3\u9a6c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HN", "memo": "\u7ea2\u725b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HP", "memo": "\u9ec4\u6d66", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HQ", "memo": "\u8679\u6865", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HR", "memo": "\u9ed1\u4eba", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HS", "memo": "\u9ed1\u4e1d", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HT", "memo": "\u706b\u817f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HW", "memo": "\u534e\u4e3a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HX", "memo": "\u706b\u661f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HY", "memo": "\u706b\u836f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "HZ", "memo": "\u7334\u5b50", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IA", "memo": "\u7b49\u4ef7\u4e8eYI\u8bb0Yi", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IB", "memo": "IB", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ID", "memo": "ID", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IE", "memo": "IE", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IF", "memo": "\u7231\u629a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IG", "memo": "Instagram", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IH", "memo": "\u7231\u62a4", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "II", "memo": "\u7231\u7231", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IJ", "memo": "\u57c3\u53ca", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IK", "memo": "Ikea", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IL", "memo": "\u827e\u4f26", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IM", "memo": "\u66a7\u6627", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IN", "memo": "\u7231\u4f60", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IP", "memo": "\u7231\u5ad6", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IR", "memo": "\u7231\u4eba", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IS", "memo": "\u7231\u795e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IT", "memo": "\u7231\u4ed6", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IW", "memo": "\u7231\u6211", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IX", "memo": "\u7231\u5fc3", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IY", "memo": "\u7231\u6f14", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "IZ", "memo": "\u827e\u6ecb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JA", "memo": "\u5bb6", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JB", "memo": "Ji Ba", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JC", "memo": "\u8b66\u5bdf", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JD", "memo": "\u9e21\u86cb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JE", "memo": "\u8857", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JF", "memo": "\u673a\u623f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JG", "memo": "\u91d1\u521a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JH", "memo": "\u7ed3\u5a5a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JK", "memo": "\u6770\u514b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JL", "memo": "\u5409\u6797", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JM", "memo": "Jim", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JN", "memo": "\u5993\u5973", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JP", "memo": "\u8857\u62cd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JR", "memo": "\u9e21\u8089", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JS", "memo": "\u7ade\u8d5b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JT", "memo": "\u9e21\u817f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JW", "memo": "\u8857\u821e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JX", "memo": "\u5bc4\u4fe1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JY", "memo": "\u76d1\u72f1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "JZ", "memo": "\u997a\u5b50", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KA", "memo": "\u5361", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KB", "memo": "\u8bfe\u672c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KD", "memo": "\u874c\u86aa", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KE", "memo": "\u58f3", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KF", "memo": "\u5496\u5561", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KG", "memo": "\u82e6\u74dc", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KH", "memo": "\u53e3\u7ea2", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KI", "memo": "Kai", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KJ", "memo": "\u53e3j", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KK", "memo": "\u53ef\u53ef", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KL", "memo": "\u8003\u62c9", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KM", "memo": "Kim", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KN", "memo": "\u67ef\u5357", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KP", "memo": "\u5361\u7247", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KR", "memo": "\u70e4\u8089", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KS", "memo": "\u53e3\u6c34", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KT", "memo": "\u5ba2\u5385", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KW", "memo": "Kewei", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KX", "memo": "\u70e4\u7bb1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KY", "memo": "\u70e4\u9e2d", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "KZ", "memo": "\u53e3\u7f69", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LA", "memo": "LA", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LB", "memo": "\u8001\u677f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LC", "memo": "\u7eff\u8336", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LD", "memo": "\u4f26\u6566", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LE", "memo": "\u8001\u4e8c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LF", "memo": "\u7262\u623f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LG", "memo": "\u8001\u516c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LH", "memo": "\u8001\u864e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LI", "memo": "Li", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LJ", "memo": "\u5783\u573e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LK", "memo": "\u6797\u80af", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LL", "memo": "\u4e50\u4e50", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LM", "memo": "\u8fa3\u59b9", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LN", "memo": "\u9c81\u5185", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LP", "memo": "\u8001\u5a46", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LR", "memo": "\u8001\u4eba", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LS", "memo": "\u8001\u5e08", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LT", "memo": "\u9a86\u9a7c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LW", "memo": "\u793c\u7269", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LX", "memo": "\u51c9\u978b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LY", "memo": "\u8f6e\u6905", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "LZ", "memo": "\u6817\u5b50", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MA", "memo": "\u9a6c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MB", "memo": "\u9762\u5305", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MC", "memo": "\u4e70\u6625", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MD", "memo": "\u6bdb\u8c46", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ME", "memo": "\u9a6c\u5c14", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MF", "memo": "\u9b54\u65b9", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MG", "memo": "\u73ab\u7470", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MH", "memo": "\u9a6c\u822a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MI", "memo": "\u7c73", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MJ", "memo": "MJ", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MK", "memo": "Mike", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ML", "memo": "\u7a46\u96f7", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MM", "memo": "\u59b9\u59b9", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MN", "memo": "\u7f8e\u5973", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MP", "memo": "\u5a92\u5a46", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MR", "memo": "\u672b\u65e5", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MS", "memo": "\u7f8e\u98df", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MT", "memo": "\u6469\u6258", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MW", "memo": "\u95e8\u536b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MX", "memo": "\u6885\u897f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MY", "memo": "\u9a6c\u4e91", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "MZ", "memo": "\u59b9\u5b50", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NA", "memo": "\u5a1c\u5a1c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NB", "memo": "\u5c3f\u5e03", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NC", "memo": "\u5976\u8336", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ND", "memo": "\u725b\u987f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NE", "memo": "\u5973\u513f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NF", "memo": "\u5357\u975e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NG", "memo": "\u5973\u9b3c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NH", "memo": "\u5973\u5b69", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NI", "memo": "\u4f60", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NJ", "memo": "\u725b\u6d25", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NK", "memo": "\u8010\u514b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NL", "memo": "\u5976\u916a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NM", "memo": "\u67e0\u6aac", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NN", "memo": "\u725b\u5976", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NP", "memo": "\u725b\u6392", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NR", "memo": "\u5973\u4eba", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NS", "memo": "\u7eb3\u4ec0", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NT", "memo": "\u5976\u5934", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NW", "memo": "New", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NX", "memo": "\u5976\u6614", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NY", "memo": "\u5973\u53cb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "NZ", "memo": "\u54ea\u5412", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PA", "memo": "\u556a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PB", "memo": "\u7011\u5e03", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PC", "memo": "\u5ad6\u5a3c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PD", "memo": "\u6d66\u4e1c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PE", "memo": "Pie", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PF", "memo": "\u6ce1\u8299", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PG", "memo": "\u82f9\u679c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PH", "memo": "PornHub", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PI", "memo": "\u5c41", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PJ", "memo": "\u5564\u9152", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PK", "memo": "\u76ae\u5361", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PL", "memo": "PL", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PM", "memo": "PM", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PN", "memo": "\u8dd1\u7537", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PP", "memo": "\u5c41\u5c41", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PR", "memo": "\u98d8\u67d4", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PS", "memo": "\u83e9\u8428", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PT", "memo": "\u8461\u8404", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PW", "memo": "\u55b7\u96fe", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PX", "memo": "\u8783\u87f9", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PY", "memo": "\u670b\u53cb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "PZ", "memo": "\u80d6\u5b50", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RA", "memo": "RA", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RB", "memo": "\u65e5\u672c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RC", "memo": "\u4eba\u624d", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RD", "memo": "\u745e\u5178", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RE", "memo": "\u70ed", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RF", "memo": "RF", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RG", "memo": "\u70ed\u72d7", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RH", "memo": "RH", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RI", "memo": "\u65e5", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RJ", "memo": "\u4e73j", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RK", "memo": "\u70ed\u88e4", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RL", "memo": "\u65e5\u6599", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RM", "memo": "\u8f6f\u59b9", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RN", "memo": "Run", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RP", "memo": "\u4eba\u76ae", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RR", "memo": "\u4eba\u4eba", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RS", "memo": "\u745e\u58eb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RT", "memo": "\u4e73\u5934", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RW", "memo": "\u65e5 wo", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RX", "memo": "\u4e73\u817a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RY", "memo": "\u4eba\u5996", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "RZ", "memo": "\u8089\u7cbd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SA", "memo": "\u50bb", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SB", "memo": "\u624b\u8868", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SC", "memo": "\u56db\u5ddd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SD", "memo": "\u5c71\u4e1c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SE", "memo": "\u8272", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SF", "memo": "\u4e09\u756a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SG", "memo": "\u4e1d\u74dc", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SH", "memo": "\u4e0a\u6d77", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SI", "memo": "\u6b7b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SJ", "memo": "\u624b\u673a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SK", "memo": "\u624b\u94d0", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SL", "memo": "\u8272\u72fc", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SM", "memo": "SM", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SN", "memo": "\u9178\u5976", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SP", "memo": "\u85af\u7247", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SR", "memo": "\u6b7b\u4eba", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SS", "memo": "\u59d7\u59d7", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ST", "memo": "\u98df\u5802", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SW", "memo": "\u4e1d\u889c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SX", "memo": "\u7ecd\u5174", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SY", "memo": "\u77f3\u6cb9", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "SZ", "memo": "\u6df1\u5733", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TA", "memo": "TA", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TB", "memo": "\u6dd8\u5b9d", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TC", "memo": "\u53f0\u57ce", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TD", "memo": "\u571f\u8c46", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TE", "memo": "\u80ce\u513f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TF", "memo": "\u5934\u53d1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TG", "memo": "\u6cf0\u56fd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TH", "memo": "\u9e48\u9e55", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TI", "memo": "\u68af", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TJ", "memo": "\u540c\u6d4e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TK", "memo": "\u5766\u514b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TL", "memo": "\u87b3\u8782", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TM", "memo": "\u5929\u732b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TN", "memo": "\u9e35\u9e1f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TP", "memo": "\u5077\u62cd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TR", "memo": "\u5929\u7136", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TS", "memo": "\u5929\u4f7f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TT", "memo": "\u5154\u5154", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TW", "memo": "\u53f0\u6e7e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TX", "memo": "\u540c\u5b66", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TY", "memo": "\u592a\u9633", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "TZ", "memo": "\u5154\u5b50", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WA", "memo": "\u889c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WB", "memo": "\u5fae\u535a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WC", "memo": "\u738b\u671d", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WD", "memo": "\u5c4b\u9876", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WE", "memo": "\u6211\u513f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WF", "memo": "\u6c6a\u5cf0", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WG", "memo": "\u4e4c\u9f9f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WH", "memo": "\u6b66\u6c49", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WI", "memo": "\u6211\u7231", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WJ", "memo": "\u5434\u4eac", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WK", "memo": "\u609f\u7a7a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WL", "memo": "\u7269\u7406", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WM", "memo": "\u96fe\u973e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WN", "memo": "\u8717\u725b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WP", "memo": "\u5916\u5a46", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WR", "memo": "\u5fae\u8f6f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WS", "memo": "\u6b66\u677e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WT", "memo": "\u5916\u6ee9", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WW", "memo": "\u5a03\u5a03", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WX", "memo": "\u5fae\u4fe1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WY", "memo": "\u65e0\u8bed", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "WZ", "memo": "\u868a\u5b50", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XA", "memo": "\u778e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XB", "memo": "\u5c0f\u5b9d", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XC", "memo": "\u9999\u83dc", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XD", "memo": "\u897f\u5355", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XE", "memo": "\u8c22", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XF", "memo": "\u7a00\u996d", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XG", "memo": "\u897f\u74dc", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XH", "memo": "\u897f\u6e56", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XI", "memo": "\u4e60", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XJ", "memo": "\u9999\u8549", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XK", "memo": "\u5c0f\u53ef", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XL", "memo": "\u65b0\u90ce", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XM", "memo": "\u718a\u732b", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XN", "memo": "\u6089\u5c3c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XP", "memo": "\u82af\u7247", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XR", "memo": "\u5c0f\u4eba", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XS", "memo": "\u9999\u6c34", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XT", "memo": "\u897f\u5929", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XW", "memo": "\u5c0f\u4f1f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XX", "memo": "\u8c22\u8c22", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XY", "memo": "\u9999\u70df", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "XZ", "memo": "\u5c0f\u732a", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YA", "memo": "\u7259", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YB", "memo": "\u4f0a\u5e03", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YC", "memo": "\u7259\u9f7f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YD", "memo": "\u6655\u5012", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YE", "memo": "\u53f6", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YF", "memo": "\u4ea6\u83f2", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YG", "memo": "\u82f1\u56fd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YH", "memo": "\u94f6\u884c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YI", "memo": "Yi", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YJ", "memo": "\u773c\u955c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YK", "memo": "\u6c38\u5eb7", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YL", "memo": "\u8036\u9c81", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YM", "memo": "\u7389\u7c73", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YN", "memo": "\u4e91\u5357", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YP", "memo": "\u7f8a\u6392", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YR", "memo": "\u7f8a\u8089", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YS", "memo": "\u94a5\u5319", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YT", "memo": "\u6a31\u6843", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YW", "memo": "\u9e66\u9e49", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YX", "memo": "\u97f3\u54cd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YY", "memo": "\u533b\u9662", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "YZ", "memo": "\u9e2d\u5b50", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZA", "memo": "\u6e23", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZB", "memo": "\u95f8\u5317", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZC", "memo": "\u5f20\u6210", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZD", "memo": "\u5b50\u5f39", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZE", "memo": "\u6cfd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZF", "memo": "\u90d1\u51e1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZG", "memo": "\u4e2d\u56fd", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZH", "memo": "\u77e5\u4e4e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZI", "memo": "\u969c\u788d", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZJ", "memo": "\u6d59\u6c5f", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZK", "memo": "\u4e2d\u8003", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZL", "memo": "\u603b\u7406", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZM", "memo": "\u76f4\u7f8e", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZN", "memo": "\u6e23\u7537", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZP", "memo": "\u5e10\u7bf7", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZR", "memo": "\u4f8f\u5112", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZS", "memo": "\u94bb\u77f3", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZT", "memo": "\u603b\u7edf", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZW", "memo": "\u81ea wei", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZX", "memo": "\u81ea\u4fe1", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZY", "memo": "\u6cfd\u79b9", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}, {"pair": "ZZ", "memo": "\u667a\u969c", "CLL_viz": "", "CLL_inv": "", "EG1_viz": "", "EG1_inv": "", "EG2_viz": "", "EG2_inv": ""}]');
+    const pairsContainer = document.getElementById('pairs-container');
+    const inputContainer = document.getElementById('input-container');
+    const resultContainer = document.getElementById('result-container');
+    const showPairsButton = document.getElementById('show-pairs');
+    const doneButton = document.getElementById('done');
+    const confirmButton = document.getElementById('confirm');
+    const retryButton = document.getElementById('retry');
+    const userInput = document.getElementById('user-input');
+
+    let selectedPairs = [];
+
+    function getRandomGroups() {
+        const groupCount = Math.random() < 0.3333 ? 4 : (Math.random() < 0.5 ? 5 : 6);
+        const shuffled = tableData.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, groupCount);
+    }
+
+    function resetTrainer() {
+        pairsContainer.innerHTML = '';
+        resultContainer.innerHTML = '';
+        resultContainer.style.display = 'none';
+        inputContainer.style.display = 'none';
+        showPairsButton.style.display = 'inline-block';
+        retryButton.style.display = 'none';
+        userInput.value = '';
+    }
+
+    showPairsButton.addEventListener('click', () => {
+        selectedPairs = getRandomGroups();
+        pairsContainer.innerHTML = selectedPairs.map(row => `<div>${row.pair.toUpperCase()}</div>`).join('');
+        pairsContainer.style.display = 'block';
+        showPairsButton.style.display = 'none';
+        doneButton.style.display = 'inline-block';
+    });
+
+    doneButton.addEventListener('click', () => {
+        pairsContainer.style.display = 'none';
+        inputContainer.style.display = 'block';
+        doneButton.style.display = 'none';
+    });
+
+    confirmButton.addEventListener('click', () => {
+        const userAnswers = userInput.value.trim().split(/\s+/).map(answer => answer.toUpperCase());
+        const results = selectedPairs.map((row, index) => {
+            const userAnswer = userAnswers[index] || '';
+            const isCorrect = userAnswer === row.pair.toUpperCase();
+            return `<div>
+                        <strong>Original:</strong> ${row.pair.toUpperCase()} 
+                        <strong>Your Answer:</strong> ${userAnswer} 
+                        <strong>Result:</strong> ${isCorrect ? '✅' : '❌'}
+                        <br>
+                        <strong>Memo:</strong> ${row.memo}
+                    </div>`;
+        }).join('');
+        resultContainer.innerHTML = results;
+        resultContainer.style.display = 'block';
+        inputContainer.style.display = 'none';
+        retryButton.style.display = 'inline-block';
+    });
+
+    retryButton.addEventListener('click', () => {
+        resetTrainer();
+    });
+</script>
+
+<h2>Letter Pair Memo with English Word (WIP)</h2>
+
+<h2>Audio Memo (WIP)</h2>
+
+
+
+        <style>
+        .discount-banner {
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #2d6a2e 0%, #4CAF50 50%, #57B647 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+        }
+        .discount-banner h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #e8f5e9;
+            position: relative;
+        }
+        .discount-banner .discount-code {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border: 2px dashed rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 28px;
+            font-size: 1.6em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discount-banner .discount-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .discount-banner .discount-label {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .discount-banner .discount-shops {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.85);
+            position: relative;
+        }
+        </style>
+
+        <div class="discount-banner">
+            <div class="discount-label">🎉 5% OFF</div>
+            <h3>Use my discount code at TheCubicle & SpeedCubeShop</h3>
+            <div class="discount-code" onclick="navigator.clipboard.writeText('CUBINGPRO'); this.textContent='COPIED!'; setTimeout(() => this.textContent='CUBINGPRO', 1500);">CUBINGPRO</div>
+            <div class="discount-shops">Click the code to copy • Works at checkout on both stores</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- /container -->
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850"
+    crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CK6MWC01K0');
+  </script>
+
+  <div id="phantom-images" style="display: none;">
+    <!-- Unique image files -->
+    <img id="3x3x3_png" src="../static/3x3x3.png" />
+    <img id="timer_png" src="../static/timer.png" />
+    <img id="2x2x2_png" src="../static/2x2x2.png" />
+    <img id="4x4x4_jpg" src="../static/4x4x4.jpg" />
+    <img id="clock_png" src="../static/clock.png" />
+    <img id="pyraminx_png" src="../static/pyraminx.png" />
+    <img id="skewb_png" src="../static/skewb.png" />
+    <img id="fto_png" src="../static/fto.png" />
+    <img id="sq1_jpg" src="../static/sq1.jpg" />
+    <img id="wca_png" src="../static/wca.png" />
+    <img id="misc_png" src="../static/misc.png" />
+    <img id="solver_png" src="../static/solver.png" />
+    <img id="3bld_png" src="../static/3bld.png" />
+    <img id="5bld_png" src="../static/5bld.png" />
+    <img id="fmc_jpg" src="../static/fmc.jpg" />
+    <img id="eg_png" src="../static/eg.png" />
+    <img id="yau_png" src="../static/yau.png" />
+    <img id="4bld_jpg" src="../static/4bld.jpg" />
+    <img id="7simul_png" src="../static/7simul.png" />
+    <img id="clock_math_png" src="../static/clock_math.png" />
+    <img id="corner_first_png" src="../static/corner_first.png" />
+    <img id="v_first_png" src="../static/v_first.png" />
+    <img id="sarah_png" src="../static/sarah.png" />
+    <img id="cubeshape_jpg" src="../static/cubeshape.jpg" />
+    <img id="eo_png" src="../static/eo.png" />
+    <img id="wca_viz_png" src="../static/wca_viz.png" />
+    <img id="mini_comp_jpg" src="../static/mini_comp.jpg" />
+    <img id="geoguesser_png" src="../static/misc.png" />
+    <img id="auto_interviewer_png" src="../static/misc.png" />
+    <img id="tutorial_viewer_png" src="../static/misc.png" />
+    <img id="tutorial_editor_png" src="../static/misc.png" />
+  </div>
+
+
+</body>
+
+</html>

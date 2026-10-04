@@ -1,0 +1,408 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Cubing Pro</title>
+
+  <meta name="author" content="Bowen Deng">
+  <meta name="description" content="Home for competitive speedcubers.">
+  <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs, face turning octahedron, fto">
+
+  <link rel="stylesheet" href="../static/css/main.css">
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+  <script src="../static/js/main.js" type="text/javascript"></script>
+  <script src="../static/js/vendor/jquery.ba-replacetext.min.js"></script>
+  <script src="../static/js/clock.js" type="text/javascript"></script>
+  <script src="../static/js/pyraminx.js" type="text/javascript"></script>
+  <script src="../static/js/big_cube.js" type="text/javascript"></script>
+  <script src="../static/js/skewb.js" type="text/javascript"></script>
+  <script src="../static/js/sq1.js" type="text/javascript"></script>
+  <script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+  <script type="module">
+    import "https://cdn.cubing.net/v0/js/cubing/twisty";
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.__SITE_PREFIX__="../";</script>
+  <script>
+    function getImageSrc(filename) {
+      const id = filename.toLowerCase().replace('.', '_'); // e.g., "fmc.jpg" -> "fmc_jpg"
+      const img = document.getElementById(id);
+      return img ? img.src : null;
+    }
+    fetch("../static/sidebar.json")
+      .then(response => response.json())
+      .then(menuData => {
+        function buildMenu(menuContainer, menuData) {
+          // State
+          let inCategoryView = false;
+
+          function renderCategories(data) {
+            menuContainer.innerHTML = ''; // Clear previous
+
+            data.forEach(entry => {
+              const card = document.createElement('div');
+              card.className = 'category-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(entry.category_logo);
+              img.alt = entry.category;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = entry.category;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                renderItems(entry.category, entry.items);
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = false;
+          }
+
+          function renderItems(category, items) {
+            menuContainer.innerHTML = '';
+
+            // Back button
+            const backButton = document.createElement('button');
+            backButton.textContent = '← Back';
+            backButton.className = 'back-button';
+            backButton.onclick = () => renderCategories(menuData);
+            menuContainer.appendChild(backButton);
+
+            items.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'item-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(item.logo);
+              img.alt = item.title;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = item.title;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                window.location.href = window.__SITE_PREFIX__ + item.url.replace(/^\//, "");
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = true;
+          }
+
+          // Initial render
+          renderCategories(menuData);
+
+          // Add copyright
+          const copyright = document.createElement('div');
+          copyright.className = 'copyright';
+          copyright.textContent = '© 2025 Bowen Deng';
+          menuContainer.appendChild(copyright);
+        }
+
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const indexPage = document.getElementById('index-page');
+
+        if (sidebarMenu) {
+          buildMenu(sidebarMenu, menuData);
+        }
+        if (indexPage) {
+          buildMenu(indexPage, menuData);
+        }
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</head>
+
+<body>
+  <button id="nav-toggle"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1000; font-size: 1.5em; padding: 16px 32px;">Navigate</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navToggle = document.getElementById('nav-toggle');
+      const sidebar = document.getElementById('sidebar-menu');
+      navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if (sidebar.classList.contains('active')) {
+          sidebar.style.minHeight = '800px';
+        } else {
+          sidebar.style.minHeight = '';
+        }
+      });
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+        });
+      });
+    });
+  </script>
+  <div id="container">
+    <div id="header">
+      <h1 class="title" style="position: fixed; top: 0; left: 50%; margin: 0; padding: 10px;">
+        <div
+          style="position: absolute; top: 50px; left: 50%; transform: translateX(-80%); font-size: 15px; color: #e91e63; pointer-events: none;">
+          &lt;- Can I get a forehead pat?
+        </div>
+        <button onclick="rainStars(this)"
+          style="border: none; background: none; padding: 0; display: inline-block; line-height: 0; cursor: grab;">
+          <img src="../static/fox_with_cube.png" alt="" width="85" style="display: block;">
+        </button>
+        <a href="../">Cubing for Professionals</a>
+      </h1>
+    </div>
+
+    <!-- To check the feedback from the solver app -->
+    <!-- http://localhost:5006/execute_sql/ -->
+
+    <div id="sidebar">
+      <nav>
+        <div id="sidebar-menu" class="sidebar-menu">
+        </div>
+      </nav>
+      </nav>
+    </div>
+
+    <div id="content" class="home">
+      <div id="home">
+
+        <h1 class="watermark">cubingpro.com</h1>
+
+        <div id="star-container"></div>
+
+        
+
+<h1>FMC Reconstruction 1</h1>
+<!-- TODO: Table of content -->
+<p>Here is an educational FMC reconstruction for an actual solve during a competition.</p>
+<p>The scramble:</p>
+<p>R' U' F D U2 L2 U2 B' D2 R2 F2 R2 B' L' D F' L D' L F2 R' U' F</p>
+<p>The 30 move solution:</p>
+<p>U2 R' U' L D B' D B U2 B' L' D L2 D' L D L2 F L F' D' B2 L U' L2 U D B' L B2</p>
+<twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="3x3x3"
+alg="U2 R' U' L D B' D B U2 B' L' D L2 D' L D L2 F L F' D' B2 L U' L2 U D B' L B2"></twisty-player><br>
+
+<p>The method is block building + NISS.</p>
+<p>We start with a 5 move X-Cross:</p>
+<p>U2 R' U' L U2</p>
+<p>And do not notice a good enough continuation within reasonable time, therefore, considered NISS.</p>
+<p>The original problem is to find x, so that scramble * 5 move X-Cross * x = Identity</p>
+<p>With NISS, we try to find y which solves the new scramble 5 move X-Cross inverse * scramble inverse.</p>
+<p>Then y inverse will be the x, and the solution will be 5 move X-Cross * y inverse.</p>
+<p></p>
+<p>The NISS scramble (denote as A):</p>
+<p>U2 L' U R U2 F' U R F2 L' D L' F D' L B R2 F2 R2 D2 B U2 L2 U2 D' F' U R</p>
+<p></p>
+<p>With this scramble, we may apply B2 L' B D' to solve 2x2x3 (with a D2 prescramble).</p>
+<p>Then U' L2 U L' B2 solve all but last F2L (with a B D2 prescramble).</p>
+<p>Then no promising continuation was found, therefore, we apply NISS second time.</p>
+<p></p>
+<p>With some intuition, realized D' B D' is a better prescramble with NISS.</p>
+<p>The (secondary) NISS scramble (denote as B):</p>
+<p>B2 L U' L2 U D B' L B2 + R' U' F D U2 L2 U2 B' D2 R2 F2 R2 B' L' D F' L D' L F2 R' U' F + U2 R' U' L U2 + D B' D</p>
+<p></p>
+<p>The solution (except for 3c) is:</p>
+<p>L' D L2 D' L D L2 F L F' D'</p>
+<p>Very luckily solving the F2L directly solve everything but 3 corners.</p>
+<p></p>
+<p>We produce the 28 move skeleton as:</p>
+<p>U2 R' U' L U2 D B' D L' D L2 D' L D L2 F L F' D' B2 L U' L2 U D B' L B2</p>
+<p></p>
+<p>We are now already guaranteed (most likely) 28 + 8 = 36 move solution, although most likely better.</p>
+<p>We luckily found an insertion at U2 R' U' L U2 D + insertion + B' D L' D L2 D' L D L2 F L F' D' B2 L U' L2 U D B' L B2, the insertion is U2 B' D B U2 B' D' B</p>
+<p>The last 2 moves D' B cancels perfectly with B' D (4 move cancelled), which gives us:</p>
+<p>U2 R' U' L U2 D U2 B' D B U2 B' L' D L2 D' L D L2 F L F' D' B2 L U' L2 U D B' L B2</p>
+<p>Even better, notice U2 D U2 is actually redundant, and can be simplified as D!</p>
+<p>Therefore, we can cancel 2 more moves, and get an incredible 6 move cancellation!</p>
+<p>The final answer is: U2 R' U' L D B' D B U2 B' L' D L2 D' L D L2 F L F' D' B2 L U' L2 U D B' L B2</p>
+
+<h1>FMC Reconstruction 2</h1>
+<p>Here is another FMC reconstruction for a normal practice.</p>
+<p>Scramble: R' U' F L D F2 D2 B U' F B2 R' L' D2 B2 R F2 B2 D2 R' D2 L B' U2 R' U' F</p>
+<p>The 29 move solution: F' U2 F2 L' U R D' R F' R' F B R U' B U B D B L B' L' D' R' B R B R' B'</p>
+<twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="3x3x3"
+alg="F' U2 F2 L' U R D' R F' R' F B R U' B U B D B L B' L' D' R' B R B R' B'"></twisty-player><br>
+<p>First we build blocks as:</p>
+<ol>
+    <li>F' U2 F2 L' U for 2x2x2 block</li>
+    <li>R D' R F' R' F for 2x2x3 block</li>
+    <li>B R U' B U for F2L except last slot</li>
+</ol>
+<p>Then we explored different strategies, but decided it's not a good enough case. So we applied NISS:</p>
+<p>NISS scramble: U' B' U R' B' F' R F R' D R' U' L F2 U' R U2 B L' D2 R D2 B2 F2 R' B2 D2 L R B2 F' U B' D2 F2 D' L' F' U R</p>
+<p>With the NISS scramble, we can do the last F2L with B R B' R' B' R</p>
+<p>And the OLL is a 6-mover. We notice the bar and decided to apply via the mirror algorithm that preserves the bar:</p>
+<p>D L B L' B' D'</p>
+<p>And we end up with a PLL skip!! B' finishes the solve.</p>
+<p>Now we simply clean up the solution as the original block + inverse of the solution after NISS.</p>
+
+<h1>FMC Reconstruction 3</h1>
+<p>Here is an educational FMC reconstruction for an actual solve during a competition.</p>
+<p>The scramble:</p>
+<p>R' U' F L' U2 L B R2 F2 B U' F' U' L' D2 L B2 L B2 L2 D2 R' U' F</p>
+<p>The 27 move solution:</p>
+<p>F' D L' F' L B' L' F L B' F2 D R' B' R B U2 F B U' B' R2 U R U' R U</p>
+<twisty-player style="width: 256px;height: 192px;" experimental-setup-anchor="end" puzzle="3x3x3"
+alg="F' D L' F' L B' L' F L B' F2 D R' B' R B U2 F B U' B' R2 U R U' R U"></twisty-player><br>
+
+<p>The method is block building.</p>
+<p>F' D B2 D for 2x2x2.</p>
+<p>D' F2 D for pseudo 2x2x3.</p>
+<p>R' B' R B U2 F for F2L except one.</p>
+<p>B U' B' U for F2L.</p>
+<p>Here one option is to do the regular OLL of 9 moves, which gives a 3 corner, this will be a standard skeleton that produce multiple 30 moves solution.</p>
+<p>But the other option we chose is to use a sune here:</p>
+<p>U' R2 U R U' R U which also produce a 3 corner with a 20 move skeleton.</p>
+<p>The remaining is a standard insertion after F' D, of L' F' L B' L' F L B which cancels one move.</p>
+
+
+
+
+        <style>
+        .discount-banner {
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #2d6a2e 0%, #4CAF50 50%, #57B647 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+        }
+        .discount-banner h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #e8f5e9;
+            position: relative;
+        }
+        .discount-banner .discount-code {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border: 2px dashed rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 28px;
+            font-size: 1.6em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discount-banner .discount-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .discount-banner .discount-label {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .discount-banner .discount-shops {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.85);
+            position: relative;
+        }
+        </style>
+
+        <div class="discount-banner">
+            <div class="discount-label">🎉 5% OFF</div>
+            <h3>Use my discount code at TheCubicle & SpeedCubeShop</h3>
+            <div class="discount-code" onclick="navigator.clipboard.writeText('CUBINGPRO'); this.textContent='COPIED!'; setTimeout(() => this.textContent='CUBINGPRO', 1500);">CUBINGPRO</div>
+            <div class="discount-shops">Click the code to copy • Works at checkout on both stores</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- /container -->
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850"
+    crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CK6MWC01K0');
+  </script>
+
+  <div id="phantom-images" style="display: none;">
+    <!-- Unique image files -->
+    <img id="3x3x3_png" src="../static/3x3x3.png" />
+    <img id="timer_png" src="../static/timer.png" />
+    <img id="2x2x2_png" src="../static/2x2x2.png" />
+    <img id="4x4x4_jpg" src="../static/4x4x4.jpg" />
+    <img id="clock_png" src="../static/clock.png" />
+    <img id="pyraminx_png" src="../static/pyraminx.png" />
+    <img id="skewb_png" src="../static/skewb.png" />
+    <img id="fto_png" src="../static/fto.png" />
+    <img id="sq1_jpg" src="../static/sq1.jpg" />
+    <img id="wca_png" src="../static/wca.png" />
+    <img id="misc_png" src="../static/misc.png" />
+    <img id="solver_png" src="../static/solver.png" />
+    <img id="3bld_png" src="../static/3bld.png" />
+    <img id="5bld_png" src="../static/5bld.png" />
+    <img id="fmc_jpg" src="../static/fmc.jpg" />
+    <img id="eg_png" src="../static/eg.png" />
+    <img id="yau_png" src="../static/yau.png" />
+    <img id="4bld_jpg" src="../static/4bld.jpg" />
+    <img id="7simul_png" src="../static/7simul.png" />
+    <img id="clock_math_png" src="../static/clock_math.png" />
+    <img id="corner_first_png" src="../static/corner_first.png" />
+    <img id="v_first_png" src="../static/v_first.png" />
+    <img id="sarah_png" src="../static/sarah.png" />
+    <img id="cubeshape_jpg" src="../static/cubeshape.jpg" />
+    <img id="eo_png" src="../static/eo.png" />
+    <img id="wca_viz_png" src="../static/wca_viz.png" />
+    <img id="mini_comp_jpg" src="../static/mini_comp.jpg" />
+    <img id="geoguesser_png" src="../static/misc.png" />
+    <img id="auto_interviewer_png" src="../static/misc.png" />
+    <img id="tutorial_viewer_png" src="../static/misc.png" />
+    <img id="tutorial_editor_png" src="../static/misc.png" />
+  </div>
+
+
+</body>
+
+</html>

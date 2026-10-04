@@ -1,0 +1,497 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Cubing Pro</title>
+
+  <meta name="author" content="Bowen Deng">
+  <meta name="description" content="Home for competitive speedcubers.">
+  <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs, face turning octahedron, fto">
+
+  <link rel="stylesheet" href="../static/css/main.css">
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+  <script src="../static/js/main.js" type="text/javascript"></script>
+  <script src="../static/js/vendor/jquery.ba-replacetext.min.js"></script>
+  <script src="../static/js/clock.js" type="text/javascript"></script>
+  <script src="../static/js/pyraminx.js" type="text/javascript"></script>
+  <script src="../static/js/big_cube.js" type="text/javascript"></script>
+  <script src="../static/js/skewb.js" type="text/javascript"></script>
+  <script src="../static/js/sq1.js" type="text/javascript"></script>
+  <script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+  <script type="module">
+    import "https://cdn.cubing.net/v0/js/cubing/twisty";
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.__SITE_PREFIX__="../";</script>
+  <script>
+    function getImageSrc(filename) {
+      const id = filename.toLowerCase().replace('.', '_'); // e.g., "fmc.jpg" -> "fmc_jpg"
+      const img = document.getElementById(id);
+      return img ? img.src : null;
+    }
+    fetch("../static/sidebar.json")
+      .then(response => response.json())
+      .then(menuData => {
+        function buildMenu(menuContainer, menuData) {
+          // State
+          let inCategoryView = false;
+
+          function renderCategories(data) {
+            menuContainer.innerHTML = ''; // Clear previous
+
+            data.forEach(entry => {
+              const card = document.createElement('div');
+              card.className = 'category-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(entry.category_logo);
+              img.alt = entry.category;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = entry.category;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                renderItems(entry.category, entry.items);
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = false;
+          }
+
+          function renderItems(category, items) {
+            menuContainer.innerHTML = '';
+
+            // Back button
+            const backButton = document.createElement('button');
+            backButton.textContent = '← Back';
+            backButton.className = 'back-button';
+            backButton.onclick = () => renderCategories(menuData);
+            menuContainer.appendChild(backButton);
+
+            items.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'item-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(item.logo);
+              img.alt = item.title;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = item.title;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                window.location.href = window.__SITE_PREFIX__ + item.url.replace(/^\//, "");
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = true;
+          }
+
+          // Initial render
+          renderCategories(menuData);
+
+          // Add copyright
+          const copyright = document.createElement('div');
+          copyright.className = 'copyright';
+          copyright.textContent = '© 2025 Bowen Deng';
+          menuContainer.appendChild(copyright);
+        }
+
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const indexPage = document.getElementById('index-page');
+
+        if (sidebarMenu) {
+          buildMenu(sidebarMenu, menuData);
+        }
+        if (indexPage) {
+          buildMenu(indexPage, menuData);
+        }
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</head>
+
+<body>
+  <button id="nav-toggle"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1000; font-size: 1.5em; padding: 16px 32px;">Navigate</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navToggle = document.getElementById('nav-toggle');
+      const sidebar = document.getElementById('sidebar-menu');
+      navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if (sidebar.classList.contains('active')) {
+          sidebar.style.minHeight = '800px';
+        } else {
+          sidebar.style.minHeight = '';
+        }
+      });
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+        });
+      });
+    });
+  </script>
+  <div id="container">
+    <div id="header">
+      <h1 class="title" style="position: fixed; top: 0; left: 50%; margin: 0; padding: 10px;">
+        <div
+          style="position: absolute; top: 50px; left: 50%; transform: translateX(-80%); font-size: 15px; color: #e91e63; pointer-events: none;">
+          &lt;- Can I get a forehead pat?
+        </div>
+        <button onclick="rainStars(this)"
+          style="border: none; background: none; padding: 0; display: inline-block; line-height: 0; cursor: grab;">
+          <img src="../static/fox_with_cube.png" alt="" width="85" style="display: block;">
+        </button>
+        <a href="../">Cubing for Professionals</a>
+      </h1>
+    </div>
+
+    <!-- To check the feedback from the solver app -->
+    <!-- http://localhost:5006/execute_sql/ -->
+
+    <div id="sidebar">
+      <nav>
+        <div id="sidebar-menu" class="sidebar-menu">
+        </div>
+      </nav>
+      </nav>
+    </div>
+
+    <div id="content" class="home">
+      <div id="home">
+
+        <h1 class="watermark">cubingpro.com</h1>
+
+        <div id="star-container"></div>
+
+        
+<h1>
+    Pyraminx corner first method intro
+</h1>
+<p>
+    Corner first method is a family of advanced pyraminx solving methods, it consists of:
+<ol>
+    <li>WO (Wedel-Odder) method</li>
+    <li>One-flip method</li>
+    <li>Nutella method</li>
+    <li>Oka method</li>
+    <li>Keyhole method</li>
+</ol>
+We split them as two main categories:
+<ol>
+    <li>Corner then Center: WO method, One-Flip method, Nutella method</li>
+    <li>Center then Corner: Oka method, Keyhole method</li>
+</ol>
+With Corner then Center methods,
+<ol>
+    <li>the first step is to build a corner or pseudocorner, such that all three edges of that corner are brought
+        together.</li>
+    <li>the second step is to use an algorithm to solve all centers and solve the corner.</li>
+    <li>the last step is to solve last 3 edges.</li>
+</ol>
+With Center then Corner methods,
+<ol>
+    <li>the first step is to build a partial corner or partial pseudocorner</li>
+    <li>the second step is to solve the centers using intuitive algorithm.</li>
+    <li>the third step is to solve the corner</li>
+    <li>the last step is to solve last 3 edges.</li>
+</ol>
+</p>
+
+<h2>
+    WO method
+</h2>
+<p>
+    With WO method,
+<ol>
+    <li>The first step is to build a corner. This step can be done intuitively.</li>
+    <li> The second step is to solve the centers using an algorithm. See the algorithms in <a
+            href="../pyraminx/corner_first_alg.html">corner first algorithms</a>.</li>
+    <li>The third step is to solve last 3 edges.</li>
+    <li>The final step is to solve tips and align the corner with the bottom.</li>
+</ol>
+The visualization below is just an example case for illustration purpose.
+</p>
+<canvas id="wo-1" width="160" height="132"></canvas>
+<canvas id="wo-2" width="160" height="132"></canvas>
+<canvas id="wo-3" width="160" height="132"></canvas>
+<canvas id="wo-4" width="160" height="132"></canvas>
+<script>
+    renderPyraminx("wo-1", " ,bbb,   y ; ,rrr,     ; ,ggg,   y ");
+    renderPyraminx("wo-2", " ,bbb, gyg ; ,rrr, byb ; ,ggg, r r ");
+    renderPyraminx("wo-3", " ,bbb, ggg ; ,rrr, bbb ; ,ggg, rrr ");
+    renderPyraminx("wo-4", "b,bbb,bbbbb;r,rrr,rrrrr;g,ggg,ggggg");
+</script>
+
+<h2>
+    One Flip method
+</h2>
+<p>
+    With One Flip method,
+<ol>
+    <li>The first step is to build a corner with exactly one edge being flipped. This step can be done intuitively.</li>
+    <li> The second step is to solve the centers and flip the edge simultaneously.</li>
+    <li>The third step is to solve last 3 edges.</li>
+    <li>The final step is to solve tips and align the corner with the bottom.</li>
+</ol>
+The visualization below is just an example case for illustration purpose.
+</p>
+<canvas id="of-1" width="160" height="132"></canvas>
+<canvas id="of-2" width="160" height="132"></canvas>
+<canvas id="of-3" width="160" height="132"></canvas>
+<canvas id="of-4" width="160" height="132"></canvas>
+<script>
+    renderPyraminx("of-1", " ,bbb,   y ; ,rrg,     ; ,rgg,   y ");
+    renderPyraminx("of-2", " ,bbb, gyg ; ,rrr, byb ; ,ggg, r r ");
+    renderPyraminx("of-3", " ,bbb, ggg ; ,rrr, bbb ; ,ggg, rrr ");
+    renderPyraminx("of-4", "b,bbb,bbbbb;r,rrr,rrrrr;g,ggg,ggggg");
+</script>
+
+<h2>
+    Nutella method
+</h2>
+<p>
+    With Nutella method,
+<ol>
+    <li>The first step is to build a corner with two edges swapped. These two edges must be oriented like the visualization below (same color should appear on the same face), not any other way. This step can be done intuitively.</li>
+    <li> The second step is to solve the centers and swap the edge simultaneously.</li>
+    <li>The third step is to solve last 3 edges.</li>
+    <li>The final step is to solve tips and align the corner with the bottom.</li>
+</ol>
+The visualization below is just an example case for illustration purpose.
+</p>
+<canvas id="nu-1" width="160" height="132"></canvas>
+<canvas id="nu-2" width="160" height="132"></canvas>
+<canvas id="nu-3" width="160" height="132"></canvas>
+<canvas id="nu-4" width="160" height="132"></canvas>
+<script>
+    renderPyraminx("nu-1", " ,bbg,   y ; ,rrr,     ; ,bgg,   y ");
+    renderPyraminx("nu-2", " ,bbb, gyg ; ,rrr, byb ; ,ggg, r r ");
+    renderPyraminx("nu-3", " ,bbb, ggg ; ,rrr, bbb ; ,ggg, rrr ");
+    renderPyraminx("nu-4", "b,bbb,bbbbb;r,rrr,rrrrr;g,ggg,ggggg");
+</script>
+
+<h2>
+    Oka method
+</h2>
+<p>
+    With Oka method,
+<ol>
+    <li>The first step is to have one corner piece correct, and another corner piece on the incorrect position but correct orientation (a RUR' or RU'R' would place it in right position and orientation).</li>
+    <li> The second step is to solve the centers using the empty slot.</li>
+    <li> The third step is to solve the corner.</li>
+    <li>The fourth step is to solve last 3 edges.</li>
+    <li>The final step is to solve tips and align the corner with the bottom.</li>
+</ol>
+The visualization below is just an example case for illustration purpose.
+</p>
+<canvas id="oka-1" width="160" height="132"></canvas>
+<canvas id="oka-2" width="160" height="132"></canvas>
+<canvas id="oka-3" width="160" height="132"></canvas>
+<canvas id="oka-4" width="160" height="132"></canvas>
+<canvas id="oka-5" width="160" height="132"></canvas>
+<script>
+    renderPyraminx("oka-1", " ,bbr,   y ; ,gr ,     ; , gg,   y ");
+    renderPyraminx("oka-2", " ,bbr, gyg ; ,gr , byb ; , gg, r r ");
+    renderPyraminx("oka-3", " ,bbb, gyg ; ,rrr, byb ; ,ggg, r r ");
+    renderPyraminx("oka-4", " ,bbb, ggg ; ,rrr, bbb ; ,ggg, rrr ");
+    renderPyraminx("oka-5", "b,bbb,bbbbb;r,rrr,rrrrr;g,ggg,ggggg");
+</script>
+
+<h2>
+    Keyhole method
+</h2>
+<p>
+    With Keyhole method,
+<ol>
+    <li>The first step is to have two pieces correct.</li>
+    <li> The second step is to solve the centers using the empty slot.</li>
+    <li> The third step is to solve the corner.</li>
+    <li>The fourth step is to solve last 3 edges.</li>
+    <li>The final step is to solve tips and align the corner with the bottom.</li>
+</ol>
+The visualization below is just an example case for illustration purpose.
+</p>
+<canvas id="kh-1" width="160" height="132"></canvas>
+<canvas id="kh-2" width="160" height="132"></canvas>
+<canvas id="kh-3" width="160" height="132"></canvas>
+<canvas id="kh-4" width="160" height="132"></canvas>
+<canvas id="kh-5" width="160" height="132"></canvas>
+<script>
+    renderPyraminx("kh-1", " ,bbb,   y ; ,rr ,     ; , gg,   y ");
+    renderPyraminx("kh-2", " ,bbb, gyg ; ,rr , byb ; , gg, r r ");
+    renderPyraminx("kh-3", " ,bbb, gyg ; ,rrr, byb ; ,ggg, r r ");
+    renderPyraminx("kh-4", " ,bbb, ggg ; ,rrr, bbb ; ,ggg, rrr ");
+    renderPyraminx("kh-5", "b,bbb,bbbbb;r,rrr,rrrrr;g,ggg,ggggg");
+</script>
+
+<h2>
+    Improvement Plan
+</h2>
+<p>
+    People sometimes start by learning Oka method and keyhole method, than transit to learn WO method, one flip method,
+    and Nutella method.<br>
+    Alternatively, people start by learning WO method, one flip method, and Nutella method, than transit to learn Oka
+    method.<br>
+    Start with the approach you are most interested in, once you gain experience, it's natural to learn more
+    algorithms.<br>
+    As you advance, good lookahead + improvement on tips execution + tps + pick the best method will help you achieve
+    good results.
+</p>
+
+
+
+        <style>
+        .discount-banner {
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #2d6a2e 0%, #4CAF50 50%, #57B647 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+        }
+        .discount-banner h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #e8f5e9;
+            position: relative;
+        }
+        .discount-banner .discount-code {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border: 2px dashed rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 28px;
+            font-size: 1.6em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discount-banner .discount-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .discount-banner .discount-label {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .discount-banner .discount-shops {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.85);
+            position: relative;
+        }
+        </style>
+
+        <div class="discount-banner">
+            <div class="discount-label">🎉 5% OFF</div>
+            <h3>Use my discount code at TheCubicle & SpeedCubeShop</h3>
+            <div class="discount-code" onclick="navigator.clipboard.writeText('CUBINGPRO'); this.textContent='COPIED!'; setTimeout(() => this.textContent='CUBINGPRO', 1500);">CUBINGPRO</div>
+            <div class="discount-shops">Click the code to copy • Works at checkout on both stores</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- /container -->
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850"
+    crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CK6MWC01K0');
+  </script>
+
+  <div id="phantom-images" style="display: none;">
+    <!-- Unique image files -->
+    <img id="3x3x3_png" src="../static/3x3x3.png" />
+    <img id="timer_png" src="../static/timer.png" />
+    <img id="2x2x2_png" src="../static/2x2x2.png" />
+    <img id="4x4x4_jpg" src="../static/4x4x4.jpg" />
+    <img id="clock_png" src="../static/clock.png" />
+    <img id="pyraminx_png" src="../static/pyraminx.png" />
+    <img id="skewb_png" src="../static/skewb.png" />
+    <img id="fto_png" src="../static/fto.png" />
+    <img id="sq1_jpg" src="../static/sq1.jpg" />
+    <img id="wca_png" src="../static/wca.png" />
+    <img id="misc_png" src="../static/misc.png" />
+    <img id="solver_png" src="../static/solver.png" />
+    <img id="3bld_png" src="../static/3bld.png" />
+    <img id="5bld_png" src="../static/5bld.png" />
+    <img id="fmc_jpg" src="../static/fmc.jpg" />
+    <img id="eg_png" src="../static/eg.png" />
+    <img id="yau_png" src="../static/yau.png" />
+    <img id="4bld_jpg" src="../static/4bld.jpg" />
+    <img id="7simul_png" src="../static/7simul.png" />
+    <img id="clock_math_png" src="../static/clock_math.png" />
+    <img id="corner_first_png" src="../static/corner_first.png" />
+    <img id="v_first_png" src="../static/v_first.png" />
+    <img id="sarah_png" src="../static/sarah.png" />
+    <img id="cubeshape_jpg" src="../static/cubeshape.jpg" />
+    <img id="eo_png" src="../static/eo.png" />
+    <img id="wca_viz_png" src="../static/wca_viz.png" />
+    <img id="mini_comp_jpg" src="../static/mini_comp.jpg" />
+    <img id="geoguesser_png" src="../static/misc.png" />
+    <img id="auto_interviewer_png" src="../static/misc.png" />
+    <img id="tutorial_viewer_png" src="../static/misc.png" />
+    <img id="tutorial_editor_png" src="../static/misc.png" />
+  </div>
+
+
+</body>
+
+</html>

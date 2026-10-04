@@ -1,0 +1,406 @@
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Cubing Pro</title>
+
+  <meta name="author" content="Bowen Deng">
+  <meta name="description" content="Home for competitive speedcubers.">
+  <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs, face turning octahedron, fto">
+
+  <link rel="stylesheet" href="../static/css/main.css">
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+  <script src="../static/js/main.js" type="text/javascript"></script>
+  <script src="../static/js/vendor/jquery.ba-replacetext.min.js"></script>
+  <script src="../static/js/clock.js" type="text/javascript"></script>
+  <script src="../static/js/pyraminx.js" type="text/javascript"></script>
+  <script src="../static/js/big_cube.js" type="text/javascript"></script>
+  <script src="../static/js/skewb.js" type="text/javascript"></script>
+  <script src="../static/js/sq1.js" type="text/javascript"></script>
+  <script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+  <script type="module">
+    import "https://cdn.cubing.net/v0/js/cubing/twisty";
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>window.__SITE_PREFIX__="../";</script>
+  <script>
+    function getImageSrc(filename) {
+      const id = filename.toLowerCase().replace('.', '_'); // e.g., "fmc.jpg" -> "fmc_jpg"
+      const img = document.getElementById(id);
+      return img ? img.src : null;
+    }
+    fetch("../static/sidebar.json")
+      .then(response => response.json())
+      .then(menuData => {
+        function buildMenu(menuContainer, menuData) {
+          // State
+          let inCategoryView = false;
+
+          function renderCategories(data) {
+            menuContainer.innerHTML = ''; // Clear previous
+
+            data.forEach(entry => {
+              const card = document.createElement('div');
+              card.className = 'category-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(entry.category_logo);
+              img.alt = entry.category;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = entry.category;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                renderItems(entry.category, entry.items);
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = false;
+          }
+
+          function renderItems(category, items) {
+            menuContainer.innerHTML = '';
+
+            // Back button
+            const backButton = document.createElement('button');
+            backButton.textContent = '← Back';
+            backButton.className = 'back-button';
+            backButton.onclick = () => renderCategories(menuData);
+            menuContainer.appendChild(backButton);
+
+            items.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'item-card';
+
+              const img = document.createElement('img');
+              img.src = getImageSrc(item.logo);
+              img.alt = item.title;
+              img.className = 'card-image';
+
+              const title = document.createElement('div');
+              title.className = 'card-title';
+              title.textContent = item.title;
+
+              card.appendChild(img);
+              card.appendChild(title);
+
+              card.addEventListener('click', () => {
+                window.location.href = window.__SITE_PREFIX__ + item.url.replace(/^\//, "");
+              });
+
+              menuContainer.appendChild(card);
+            });
+
+            inCategoryView = true;
+          }
+
+          // Initial render
+          renderCategories(menuData);
+
+          // Add copyright
+          const copyright = document.createElement('div');
+          copyright.className = 'copyright';
+          copyright.textContent = '© 2025 Bowen Deng';
+          menuContainer.appendChild(copyright);
+        }
+
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const indexPage = document.getElementById('index-page');
+
+        if (sidebarMenu) {
+          buildMenu(sidebarMenu, menuData);
+        }
+        if (indexPage) {
+          buildMenu(indexPage, menuData);
+        }
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</head>
+
+<body>
+  <button id="nav-toggle"
+    style="position: fixed; top: 10px; left: 10px; z-index: 1000; font-size: 1.5em; padding: 16px 32px;">Navigate</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navToggle = document.getElementById('nav-toggle');
+      const sidebar = document.getElementById('sidebar-menu');
+      navToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        if (sidebar.classList.contains('active')) {
+          sidebar.style.minHeight = '800px';
+        } else {
+          sidebar.style.minHeight = '';
+        }
+      });
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          sidebar.classList.remove('active');
+        });
+      });
+    });
+  </script>
+  <div id="container">
+    <div id="header">
+      <h1 class="title" style="position: fixed; top: 0; left: 50%; margin: 0; padding: 10px;">
+        <div
+          style="position: absolute; top: 50px; left: 50%; transform: translateX(-80%); font-size: 15px; color: #e91e63; pointer-events: none;">
+          &lt;- Can I get a forehead pat?
+        </div>
+        <button onclick="rainStars(this)"
+          style="border: none; background: none; padding: 0; display: inline-block; line-height: 0; cursor: grab;">
+          <img src="../static/fox_with_cube.png" alt="" width="85" style="display: block;">
+        </button>
+        <a href="../">Cubing for Professionals</a>
+      </h1>
+    </div>
+
+    <!-- To check the feedback from the solver app -->
+    <!-- http://localhost:5006/execute_sql/ -->
+
+    <div id="sidebar">
+      <nav>
+        <div id="sidebar-menu" class="sidebar-menu">
+        </div>
+      </nav>
+      </nav>
+    </div>
+
+    <div id="content" class="home">
+      <div id="home">
+
+        <h1 class="watermark">cubingpro.com</h1>
+
+        <div id="star-container"></div>
+
+        
+<h1>
+    7 Simul Intro
+</h1>
+<p>
+    If you don't know how to solve Rubik's Clock using the Flip Method, please read <a href=""
+        https://www.stefan-pochmann.info/spocc/speedsolving/clock/">Stefan Pochmann's website</a>.<br>
+    Flip method is a very good method and can already help you achieve world class.<br>
+    But most top clock solvers use the so-called 7 simul method.<br>
+    The most popular 7 simul variant is Tommy's version, which requires using pinky finger for bottom dials.<br>
+</p>
+
+<h2>
+    Method
+</h2>
+<p>
+    In 7 simul, we use a fixed pin order to solve the clock.
+</p>
+<p>
+    Then we memorize 6 numbers based on modulo arithmetics of 12 (e.g. 5 = -7, 3 + 8 = 11 = -1, 5 + 8 = 13 = 1, 2 - 3 =
+    -1, 2 - 8 = -6 = 6).<br>
+    You will have the flexibility on how to memorize them. But we recommend several common strategies:
+<ol>
+    <li>Remember numbers as-is in your native language.</li>
+    <li>Encode numbers into A for 1, B for 2, ..., K for 11.</li>
+    <li>Combine both, e.g. 1-6 with native language, and E for 7, D for 8, etc.</li>
+    <li>Similarly, but instead of native language, use a language (e.g. Japanese/Korean/Chinese) which has low syllabus
+        count for numbers.</li>
+</ol>
+</p>
+<p>
+    After memorizing these 6 numbers, we will solve the clock with the aforementioned pin order.<br>
+    Each time, you will adjust two dials simultaneously (unless the adjustment required is 0), either based on the
+    memorized number, or based on intuitively matching two clock faces (similar to flip method).
+</p>
+<p>
+    The best way to illustrate this method is to use a
+    demo example.<br>
+</p>
+
+<div id="appendable-div">
+</div>
+
+<p>Now the clock is solved!</p>
+
+<script>
+    // Get Django variable safely into JavaScript
+    const table_data = JSON.parse('[{\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u0022, \u0022change_pins\u0022: \u0022\u0022, \u0022annotation\u0022: \u0022\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003EScramble: UR5+ DR3+ DL3+ UL2+ U5\u002D R1+ D5+ L1+ ALL1\u002D y2 U3\u002D R2+ D3+ L4\u002D ALL1+\u003C/p\u003E\u005Cn\u003Cp\u003ENotice we flip from black face to white face with x2 rotation instead of y2 rotation.\u003C/p\u003E\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u0022, \u0022change_pins\u0022: \u0022\u0022, \u0022annotation\u0022: \u0022UL,L,DL,U,C,D,UR,R,DR,ul,l,dl,u,c,d,ur,r,dr\u0022, \u0022paragraph\u0022: \u0022\u005CnMemorize 6 numbers using aforementioned arithmetics applying modulo 12.\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,3,,,,,,,,,,,,\u0022, \u0022change_pins\u0022: \u00220,0,1,0\u0022, \u0022annotation\u0022: \u0022,,\u002D1,,,,3,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Col\u003E\u005Cn\u003Cli\u003EMemo 1: memorize M1 \u003D c \u002D d. M1 \u003D \u002D1\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 2: memorize M2 \u003D dr \u002D r + U \u002D L. M2 \u003D 3\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 3: memorize M3 \u003D L \u002D U. M3 \u003D 1\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 4: memorize M4 \u003D d \u002D r. M4 \u003D \u002D2\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 5: memorize M5 \u003D UR \u002D U + C \u002D D + l \u002D ul + r. M5 \u003D \u002D3\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 6: memorize M6 \u003D u \u002D c + d + UL \u002D L + DR \u002D R. M6 \u003D 5\u003C/li\u003E\u005Cn\u003C/ol\u003E\u005Cn\u003Cp\u003ENow we should execute 7 simultaneous moves (14 moves in total).\u003C/p\u003E\u005Cn\u003Cp\u003E\u003Cu\u003EIn our visualization, white pin means the pin is sticking out, otherwise it\u0027s black pin.\u003C/u\u003E\u003C/p\u003E\u005Cn\u003Cp\u003EAs mentioned above, the execution requires some operation on the two bottom dials.\u003C/p\u003E\u005Cn\u003Cp\u003EStart the solve on the black face.\u003C/p\u003E\u005Cn\u003Cp\u003EStep 1: only press down bottomleft pin, then execute M1 with the bottom left dial and M2 with the top right dial.\u003C/p\u003E\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,3,\u002D2,1,,,,,,,,,,\u0022, \u0022change_pins\u0022: \u00221,0,1,0\u0022, \u0022annotation\u0022: \u0022\u002D2,,,,,,1,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003EStep 2: press also topleft pin, then execute \u003Cstrong\u003EM4\u003C/strong\u003E with top left dial, and \u003Cstrong\u003EM3\u003C/strong\u003E with top right dial. Notice how M4 is on the left instead of right.\u003C/p\u003E\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,3,\u002D2,1,5,\u002D3,,,,,,,,\u0022, \u0022change_pins\u0022: \u00221,1,1,0\u0022, \u0022annotation\u0022: \u00225,,,,,,,,\u002D3,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003EAt this point, U and L should be equal, otherwise it indicates memo/execution was incorrect.\u003C/p\u003E\u005Cn\u003Cp\u003EStep 3: press also topright pin, then align UL to U (\u003DL) with topleft dial, and align C to U (\u003DL) with bottomright dial.\u003C/p\u003E\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,3,\u002D2,1,5,\u002D3,\u002D3,5,,,,,,\u0022, \u0022change_pins\u0022: \u00220,1,1,0\u0022, \u0022annotation\u0022: \u0022\u002D3,,,,,,5,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003EStep 4: press up topleft pin, then execute M5 with topleft dial, and apply M6 with topright dial.\u003C/p\u003E\u005Cn\u003Cp\u003EYou may forget all the memos now, as they are used up already.\u003C/p\u003E\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,3,\u002D2,1,5,\u002D3,\u002D3,5,3,1,,,,\u0022, \u0022change_pins\u0022: \u00220,1,1,1\u0022, \u0022annotation\u0022: \u00223,,,,,,1,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003EStep 5: press down bottomright pin, then align topleft 2x2 (UL \u003D U \u003D L \u003D C) to D with topleft dial, and align DL to D with topright dial.\u003C/p\u003E\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,3,\u002D2,1,5,\u002D3,\u002D3,5,3,1,1,4,,\u0022, \u0022change_pins\u0022: \u00220,1,0,1\u0022, \u0022annotation\u0022: \u00221,,,,,,4,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003EStep 6: press up bottomleft pin, then align left 3x2 to R with topleft dial, align DR to R with right dial.\u003C/p\u003E\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u002D1,3,\u002D2,1,5,\u002D3,\u002D3,5,3,1,1,4,\u002D1,2\u0022, \u0022change_pins\u0022: \u00220,1,0,0\u0022, \u0022annotation\u0022: \u0022\u002D1,,,,,,2,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u005Cn\u003Cp\u003EStep 7: now the last step, press up bottomright pin, then intuitively point all clock face to 12 with topleft and topright dial.\u003C/p\u003E\u005Cn\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}]');
+
+    for (let i = 0; i < table_data.length; i++) {
+        const li = document.createElement("div");
+        li.innerHTML = table_data[i].paragraph;
+        li.id = `item-${i}`;
+        document.getElementById("appendable-div").appendChild(li);
+        const viz = document.createElement("div");
+        viz.style = "max-width: 640px; margin: auto;";
+        const adj = document.createElement("div");
+        adj.id = `adjuster-${i}`;
+        adj.className = "has-text-centered";
+        const canvas = document.createElement("canvas");
+        canvas.id = `canvas-${i}`;
+        adj.appendChild(canvas);
+        viz.appendChild(adj);
+        document.getElementById("appendable-div").appendChild(viz);
+        let scramble = table_data[i].scramble.split(',').map(Number);
+        let operations = table_data[i].operations.split(',').map(Number);
+        let clocks = makeClocks2(scramble, operations);
+        if (!table_data[i].annotation) {
+            table_data[i].annotation = null;
+        }
+        if (!table_data[i].operations) {
+            table_data[i].operations = null;
+        }
+        if (!table_data[i].change_pins) {
+            table_data[i].change_pins = null;
+        }
+        let plot_pointer = true;
+        if (table_data[i].annotation && table_data[i].annotation.startsWith("UL")) {
+            plot_pointer = false;            
+        }
+        render(clocks, "x2", adj.id, canvas.id, convert_to_matrix(table_data[i].annotation), convert_to_change_pin_matrix(table_data[i].change_pins), plot_pointer);
+    }
+</script>
+
+
+
+        <style>
+        .discount-banner {
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #2d6a2e 0%, #4CAF50 50%, #57B647 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+        }
+        .discount-banner h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #e8f5e9;
+            position: relative;
+        }
+        .discount-banner .discount-code {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border: 2px dashed rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 28px;
+            font-size: 1.6em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 12px rgba(255,255,255,0.4);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discount-banner .discount-code:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .discount-banner .discount-label {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .discount-banner .discount-shops {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.85);
+            position: relative;
+        }
+        </style>
+
+        <div class="discount-banner">
+            <div class="discount-label">🎉 5% OFF</div>
+            <h3>Use my discount code at TheCubicle & SpeedCubeShop</h3>
+            <div class="discount-code" onclick="navigator.clipboard.writeText('CUBINGPRO'); this.textContent='COPIED!'; setTimeout(() => this.textContent='CUBINGPRO', 1500);">CUBINGPRO</div>
+            <div class="discount-shops">Click the code to copy • Works at checkout on both stores</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- /container -->
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850"
+    crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-CK6MWC01K0');
+  </script>
+
+  <div id="phantom-images" style="display: none;">
+    <!-- Unique image files -->
+    <img id="3x3x3_png" src="../static/3x3x3.png" />
+    <img id="timer_png" src="../static/timer.png" />
+    <img id="2x2x2_png" src="../static/2x2x2.png" />
+    <img id="4x4x4_jpg" src="../static/4x4x4.jpg" />
+    <img id="clock_png" src="../static/clock.png" />
+    <img id="pyraminx_png" src="../static/pyraminx.png" />
+    <img id="skewb_png" src="../static/skewb.png" />
+    <img id="fto_png" src="../static/fto.png" />
+    <img id="sq1_jpg" src="../static/sq1.jpg" />
+    <img id="wca_png" src="../static/wca.png" />
+    <img id="misc_png" src="../static/misc.png" />
+    <img id="solver_png" src="../static/solver.png" />
+    <img id="3bld_png" src="../static/3bld.png" />
+    <img id="5bld_png" src="../static/5bld.png" />
+    <img id="fmc_jpg" src="../static/fmc.jpg" />
+    <img id="eg_png" src="../static/eg.png" />
+    <img id="yau_png" src="../static/yau.png" />
+    <img id="4bld_jpg" src="../static/4bld.jpg" />
+    <img id="7simul_png" src="../static/7simul.png" />
+    <img id="clock_math_png" src="../static/clock_math.png" />
+    <img id="corner_first_png" src="../static/corner_first.png" />
+    <img id="v_first_png" src="../static/v_first.png" />
+    <img id="sarah_png" src="../static/sarah.png" />
+    <img id="cubeshape_jpg" src="../static/cubeshape.jpg" />
+    <img id="eo_png" src="../static/eo.png" />
+    <img id="wca_viz_png" src="../static/wca_viz.png" />
+    <img id="mini_comp_jpg" src="../static/mini_comp.jpg" />
+    <img id="geoguesser_png" src="../static/misc.png" />
+    <img id="auto_interviewer_png" src="../static/misc.png" />
+    <img id="tutorial_viewer_png" src="../static/misc.png" />
+    <img id="tutorial_editor_png" src="../static/misc.png" />
+  </div>
+
+
+</body>
+
+</html>
