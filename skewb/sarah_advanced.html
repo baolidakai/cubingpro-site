@@ -887,22 +887,22 @@
     }
 </script>
 
-<p id="trainer-scramble">FCN notation scramble: U R U&#x27; L U&#x27; L&#x27; U&#x27; R<br>NS notation scramble: B r B&#x27; R r&#x27; R&#x27; B&#x27; r x&#x27; y</p>
+<p id="trainer-scramble">FCN notation scramble: L U L&#x27; R&#x27; B&#x27; R&#x27; B R B&#x27; R B R&#x27;<br>NS notation scramble: R r R&#x27; r&#x27; z&#x27; r&#x27; R&#x27; r R r&#x27; R r R&#x27; x&#x27; y&#x27;</p>
 <canvas id="trainer-canvas" width="300" height="200"></canvas>
 <img src="../static/skewb_notation.png" alt="Image unavailable"
     style="max-width: 50%; height: auto; float: none !important;"> </p>
 <button onclick="toggleVisibility('anno')">Show/Hide Annotation</button>
 <button onclick="toggleVisibility('alg')">Show/Hide Algorithm</button>
-<p id="anno" style="display:none;">left bar</p>
+<p id="anno" style="display:none;">right bar + top fill</p>
 <div id="alg" class="details" style="display:none;">
-    <p>S y&#x27; H y S y&#x27; S</p>
+    <p>y&#x27; S y2 H y&#x27; H y&#x27; S</p>
 </div>
 <script>
     function toggleVisibility(id) {
         var el = document.getElementById(id);
         el.style.display = (el.style.display === 'none') ? 'block' : 'none';
     }
-    drawSkewb("trainer-canvas", "rbbooyyggygyooborbbrygrrgwwwww");
+    drawSkewb("trainer-canvas", "rbbobyyggygyoogorbbrygrrowwwww");
 </script>
 
 
