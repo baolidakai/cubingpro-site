@@ -156,12 +156,13 @@ body.zh .lang-zh { display: revert; }
 
 /* ---------- language toggle (segmented control) ---------- */
 #lang-toggle {
-  display: inline-flex; align-items: center; gap: 2px;
-  background: #eef0f3; border-radius: 999px; padding: 3px; margin: 0 0 1.2em;
+  display: inline-flex; align-items: center; gap: 2px; flex-wrap: wrap;
+  background: #eef0f3; border-radius: 16px; padding: 3px; margin: 0 0 1.2em;
+  max-width: 100%;
 }
 #lang-toggle button {
   border: 0; background: transparent; border-radius: 999px;
-  padding: 0.35em 1.1em; cursor: pointer; font-size: 0.88em; color: #6b7280;
+  padding: 0.35em 0.9em; cursor: pointer; font-size: 0.85em; color: #6b7280;
   font-family: inherit; white-space: nowrap;
 }
 #lang-toggle button.active {
