@@ -20,9 +20,12 @@
   <main class="content">
     
 
-<div id="lang-toggle" role="group" aria-label="Language toggle">
+<div id="lang-toggle" role="group" aria-label="Language toggle"
+     data-title-en="Cubing Pro" data-title-zh-cn="Cubing Pro" data-title-zh-tw="Cubing Pro" data-title-ja="Cubing Pro">
   <button id="btn-en" aria-pressed="false">English</button>
-  <button id="btn-zh" aria-pressed="false">中文</button>
+  <button id="btn-zh-cn" aria-pressed="false">简体</button>
+  <button id="btn-zh-tw" aria-pressed="false">繁體</button>
+  <button id="btn-ja" aria-pressed="false">日本語</button>
 </div>
 
 <div id="content-en" style="display:none;">
@@ -43,7 +46,7 @@
   </p>
 </div>
 
-<div id="content-zh" style="display:none;">
+<div id="content-zh-cn" style="display:none;">
   <p>
     你好，我是 <a href="https://www.worldcubeassociation.org/persons/2009DENG01" target="_blank"
       rel="noopener noreferrer">Bowen Deng</a>。我从2007年开始速拧。
@@ -58,48 +61,95 @@
   </p>
 </div>
 
+<div id="content-zh-tw" style="display:none;">
+  <p>
+    你好，我是 <a href="https://www.worldcubeassociation.org/persons/2009DENG01" target="_blank"
+      rel="noopener noreferrer">Bowen Deng</a>。我從2007年開始速擰。
+  </p>
+
+  <p>
+    我建立這個網站的最終目標是與競速魔方的最新技術同步。它旨在為高級速擰者提供一個平台，定期查看最新的公式，學習實用的魔方理論，並幫助制定改進計劃。
+  </p>
+
+  <p>
+    可以通過我的 WCA ID @ gmail.com 給我發郵件。
+  </p>
+</div>
+
+<div id="content-ja" style="display:none;">
+  <p>
+    こんにちは、<a href="https://www.worldcubeassociation.org/persons/2009DENG01" target="_blank"
+      rel="noopener noreferrer">Bowen Deng</a> です。2007年からスピードキュービングをしています。
+  </p>
+
+  <p>
+    このサイトの最終目標は、競技キュービングの最先端と同期することです。上級スピードキューバーのためのホームとして、最新のアルゴリズムを定期的にチェックし、実用的なキュービング理論を学び、改善計画を立てる手助けをしたいと思っています。
+  </p>
+
+  <p>
+    連絡は私の WCA ID @ gmail.com までメールでお願いします。
+  </p>
+</div>
+
 <script>
-  const offset = new Date().getTimezoneOffset();
-  let currentLang = (offset / 60 === -8) ? 'zh' : 'en';
+(function () {
+  var KEY = 'cubingpro-lang';
+  var LANGS = ['en', 'zh-cn', 'zh-tw', 'ja'];
+  function defaultLang() {
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      if (/Asia\/(Shanghai|Chongqing|Urumqi)/.test(tz)) return 'zh-cn';
+      if (/Asia\/(Taipei|Hong_Kong|Macau)/.test(tz)) return 'zh-tw';
+      if (tz === 'Asia/Tokyo') return 'ja';
+    } catch (e) {}
+    var off = new Date().getTimezoneOffset();
+    if (off / 60 === -8) return 'zh-cn';
+    if (off / 60 === -9) return 'ja';
+    return 'en';
+  }
+  var lang = null;
+  try { lang = localStorage.getItem(KEY); } catch (e) {}
+  if (LANGS.indexOf(lang) === -1) lang = defaultLang();
 
-  const contentEn = document.getElementById('content-en');
-  const contentZh = document.getElementById('content-zh');
-  const btnEn = document.getElementById('btn-en');
-  const btnZh = document.getElementById('btn-zh');
+  var toggle = document.getElementById('lang-toggle');
+  var btns = {};
+  LANGS.forEach(function (k) {
+    btns[k] = document.getElementById('btn-' + k);
+  });
 
-  function updateContent() {
-    if (currentLang === 'en') {
-      contentEn.style.display = 'block';
-      contentZh.style.display = 'none';
-      btnEn.classList.add('active');
-      btnZh.classList.remove('active');
-      btnEn.setAttribute('aria-pressed', 'true');
-      btnZh.setAttribute('aria-pressed', 'false');
-    } else {
-      contentEn.style.display = 'none';
-      contentZh.style.display = 'block';
-      btnEn.classList.remove('active');
-      btnZh.classList.add('active');
-      btnEn.setAttribute('aria-pressed', 'false');
-      btnZh.setAttribute('aria-pressed', 'true');
-    }
+  function htmlLang(l) {
+    return l === 'zh-cn' ? 'zh-CN' : (l === 'zh-tw' ? 'zh-TW' : (l === 'ja' ? 'ja' : 'en'));
   }
 
-  btnEn.addEventListener('click', () => {
-    if (currentLang !== 'en') {
-      currentLang = 'en';
-      updateContent();
+  function show(l) {
+    lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) {}
+    LANGS.forEach(function (k) {
+      var el = document.getElementById('content-' + k);
+      if (el) el.style.display = (k === l ? 'block' : 'none');
+      var b = btns[k];
+      if (b) {
+        b.classList.toggle('active', k === l);
+        b.setAttribute('aria-pressed', k === l ? 'true' : 'false');
+      }
+    });
+    document.querySelectorAll('.i18n').forEach(function (el) {
+      var t = el.getAttribute('data-' + l);
+      if (t) el.textContent = t;
+    });
+    if (toggle) {
+      var tt = toggle.getAttribute('data-title-' + l);
+      if (tt) document.title = tt;
     }
+    document.documentElement.lang = htmlLang(l);
+  }
+
+  LANGS.forEach(function (k) {
+    if (btns[k]) btns[k].addEventListener('click', function () { if (lang !== k) show(k); });
   });
 
-  btnZh.addEventListener('click', () => {
-    if (currentLang !== 'zh') {
-      currentLang = 'zh';
-      updateContent();
-    }
-  });
-
-  updateContent();
+  show(lang);
+})();
 </script>
 
 <!-- <div id="index-page" class="sidebar-menu active">
