@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cross Tutorial - Cubing Pro</title>
+<meta name="description" content="Learn to solve the cross — the first step of CFOP.">
+<meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs">
+<link rel="stylesheet" href="../../static/css/main.css">
+
+
+<style>
+.oll-cases,.pll-cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1em;margin-bottom:2.5em}
+.oll-case,.pll-case{display:flex;gap:1em;align-items:center;border:1px solid #e5e5e5;border-radius:10px;padding:.9em;background:#fff}
+.oll-fig,.pll-fig{flex:0 0 auto}
+.oll-diagram{width:150px;height:auto;display:block}
+.pll-diagram{width:172px;height:auto;display:block}
+.oll-body,.pll-body{min-width:0;flex:1;display:flex;flex-direction:column;gap:.4em}
+.oll-name,.pll-name{font-weight:600;font-size:.95em;color:#333}
+.oll-body code,.pll-body code{font-size:.92em;word-break:break-all;background:#fafafa;border:1px solid #eee;border-radius:6px;padding:.35em .5em}
+@media (max-width:480px){.oll-cases,.pll-cases{grid-template-columns:1fr}.pll-diagram{width:150px}}
+</style>
+
+
+</head>
+<body>
+<header class="site-header">
+  <button id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">&#9776;</button>
+  <a class="site-title" href="../../">Cubing Pro</a>
+</header>
+<div class="layout">
+  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details><summary>Timer</summary><ul><li><a href="../../timer">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details open><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../../fmc/recon.html">FMC Recon</a></li><li><a href="../../fmc/theory.html">FMC Theory</a></li><li><a href="../../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../../3x3x3/cfop">CFOP method</a></li><li><a href="../../3x3x3/cross" aria-current="page">Cross tutorial</a></li><li><a href="../../3x3x3/f2l">F2L algorithms</a></li><li><a href="../../3x3x3/oll">OLL algorithms</a></li><li><a href="../../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../../3x3x3/pll">PLL algorithms</a></li><li><a href="../../3x3x3/oh_cmll">OH CMLL algorithms</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../../2x2x2/eg_intro">EG method</a></li><li><a href="../../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../../big_cube/yau.html">Yau method</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../../sq1/eo">EO</a></li><li><a href="../../sq1/obl">OBL</a></li><li><a href="../../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details><summary>Misc</summary><ul><li><a href="../../game/geoguesser.html">GeoGuesser Tips</a></li></ul></details></li></ul></nav>
+  <main class="content">
+    <div id="lang-toggle" role="group" aria-label="Language toggle" data-title-en="Cross Tutorial - Cubing Pro" data-title-zh-cn="Cross 教程 - Cubing Pro" data-title-zh-tw="Cross 教程 - Cubing Pro" data-title-ja="クロスチュートリアル - Cubing Pro" data-title-de="Cross-Tutorial - Cubing Pro" data-title-fr="Tutoriel Cross - Cubing Pro" data-title-it="Tutorial Cross - Cubing Pro"><button id="btn-en" aria-pressed="false">English</button><button id="btn-zh-cn" aria-pressed="false">简体</button><button id="btn-zh-tw" aria-pressed="false">繁體</button><button id="btn-ja" aria-pressed="false">日本語</button><button id="btn-de" aria-pressed="false">Deutsch</button><button id="btn-fr" aria-pressed="false">Français</button><button id="btn-it" aria-pressed="false">Italiano</button></div><div id="content-en" style="display:none;"><h1>Cross Tutorial</h1><p>Learn to solve the cross — the first step of CFOP. The cross is 4 edge pieces solved relative to each other and to the centers, done on the bottom (D face) so you can see the F2L pairs forming above.</p><h2>The 4 Edge Pieces</h2><p>The cross uses the 4 edges with white (your D color): WF, WR, WB, WL. Each must match both the D center and its side center.</p><h2>Solve on Bottom</h2><p>Always solve the cross on D, not on top. This leaves U free for F2L lookahead. If you learned cross on top, practice flipping the cube over.</p><h2>One by One</h2><p>Solve the 4 edges one at a time. For each: bring it to the top layer, align it above its slot with U moves, then F2 (or R2/L2/B2) to drop it in. If it's flipped, do F U' R U to flip it first.</p><h2>Relative Order</h2><p>The 4 edges must be in the right order around D: W-G next to W-O, etc. Check by looking at the side colors — they should match the centers.</p></div><div id="content-zh-cn" style="display:none;"><h1>Cross 教程</h1><p>学习复原 Cross——CFOP 的第一步。Cross 是 4 个棱块，相对于彼此和中心块复原，在底面（D 面）完成，这样你能看到上方正在形成的 F2L pair。</p><h2>4 个棱块</h2><p>Cross 用 4 个带白色的棱块（你的 D 色）：白绿、白红、白蓝、白橙。每个都要同时对准 D 中心和侧面中心。</p><h2>在底面做</h2><p>永远在 D 面做 cross，不要在顶面。这样 U 层留给 F2L 观察。如果你习惯在顶面做，练习翻过来做。</p><h2>一个一个来</h2><p>一次解决一个棱块：先把它带到顶层，用 U 转到它的槽上方，然后 F2（或 R2/L2/B2）放下去。如果方向反了，先做 F U' R U 把它翻过来。</p><h2>相对顺序</h2><p>4 个棱块在 D 面的顺序要对：白绿旁边是白橙，等等。看侧面颜色是否对准中心来检查。</p></div><div id="content-zh-tw" style="display:none;"><h1>Cross 教程</h1><p>學習復原 Cross——CFOP 的第一步。Cross 是 4 個棱塊，相對於彼此和中心塊復原，在底面（D 面）完成，這樣你能看到上方正在形成的 F2L pair。</p><h2>4 個棱塊</h2><p>Cross 用 4 個帶白色的棱塊（你的 D 色）：白綠、白紅、白藍、白橙。每個都要同時對準 D 中心和側面中心。</p><h2>在底面做</h2><p>永遠在 D 面做 cross，不要在頂面。這樣 U 層留給 F2L 觀察。如果你習慣在頂面做，練習翻過來做。</p><h2>一個一個來</h2><p>一次解決一個棱塊：先把它帶到頂層，用 U 轉到它的槽上方，然後 F2（或 R2/L2/B2）放下去。如果方向反了，先做 F U' R U 把它翻過來。</p><h2>相對順序</h2><p>4 個棱塊在 D 面的順序要對：白綠旁邊是白橙，等等。看側面顏色是否對準中心來檢查。</p></div><div id="content-ja" style="display:none;"><h1>クロスチュートリアル</h1><p>CFOPの最初のステップ、クロスを揃えよう。クロスは4つのエッジを、互いとセンターに対して揃えること。下面（D面）で揃えることで、上にできるF2Lペアが見える。</p><h2>4つのエッジ</h2><p>クロスは白（D色）の4エッジ：白緑、白赤、白青、白橙。各々Dセンターと側面センターの両方に合わせる。</p><h2>下面で揃える</h2><p>クロスは必ずD面で揃え、上面では揃えない。U層をF2Lの先読みに使える。上面で覚えた人は、ひっくり返して練習しよう。</p><h2>一つずつ</h2><p>エッジを一つずつ揃える：頂層に上げ、Uでスロットの上に合わせ、F2（またはR2/L2/B2）で入れる。向きが逆なら、先にF U' R Uで反転。</p><h2>相対順序</h2><p>D面での4エッジの順序が正しく：白緑の隣は白橙、など。側面の色がセンターに合っているか確認。</p></div><div id="content-de" style="display:none;"><h1>Cross-Tutorial</h1><p>Lerne das Cross zu lösen — den ersten Schritt von CFOP. Das Cross sind 4 Kanten, relativ zueinander und zu den Centern gelöst, auf der Unterseite (D-Fläche), damit du die F2L-Paare darüber entstehen siehst.</p><h2>Die 4 Kanten</h2><p>Das Cross nutzt die 4 Kanten mit Weiß (deiner D-Farbe): Weiß-Grün, Weiß-Rot, Weiß-Blau, Weiß-Orange. Jede muss zum D-Center und zum Seiten-Center passen.</p><h2>Unten lösen</h2><p>Löse das Cross immer auf D, nicht oben. So bleibt U frei für F2L-Vorausschau. Wenn du Cross oben gelernt hast, übe es umgedreht.</p><h2>Eine nach der anderen</h2><p>Löse die 4 Kanten einzeln: bringe sie in die U-Ebene, richte sie mit U über ihrem Slot aus, dann F2 (oder R2/L2/B2) zum Einsetzen. Wenn sie geflippt ist, erst F U' R U zum Drehen.</p><h2>Relative Reihenfolge</h2><p>Die 4 Kanten müssen in der richtigen Reihenfolge um D sein. Prüfe anhand der Seitenfarben, ob sie zu den Centern passen.</p></div><div id="content-fr" style="display:none;"><h1>Tutoriel Cross</h1><p>Apprenez à résoudre le cross — la première étape du CFOP. Le cross, ce sont 4 arêtes résolues les unes par rapport aux autres et par rapport aux centres, sur la face du bas (face D) pour voir les paires F2L se former au-dessus.</p><h2>Les 4 arêtes</h2><p>Le cross utilise les 4 arêtes avec du blanc (ta couleur D) : blanc-vert, blanc-rouge, blanc-bleu, blanc-orange. Chacune doit s'aligner avec le centre D et le centre latéral.</p><h2>Résoudre en bas</h2><p>Résous toujours le cross sur D, pas en haut. Ça laisse U libre pour anticiper les F2L. Si tu as appris le cross en haut, entraîne-toi à le faire retourné.</p><h2>Une par une</h2><p>Résous les 4 arêtes une par une : amène-la sur la couche U, aligne-la au-dessus de son emplacement avec U, puis F2 (ou R2/L2/B2) pour l'insérer. Si elle est retournée, fais d'abord F U' R U pour la retourner.</p><h2>Ordre relatif</h2><p>Les 4 arêtes doivent être dans le bon ordre autour de D. Vérifie que les couleurs latérales correspondent aux centres.</p></div><div id="content-it" style="display:none;"><h1>Tutorial Cross</h1><p>Impara a risolvere la cross — il primo passo del CFOP. La cross sono 4 spigoli risolti l'uno rispetto all'altro e rispetto ai centri, sulla faccia inferiore (faccia D) così vedi le coppie F2L formarsi sopra.</p><h2>I 4 spigoli</h2><p>La cross usa i 4 spigoli col bianco (il tuo colore D): bianco-verde, bianco-rosso, bianco-blu, bianco-arancione. Ognuno deve allinearsi sia al centro D che al centro laterale.</p><h2>Risolvi sotto</h2><p>Risolvi sempre la cross su D, non sopra. Così U resta libera per anticipare gli F2L. Se l'hai imparata sopra, allenati a farla capovolta.</p><h2>Uno alla volta</h2><p>Risolvi i 4 spigoli uno alla volta: portalo sullo strato U, allinealo sopra il suo slot con U, poi F2 (o R2/L2/B2) per inserirlo. Se è girato, prima fai F U' R U per capovolgerlo.</p><h2>Ordine relativo</h2><p>I 4 spigoli devono essere nell'ordine giusto intorno a D. Controlla che i colori laterali corrispondano ai centri.</p></div>
+<script>
+(function () {
+  var KEY = 'cubingpro-lang';
+  var LANGS = ['en', 'zh-cn', 'zh-tw', 'ja', 'de', 'fr', 'it'];
+  var HTML_LANG = {'en': 'en', 'zh-cn': 'zh-CN', 'zh-tw': 'zh-TW',
+                   'ja': 'ja', 'de': 'de', 'fr': 'fr', 'it': 'it'};
+  function defaultLang() {
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      if (/Asia\/(Shanghai|Chongqing|Urumqi)/.test(tz)) return 'zh-cn';
+      if (/Asia\/(Taipei|Hong_Kong|Macau)/.test(tz)) return 'zh-tw';
+      if (tz === 'Asia/Tokyo') return 'ja';
+      if (/Europe\/(Berlin|Vienna|Zurich)/.test(tz)) return 'de';
+      if (/Europe\/(Paris|Brussels|Monaco|Luxembourg)/.test(tz)) return 'fr';
+      if (/Europe\/(Rome|Vatican|San_Marino)/.test(tz)) return 'it';
+    } catch (e) {}
+    var off = new Date().getTimezoneOffset();
+    if (off / 60 === -8) return 'zh-cn';
+    if (off / 60 === -9) return 'ja';
+    return 'en';
+  }
+  var lang = null;
+  try { lang = localStorage.getItem(KEY); } catch (e) {}
+  if (LANGS.indexOf(lang) === -1) lang = defaultLang();
+
+  var toggle = document.getElementById('lang-toggle');
+  var btns = {};
+  LANGS.forEach(function (k) {
+    btns[k] = document.getElementById('btn-' + k);
+  });
+
+  function show(l) {
+    lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) {}
+    LANGS.forEach(function (k) {
+      var el = document.getElementById('content-' + k);
+      if (el) el.style.display = (k === l ? 'block' : 'none');
+      var b = btns[k];
+      if (b) {
+        b.classList.toggle('active', k === l);
+        b.setAttribute('aria-pressed', k === l ? 'true' : 'false');
+      }
+    });
+    document.querySelectorAll('.i18n').forEach(function (el) {
+      var t = el.getAttribute('data-' + l);
+      if (t) el.textContent = t;
+    });
+    if (toggle) {
+      var tt = toggle.getAttribute('data-title-' + l);
+      if (tt) document.title = tt;
+    }
+    document.documentElement.lang = HTML_LANG[l] || 'en';
+  }
+
+  LANGS.forEach(function (k) {
+    if (btns[k]) btns[k].addEventListener('click', function () { if (lang !== k) show(k); });
+  });
+
+  show(lang);
+})();
+</script>
+
+  </main>
+</div>
+<footer class="site-footer">
+  <span>&copy; 2025 Bowen Deng</span>
+  <span class="dot">&middot;</span>
+  <span>Cubing Pro</span>
+  <span class="dot">&middot;</span>
+  <span>&#129352; 5% off at TheCubicle &amp; SpeedCubeShop with code <button id="discount-code" title="Click to copy">CUBINGPRO</button></span>
+</footer>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var nav = document.getElementById('site-nav');
+  toggle.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && window.innerWidth <= 900) {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  var code = document.getElementById('discount-code');
+  code.addEventListener('click', function () {
+    var done = function () {
+      code.textContent = 'COPIED!';
+      setTimeout(function () { code.textContent = 'CUBINGPRO'; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('CUBINGPRO').then(done, done);
+    } else { done(); }
+  });
+})();
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850" crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-CK6MWC01K0');
+</script>
+</body>
+</html>
