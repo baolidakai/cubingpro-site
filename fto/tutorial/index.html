@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FTO Beginner Tutorial - Cubing Pro</title>
+<meta name="description" content="Learn the Face-Turning Octahedron: pieces, orbits, Bencisco method steps, triggers and parity.">
+<meta name="keywords" content="FTO,FTO教程,正八面体魔方,face-turning octahedron,Bencisco">
+<!-- Baidu site verification: replace with your code from zhanjiang.baidu.com -->
+<!-- <meta name="baidu-site-verification" content="YOUR_CODE_HERE"> -->
+<link rel="stylesheet" href="../../static/css/main.css">
+
+
+<style>
+.oll-cases,.pll-cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1em;margin-bottom:2.5em}
+.oll-case,.pll-case{display:flex;gap:1em;align-items:center;border:1px solid #e5e5e5;border-radius:10px;padding:.9em;background:#fff}
+.oll-fig,.pll-fig{flex:0 0 auto}
+.oll-diagram{width:150px;height:auto;display:block}
+.pll-diagram{width:172px;height:auto;display:block}
+.oll-body,.pll-body{min-width:0;flex:1;display:flex;flex-direction:column;gap:.4em}
+.oll-name,.pll-name{font-weight:600;font-size:.95em;color:#333}
+.oll-body code,.pll-body code{font-size:.92em;word-break:break-all;background:#fafafa;border:1px solid #eee;border-radius:6px;padding:.35em .5em}
+@media (max-width:480px){.oll-cases,.pll-cases{grid-template-columns:1fr}.pll-diagram{width:150px}}
+</style>
+
+
+</head>
+<body>
+<header class="site-header">
+  <button id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">&#9776;</button>
+  <a class="site-title" href="../../">Cubing Pro</a>
+</header>
+<div class="layout">
+  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details><summary>Timer</summary><ul><li><a href="../../timer">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../../fmc/recon.html">FMC Recon</a></li><li><a href="../../fmc/theory.html">FMC Theory</a></li><li><a href="../../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../../3x3x3/cfop">CFOP method</a></li><li><a href="../../3x3x3/cross">Cross tutorial</a></li><li><a href="../../3x3x3/f2l">F2L algorithms</a></li><li><a href="../../3x3x3/oll">OLL algorithms</a></li><li><a href="../../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../../3x3x3/pll">PLL algorithms</a></li><li><a href="../../3x3x3/oh_cmll">OH CMLL algorithms</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../../2x2x2/eg_intro">EG method</a></li><li><a href="../../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../../big_cube/yau.html">Yau method</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details open><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../../fto/tutorial" aria-current="page">FTO Beginner Tutorial</a></li><li><a href="../../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../../sq1/eo">EO</a></li><li><a href="../../sq1/obl">OBL</a></li><li><a href="../../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details><summary>Misc</summary><ul><li><a href="../../game/geoguesser.html">GeoGuesser Tips</a></li></ul></details></li></ul></nav>
+  <main class="content">
+    <div id="lang-toggle" role="group" aria-label="Language toggle" data-title-en="FTO Beginner Tutorial - Cubing Pro" data-title-zh-cn="FTO 新手教程 - Cubing Pro" data-title-zh-tw="FTO 新手教程 - Cubing Pro" data-title-ja="FTO ビギナーチュートリアル - Cubing Pro" data-title-de="FTO-Anfänger-Tutorial - Cubing Pro" data-title-fr="Tutoriel FTO débutant - Cubing Pro" data-title-it="Tutorial FTO principiante - Cubing Pro"><button id="btn-en" aria-pressed="false">English</button><button id="btn-zh-cn" aria-pressed="false">简体</button><button id="btn-zh-tw" aria-pressed="false">繁體</button><button id="btn-ja" aria-pressed="false">日本語</button><button id="btn-de" aria-pressed="false">Deutsch</button><button id="btn-fr" aria-pressed="false">Français</button><button id="btn-it" aria-pressed="false">Italiano</button></div><div id="content-en" style="display:none;"><h1>FTO Beginner Tutorial</h1><p>Learn the Face-Turning Octahedron — from what the pieces do, to your first full solve with the Bencisco method.</p><h2>What Is the FTO</h2><p>The Face-Turning Octahedron has 8 triangular faces, and you turn the faces themselves (unlike the Pyraminx, which turns corners). The big difference from a 3×3: <b>all three piece types move — there is no fixed center piece.</b> Every face is built from scratch.</p><h2>The Two Orbits — The Key Insight</h2><p>The 8 colors split into two groups of 4 that never mix: <b>Orbit 1: White, Green, Gray, Orange.</b> <b>Orbit 2: Yellow, Red, Blue, Purple.</b> Because of this, edges never flip, and corners only have 2 orientations (not 4). When hunting for a piece, you only need to check 4 faces, not 8 — this halves the search and is what makes FTO learnable.</p><h2>Notation and Hold</h2><p>Faces are named <code>U D L R F B BL BR</code> (Up, Down, Left, Right, Front, Back, Back-Left, Back-Right). A letter alone is a clockwise turn of that face; with <code>'</code> it's counter-clockwise. Basic hold: white face pointing left — most of the solve happens from this position, with <code>U</code> done as finger triggers.</p><h2>The Bencisco Method in 6 Steps</h2><p>1. <b>1st Center</b> — build the white face (large trapezoid first, then small).<br>2. <b>F2T (First 2 Triples)</b> — build 2 triples around white corners, leaving one slot open.<br>3. <b>2nd Center</b> — build the green face the same way.<br>4. <b>L2C (Last 2 Centers)</b> — finish orange and gray.<br>5. <b>LBT (Last Bottom Triple)</b> — the remaining white triple.<br>6. <b>L3T (Last 3 Triples)</b> — the final 3 yellow triples. Done!<br><br>Steps 1–4 are mostly intuitive block-building. Steps 5–6 use short algorithms built from two triggers below.</p><h2>Two Triggers to Memorize</h2><p><code><b>Sledgehammer: R' F R F'</b></code> and <code><b>Hedgeslammer: F R' F' R</b></code> — the same two triggers from 3×3 F2L. On the FTO they flip triples in the LBT and L3T steps. If you already know them from 3×3, you have a head start; if not, drill them until they're muscle memory — they appear in almost every FTO solve.</p><h2>Parity: Even vs Odd</h2><p>In the last steps you'll meet two cases: <b>Even</b> (solved with the standard triggers) and <b>Odd</b> (needs one extra setup move first). How to tell: look at the last triple — if the pieces cycle cleanly, it's Even; if one piece seems 'twisted' out of the cycle, it's Odd. Don't overthink it as a beginner: learn the Even algs first, add the Odd adjustment once Even feels automatic.</p><h2>Practice Tips</h2><p>FTO feels alien for the first 20 solves — that's normal, the piece movement is unlike anything on a 3×3. Stick to the basic hold (white left) until the triggers feel natural. Scramble and re-solve the first center 10 times before moving on; it teaches you how pieces travel, which pays off in every later step. Once you can finish a solve, work on recognizing the two orbits on sight — that's the skill that turns FTO from 'random scrambling' into real speedsolving.</p></div><div id="content-zh-cn" style="display:none;"><h1>FTO 新手教程</h1><p>学习正八面体魔方（FTO）——从零件原理到用 Bencisco 解法完成第一次复原。</p><h2>FTO 是什么</h2><p>正八面体魔方有 8 个三角形面，转的是面本身（不像 Pyraminx 转的是角）。和三阶最大的区别：<b>三种零件都会动，没有固定的中心块</b>，每个面都要从零拼出来。</p><h2>两个 Orbit——核心原理</h2><p>8 个颜色分成两组，每组 4 个，永远不混：<b>Orbit 1：白、绿、灰、橙。</b><b>Orbit 2：黄、红、蓝、紫。</b>所以棱块永远不会翻色，角块只有 2 种朝向（不是 4 种）。找块时只用看 4 个面而不是 8 个——搜索量减半，这就是 FTO 能学会的原因。</p><h2>公式符号与持握</h2><p>8 个面记作 <code>U D L R F B BL BR</code>（上、下、左、右、前、后、后左、后右）。字母单独出现是顺时针转该面，加 <code>'</code> 是逆时针。基本持握：白色面朝左——大部分复原都在这个姿势下完成，<code>U</code> 用手指拨动。</p><h2>Bencisco 解法 6 步</h2><p>1. <b>1st Center</b>——拼白色面（先大梯形，再小梯形）。<br>2. <b>F2T</b>——在白色角周围拼 2 个 triple，留一个空位。<br>3. <b>2nd Center</b>——同样方法拼绿色面。<br>4. <b>L2C</b>——拼完橙色和灰色面。<br>5. <b>LBT</b>——最后一个白色 triple。<br>6. <b>L3T</b>——最后 3 个黄色 triple，搞定！<br><br>第 1–4 步主要是直观的拼块，第 5–6 步用下面两个 trigger 组成的短公式。</p><h2>两个必须背的 Trigger</h2><p><code><b>Sledgehammer：R' F R F'</b></code> 和 <code><b>Hedgeslammer：F R' F' R</b></code>——和三阶 F2L 里那两个 trigger 一模一样。在 FTO 的 LBT 和 L3T 步骤里用它们翻 triple。三阶会的话直接起飞；不会的话练到肌肉记忆——几乎每把 FTO 都用得到。</p><h2>奇偶性：Even vs Odd</h2><p>最后几步会遇到两种情况：<b>Even</b>（标准 trigger 直接解）和 <b>Odd</b>（先多做一步 setup）。判断方法：看最后一个 triple——如果块顺畅地循环就是 Even；如果有一块像被'拧'出循环就是 Odd。新手别想太多：先学 Even 的公式，Even 熟练了再加 Odd 的调整。</p><h2>练习建议</h2><p>前 20 把 FTO 会感觉很怪——正常，零件的走位和三阶完全不一样。先死守基本持握（白色朝左），直到 trigger 顺手。先打乱重拼第一个中心 10 次再往下学；这能教会你零件怎么走位，后面每一步都用得上。能完整复原后，练一眼认出两个 orbit——这是把 FTO 从'瞎拧'变成竞速的分水岭。</p></div><div id="content-zh-tw" style="display:none;"><h1>FTO 新手教程</h1><p>學習正八面體魔方（FTO）——從零件原理到用 Bencisco 解法完成第一次復原。</p><h2>FTO 是什麼</h2><p>正八面體魔方有 8 個三角形面，轉的是面本身（不像 Pyraminx 轉的是角）。和三階最大的區別：<b>三種零件都會動，沒有固定的中心塊</b>，每個面都要從零拼出來。</p><h2>兩個 Orbit——核心原理</h2><p>8 個顏色分成兩組，每組 4 個，永遠不混：<b>Orbit 1：白、綠、灰、橙。</b><b>Orbit 2：黃、紅、藍、紫。</b>所以棱塊永遠不會翻色，角塊只有 2 種朝向（不是 4 種）。找塊時只用看 4 個面而不是 8 個——搜索量減半，這就是 FTO 能學會的原因。</p><h2>公式符號與持握</h2><p>8 個面記作 <code>U D L R F B BL BR</code>（上、下、左、右、前、後、後左、後右）。字母單獨出現是順時針轉該面，加 <code>'</code> 是逆時針。基本持握：白色面朝左——大部分復原都在這個姿勢下完成，<code>U</code> 用手指撥動。</p><h2>Bencisco 解法 6 步</h2><p>1. <b>1st Center</b>——拼白色面（先大梯形，再小梯形）。<br>2. <b>F2T</b>——在白色角周圍拼 2 個 triple，留一個空位。<br>3. <b>2nd Center</b>——同樣方法拼綠色面。<br>4. <b>L2C</b>——拼完橙色和灰色面。<br>5. <b>LBT</b>——最後一個白色 triple。<br>6. <b>L3T</b>——最後 3 個黃色 triple，搞定！<br><br>第 1–4 步主要是直觀的拼塊，第 5–6 步用下面兩個 trigger 組成的短公式。</p><h2>兩個必須背的 Trigger</h2><p><code><b>Sledgehammer：R' F R F'</b></code> 和 <code><b>Hedgeslammer：F R' F' R</b></code>——和三階 F2L 裡那兩個 trigger 一模一樣。在 FTO 的 LBT 和 L3T 步驟裡用它們翻 triple。三階會的話直接起飛；不會的話練到肌肉記憶——幾乎每把 FTO 都用得到。</p><h2>奇偶性：Even vs Odd</h2><p>最後幾步會遇到兩種情況：<b>Even</b>（標準 trigger 直接解）和 <b>Odd</b>（先多做一步 setup）。判斷方法：看最後一個 triple——如果塊順暢地循環就是 Even；如果有一塊像被'擰'出循環就是 Odd。新手別想太多：先學 Even 的公式，Even 熟練了再加 Odd 的調整。</p><h2>練習建議</h2><p>前 20 把 FTO 會感覺很怪——正常，零件的走位和三階完全不一樣。先死守基本持握（白色朝左），直到 trigger 順手。先打亂重拼第一個中心 10 次再往下學；這能教會你零件怎麼走位，後面每一步都用得上。能完整復原後，練一眼認出兩個 orbit——這是把 FTO 從'瞎擰'變成競速的分水嶺。</p></div><div id="content-ja" style="display:none;"><h1>FTO ビギナーチュートリアル</h1><p>正八面体キューブ（FTO）を学ぶ——パーツの仕組みから Bencisco 解法での初ソルブまで。</p><h2>FTOとは</h2><p>正八面体キューブは8つの三角形の面を持ち、面そのものを回す（Pyraminx のように角を回すのではない）。3×3 との最大の違い：<b>3 種類のパーツすべてが動き、固定センターがない</b>。各面をゼロから作る。</p><h2>2つのオービット——核心アイデア</h2><p>8 色は混ざらない 4 色ずつの 2 グループに分かれる：<b>オービット1：白、緑、灰、橙。</b><b>オービット2：黄、赤、青、紫。</b>そのためエッジは反転せず、コーナーの向きは 2 通り（4 通りではない）。ピースを探すときは 8 面ではなく 4 面だけ見ればいい——探索が半分になり、FTO が学べる理由だ。</p><h2>記号と持ち方</h2><p>面は <code>U D L R F B BL BR</code>（上、下、左、右、前、後、後左、後右）と表記。文字だけはその面の時計回り、<code>'</code>付きは反時計回り。基本の持ち方：白面を左向き——ソルブの大部分はこの姿勢で、<code>U</code>は指トリガーで回す。</p><h2>Bencisco 解法 6 ステップ</h2><p>1. <b>1st Center</b>——白面を作る（大台形→小台形）。<br>2. <b>F2T</b>——白コーナー周りに triple を 2 つ作り、1 スロット空ける。<br>3. <b>2nd Center</b>——同様に緑面。<br>4. <b>L2C</b>——橙と灰を完成。<br>5. <b>LBT</b>——残りの白 triple。<br>6. <b>L3T</b>——最後の黄 triple 3 つ。完成！<br><br>ステップ 1–4 はほぼ直感的なブロック作り。5–6 は下の 2 トリガーから成る短手順を使う。</p><h2>覚えるべき2トリガー</h2><p><code><b>Sledgehammer：R' F R F'</b></code> と <code><b>Hedgeslammer：F R' F' R</b></code>——3×3 の F2L と同じ 2 トリガー。FTO では LBT・L3T で triple を反転させるのに使う。3×3 で知っていれば先行スタート；知らなければ筋肉記憶になるまで練習——ほぼ毎ソルブで使う。</p><h2>パリティ：Even と Odd</h2><p>最後のステップでは 2 ケースに出会う：<b>Even</b>（標準トリガーで解ける）と <b>Odd</b>（先にセットアップ1手が必要）。見分け方：最後の triple を見る——ピースがきれいに循環すれば Even、1 つが循環から「ねじれて」外れていれば Odd。初心者は考えすぎない：まず Even の手順を覚え、自動化したら Odd の調整を足す。</p><h2>練習のコツ</h2><p>最初の 20 ソルブは違和感だらけ——正常だ、パーツの動きは 3×3 と全く違う。トリガーが自然になるまで基本ホールド（白左）を守る。先に進む前に最初のセンターをスクランブル→ソルブ 10 回；パーツの動き方が分かり、後の全ステップに効く。完走できたら 2 つのオービットを目で見分ける練習——FTO が「闇雲回し」からスピードソルブに変わる分岐点だ。</p></div><div id="content-de" style="display:none;"><h1>FTO-Anfänger-Tutorial</h1><p>Lerne das Face-Turning Octahedron — von den Teilen bis zum ersten Solve mit der Bencisco-Methode.</p><h2>Was ist das FTO</h2><p>Das Face-Turning Octahedron hat 8 dreieckige Flächen, und du drehst die Flächen selbst (anders als beim Pyraminx, der Ecken dreht). Der große Unterschied zum 3×3: <b>alle drei Steintypen bewegen sich — es gibt keinen festen Center.</b> Jede Fläche wird von Grund auf gebaut.</p><h2>Die zwei Orbits — die Kernidee</h2><p>Die 8 Farben teilen sich in zwei 4er-Gruppen, die sich nie mischen: <b>Orbit 1: Weiß, Grün, Grau, Orange.</b> <b>Orbit 2: Gelb, Rot, Blau, Lila.</b> Deshalb flippen Kanten nie, und Ecken haben nur 2 Orientierungen (nicht 4). Bei der Suche musst du nur 4 statt 8 Flächen prüfen — das halbiert die Suche und macht FTO lernbar.</p><h2>Notation und Haltung</h2><p>Flächen heißen <code>U D L R F B BL BR</code> (Up, Down, Links, Rechts, Vorne, Hinten, Hinten-Links, Hinten-Rechts). Buchstabe allein = Uhrzeigersinn; mit <code>'</code> = gegen den Uhrzeigersinn. Grundhaltung: weiße Fläche nach links — der Großteil des Solves passiert so, <code>U</code> per Fingertrigger.</p><h2>Die Bencisco-Methode in 6 Schritten</h2><p>1. <b>1st Center</b> — weiße Fläche bauen (erst großes, dann kleines Trapez).<br>2. <b>F2T</b> — 2 Triples um weiße Ecken bauen, ein Slot bleibt offen.<br>3. <b>2nd Center</b> — grüne Fläche genauso.<br>4. <b>L2C</b> — Orange und Grau fertigstellen.<br>5. <b>LBT</b> — das letzte weiße Triple.<br>6. <b>L3T</b> — die letzten 3 gelben Triples. Fertig!<br><br>Schritte 1–4 sind weitgehend intuitives Blockbauen. Schritte 5–6 nutzen kurze Algs aus den zwei Triggern unten.</p><h2>Zwei Trigger zum Auswendiglernen</h2><p><code><b>Sledgehammer: R' F R F'</b></code> und <code><b>Hedgeslammer: F R' F' R</b></code> — dieselben zwei Trigger wie beim 3×3-F2L. Auf dem FTO flippen sie Triples in LBT und L3T. Wenn du sie vom 3×3 kennst, hast du einen Vorsprung; wenn nicht, übe bis sie sitzen — sie kommen in fast jedem Solve vor.</p><h2>Parität: Even vs. Odd</h2><p>In den letzten Schritten triffst du zwei Fälle: <b>Even</b> (Standard-Trigger reichen) und <b>Odd</b> (braucht erst einen Setup-Zug). Erkennen: Schau aufs letzte Triple — zykeln die Steine sauber, ist es Even; wirkt einer 'verdreht' aus dem Zyklus, ist es Odd. Als Anfänger nicht zu viel grübeln: erst Even lernen, Odd kommt dazu wenn Even sitzt.</p><h2>Übungstipps</h2><p>Die ersten 20 Solves fühlen sich fremd an — normal, die Steinbewegung ist anders als alles am 3×3. Bleib bei der Grundhaltung (Weiß links), bis die Trigger natürlich wirken. Scramblen und den ersten Center 10× neu lösen, bevor du weitergehst; das lehrt dich, wie Steine wandern — das zahlt sich in jedem späteren Schritt aus. Wenn du durchkommst, übe die zwei Orbits auf Sicht zu erkennen — das verwandelt FTO von 'planlosem Drehen' in echtes Speedsolving.</p></div><div id="content-fr" style="display:none;"><h1>Tutoriel FTO débutant</h1><p>Apprenez le Face-Turning Octahedron — des pièces jusqu'à ta première résolution avec la méthode Bencisco.</p><h2>Qu'est-ce que le FTO</h2><p>Le Face-Turning Octahedron a 8 faces triangulaires, et on tourne les faces elles-mêmes (contrairement au Pyraminx qui tourne les coins). La grande différence avec le 3×3 : <b>les trois types de pièces bougent — il n'y a pas de centre fixe.</b> Chaque face se construit de zéro.</p><h2>Les deux orbites — l'idée clé</h2><p>Les 8 couleurs se divisent en deux groupes de 4 qui ne se mélangent jamais : <b>Orbite 1 : Blanc, Vert, Gris, Orange.</b> <b>Orbite 2 : Jaune, Rouge, Bleu, Violet.</b> Les arêtes ne se retournent donc jamais, et les coins n'ont que 2 orientations (pas 4). Pour chercher une pièce, tu ne regardes que 4 faces au lieu de 8 — ça divise la recherche par deux.</p><h2>Notation et prise en main</h2><p>Les faces se notent <code>U D L R F B BL BR</code> (Haut, Bas, Gauche, Droite, Avant, Arrière, Arrière-Gauche, Arrière-Droit). Lettre seule = sens horaire ; avec <code>'</code> = anti-horaire. Prise de base : face blanche vers la gauche — l'essentiel se fait ainsi, <code>U</code> au doigt.</p><h2>La méthode Bencisco en 6 étapes</h2><p>1. <b>1st Center</b> — construire la face blanche (grand trapèze puis petit).<br>2. <b>F2T</b> — 2 triples autour des coins blancs, un emplacement reste libre.<br>3. <b>2nd Center</b> — face verte de la même façon.<br>4. <b>L2C</b> — finir orange et gris.<br>5. <b>LBT</b> — le dernier triple blanc.<br>6. <b>L3T</b> — les 3 derniers triples jaunes. Fini !<br><br>Les étapes 1–4 sont surtout intuitives. Les 5–6 utilisent des algos courts basés sur les deux triggers ci-dessous.</p><h2>Deux triggers à mémoriser</h2><p><code><b>Sledgehammer : R' F R F'</b></code> et <code><b>Hedgeslammer : F R' F' R</b></code> — les deux mêmes triggers que les F2L du 3×3. Sur le FTO ils retournent les triples aux étapes LBT et L3T. Si tu les connais déjà du 3×3, tu pars avec de l'avance ; sinon, travaille-les jusqu'au réflexe — ils reviennent dans presque chaque résolution.</p><h2>Parité : Even vs Odd</h2><p>Dans les dernières étapes tu rencontres deux cas : <b>Even</b> (les triggers standards suffisent) et <b>Odd</b> (un setup en plus d'abord). Pour distinguer : regarde le dernier triple — si les pièces cyclent proprement, c'est Even ; si l'une semble 'tordue' hors du cycle, c'est Odd. Débutant, ne te prends pas la tête : d'abord les algos Even, l'ajustement Odd viendra quand Even sera automatique.</p><h2>Conseils d'entraînement</h2><p>Les 20 premières résolutions semblent bizarres — normal, le mouvement des pièces n'a rien à voir avec le 3×3. Reste sur la prise de base (blanc à gauche) jusqu'à ce que les triggers soient naturels. Mélange et refais le premier centre 10 fois avant d'aller plus loin ; ça t'apprend comment les pièces voyagent — utile à chaque étape suivante. Une fois que tu finis une résolution, travaille la reconnaissance des deux orbites à vue — c'est ce qui transforme le FTO de 'bidouillage' en vrai speedsolving.</p></div><div id="content-it" style="display:none;"><h1>Tutorial FTO principiante</h1><p>Impara il Face-Turning Octahedron — dai pezzi alla prima risoluzione con il metodo Bencisco.</p><h2>Cos'è l'FTO</h2><p>Il Face-Turning Octahedron ha 8 facce triangolari, e si girano le facce stesse (a differenza del Pyraminx che gira gli angoli). La grande differenza col 3×3: <b>tutti e tre i tipi di pezzi si muovono — non c'è un centro fisso.</b> Ogni faccia si costruisce da zero.</p><h2>Le due orbite — l'idea chiave</h2><p>Gli 8 colori si dividono in due gruppi da 4 che non si mescolano mai: <b>Orbita 1: Bianco, Verde, Grigio, Arancione.</b> <b>Orbita 2: Giallo, Rosso, Blu, Viola.</b> Quindi gli spigoli non si girano mai, e gli angoli hanno solo 2 orientamenti (non 4). Cercando un pezzo guardi solo 4 facce invece di 8 — dimezza la ricerca ed è ciò che rende l'FTO imparabile.</p><h2>Notazione e presa</h2><p>Le facce si indicano <code>U D L R F B BL BR</code> (Su, Giù, Sinistra, Destra, Fronte, Retro, Retro-Sinistra, Retro-Destra). Lettera sola = orario; con <code>'</code> = antiorario. Presa base: faccia bianca a sinistra — quasi tutto si fa così, <code>U</code> con trigger delle dita.</p><h2>Il metodo Bencisco in 6 passi</h2><p>1. <b>1st Center</b> — costruisci la faccia bianca (prima trapezio grande, poi piccolo).<br>2. <b>F2T</b> — 2 triple intorno agli angoli bianchi, uno slot resta libero.<br>3. <b>2nd Center</b> — faccia verde allo stesso modo.<br>4. <b>L2C</b> — finisci arancione e grigio.<br>5. <b>LBT</b> — l'ultima tripla bianca.<br>6. <b>L3T</b> — le ultime 3 triple gialle. Fatto!<br><br>I passi 1–4 sono quasi tutti intuitivi. I passi 5–6 usano algoritmi brevi dai due trigger sotto.</p><h2>Due trigger da memorizzare</h2><p><code><b>Sledgehammer: R' F R F'</b></code> e <code><b>Hedgeslammer: F R' F' R</b></code> — gli stessi due trigger degli F2L del 3×3. Sull'FTO ribaltano le triple nei passi LBT e L3T. Se li conosci dal 3×3 parti avvantaggiato; altrimenti allenali fino alla memoria muscolare — compaiono in quasi ogni risoluzione.</p><h2>Parità: Even vs Odd</h2><p>Negli ultimi passi incontri due casi: <b>Even</b> (bastano i trigger standard) e <b>Odd</b> (serve prima una mossa di setup). Per distinguere: guarda l'ultima tripla — se i pezzi ciclano puliti è Even; se uno sembra 'storto' fuori dal ciclo è Odd. Da principiante non pensarci troppo: prima gli algoritmi Even, l'aggiustamento Odd quando Even è automatico.</p><h2>Consigli di allenamento</h2><p>Le prime 20 risoluzioni sembrano aliene — normale, il movimento dei pezzi non c'entra nulla col 3×3. Resta sulla presa base (bianco a sinistra) finché i trigger non sono naturali. Mischia e rifai il primo centro 10 volte prima di andare oltre; ti insegna come viaggiano i pezzi — ripaga in ogni passo successivo. Quando completi una risoluzione, allena il riconoscimento a vista delle due orbite — è ciò che trasforma l'FTO da 'giri a caso' a vero speedsolving.</p></div>
+<script>
+(function () {
+  var KEY = 'cubingpro-lang';
+  var LANGS = ['en', 'zh-cn', 'zh-tw', 'ja', 'de', 'fr', 'it'];
+  var HTML_LANG = {'en': 'en', 'zh-cn': 'zh-CN', 'zh-tw': 'zh-TW',
+                   'ja': 'ja', 'de': 'de', 'fr': 'fr', 'it': 'it'};
+  function defaultLang() {
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      if (/Asia\/(Shanghai|Chongqing|Urumqi)/.test(tz)) return 'zh-cn';
+      if (/Asia\/(Taipei|Hong_Kong|Macau)/.test(tz)) return 'zh-tw';
+      if (tz === 'Asia/Tokyo') return 'ja';
+      if (/Europe\/(Berlin|Vienna|Zurich)/.test(tz)) return 'de';
+      if (/Europe\/(Paris|Brussels|Monaco|Luxembourg)/.test(tz)) return 'fr';
+      if (/Europe\/(Rome|Vatican|San_Marino)/.test(tz)) return 'it';
+    } catch (e) {}
+    var off = new Date().getTimezoneOffset();
+    if (off / 60 === -8) return 'zh-cn';
+    if (off / 60 === -9) return 'ja';
+    return 'en';
+  }
+  var lang = null;
+  try { lang = localStorage.getItem(KEY); } catch (e) {}
+  if (LANGS.indexOf(lang) === -1) lang = defaultLang();
+
+  var toggle = document.getElementById('lang-toggle');
+  var btns = {};
+  LANGS.forEach(function (k) {
+    btns[k] = document.getElementById('btn-' + k);
+  });
+
+  function show(l) {
+    lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) {}
+    LANGS.forEach(function (k) {
+      var el = document.getElementById('content-' + k);
+      if (el) el.style.display = (k === l ? 'block' : 'none');
+      var b = btns[k];
+      if (b) {
+        b.classList.toggle('active', k === l);
+        b.setAttribute('aria-pressed', k === l ? 'true' : 'false');
+      }
+    });
+    document.querySelectorAll('.i18n').forEach(function (el) {
+      var t = el.getAttribute('data-' + l);
+      if (t) el.textContent = t;
+    });
+    if (toggle) {
+      var tt = toggle.getAttribute('data-title-' + l);
+      if (tt) document.title = tt;
+    }
+    document.documentElement.lang = HTML_LANG[l] || 'en';
+  }
+
+  LANGS.forEach(function (k) {
+    if (btns[k]) btns[k].addEventListener('click', function () { if (lang !== k) show(k); });
+  });
+
+  show(lang);
+})();
+</script>
+
+  </main>
+</div>
+<footer class="site-footer">
+  <span>&copy; 2025 Bowen Deng</span>
+  <span class="dot">&middot;</span>
+  <span>Cubing Pro</span>
+  <span class="dot">&middot;</span>
+  <span>&#129352; 5% off at TheCubicle &amp; SpeedCubeShop with code <button id="discount-code" title="Click to copy">CUBINGPRO</button></span>
+</footer>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var nav = document.getElementById('site-nav');
+  toggle.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && window.innerWidth <= 900) {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  var code = document.getElementById('discount-code');
+  code.addEventListener('click', function () {
+    var done = function () {
+      code.textContent = 'COPIED!';
+      setTimeout(function () { code.textContent = 'CUBINGPRO'; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('CUBINGPRO').then(done, done);
+    } else { done(); }
+  });
+})();
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850" crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-CK6MWC01K0');
+</script>
+</body>
+</html>
