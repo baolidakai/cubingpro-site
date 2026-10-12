@@ -1022,6 +1022,14 @@
         M --> E
 
         N["4b3<br><small>3 QT</small>"] --> M
+
+        %% ── Regression pitfalls (dashed): wrong QT choices that go backwards ──
+        D -.->|wrong QT| I
+        E -.->|wrong QT| D
+        E -.->|wrong QT| M
+        M -.->|wrong QT| I
+        M -.->|wrong QT| N
+        C -.->|sideways| N
         ```
 
     </div>
@@ -1076,6 +1084,42 @@
         The arrows tell you <em>which state to target</em>.
         The half turns are your setup; the QT is the actual step downhill.
     </div>
+
+    <h5>Practical tips</h5>
+
+    <p>
+        The solid arrows are the plan. The <strong>dashed arrows</strong>
+        are what actually happens when you pick the wrong QT — every one of them costs you
+        at least one extra QT, which in FMC usually means 2–4 extra moves on the final solution.
+    </p>
+
+    <ul>
+        <li>
+            <strong>4b2 is the danger zone.</strong> At 2 QT from HTR it feels close, but one wrong
+            QT drops you to <strong>4a3</strong> (3 QT) — further than where most 4-corner cases start.
+            When you recognize 4b2, slow down and verify the QT direction <em>before</em> turning.
+        </li>
+        <li>
+            <strong>4a1 → HTR is not free.</strong> One QT away looks trivial, but the wrong QT sends you
+            back to 4b2 or 4a2. If you have a good skeleton, consider whether forcing HTR here is worth
+            the risk versus taking a safe alternative finish.
+        </li>
+        <li>
+            <strong>Count QTs, not moves.</strong> A 3-move HT setup + 1 QT that reduces the count is always
+            better than a 1-move QT that keeps you sideways (e.g. 2c3 → 4b3). The diagram's QT numbers
+            are your compass — if the number didn't go down, the move didn't help.
+        </li>
+        <li>
+            <strong>When in doubt, don't QT.</strong> Half turns are always safe — they never change the QT
+            distance. If you can't see a QT that clearly reduces the count, do HT setups and re-recognize
+            rather than gambling on a QT that might regress.
+        </li>
+        <li>
+            <strong>Learn the 4a/4b recognition cold.</strong> Most regressions happen because the position was
+            misrecognized in the first place — a 4b played as a 4a (or vice versa) picks the wrong target
+            state and the "correct" QT for the wrong case is a regression for the real one.
+        </li>
+    </ul>
 
     <h4>How to Solve HTR</h4>
     <p>To solve 0c0, </p>
