@@ -1132,6 +1132,76 @@
         </li>
     </ul>
 
+    <h5>Handling edges in DR</h5>
+
+    <p>
+        So far the diagram only tracks <strong>corners</strong> (the QT distance).
+        But every DR position also has an <strong>edge state</strong> — specifically,
+        how many of the 4 E-slice edges are actually in the E-slice. Call this the
+        <strong>E-count</strong>: 0E means all four are home, 2E means two are misplaced, and so on.
+    </p>
+
+    <p>
+        The E-count decides how much work the edges need <em>on top of</em> the corner plan:
+    </p>
+
+    <ul>
+        <li>
+            <strong>2E = happy.</strong> Two misplaced E-edges is the best realistic case.
+            It usually resolves with a single trigger or a short HT setup —
+            for example, 4b2 with 2E is about as comfortable as DR gets.
+            When you see 2E, just execute; don't overthink.
+        </li>
+        <li>
+            <strong>6E ≈ 2E.</strong> Six misplaced edges sounds terrible, but think complement:
+            if 6 are out, the structure of what's <em>in</em> place is just as constrained as 2E.
+            In practice, 6E resolves with the same kind of single-QT idea as 2E —
+            find the QT that puts the two <em>correct</em> edges to work and the rest follow.
+            Don't panic at the number; read the complement.
+        </li>
+        <li>
+            <strong>4E is the awkward middle.</strong> Not trivial like 2E, not complement-readable like 6E.
+            Usually takes two steps: one QT to break it into a 2E-like shape, then the standard finish.
+            If the corner state is also bad (4+ QT), consider whether a different DR is cheaper overall.
+        </li>
+        <li>
+            <strong>8E+: don't fight it.</strong> If nearly every E-edge is misplaced, the DR itself is the
+            problem, not the edge handling. Back up and find a cleaner DR rather than burning moves
+            fixing edges on a bad foundation.
+        </li>
+    </ul>
+
+    <h6>Reducing edge cases: one QT, two jobs</h6>
+
+    <p>
+        The key technique is to <strong>never solve edges separately</strong>.
+        Every QT you play for corners also moves edges — so pick QTs that do both jobs at once:
+    </p>
+
+    <ul>
+        <li>
+            When the diagram says <code>4b2 → 4a1</code>, look at the candidate QTs and prefer the one
+            that <em>also</em> drops the E-count. A QT that fixes corners but scrambles edges is a
+            false economy.
+        </li>
+        <li>
+            Before committing to a QT, glance at where the E-edges land after it.
+            If a corner-good QT leaves 6E, but a corner-equal alternative leaves 2E,
+            the choice is obvious — same corner progress, free edge progress.
+        </li>
+        <li>
+            This is why experienced solvers look "smooth" in DR: they're not solving corners then edges,
+            they're choosing each QT to advance <em>both</em> counts simultaneously.
+            Train yourself to see the E-count change before you turn, not after.
+        </li>
+    </ul>
+
+    <div class="callout">
+        <strong>Rule of thumb:</strong> if a QT reduces the corner QT distance <em>and</em> doesn't
+        increase the E-count, play it. If it reduces corners but blows up edges (2E → 6E with no
+        complement trick available), keep looking — there's usually a better QT on the same corner path.
+    </div>
+
     <h4>How to Solve HTR</h4>
     <p>To solve 0c0, </p>
 </div>
