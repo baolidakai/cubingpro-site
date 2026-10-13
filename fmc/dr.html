@@ -1233,7 +1233,34 @@
     </div>
 
     <h4>How to Solve HTR</h4>
-    <p>To solve 0c0, </p>
+    <p>
+        Once you reach <strong>0c0 (HTR)</strong>, the cube is in the
+        <code>&lt;U2, D2, F2, B2, L2, R2&gt;</code> group. Every piece is oriented;
+        only permutation remains. Finish with half turns only:
+    </p>
+    <ol>
+        <li>
+            <strong>Corners first.</strong> All 8 corners are oriented. Permute them with
+            half turns — look for a 1x2x2 or 2x2x2 block and build around it.
+            A corner 3-cycle in HTR is just <code>U2 F2 U2 F2</code>-type sequences.
+        </li>
+        <li>
+            <strong>Edges next.</strong> E-layer edges are already placed by DR.
+            The remaining 8 edges permute with <code>F2/B2/L2/R2</code>.
+            Opposite-edge swaps are <code>M2</code>-like moves in disguise.
+        </li>
+        <li>
+            <strong>Typical length:</strong> 0–8 half turns. In FMC you rarely need to
+            "solve" HTR optimally — just find <em>any</em> short half-turn finish,
+            then look for cancellations with your DR skeleton.
+        </li>
+    </ol>
+    <div class="callout">
+        <strong>Why HTR is "very easy to solve":</strong> no orientation to track,
+        no quarter turns to count. It's pure permutation in a tiny group —
+        if you can solve a 2x2x2, you can finish HTR. The hard part was getting
+        <em>to</em> HTR; the finish is bookkeeping.
+    </div>
 </div>
 
 
