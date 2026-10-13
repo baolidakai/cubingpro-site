@@ -1004,26 +1004,56 @@
         flowchart LR
 
         ```
-        A["2c5<br><small>5 QT</small>"] --> B["2c4<br><small>4 QT</small>"]
-        B --> C["2c3<br><small>3 QT</small>"]
-        C --> D["4b2<br><small>2 QT</small>"]
-        D --> E["4a1<br><small>1 QT</small>"]
-        E --> F["0c0<br><small>HTR</small>"]
+        %% ── Lock layout by QT level using subgraphs ──
+        subgraph QT5["5 QT"]
+            direction LR
+            A["2c5"]
+            G["4b5"]
+        end
+        subgraph QT4["4 QT"]
+            direction LR
+            B["2c4"]
+            H["0c4"]
+            J["4a4"]
+            K["4b4"]
+        end
+        subgraph QT3["3 QT"]
+            direction LR
+            C["2c3"]
+            I["4a3"]
+            L["0c3"]
+            N["4b3"]
+        end
+        subgraph QT2["2 QT"]
+            direction LR
+            D["4b2"]
+            M["4a2"]
+        end
+        subgraph QT1["1 QT"]
+            direction LR
+            E["4a1"]
+        end
+        subgraph QT0["HTR"]
+            direction LR
+            F["0c0"]
+        end
 
-        G["4b5<br><small>5 QT</small>"] --> B
-
-        H["0c4<br><small>4 QT</small>"] --> I["4a3<br><small>3 QT</small>"]
+        %% ── Solid forward edges (the plan) ──
+        A --> B
+        B --> C
+        C --> D
+        D --> E
+        E --> F
+        G --> B
+        H --> I
         I --> D
-
-        J["4a4<br><small>4 QT</small>"] --> I
-        K["4b4<br><small>4 QT</small>"] --> I
-
-        L["0c3<br><small>3 QT</small>"] --> M["4a2<br><small>2 QT</small>"]
+        J --> I
+        K --> I
+        L --> M
         M --> E
+        N --> M
 
-        N["4b3<br><small>3 QT</small>"] --> M
-
-        %% ── Regression pitfalls (dashed): wrong QT choices that go backwards ──
+        %% ── Regression pitfalls (dashed): wrong QT, layout unaffected ──
         D -.->|wrong QT| I
         E -.->|wrong QT| D
         E -.->|wrong QT| M
