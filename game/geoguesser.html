@@ -4,8 +4,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cubing Pro</title>
-<meta name="description" content="Home for competitive speedcubers.">
+<title>GeoGuesser 攻略 | Cubing Pro</title>
+<meta name="description" content="GeoGuessr 实战技巧图文总结：国旗速认、车牌路牌标线、易混国家对、南北半球判断、语言文字识别。社区经验 70+ 条。">
 <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs">
 <!-- Baidu site verification: replace with your code from zhanjiang.baidu.com -->
 <!-- <meta name="baidu-site-verification" content="YOUR_CODE_HERE"> -->
@@ -22,9 +22,240 @@
   <main class="content">
     
 
-<h1>GeoGuesser Tips</h1>
+<h1>GeoGuesser 攻略</h1>
+<p class="lede">社区实战技巧的图文总结：国旗、车牌、路牌、标线、半球、语言。内容以中文为主，关键术语中英对照；国旗图可点开看大图（图片由 flagcdn.com 提供）。配套练习：<a href="../game/flag_trainer.html">国旗 Trainer</a>。</p>
 
-<h2>Country Determination</h2>
+<style>
+    .styled-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    .styled-table th, .styled-table td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+    .tips { line-height: 1.75; padding-left: 1.2em; }
+    .tips li { margin: 6px 0; }
+    .tips b.k { color: #1a73e8; }
+    .flag-pairs { display: grid; gap: 14px; }
+    .flag-pair { border: 1px solid #e0e0e0; border-radius: 12px; padding: 12px 14px; }
+    .flag-pair .flags { display: flex; align-items: center; gap: 10px; }
+    .flag-pair figure { margin: 0; text-align: center; }
+    .flag-pair img { width: 120px; border: 1px solid #ddd; border-radius: 4px; }
+    .flag-pair figcaption { font-size: 13px; margin-top: 4px; }
+    .flag-pair .vs { font-weight: bold; color: #888; }
+    .flag-pair .diff { margin: 8px 0 0; font-size: 15px; }
+    .street-table { border-collapse: collapse; margin: 8px 0; }
+    .street-table td, .street-table th { border: 1px solid #ccc; padding: 6px 10px; font-size: 14px; }
+    .lowconf { color: #b06000; font-size: 13px; }
+    .src { font-size: 13px; color: #666; }
+    .src li { margin: 4px 0; }
+    h3.sub { margin-top: 1.2em; }
+</style>
+
+<h2>国旗速认</h2>
+<p>三步口诀：<b>先看条纹方向</b>（横 / 竖 / 十字），<b>再看旗杆侧颜色</b>，<b>最后看国徽、星月等小图案</b>。实战提醒：GeoGuessr 里国旗本体很少直接出现，更多是国旗配色刷在电线杆、路牌、建筑上（比如印尼电线杆常刷红白、加纳街头常见红黄绿配色）——看到配色先反应国家，再验证。</p>
+<div class="flag-pairs">
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/ro.png" alt="罗马尼亚国旗"><figcaption>罗马尼亚 Romania</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/td.png" alt="乍得国旗"><figcaption>乍得 Chad</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>蓝黄红竖三条几乎完全相同，乍得的蓝更深（靛蓝）、旗面略窄长。街景里基本无法只靠旗区分，必须结合车牌、语言。</p>
+    </div>
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/id.png" alt="印尼国旗"><figcaption>印尼 Indonesia</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/mc.png" alt="摩纳哥国旗"><figcaption>摩纳哥 Monaco</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>都是红上白下横两条，摩纳哥旗更窄长、红更深。实战更可靠的是地理逻辑：摩纳哥是袖珍城邦，看到密集城区、港口游艇直接锁摩纳哥。</p>
+    </div>
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/ie.png" alt="爱尔兰国旗"><figcaption>爱尔兰 Ireland</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/ci.png" alt="科特迪瓦国旗"><figcaption>科特迪瓦 Côte d'Ivoire</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>绿白橙竖三条，看旗杆侧颜色——绿在杆侧是爱尔兰，橙在杆侧是科特迪瓦。</p>
+    </div>
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/nl.png" alt="荷兰国旗"><figcaption>荷兰 Netherlands</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/lu.png" alt="卢森堡国旗"><figcaption>卢森堡 Luxembourg</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>红白蓝横三条，卢森堡的蓝明显更浅、旗面更长。两国都用黄色后车牌，可辅证。</p>
+    </div>
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/au.png" alt="澳大利亚国旗"><figcaption>澳大利亚 Australia</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/nz.png" alt="新西兰国旗"><figcaption>新西兰 New Zealand</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>都有米字旗 + 南十字星。澳大利亚是白色七角星（左下还有一颗大七角星），新西兰是四颗红色白边五角星、旗面看起来更"空"。</p>
+    </div>
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/pl.png" alt="波兰国旗"><figcaption>波兰 Poland</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/id.png" alt="印尼国旗"><figcaption>印尼 Indonesia</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>颜色上下正好颠倒——白上红下是波兰，红上白下是印尼。记住"波兰白在上"。</p>
+    </div>
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/si.png" alt="斯洛文尼亚国旗"><figcaption>斯洛文尼亚 Slovenia</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/sk.png" alt="斯洛伐克国旗"><figcaption>斯洛伐克 Slovakia</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>白蓝红横三条 + 国徽。斯洛文尼亚国徽在旗杆侧上方，斯洛伐克国徽偏中且有双十字——社区实战里最常认错的一对。</p>
+    </div>
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/no.png" alt="挪威国旗"><figcaption>挪威 Norway</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/is.png" alt="冰岛国旗"><figcaption>冰岛 Iceland</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>都是十字旗，挪威是红底蓝十字（白边），冰岛是蓝底红十字（白边）——底色和十字颜色正好互换。</p>
+    </div>
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/be.png" alt="比利时国旗"><figcaption>比利时 Belgium</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/de.png" alt="德国国旗"><figcaption>德国 Germany</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>都是黑黄红三色，比利时竖条、德国横条——先看条纹方向就能分。</p>
+    </div>
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/fr.png" alt="法国国旗"><figcaption>法国 France</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/it.png" alt="意大利国旗"><figcaption>意大利 Italy</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>都是竖三条，看旗杆侧颜色——蓝在杆侧是法国，绿在杆侧是意大利。</p>
+    </div>
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/hu.png" alt="匈牙利国旗"><figcaption>匈牙利 Hungary</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/bg.png" alt="保加利亚国旗"><figcaption>保加利亚 Bulgaria</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>红白绿横三条，红色在上是匈牙利，白色在上是保加利亚。</p>
+    </div>
+    <div class="flag-pair">
+        <div class="flags">
+            <figure><img src="https://flagcdn.com/w160/my.png" alt="马来西亚国旗"><figcaption>马来西亚 Malaysia</figcaption></figure>
+            <span class="vs">vs</span>
+            <figure><img src="https://flagcdn.com/w160/us.png" alt="美国国旗"><figcaption>美国 USA</figcaption></figure>
+        </div>
+        <p class="diff"><b>区分：</b>都是条纹 + 左上蓝底。马来西亚蓝底上是黄色新月和星，美国是 50 颗小星。</p>
+    </div>
+</div>
+
+<h2>国家区分：车牌 / 标线 / 杆桩 / 街景车</h2>
+
+<h3 class="sub">车牌：看形状和颜色，不看字母</h3>
+<ul class="tips">
+    <li>车牌左侧有<b class="k">蓝色竖条</b> = 欧盟或周边欧洲国家；<b class="k">黄色后车牌</b> = 荷兰、卢森堡、英国。长窄牌偏欧洲、方正牌偏北美，模糊的车牌边缘也够锁定大洲。</li>
+    <li><b class="k">哥伦比亚</b>是黄色车牌，且停车牌写 "PARE"（而非 STOP）——黄牌 + PARE 双保险。<span class="lowconf">（低置信度：来源为南美攻略视频的 AI 摘要）</span></li>
+    <li><b class="k">阿根廷</b>车牌中央有一个黑点，看到黑点先考虑阿根廷。</li>
+    <li><b class="k">葡萄牙</b>车牌左侧有一条竖黄色条纹，是区别于西班牙的快速特征。</li>
+    <li><b class="k">乌拉圭</b>车牌白底蓝字、中央有国徽、底部写着 "Uruguay"，特征非常完整。</li>
+    <li><b class="k">印尼</b>车牌黑底白字、模糊后呈现三段白色；<b class="k">马来西亚</b>是两段白；且印尼摩托车有前车牌，其他东南亚国家多没有。</li>
+    <li><b class="k">俄罗斯</b>车牌全白、没有欧盟蓝条；<b class="k">乌克兰</b>车牌常带蓝黄国旗配色，看到蓝黄先想乌克兰。</li>
+    <li><b class="k">德国 vs 奥地利</b>终极区分：看汽车挡风玻璃上的"神秘贴纸"——德国是环保标章，奥地利是定期保养标章，一秒区分这对双胞胎。</li>
+</ul>
+
+<h3 class="sub">行车方向与道路标线</h3>
+<ul class="tips">
+    <li><b class="k">左行国家</b>约占世界三分之一人口：英国、日本、澳大利亚、印度、南非及东南亚多国；美洲和欧洲大陆基本右行。先看街景车所在车道就能砍掉半张地图。</li>
+    <li>美洲多用<b class="k">黄色中线</b>、欧洲多用<b class="k">白色中线</b>（日本也用黄中线）；完全没有标线的破旧路面，多指向东欧、俄罗斯、中亚或非洲乡村。</li>
+    <li><b class="k">法国</b>路侧线是独有的白色菱形虚线，看到菱形虚线直接锁法国。</li>
+    <li>北欧标线可区分三国：<b class="k">瑞典</b>路侧是小虚线、<b class="k">芬兰</b>多为实线、<b class="k">挪威</b>是实线与长虚线混合。</li>
+    <li><b class="k">乌拉圭</b>：两条黄线夹一条白色虚线，加上三叉形电线杆，是标志性组合。</li>
+    <li><b class="k">南非</b>道路外侧是黄色边线，看到外侧黄线先考虑南非。</li>
+    <li><b class="k">约旦</b>道路黄外线 + 白中线；弯道箭头牌约旦是白底红箭头、<b class="k">以色列</b>是黑底白箭头，箭头颜色可区分两国。</li>
+</ul>
+
+<h3 class="sub">电线杆 / 路桩 / 街景车</h3>
+<ul class="tips">
+    <li><b class="k">法国</b>木质电线杆上一定有蓝色方形贴纸（偶有例外），是强特征。</li>
+    <li><b class="k">泰国</b>电线杆杆身有孔洞、路桩是黑白相间的方尖碑形，杆桩组合锁定泰国。</li>
+    <li><b class="k">日本 vs 台湾 vs 韩国</b>电线杆条纹：日本是黄黑条纹矩形、悬空离地；台湾同色斜条纹、贴着地面；韩国条纹更少、接近贴地——按"条纹是否触地"区分。</li>
+    <li><b class="k">乌克兰 / 罗马尼亚</b>电线杆底部常刷白漆，看到白底杆先想这两国。</li>
+    <li>路桩：<b class="k">西班牙</b>是欧式黑白桩、黑色段内嵌亮黄矩形；<b class="k">冰岛</b>路桩黄色；<b class="k">澳大利亚</b>小红块、<b class="k">新西兰</b>大红块。</li>
+    <li>街景车 meta：<b class="k">日本 / 瑞士</b>的车底盘很低；<b class="k">加纳</b>的车有 4 根杆、其中一根缠黑胶带，<b class="k">肯尼亚</b>同款车有黑色通气管；<b class="k">尼日利亚</b>街景车后跟着警车；<b class="k">蒙古</b>车顶有露营装备；<b class="k">巴拿马</b>车有独特天线。</li>
+    <li><b class="k">哥斯达黎加</b>没有街景车、只有人步行背着设备拍摄，看到步行视角先想哥斯达黎加。</li>
+</ul>
+
+<h3 class="sub">易混国家对</h3>
+<ul class="tips">
+    <li><b class="k">西班牙 vs 葡萄牙</b>：看拼写——ñ 是西语，ã / ç / lh / nh 是葡语；"街"西语 calle、葡语 rua；葡萄牙房子多红/橙斜屋顶、路面有浅蓝色猫眼反光钉。</li>
+    <li><b class="k">阿根廷 vs 乌拉圭</b>：乌拉圭看标线（三黄夹白虚线）+ 三叉电线杆 + 白底蓝字车牌；阿根廷看车牌黑点 + YPF 加油站。</li>
+    <li><b class="k">泰国 vs 越南 vs 柬埔寨</b>：先看文字（泰文尾带圆圈、高棉文顶带钩）；柬埔寨在东南亚少见地靠右行，且 Angkor 啤酒广告牌、土路多；越南与韩国一样用红边黄底三角警告牌。</li>
+    <li><b class="k">波罗的海三国</b>：立陶宛路灯柱上有特征性小梗；爱沙尼亚路侧白虚线、树比拉脱维亚/立陶宛多；"街"：爱沙尼亚语 tänav、拉脱维亚语 iela、立陶宛语 gatvė。</li>
+    <li><b class="k">巴尔干诸国</b>：保加利亚用西里尔字母、街景常见埃菲尔铁塔状铁塔；罗马尼亚看 ț / ș；克罗地亚街景多为 2013 年拍摄；阿尔巴尼亚、黑山的天空常有拼接裂缝。</li>
+</ul>
+
+<h3 class="sub">建筑 / 域名 / 其他</h3>
+<ul class="tips">
+    <li><b class="k">德国</b>：黄色邮筒、白底蓝字高速路牌、郊区独栋多无前院；<b class="k">法国</b>：黄色村庄名牌、乡村路旁法国梧桐、巴黎多 Mansard 式黑瓦老虎窗屋顶。</li>
+    <li><b class="k">土耳其</b>：停车牌写 "DUR"、路面多"盐胡椒"颗粒质感、城镇常见高宣礼塔和高方形公寓楼。</li>
+    <li><b class="k">约旦</b>建筑多为浅色砂岩砖 + 平顶；<b class="k">秘鲁 / 玻利维亚</b>民居多砖房 + 很平的屋顶；<b class="k">不丹</b>房屋是平顶亚式风格。</li>
+    <li>看到网址先看<b class="k">国家域名后缀</b>（如瑞士 .ch），是零成本的国家线索。</li>
+</ul>
+
+<h2>南北半球判断</h2>
+<h3 class="sub">方法</h3>
+<ul class="tips">
+    <li>核心法则：<b class="k">太阳在南边 = 北半球，太阳在北边 = 南半球</b>——所有半球判断的起点。</li>
+    <li>影子法：用游戏内指南针面朝北，如果影子也指向北方（太阳在南）就是北半球；影子指南则是南半球。</li>
+    <li>阴天无影子看<b class="k">卫星锅</b>：锅口朝南 = 北半球、朝北 = 南半球（家用锅都对准赤道上空的同步卫星）；锅口朝天说明接近赤道。</li>
+    <li>月相法：南半球看到的月亮盈亏方向与北半球镜像——<b class="k">月亮从左侧开始变圆的是南半球</b>（北半球从右侧开始）。</li>
+    <li>弦月法：把弦月两角连线延长到地平线，北半球大致指向南方、南半球指向北方，夜间无星时可定向。</li>
+    <li>南十字星法：找到南十字星，沿其长轴延长约 <b class="k">4.5 倍</b>，落点即为正南——南半球夜间标准定向法。</li>
+    <li>组合技：<b class="k">南半球 + 左行 + 太阳在北</b>，可把范围压到澳大利亚、新西兰、南非等少数国家；北半球 + 右行 + 太阳在南，则是欧美亚大陆的主流组合。</li>
+</ul>
+<h3 class="sub">四个误区</h3>
+<ul class="tips">
+    <li>赤道附近（±10°内）太阳几乎在头顶，南北法基本失效——此时卫星锅朝天反而是"接近赤道"的更强信号。</li>
+    <li>冬季拍摄的照片太阳高度角很低，用太阳位置判半球不可靠，不要过度依赖。</li>
+    <li>"松树 = 北半球、棕榈 = 南半球"是过度简化：南半球温带（新西兰、智利南部）也有大片针叶林，北半球热带到处是棕榈。植被只能做弱参考。</li>
+    <li>看到"太阳在正头顶"就猜赤道是错的：除春秋分前后，太阳直射点只在南北回归线之间移动，大部分时间太阳并不在头顶。</li>
+</ul>
+
+<h2>语言 / 文字判断</h2>
+<h3 class="sub">先认体系，再认语言（不用读懂单词）</h3>
+<ul class="tips">
+    <li>看到文字先看体系：<b class="k">西里尔、阿拉伯、泰文、日文、韩文、希腊文</b>每种都能一秒锁定大区域，拉丁字母内部再看变音符号。</li>
+    <li><b class="k">中日韩</b>：日文假名线条弯曲、中文方正复杂、韩文呈圆润的方块状，笔触风格差异明显。</li>
+    <li><b class="k">泰文</b>字符末尾带小圆圈；<b class="k">柬埔寨（高棉）文</b>字符顶部带小钩——看到顶钩先想柬埔寨。</li>
+    <li><b class="k">印地文 / 孟加拉文</b>字符顶部有一条横线；<b class="k">阿拉伯文</b>是字母下方有一条基线——横线在上还是在下是关键区别。</li>
+    <li><b class="k">斯里兰卡僧伽罗文</b>里有很多像字母 "c" 的变体，看到满屏 "c" 形字母就是斯里兰卡。</li>
+    <li><b class="k">希腊字母</b> α β γ δ 极易辨认，看到就是希腊或塞浦路斯。</li>
+</ul>
+<h3 class="sub">同语系内拼写线索</h3>
+<ul class="tips">
+    <li>西语 vs 葡语：<b class="k">ñ</b> 是西班牙语，<b class="k">ã / ç / lh / nh</b> 是葡萄牙语。</li>
+    <li>法语 vs 罗马尼亚语：<b class="k">ț / ș</b> 是罗马尼亚语专属，看到直接锁罗马尼亚。</li>
+    <li>西里尔三语：<b class="k">ї / є / ґ</b> 只出现在乌克兰语，<b class="k">ы / ё</b> 偏向俄语，<b class="k">ө / ү</b> 是蒙古语——看到西里尔先找这几个特有字母。</li>
+    <li>北欧：<b class="k">å / ä / ö</b> 指向瑞典 / 芬兰，<b class="k">æ / ø</b> 指向丹麦 / 挪威；芬兰语单词都很长（非印欧语系）。</li>
+    <li><b class="k">波兰语</b>看 ą / ę / ł，<b class="k">德语</b>看 ß 和 Straße，<b class="k">荷兰语</b> z / w 泛滥，<b class="k">匈牙利语</b>"街"是 utca。</li>
+    <li><b class="k">意大利语</b>单词多以元音结尾、常见 gg / cc 双写和 ì / à；<b class="k">土耳其语</b>"街"是 sokak。</li>
+    <li><b class="k">印尼语</b>字母 a 出现频率极高、单词多以 -kan 结尾；马来语相近，需结合车牌（三段白 vs 两段白）区分。</li>
+    <li>停车牌关键词：墨西哥 / 危地马拉写 <b class="k">"ALTO"</b>、土耳其写 <b class="k">"DUR"</b>、哥伦比亚写 <b class="k">"PARE"</b>——同为拉丁字母时靠固定词组区分西语国家内部。</li>
+    <li><b class="k">美国</b>限速牌写 "SPEED LIMIT"、<b class="k">加拿大</b>写 "MAXIMUM"——同为英语靠这组固定词区分美加。</li>
+</ul>
+<p>"街"一词速查表（练熟能形成条件反射）：</p>
+<table class="street-table">
+    <tr><th>语言</th><td>西班牙语</td><td>葡萄牙语</td><td>法语</td><td>罗马尼亚语</td><td>德语</td><td>匈牙利语</td><td>芬兰语</td><td>爱沙尼亚语</td><td>拉脱维亚语</td><td>立陶宛语</td><td>土耳其语</td></tr>
+    <tr><th>"街"</th><td>calle</td><td>rua</td><td>rue</td><td>stradă</td><td>Straße</td><td>utca</td><td>katu</td><td>tänav</td><td>iela</td><td>gatvė</td><td>sokak</td></tr>
+</table>
+
+<h2>Country Determination（原速查表）</h2>
 
 <table class="styled-table">
     <thead>
@@ -59,23 +290,23 @@
     </tbody>
 </table>
 
-<style>
-    .styled-table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-    .styled-table th, .styled-table td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
-</style>
-
 <h2>Trainers</h2>
 <ul>
     <li><a href="../game/flag_trainer.html">Flag Trainer</a> — guess the country from its flag (149 countries, GeoGuessr street-view mode).</li>
     <li><a href="../game/turtle_soup.html">海龟汤题库</a> — lateral-thinking puzzle bank with AI-generated soups (Chinese).</li>
 </ul>
+
+<h2>来源</h2>
+<ul class="src">
+    <li>40 对相似国旗对比（YouTube）：https://www.youtube.com/watch?v=XkJuPxQgm5c</li>
+    <li>120 Geoguessr Tips（Medium, Jarrod Hill）：https://medium.com/@jarrodhill257/geoguessr-tips-d0d7f193b763</li>
+    <li>Stop Guessing: 5 Clues to Read First（Medium, Duckseeder）：https://medium.com/@duckseeder1/geoguessr-clues-for-beginners-c9965a67dc8f</li>
+    <li>geotips.net 欧洲指南：https://geotips.net/europe/</li>
+    <li>plonkit 知识库镜像（GitHub）：https://github.com/kerim-altny/geotrainerai</li>
+    <li>GitHub cheat-sheet：https://github.com/katamapaul/geoguessr-tips · https://github.com/josephvsn/geoguessr-tips · https://github.com/JosephVolosin/geoguessr-tips</li>
+    <li>中文攻略：WasabiPingKak（10 大技巧 / 德奥贴纸）：https://www.youtube.com/watch?v=7HhxpDQ3IX4 · https://www.youtube.com/watch?v=I6eBn1ZbUrE；just_ect（新手指南 / 东亚攻略）：https://www.youtube.com/watch?v=z70lnRmJYf4 · https://www.youtube.com/watch?v=Qh5s5CeDZbk</li>
+</ul>
+<p class="src">整理自英文 / 中文社区公开攻略，均为转述非原文；个别条目（如哥伦比亚 PARE）来源置信度较低，实战中请交叉验证。知乎 / 小红书未检索到成体系攻略，故未收录。</p>
 
 
   </main>
