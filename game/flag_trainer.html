@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>国旗 Trainer | Cubing Pro</title>
+<meta name="description" content="看国旗猜国家：149 个国家四选一答题，附街景常见国家模式，顺手为 GeoGuessr 练眼力。">
+<meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs">
+<!-- Baidu site verification: replace with your code from zhanjiang.baidu.com -->
+<!-- <meta name="baidu-site-verification" content="YOUR_CODE_HERE"> -->
+<link rel="stylesheet" href="../static/css/main.css">
+
+</head>
+<body>
+<header class="site-header">
+  <button id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">&#9776;</button>
+  <a class="site-title" href="../">Cubing Pro</a>
+</header>
+<div class="layout">
+  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details><summary>Timer</summary><ul><li><a href="../timer">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../fmc/recon.html">FMC Recon</a></li><li><a href="../fmc/theory.html">FMC Theory</a></li><li><a href="../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../3x3x3/cfop">CFOP method</a></li><li><a href="../3x3x3/cross">Cross tutorial</a></li><li><a href="../3x3x3/f2l">F2L algorithms</a></li><li><a href="../3x3x3/oll">OLL algorithms</a></li><li><a href="../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../3x3x3/pll">PLL algorithms</a></li><li><a href="../3x3x3/oh_cmll">OH CMLL algorithms</a></li><li><a href="../3x3x3/roux">Roux Method</a></li><li><a href="../3x3x3/zb_stepping_stone">VHLS + COLL</a></li><li><a href="../fmc/dr_htr_trainer">FMC DR HTR Trainer</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../2x2x2/eg_intro">EG method</a></li><li><a href="../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../big_cube/yau.html">Yau method</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../fto/tutorial">FTO Beginner Tutorial</a></li><li><a href="../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../sq1/eo">EO</a></li><li><a href="../sq1/obl">OBL</a></li><li><a href="../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details open><summary>Misc</summary><ul><li><a href="../game/geoguesser.html">GeoGuesser Tips</a></li><li><a href="../game/flag_trainer.html" aria-current="page">Flag Trainer</a></li><li><a href="../game/turtle_soup.html">海龟汤题库</a></li></ul></details></li></ul></nav>
+  <main class="content">
+    
+
+<h1>国旗 Trainer</h1>
+<p class="lede">看国旗猜国家，四选一，答对攒连击。开一个「街景常见」模式，顺手为 GeoGuessr 练眼力。国旗图片由 flagcdn.com 提供。</p>
+
+<style>
+.flag-controls { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; align-items:center; }
+.seg { display:flex; border:1px solid #ccc; border-radius:10px; overflow:hidden; }
+.seg button { border:0; background:#fff; padding:10px 16px; font-size:15px; cursor:pointer; }
+.seg button.on { background:#1a73e8; color:#fff; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; }
+.chips button { border:1px solid #ccc; background:#fff; border-radius:20px; padding:8px 14px; font-size:14px; cursor:pointer; }
+.chips button.on { background:#1a73e8; border-color:#1a73e8; color:#fff; }
+.poolinfo { color:#666; font-size:13px; margin:4px 0 0; }
+#startBtn { display:block; width:100%; margin:14px 0; padding:14px; font-size:18px; border:0; border-radius:12px; background:#1a73e8; color:#fff; cursor:pointer; }
+.scorebar { display:flex; gap:16px; flex-wrap:wrap; font-size:15px; margin:10px 0; color:#333; }
+.scorebar b { color:#1a73e8; }
+.flagwrap { text-align:center; margin:8px 0 4px; }
+.flagwrap img { width:min(320px, 86vw); border:1px solid #ddd; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,.12); }
+#options { display:grid; gap:10px; margin:14px 0; }
+.opt { padding:14px; font-size:17px; border:1px solid #ccc; border-radius:12px; background:#fff; cursor:pointer; text-align:left; }
+.opt .en { display:block; font-size:13px; color:#777; margin-top:2px; }
+.opt.correct { background:#e6f4ea; border-color:#1e8e3e; }
+.opt.wrong { background:#fce8e6; border-color:#d93025; }
+.opt:disabled { cursor:default; opacity:.95; }
+#feedback { min-height:28px; font-size:16px; margin:6px 0; }
+#nextBtn { display:block; width:100%; padding:12px; font-size:16px; border:0; border-radius:10px; background:#188038; color:#fff; cursor:pointer; margin-bottom:20px; }
+.credit { color:#888; font-size:12px; }
+.kbd-hint { color:#999; font-size:12px; }
+</style>
+
+<div class="flag-controls">
+  <div class="seg" id="modeSeg">
+    <button data-mode="all" class="on">全部国家</button>
+    <button data-mode="geo">街景常见</button>
+  </div>
+</div>
+<div class="chips" id="regionChips">
+  <button data-r="全部" class="on">全部地区</button>
+  <button data-r="亚洲">亚洲</button>
+  <button data-r="欧洲">欧洲</button>
+  <button data-r="非洲">非洲</button>
+  <button data-r="北美洲">北美洲</button>
+  <button data-r="南美洲">南美洲</button>
+  <button data-r="大洋洲">大洋洲</button>
+</div>
+<p class="poolinfo" id="poolInfo"></p>
+<button id="startBtn">开始挑战</button>
+
+<div id="quiz" hidden>
+  <div class="scorebar">
+    <span>得分 <b id="score">0</b></span>
+    <span>已答 <b id="answered">0</b> 题</span>
+    <span>连击 <b id="streak">0</b></span>
+    <span>最高连击 <b id="best">0</b></span>
+  </div>
+  <div class="flagwrap"><img id="flagImg" alt="这是哪个国家的国旗？"></div>
+  <div id="options"></div>
+  <div id="feedback"></div>
+  <button id="nextBtn" hidden>下一题 →</button>
+  <p class="kbd-hint">电脑端可按 1–4 快捷答题</p>
+</div>
+<p class="credit">题库共 149 国 · 街景常见为近似范围（有 Google 街景覆盖的国家）· 国旗图片 flagcdn.com</p>
+
+<script>
+(function () {
+  // [code, 中文名， English, 洲， 街景常见1/0]
+  var DATA = [
+    ["us","美国","United States","北美洲",1],["ca","加拿大","Canada","北美洲",1],
+    ["mx","墨西哥","Mexico","北美洲",1],["gt","危地马拉","Guatemala","北美洲",1],
+    ["bz","伯利兹","Belize","北美洲",0],["hn","洪都拉斯","Honduras","北美洲",0],
+    ["sv","萨尔瓦多","El Salvador","北美洲",0],["ni","尼加拉瓜","Nicaragua","北美洲",0],
+    ["cr","哥斯达黎加","Costa Rica","北美洲",1],["pa","巴拿马","Panama","北美洲",1],
+    ["cu","古巴","Cuba","北美洲",0],["do","多米尼加","Dominican Republic","北美洲",0],
+    ["jm","牙买加","Jamaica","北美洲",0],["ht","海地","Haiti","北美洲",0],
+    ["bs","巴哈马","Bahamas","北美洲",0],
+    ["br","巴西","Brazil","南美洲",1],["ar","阿根廷","Argentina","南美洲",1],
+    ["cl","智利","Chile","南美洲",1],["uy","乌拉圭","Uruguay","南美洲",1],
+    ["py","巴拉圭","Paraguay","南美洲",0],["bo","玻利维亚","Bolivia","南美洲",0],
+    ["pe","秘鲁","Peru","南美洲",1],["ec","厄瓜多尔","Ecuador","南美洲",1],
+    ["co","哥伦比亚","Colombia","南美洲",1],["ve","委内瑞拉","Venezuela","南美洲",0],
+    ["gy","圭亚那","Guyana","南美洲",0],["sr","苏里南","Suriname","南美洲",0],
+    ["gb","英国","United Kingdom","欧洲",1],["ie","爱尔兰","Ireland","欧洲",1],
+    ["fr","法国","France","欧洲",1],["de","德国","Germany","欧洲",1],
+    ["nl","荷兰","Netherlands","欧洲",1],["be","比利时","Belgium","欧洲",1],
+    ["lu","卢森堡","Luxembourg","欧洲",0],["ch","瑞士","Switzerland","欧洲",1],
+    ["at","奥地利","Austria","欧洲",1],["es","西班牙","Spain","欧洲",1],
+    ["pt","葡萄牙","Portugal","欧洲",1],["it","意大利","Italy","欧洲",1],
+    ["gr","希腊","Greece","欧洲",1],["se","瑞典","Sweden","欧洲",1],
+    ["no","挪威","Norway","欧洲",1],["fi","芬兰","Finland","欧洲",1],
+    ["dk","丹麦","Denmark","欧洲",1],["is","冰岛","Iceland","欧洲",1],
+    ["pl","波兰","Poland","欧洲",1],["cz","捷克","Czechia","欧洲",1],
+    ["sk","斯洛伐克","Slovakia","欧洲",0],["hu","匈牙利","Hungary","欧洲",0],
+    ["ro","罗马尼亚","Romania","欧洲",1],["bg","保加利亚","Bulgaria","欧洲",1],
+    ["rs","塞尔维亚","Serbia","欧洲",0],["hr","克罗地亚","Croatia","欧洲",1],
+    ["si","斯洛文尼亚","Slovenia","欧洲",1],["ba","波黑","Bosnia and Herzegovina","欧洲",0],
+    ["me","黑山","Montenegro","欧洲",0],["mk","北马其顿","North Macedonia","欧洲",0],
+    ["al","阿尔巴尼亚","Albania","欧洲",0],["ee","爱沙尼亚","Estonia","欧洲",1],
+    ["lv","拉脱维亚","Latvia","欧洲",1],["lt","立陶宛","Lithuania","欧洲",1],
+    ["ua","乌克兰","Ukraine","欧洲",1],["by","白俄罗斯","Belarus","欧洲",0],
+    ["md","摩尔多瓦","Moldova","欧洲",0],["ru","俄罗斯","Russia","欧洲",1],
+    ["cn","中国","China","亚洲",0],["hk","香港","Hong Kong","亚洲",1],
+    ["mo","澳门","Macau","亚洲",0],["tw","台湾","Taiwan","亚洲",1],
+    ["jp","日本","Japan","亚洲",1],["kr","韩国","South Korea","亚洲",1],
+    ["kp","朝鲜","North Korea","亚洲",0],["mn","蒙古","Mongolia","亚洲",1],
+    ["vn","越南","Vietnam","亚洲",0],["la","老挝","Laos","亚洲",0],
+    ["kh","柬埔寨","Cambodia","亚洲",0],["th","泰国","Thailand","亚洲",1],
+    ["mm","缅甸","Myanmar","亚洲",0],["my","马来西亚","Malaysia","亚洲",1],
+    ["sg","新加坡","Singapore","亚洲",1],["id","印度尼西亚","Indonesia","亚洲",1],
+    ["ph","菲律宾","Philippines","亚洲",1],["bn","文莱","Brunei","亚洲",0],
+    ["tl","东帝汶","Timor-Leste","亚洲",0],["in","印度","India","亚洲",1],
+    ["pk","巴基斯坦","Pakistan","亚洲",0],["bd","孟加拉国","Bangladesh","亚洲",0],
+    ["lk","斯里兰卡","Sri Lanka","亚洲",1],["np","尼泊尔","Nepal","亚洲",0],
+    ["bt","不丹","Bhutan","亚洲",0],["mv","马尔代夫","Maldives","亚洲",0],
+    ["af","阿富汗","Afghanistan","亚洲",0],["ir","伊朗","Iran","亚洲",0],
+    ["iq","伊拉克","Iraq","亚洲",0],["sa","沙特阿拉伯","Saudi Arabia","亚洲",0],
+    ["ae","阿联酋","United Arab Emirates","亚洲",1],["qa","卡塔尔","Qatar","亚洲",1],
+    ["kw","科威特","Kuwait","亚洲",0],["bh","巴林","Bahrain","亚洲",0],
+    ["om","阿曼","Oman","亚洲",0],["ye","也门","Yemen","亚洲",0],
+    ["jo","约旦","Jordan","亚洲",1],["lb","黎巴嫩","Lebanon","亚洲",0],
+    ["sy","叙利亚","Syria","亚洲",0],["il","以色列","Israel","亚洲",1],
+    ["ps","巴勒斯坦","Palestine","亚洲",0],["tr","土耳其","T\u00fcrkiye","亚洲",1],
+    ["ge","格鲁吉亚","Georgia","亚洲",0],["am","亚美尼亚","Armenia","亚洲",0],
+    ["az","阿塞拜疆","Azerbaijan","亚洲",0],["kz","哈萨克斯坦","Kazakhstan","亚洲",1],
+    ["uz","乌兹别克斯坦","Uzbekistan","亚洲",0],["tm","土库曼斯坦","Turkmenistan","亚洲",0],
+    ["kg","吉尔吉斯斯坦","Kyrgyzstan","亚洲",1],["tj","塔吉克斯坦","Tajikistan","亚洲",0],
+    ["za","南非","South Africa","非洲",1],["na","纳米比亚","Namibia","非洲",1],
+    ["bw","博茨瓦纳","Botswana","非洲",1],["zw","津巴布韦","Zimbabwe","非洲",0],
+    ["mz","莫桑比克","Mozambique","非洲",0],["mg","马达加斯加","Madagascar","非洲",1],
+    ["mu","毛里求斯","Mauritius","非洲",0],["eg","埃及","Egypt","非洲",0],
+    ["ly","利比亚","Libya","非洲",0],["tn","突尼斯","Tunisia","非洲",0],
+    ["dz","阿尔及利亚","Algeria","非洲",0],["ma","摩洛哥","Morocco","非洲",0],
+    ["mr","毛里塔尼亚","Mauritania","非洲",0],["ml","马里","Mali","非洲",0],
+    ["ne","尼日尔","Niger","非洲",0],["td","乍得","Chad","非洲",0],
+    ["sd","苏丹","Sudan","非洲",0],["et","埃塞俄比亚","Ethiopia","非洲",0],
+    ["so","索马里","Somalia","非洲",0],["ke","肯尼亚","Kenya","非洲",1],
+    ["ug","乌干达","Uganda","非洲",1],["tz","坦桑尼亚","Tanzania","非洲",1],
+    ["rw","卢旺达","Rwanda","非洲",1],["cd","刚果（金）","DR Congo","非洲",0],
+    ["cg","刚果（布）","Republic of the Congo","非洲",0],["cm","喀麦隆","Cameroon","非洲",0],
+    ["ng","尼日利亚","Nigeria","非洲",0],["gh","加纳","Ghana","非洲",1],
+    ["ci","科特迪瓦","C\u00f4te d'Ivoire","非洲",0],["sn","塞内加尔","Senegal","非洲",1],
+    ["au","澳大利亚","Australia","大洋洲",1],["nz","新西兰","New Zealand","大洋洲",1],
+    ["fj","斐济","Fiji","大洋洲",0],["pg","巴布亚新几内亚","Papua New Guinea","大洋洲",1]
+  ];
+  var COUNTRIES = DATA.map(function (d) {
+    return { c: d[0], zh: d[1], en: d[2], r: d[3], geo: d[4] };
+  });
+
+  var mode = "all", region = "全部";
+  var pool = [], score = 0, answered = 0, streak = 0;
+  var best = parseInt(localStorage.getItem("flagTrainerBest") || "0", 10) || 0;
+  var qTimer = null, current = null;
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function buildPool() {
+    pool = COUNTRIES.filter(function (x) {
+      if (mode === "geo" && !x.geo) return false;
+      if (region !== "全部" && x.r !== region) return false;
+      return true;
+    });
+    $("poolInfo").textContent = "当前题库：" + pool.length + " 国" +
+      (mode === "geo" ? "（街景常见）" : "") + (region !== "全部" ? " · " + region : "");
+  }
+
+  function startQuiz() {
+    buildPool();
+    score = 0; answered = 0; streak = 0;
+    updateScore();
+    $("quiz").hidden = false;
+    $("startBtn").hidden = true;
+    nextQuestion();
+  }
+
+  function updateScore() {
+    $("score").textContent = score;
+    $("answered").textContent = answered;
+    $("streak").textContent = streak;
+    $("best").textContent = best;
+  }
+
+  function pickDistractors(answer) {
+    var sameR = shuffle(pool.filter(function (x) { return x.c !== answer.c && x.r === answer.r; }));
+    var out = sameR.slice(0, 3);
+    if (out.length < 3) {
+      var rest = shuffle(pool.filter(function (x) {
+        return x.c !== answer.c && x.r !== answer.r && out.indexOf(x) < 0;
+      }));
+      out = out.concat(rest.slice(0, 3 - out.length));
+    }
+    return out;
+  }
+
+  function nextQuestion() {
+    if (qTimer) { clearTimeout(qTimer); qTimer = null; }
+    current = pool[Math.floor(Math.random() * pool.length)];
+    var opts = shuffle([current].concat(pickDistractors(current)));
+    var img = $("flagImg");
+    img.src = "https://flagcdn.com/w320/" + current.c + ".png";
+    img.srcset = "https://flagcdn.com/w640/" + current.c + ".png 2x";
+    img.alt = "这是哪个国家的国旗？";
+    var box = $("options");
+    box.innerHTML = "";
+    opts.forEach(function (o, i) {
+      var b = document.createElement("button");
+      b.className = "opt";
+      b.dataset.code = o.c;
+      b.innerHTML = '<span class="kbd">' + (i + 1) + '. </span><span class="cn">' +
+        o.zh + '</span><span class="en">' + o.en + "</span>";
+      b.addEventListener("click", function () { answer(b, o); });
+      box.appendChild(b);
+    });
+    $("feedback").textContent = "";
+    $("nextBtn").hidden = true;
+  }
+
+  function answer(btn, picked) {
+    if (!current || btn.disabled) return;
+    var btns = $("options").children;
+    for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+    answered++;
+    if (picked.c === current.c) {
+      btn.classList.add("correct");
+      score++; streak++;
+      if (streak > best) {
+        best = streak;
+        localStorage.setItem("flagTrainerBest", String(best));
+      }
+      $("feedback").textContent = "✅ 答对了！" + current.zh + " · " + current.en;
+    } else {
+      btn.classList.add("wrong");
+      for (var j = 0; j < btns.length; j++) {
+        if (btns[j].dataset.code === current.c) btns[j].classList.add("correct");
+      }
+      streak = 0;
+      $("feedback").textContent = "❌ 正确答案：" + current.zh + " · " + current.en + "（" + current.r + "）";
+    }
+    updateScore();
+    var nb = $("nextBtn");
+    nb.hidden = false;
+    current = null;
+    qTimer = setTimeout(nextQuestion, 1800);
+  }
+
+  $("nextBtn").addEventListener("click", nextQuestion);
+  $("startBtn").addEventListener("click", startQuiz);
+
+  $("modeSeg").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var btns = this.querySelectorAll("button");
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove("on");
+    b.classList.add("on"); mode = b.dataset.mode;
+    resetToStart();
+  });
+  $("regionChips").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var btns = this.querySelectorAll("button");
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove("on");
+    b.classList.add("on"); region = b.dataset.r;
+    resetToStart();
+  });
+
+  function resetToStart() {
+    if (qTimer) { clearTimeout(qTimer); qTimer = null; }
+    current = null;
+    $("quiz").hidden = true;
+    $("startBtn").hidden = false;
+    buildPool();
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if ($("quiz").hidden || !current) return;
+    var n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 4) {
+      var b = $("options").children[n - 1];
+      if (b && !b.disabled) b.click();
+    }
+  });
+
+  $("best").textContent = best;
+  buildPool();
+})();
+</script>
+
+
+  </main>
+</div>
+<footer class="site-footer">
+  <span>&copy; 2025 Bowen Deng</span>
+  <span class="dot">&middot;</span>
+  <span>Cubing Pro</span>
+  <span class="dot">&middot;</span>
+  <span>&#129352; 5% off at TheCubicle &amp; SpeedCubeShop with code <button id="discount-code" title="Click to copy">CUBINGPRO</button></span>
+</footer>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var nav = document.getElementById('site-nav');
+  toggle.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && window.innerWidth <= 900) {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  var code = document.getElementById('discount-code');
+  code.addEventListener('click', function () {
+    var done = function () {
+      code.textContent = 'COPIED!';
+      setTimeout(function () { code.textContent = 'CUBINGPRO'; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('CUBINGPRO').then(done, done);
+    } else { done(); }
+  });
+})();
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850" crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-CK6MWC01K0');
+</script>
+</body>
+</html>

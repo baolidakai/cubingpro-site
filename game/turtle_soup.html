@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>海龟汤题库 | Cubing Pro</title>
+<meta name="description" content="在线海龟汤（ lateral thinking puzzles ）题库：20 道经典开胃汤，支持搜索筛选，还能让 AI 现场出一碗。纯静态页面实现。">
+<meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs">
+<!-- Baidu site verification: replace with your code from zhanjiang.baidu.com -->
+<!-- <meta name="baidu-site-verification" content="YOUR_CODE_HERE"> -->
+<link rel="stylesheet" href="../static/css/main.css">
+
+</head>
+<body>
+<header class="site-header">
+  <button id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">&#9776;</button>
+  <a class="site-title" href="../">Cubing Pro</a>
+</header>
+<div class="layout">
+  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details><summary>Timer</summary><ul><li><a href="../timer">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../fmc/recon.html">FMC Recon</a></li><li><a href="../fmc/theory.html">FMC Theory</a></li><li><a href="../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../3x3x3/cfop">CFOP method</a></li><li><a href="../3x3x3/cross">Cross tutorial</a></li><li><a href="../3x3x3/f2l">F2L algorithms</a></li><li><a href="../3x3x3/oll">OLL algorithms</a></li><li><a href="../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../3x3x3/pll">PLL algorithms</a></li><li><a href="../3x3x3/oh_cmll">OH CMLL algorithms</a></li><li><a href="../3x3x3/roux">Roux Method</a></li><li><a href="../3x3x3/zb_stepping_stone">VHLS + COLL</a></li><li><a href="../fmc/dr_htr_trainer">FMC DR HTR Trainer</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../2x2x2/eg_intro">EG method</a></li><li><a href="../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../big_cube/yau.html">Yau method</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../fto/tutorial">FTO Beginner Tutorial</a></li><li><a href="../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../sq1/eo">EO</a></li><li><a href="../sq1/obl">OBL</a></li><li><a href="../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details open><summary>Misc</summary><ul><li><a href="../game/geoguesser.html">GeoGuesser Tips</a></li><li><a href="../game/flag_trainer.html">Flag Trainer</a></li><li><a href="../game/turtle_soup.html" aria-current="page">海龟汤题库</a></li></ul></details></li></ul></nav>
+  <main class="content">
+    
+
+<h1>海龟汤题库</h1>
+<p class="lede">海龟汤就是"情境猜谜"：先看一碗"汤面"（奇怪的事件），靠提问/推理还原"汤底"（真相）。下面 20 碗是开胃汤，点击看提示、看汤底。想喝新的？往下翻，有 AI 现场出题。</p>
+
+<style>
+.soup-toolbar { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+.soup-toolbar input, .soup-toolbar select { padding:10px 12px; font-size:15px; border:1px solid #ccc; border-radius:10px; }
+.soup-toolbar input { flex:1 1 160px; }
+.bigbtn { padding:12px 18px; font-size:16px; border:0; border-radius:12px; background:#1a73e8; color:#fff; cursor:pointer; }
+.bigbtn:disabled { opacity:.6; }
+.soup { border:1px solid #e0e0e0; border-radius:12px; padding:14px 16px; margin:12px 0; background:#fff; }
+.soup.flash { border-color:#1a73e8; box-shadow:0 0 0 3px rgba(26,115,232,.15); }
+.soup h3 { margin:0 0 8px; font-size:18px; }
+.soup .q { font-size:16px; margin:6px 0 10px; }
+.soup .meta { font-size:13px; color:#777; }
+.tag { display:inline-block; font-size:12px; background:#e8f0fe; color:#1a73e8; border-radius:10px; padding:2px 10px; margin-left:8px; vertical-align:middle; }
+.lvl { color:#f9ab00; font-size:13px; margin-left:6px; }
+.sbtn { border:1px solid #ccc; background:#fff; border-radius:20px; padding:8px 14px; font-size:14px; cursor:pointer; margin-right:8px; }
+.hintbox, .answerbox { margin-top:10px; padding:10px 12px; border-radius:8px; font-size:15px; }
+.hintbox { background:#fef7e0; }
+.answerbox { background:#e6f4ea; }
+.ai-box { border:1px dashed #1a73e8; border-radius:12px; padding:14px 16px; margin:16px 0; }
+.ai-box input { width:100%; box-sizing:border-box; padding:10px 12px; font-size:14px; border:1px solid #ccc; border-radius:8px; margin:6px 0; }
+.ai-row { display:flex; gap:8px; }
+.ai-row input { flex:1; }
+.note { font-size:13px; color:#666; }
+.delbtn { border:1px solid #d93025; color:#d93025; background:#fff; border-radius:16px; padding:6px 12px; font-size:13px; cursor:pointer; }
+.err { color:#d93025; font-size:14px; margin-top:8px; }
+.howto { background:#f8f9fa; border-radius:12px; padding:14px 16px; margin:16px 0; font-size:14px; color:#444; }
+.howto li { margin:6px 0; }
+.countline { color:#666; font-size:13px; }
+</style>
+
+<div class="soup-toolbar">
+  <button class="bigbtn" id="randomBtn">🎲 随机来一碗</button>
+  <input id="searchInput" type="search" placeholder="搜索题目 / 汤底关键词…">
+  <select id="catSel">
+    <option value="">全部分类</option>
+    <option>悬疑</option><option>生活</option><option>本格</option><option>趣味</option>
+  </select>
+  <select id="lvlSel">
+    <option value="">全部难度</option>
+    <option value="1">★ 入门</option>
+    <option value="2">★★ 进阶</option>
+  </select>
+</div>
+<p class="countline" id="countLine"></p>
+<div id="randomSpot"></div>
+<div id="soupList"></div>
+
+<h2>🤖 AI 现场出一碗</h2>
+<div class="ai-box">
+  <p class="note">纯静态页面没有服务器：你的 Key 只保存在这台设备的浏览器里（localStorage），请求从你的手机直接发到 AI 服务商，不经过任何中间服务器。OpenAI 兼容接口一般都允许浏览器跨域调用；Anthropic 官方接口不支持浏览器直连，如需用 Claude 请走 OpenAI 兼容中转。</p>
+  <input id="apiKey" type="password" placeholder="API Key（sk-…），只存本地" autocomplete="off">
+  <div class="ai-row">
+    <input id="baseUrl" placeholder="Base URL">
+    <input id="modelName" placeholder="Model">
+  </div>
+  <button class="bigbtn" id="genBtn">出一碗新汤</button>
+  <button class="sbtn" id="clearKeyBtn">清除已保存的 Key</button>
+  <div class="err" id="aiErr" hidden></div>
+  <div id="aiResult"></div>
+</div>
+
+<h2>📚 我的题库</h2>
+<p class="note">AI 生成的汤可以存进来，也可以自己写 JSON 导入；全部只存在本机，可导出备份。</p>
+<div class="soup-toolbar">
+  <button class="sbtn" id="exportBtn">导出 JSON</button>
+  <button class="sbtn" id="importBtn">导入 JSON</button>
+  <input type="file" id="importFile" accept="application/json" hidden>
+</div>
+<div id="myList"></div>
+
+<div class="howto">
+  <b>这个页面是怎么在纯静态站上"调 LLM"的？</b>
+  <ol>
+    <li><b>题库预生成（本站 20 碗就这么来的）：</b>题目是静态 JSON，随页面一起发布。零成本、秒开、不需要 Key——海龟汤这种固定内容，最适合这个方案。</li>
+    <li><b>浏览器直连（上面的 AI 出题）：</b>用 <code>fetch</code> 直接调 OpenAI 兼容的 <code>/chat/completions</code> 接口，Key 存在你自己的 localStorage。页面是静态的，但请求是从你的浏览器发出去的，不需要服务器。</li>
+    <li><b>没采用的方案：</b>自己搭代理服务器把 Key 藏在服务端——需要服务器，GitHub Pages 纯静态托管做不到，所以本站不用。</li>
+  </ol>
+</div>
+
+<script>
+(function () {
+  var SOUPS = [
+    {t:"半根火柴", q:"一名男子死在沙漠里，手中紧紧攥着半根火柴。", h:"他不是渴死的，也不是被谋杀的。", a:"他和同伴乘热气球遇险，扔掉所有负重仍不够，最后决定抽签——抽到短签的人跳下去。半根火柴就是那支短签。", c:"悬疑", l:1},
+    {t:"毒冰块", q:"姐妹俩去酒吧，姐姐喝了两杯加冰威士忌，妹妹喝了一杯。当晚妹妹死了，姐姐却安然无恙。", h:"酒没有问题。", a:"毒下在冰块里。姐姐喝得快，冰块还没化完；妹妹喝得慢，冰化了，毒就溶进了酒里。", c:"悬疑", l:1},
+    {t:"电梯", q:"男子住在10楼。晴天他乘电梯到7楼，再走楼梯回家；雨天他却直达10楼。", h:"电梯没有故障。", a:"他个子太矮，够不着10楼的按钮，只能按到7楼。雨天他带了伞，可以用伞柄去按10楼。", c:"生活", l:1},
+    {t:"打嗝与猎枪", q:"男子走进酒吧说“请给我一杯水”，酒保掏出一把猎枪对准他。男子说了声“谢谢”，转身走了。", h:"酒保不是想杀他。", a:"男子打嗝不止，想喝水压一压。酒保看出他是打嗝，用枪吓他一跳——嗝果然止住了。", c:"生活", l:1},
+    {t:"葬礼", q:"女子在葬礼上对一名男子一见钟情。一周后，她杀了自己的姐姐。", h:"她不是情杀。", a:"她想在葬礼上再见到那个男子——而能让他出现的办法，就是再办一场葬礼。", c:"悬疑", l:1},
+    {t:"融化的雪人", q:"草地上有一堆煤炭、一根胡萝卜和一条围巾，周围却没有任何脚印。", h:"昨天这里下过雪。", a:"昨天有人堆了雪人：煤炭是眼睛，胡萝卜是鼻子，围巾是装饰。今天雪化了，雪人“消失”了，只剩下这些东西。", c:"趣味", l:1},
+    {t:"海龟汤", q:"男子在餐厅喝了一碗海龟汤，结账后回到家便自杀了。", h:"汤没有问题。", a:"他曾在海难中漂流，获救时喝过“海龟汤”。这次他喝到了真正的海龟汤，味道完全不同——他这才明白，当年在海上喝的“汤”，是遇难同伴的肉。", c:"悬疑", l:2},
+    {t:"隧道", q:"男子乘坐火车，经过一条隧道时突然跳车自杀。", h:"他不久前做过眼部手术。", a:"他刚做完复明手术重见光明。火车进入隧道后一片漆黑，他以为手术失败、自己再次失明，绝望之下跳了车。", c:"悬疑", l:2},
+    {t:"录音机", q:"男子死在反锁的密室里，桌上有一台录音机。警察听完录音带，立刻说：“这是他杀，不是自杀。”", h:"录音内容是死者亲口说的“我要自杀”。", a:"磁带停在开头。死者如果真是录完音自杀，磁带应该停在末尾——有人在他死后把带子倒了回去，伪造了自杀现场。", c:"本格", l:2},
+    {t:"灯塔", q:"男子在山顶看到远处的灯灭了，随即开枪自杀。", h:"那盏灯是他负责的。", a:"他是灯塔看守，值班时睡着了，灯灭了也没有及时点亮。一艘船因此触礁——他意识到自己害死了整船的人。", c:"悬疑", l:2},
+    {t:"冰上吊", q:"男子被发现吊死在空房间里，脚下有一滩水。房间里没有任何可以垫脚的东西。", h:"水不是凶手留下的。", a:"他站在大冰块上上吊，冰块融化后，他就悬空了。脚下的水，是冰化成的。", c:"本格", l:2},
+    {t:"双面镜", q:"女子搬进新公寓的当晚，把屋里所有的镜子都砸碎了，第二天立刻退租。", h:"镜子本身没有问题，是“镜子”有问题。", a:"她用指尖测试发现那些都是双面镜——从另一面可以清楚地看到她。有人在偷窥，她连夜逃离。", c:"悬疑", l:2, o:1},
+    {t:"反锁的门", q:"独居男子出门倒垃圾没带钥匙，回来发现门虚掩着，屋里一切正常，他却立刻报了警。", h:"他出门时确实用力带上了门。", a:"他独居，门锁完好。门是从外面被带上的，现在却虚掩着——说明在他倒垃圾的几分钟里，有人进过他家。", c:"悬疑", l:1, o:1},
+    {t:"外卖备注", q:"聋人女子点外卖，备注写着“放门口，敲三下就走”。外卖员照做后，她却投诉了这家店。", h:"问题不在外卖员，而在备注本身。", a:"她是聋人，根本听不见敲门——这条备注不可能是她写的。她的账号一定被别人登录过，有人在试探她家的情况。", c:"悬疑", l:2, o:1},
+    {t:"停摆的闹钟", q:"男子把闹钟定在早上7点。某天他6点半自然醒，看了一眼闹钟又睡了，结果上班迟到。", h:"闹钟没有响过。", a:"闹钟昨晚就没电了，停在6点半。他6点半被生物钟叫醒，看到闹钟显示“6点半”，以为时间还早——其实那只是闹钟死去的时间。", c:"生活", l:1, o:1},
+    {t:"半杯水", q:"独居男子每晚睡前在床头放半杯水。某天早上杯子空了，门窗却都完好无损，他立刻搬了家。", h:"水不是他喝的，也不是蒸发的。", a:"他独居，门从里面反锁。半杯水不翼而飞——说明这个“只有他一个人”的房子里，还有第二个人。", c:"悬疑", l:2, o:1},
+    {t:"山谷回音", q:"男子在雪山山谷里大喊，听到了两声回音，他脸色大变，转身就跑。", h:"第二声不是回音。", a:"山谷地形只能产生一声回音。第二声是雪崩的声音——他喊出的声波震松了积雪，大喊引发了雪崩。", c:"悬疑", l:2, o:1},
+    {t:"按错的电梯", q:"女子进电梯想按1楼，手一抖按成了3楼。电梯却直接下到1楼，她长舒了一口气。", h:"3楼最近出过事。", a:"3楼刚发生过命案，整层被封锁，她害怕去3楼。电梯故障直接下到1楼——按错楼层反而救了她一命。", c:"悬疑", l:1, o:1},
+    {t:"煤气与蜡烛", q:"停电的夜里，男子点起一根蜡烛，几秒后又迅速吹灭，然后摸黑逃出了家门。", h:"他闻到了味道。", a:"他闻到了煤气味——家里煤气泄漏了。点燃的蜡烛随时可能引发爆炸，他吹灭蜡烛逃了出去。", c:"生活", l:1},
+    {t:"颠倒的红绿灯", q:"女子过马路，绿灯亮了她一动不动，等红灯亮起她才快步通过。", h:"她不闯红灯，信号灯也没有故障。", a:"她发现这个路口的信号灯被人恶作剧调了方向——“绿灯”时横向车流根本没停。她等的是车流真正停下的时机，而不是灯的颜色。", c:"悬疑", l:2, o:1}
+  ];
+
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function stars(l) { return l === 1 ? "★" : "★★"; }
+  function cardHTML(s, idx, showDel) {
+    var del = showDel ? '<div style="margin-top:8px"><button class="delbtn" data-del="' + idx + '">删除</button></div>' : "";
+    return '<article class="soup" data-idx="' + idx + '">' +
+      '<h3>' + esc(s.t) + '<span class="tag">' + esc(s.c) + '</span><span class="lvl">' + stars(s.l) + '</span>' +
+      (s.o ? '<span class="tag" style="background:#fef7e0;color:#b06000">本站原创</span>' : "") + '</h3>' +
+      '<p class="q">' + esc(s.q) + '</p>' +
+      '<div><button class="sbtn" data-hint>💡 提示</button><button class="sbtn" data-ans>🍲 看汤底</button></div>' +
+      '<div class="hintbox" hidden>' + esc(s.h) + '</div>' +
+      '<div class="answerbox" hidden><b>汤底：</b>' + esc(s.a) + '</div>' + del + '</article>';
+  }
+  function bindToggles(root) {
+    root.addEventListener("click", function (e) {
+      var art = e.target.closest(".soup"); if (!art) return;
+      if (e.target.hasAttribute("data-hint")) {
+        var h = art.querySelector(".hintbox"); h.hidden = !h.hidden;
+      } else if (e.target.hasAttribute("data-ans")) {
+        var a = art.querySelector(".answerbox"); a.hidden = !a.hidden;
+      } else if (e.target.hasAttribute("data-del")) {
+        var i = parseInt(e.target.getAttribute("data-del"), 10);
+        var mine = loadMine(); mine.splice(i, 1); saveMine(mine); renderMine();
+      }
+    });
+  }
+
+  function filtered() {
+    var kw = $("searchInput").value.trim();
+    var c = $("catSel").value, l = $("lvlSel").value;
+    return SOUPS.filter(function (s) {
+      if (c && s.c !== c) return false;
+      if (l && String(s.l) !== l) return false;
+      if (kw && (s.t + s.q + s.a).indexOf(kw) < 0) return false;
+      return true;
+    });
+  }
+  function renderList() {
+    var list = filtered();
+    $("countLine").textContent = "共 " + list.length + " 碗汤";
+    $("soupList").innerHTML = list.map(function (s) {
+      return cardHTML(s, SOUPS.indexOf(s), false);
+    }).join("");
+  }
+  ["searchInput", "catSel", "lvlSel"].forEach(function (id) {
+    $(id).addEventListener("input", renderList);
+  });
+
+  $("randomBtn").addEventListener("click", function () {
+    var list = filtered();
+    if (!list.length) return;
+    var s = list[Math.floor(Math.random() * list.length)];
+    var spot = $("randomSpot");
+    spot.innerHTML = cardHTML(s, SOUPS.indexOf(s), false);
+    var art = spot.querySelector(".soup");
+    art.classList.add("flash");
+    art.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  bindToggles(document);
+
+  // ---------- AI 出题（BYOK：浏览器直连 LLM） ----------
+  var DEF_BASE = "https://api.openai.com/v1", DEF_MODEL = "gpt-4o-mini";
+  $("baseUrl").value = localStorage.getItem("soupBase") || DEF_BASE;
+  $("modelName").value = localStorage.getItem("soupModel") || DEF_MODEL;
+  $("apiKey").value = localStorage.getItem("soupKey") || "";
+
+  var SYS = "你是海龟汤出题人。每次返回一道原创中文海龟汤，只返回 JSON，不要多余文字。字段：title（标题，4字以内）、question（汤面：描述一件奇怪的事，1-2句，不剧透）、hint（提示，一句话）、answer（汤底：完整解释，必须逻辑闭环、能唯一解释汤面）、category（只能是 悬疑/生活/本格/趣味 之一）、level（1入门 或 2进阶）。要求：逻辑必须严密，不能有漏洞；不要重复经典老题。";
+
+  function extractJSON(text) {
+    var m = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+    var raw = m ? m[1] : text;
+    var s = raw.indexOf("{"), e = raw.lastIndexOf("}");
+    if (s < 0 || e < 0) throw new Error("bad json");
+    return JSON.parse(raw.slice(s, e + 1));
+  }
+
+  $("genBtn").addEventListener("click", function () {
+    var key = $("apiKey").value.trim();
+    var base = ($("baseUrl").value.trim() || DEF_BASE).replace(/\/+$/, "");
+    var model = $("modelName").value.trim() || DEF_MODEL;
+    var errBox = $("aiErr"), resBox = $("aiResult");
+    errBox.hidden = true; resBox.innerHTML = "";
+    if (!key) { errBox.textContent = "请先填写 API Key（只保存在本机）。"; errBox.hidden = false; return; }
+    localStorage.setItem("soupKey", key);
+    localStorage.setItem("soupBase", base);
+    localStorage.setItem("soupModel", model);
+    var btn = $("genBtn"); btn.disabled = true; btn.textContent = "正在出题…";
+    fetch(base + "/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
+      body: JSON.stringify({
+        model: model,
+        messages: [{ role: "system", content: SYS }, { role: "user", content: "出一道原创海龟汤。" }],
+        temperature: 0.9
+      })
+    }).then(function (r) {
+      if (r.status === 401) throw new Error("Key 无效（401），请检查。");
+      if (r.status === 404) throw new Error("接口 404：Base URL 或模型名不对？");
+      if (!r.ok) throw new Error("请求失败（" + r.status + "）。");
+      return r.json();
+    }).then(function (j) {
+      var text = j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
+      if (!text) throw new Error("返回为空。");
+      var s = extractJSON(text);
+      if (!s.title || !s.question || !s.answer) throw new Error("返回格式不对，再试一次。");
+      s.h = s.hint || s.h || "暂无提示。"; s.a = s.answer; s.t = s.title; s.q = s.question;
+      s.c = s.category || "悬疑"; s.l = (s.level === 2 ? 2 : 1); s.o = 1; s.ai = 1;
+      resBox.innerHTML = cardHTML(s, -1, false) +
+        '<div style="margin:8px 0 16px"><button class="bigbtn" id="saveAiBtn">💾 存入我的题库</button></div>';
+      bindToggles(resBox);
+      $("saveAiBtn").addEventListener("click", function () {
+        var mine = loadMine(); mine.push(s); saveMine(mine); renderMine();
+        this.textContent = "已存入 ✅"; this.disabled = true;
+      });
+    }).catch(function (e) {
+      var msg = String((e && e.message) || e);
+      if (msg.indexOf("Failed to fetch") >= 0 || msg.indexOf("NetworkError") >= 0)
+        msg = "网络不通或接口不支持浏览器跨域（CORS）。OpenAI 兼容接口一般没问题；Anthropic 官方接口不支持浏览器直连。";
+      errBox.textContent = msg; errBox.hidden = false;
+    }).then(function () {
+      btn.disabled = false; btn.textContent = "出一碗新汤";
+    });
+  });
+  $("clearKeyBtn").addEventListener("click", function () {
+    localStorage.removeItem("soupKey"); $("apiKey").value = "";
+  });
+
+  // ---------- 我的题库（localStorage + 导入导出） ----------
+  function loadMine() {
+    try { return JSON.parse(localStorage.getItem("mySoups") || "[]"); } catch (e) { return []; }
+  }
+  function saveMine(a) { localStorage.setItem("mySoups", JSON.stringify(a)); }
+  function renderMine() {
+    var mine = loadMine();
+    $("myList").innerHTML = mine.length ? mine.map(function (s, i) {
+      return cardHTML(s, i, true);
+    }).join("") : '<p class="note">还没有收藏。AI 出的汤可以点"存入我的题库"。</p>';
+  }
+  $("exportBtn").addEventListener("click", function () {
+    var blob = new Blob([JSON.stringify(loadMine(), null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "my-turtle-soups.json";
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+  });
+  $("importBtn").addEventListener("click", function () { $("importFile").click(); });
+  $("importFile").addEventListener("change", function () {
+    var f = this.files[0]; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      try {
+        var arr = JSON.parse(rd.result);
+        if (!Array.isArray(arr)) throw new Error("not array");
+        var mine = loadMine();
+        arr.forEach(function (s) {
+          if (s && (s.t || s.title) && (s.q || s.question)) {
+            mine.push({
+              t: s.t || s.title, q: s.q || s.question, h: s.h || s.hint || "",
+              a: s.a || s.answer, c: s.c || s.category || "悬疑",
+              l: s.l || 1, o: 1
+            });
+          }
+        });
+        saveMine(mine); renderMine();
+      } catch (e) { alert("导入失败：不是有效的题库 JSON。"); }
+    };
+    rd.readAsText(f);
+    this.value = "";
+  });
+
+  renderList();
+  renderMine();
+})();
+</script>
+
+
+  </main>
+</div>
+<footer class="site-footer">
+  <span>&copy; 2025 Bowen Deng</span>
+  <span class="dot">&middot;</span>
+  <span>Cubing Pro</span>
+  <span class="dot">&middot;</span>
+  <span>&#129352; 5% off at TheCubicle &amp; SpeedCubeShop with code <button id="discount-code" title="Click to copy">CUBINGPRO</button></span>
+</footer>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var nav = document.getElementById('site-nav');
+  toggle.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && window.innerWidth <= 900) {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  var code = document.getElementById('discount-code');
+  code.addEventListener('click', function () {
+    var done = function () {
+      code.textContent = 'COPIED!';
+      setTimeout(function () { code.textContent = 'CUBINGPRO'; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('CUBINGPRO').then(done, done);
+    } else { done(); }
+  });
+})();
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850" crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-CK6MWC01K0');
+</script>
+</body>
+</html>
