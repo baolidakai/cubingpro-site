@@ -34,392 +34,969 @@
 <div class="layout">
   <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details><summary>Timer</summary><ul><li><a href="../../timer">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details open><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../../fmc/recon.html">FMC Recon</a></li><li><a href="../../fmc/theory.html">FMC Theory</a></li><li><a href="../../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../../3x3x3/cfop">CFOP method</a></li><li><a href="../../3x3x3/cross">Cross tutorial</a></li><li><a href="../../3x3x3/f2l">F2L algorithms</a></li><li><a href="../../3x3x3/oll">OLL algorithms</a></li><li><a href="../../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../../3x3x3/pll">PLL algorithms</a></li><li><a href="../../3x3x3/oh_cmll">OH CMLL algorithms</a></li><li><a href="../../3x3x3/roux">Roux Method</a></li><li><a href="../../3x3x3/zb_stepping_stone">VHLS + COLL</a></li><li><a href="../../fmc/dr_htr_trainer" aria-current="page">FMC DR HTR Trainer</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../../2x2x2/eg_intro">EG method</a></li><li><a href="../../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../../big_cube/yau.html">Yau method</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../../fto/tutorial">FTO Beginner Tutorial</a></li><li><a href="../../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../../sq1/eo">EO</a></li><li><a href="../../sq1/obl">OBL</a></li><li><a href="../../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details><summary>Misc</summary><ul><li><a href="../../game/geoguesser.html">GeoGuesser Tips</a></li><li><a href="../../game/flag_trainer.html">Flag Trainer</a></li><li><a href="../../game/turtle_soup.html">海龟汤题库</a></li></ul></details></li></ul></nav>
   <main class="content">
-    <div id="lang-toggle" role="group" aria-label="Language toggle" data-title-en="FMC DR HTR Trainer - Cubing Pro" data-title-zh-cn="FMC DR HTR 训练器 - Cubing Pro" data-title-zh-tw="FMC DR HTR 訓練器 - Cubing Pro" data-title-ja="FMC DR HTR トレーナー - Cubing Pro" data-title-de="FMC DR HTR Trainer - Cubing Pro" data-title-fr="Entraîneur FMC DR HTR - Cubing Pro" data-title-it="Allenatore FMC DR HTR - Cubing Pro"><button id="btn-en" aria-pressed="false">English</button><button id="btn-zh-cn" aria-pressed="false">简体</button><button id="btn-zh-tw" aria-pressed="false">繁體</button><button id="btn-ja" aria-pressed="false">日本語</button><button id="btn-de" aria-pressed="false">Deutsch</button><button id="btn-fr" aria-pressed="false">Français</button><button id="btn-it" aria-pressed="false">Italiano</button></div>
-<script type="module">
-import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-window.mermaid = mermaid;
-mermaid.initialize({ startOnLoad: true });
-</script><div id="content-en" style="display:none;"><h1>FMC DR HTR Trainer</h1><p>Beam search (K=5) finds the shortest EO → DR → HTR → finish for each scramble. Green path is the best solution. Each node shows cumulative moves.</p></div><div id="content-zh-cn" style="display:none;"><h1>FMC DR HTR 训练器</h1><p>Beam search (K=5) 为每个打乱找出最短的 EO → DR → HTR → 收尾。绿色路径是最优解，每个节点显示累计步数。</p></div><div id="content-zh-tw" style="display:none;"><h1>FMC DR HTR 訓練器</h1><p>Beam search (K=5) 為每個打亂找出最短的 EO → DR → HTR → 收尾。綠色路徑是最優解，每個節點顯示累計步數。</p></div><div id="content-ja" style="display:none;"><h1>FMC DR HTR トレーナー</h1><p>Beam search (K=5) が各スクランブルに対する最短の EO → DR → HTR → フィニッシュを見つけます。</p></div><div id="content-de" style="display:none;"><h1>FMC DR HTR Trainer</h1><p>Beam search (K=5) findet das kürzeste EO → DR → HTR → Finish für jeden Scramble.</p></div><div id="content-fr" style="display:none;"><h1>Entraîneur FMC DR HTR</h1><p>Beam search (K=5) trouve le plus court EO → DR → HTR → finish pour chaque mélange.</p></div><div id="content-it" style="display:none;"><h1>Allenatore FMC DR HTR</h1><p>Beam search (K=5) trova il più breve EO → DR → HTR → finish per ogni scramble.</p></div><div id="dr-trainer-trees"><h2>Scramble 1 (30 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">F' U L' B2 R B D F' L F2 L2 U2 B' U2 B2 D2 B D2 F' D2 F2 L2</p><pre class="mermaid">flowchart TD
-    R0["Scramble|F' U L' B2 R B D F' L F2 L2 U2...|0 moves"]
-    E0_0["UD EO|F D R B2 U|5"]
-    R0 --> E0_0
-    D0_0["DR|U2 F' B2 D' F2 D L' D B|14"]
-    E0_0 --> D0_0
-    H0_0["HTR|U2 L2 F2 U' L2 U R2 U|22"]
-    D0_0 --> H0_0
-    F0_0["FIN|F2 U2 R2 B2 R2 F2 R2 D2 B2|30 simplified"]
-    H0_0 --> F0_0
-    E0_1["UD EO|F D R B2 U|5"]
-    R0 --> E0_1
-    D0_1["DR|U2 F' B2 D' F2 D L' D B|14"]
-    E0_1 --> D0_1
-    H0_1["HTR|U2 R2 F2 U' R2 U L2 U|22"]
-    D0_1 --> H0_1
-    F0_1["FIN|F2 U2 R2 U2 D2 F2 R2 B2 L2 U2 B2|32 simplified"]
-    H0_1 --> F0_1
-    E0_2["UD EO|F D R B2 U|5"]
-    R0 --> E0_2
-    D0_2["DR|U2 F' B2 D' F2 D L' D B|14"]
-    E0_2 --> D0_2
-    H0_2["HTR|U2 R2 B2 U' F2 U R2 D|22"]
-    D0_2 --> H0_2
-    F0_2["FIN|F2 R2 U2 R2 F2 D2 F2 L2 F2 L2 F2|32 simplified"]
-    H0_2 --> F0_2
-    E0_3["UD EO|F D R B2 U|5"]
-    R0 --> E0_3
-    D0_3["DR|U2 F' B2 D' F2 D L' D B|14"]
-    E0_3 --> D0_3
-    H0_3["HTR|U2 L2 B2 U' B2 U L2 D|22"]
-    D0_3 --> H0_3
-    F0_3["FIN|R2 D2 R2 D2 F2 U2 R2 B2 R2 U2 B2|32 simplified"]
-    H0_3 --> F0_3
-    E0_4["UD EO|F D R B2 U|5"]
-    R0 --> E0_4
-    D0_4["DR|U2 F' B2 D' F2 D L' D B|14"]
-    E0_4 --> D0_4
-    H0_4["HTR|F2 U' R2 L2 B2 U R2 D|22"]
-    D0_4 --> H0_4
-    F0_4["FIN|U2 R2 F2 U2 F2 U2 F2 L2 F2 R2 F2|32 simplified"]
-    H0_4 --> F0_4
-    style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 2 (31 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">B' R2 D' L' U' R' U' D F' U' F2 U L2 U2 R2 B2 U' B2 U2 B2 R2 D2</p><pre class="mermaid">flowchart TD
-    R1["Scramble|B' R2 D' L' U' R' U' D F' U' F...|0 moves"]
-    E1_0["FB EO|R L' D' F|4"]
-    R1 --> E1_0
-    D1_0["DR|F D F U2 F2 L2 U2 R' D|13"]
-    E1_0 --> D1_0
-    H1_0["HTR|D2 F' L2 D2 F' R2 F U2 B|22"]
-    D1_0 --> H1_0
-    F1_0["FIN|U2 B2 U2 F2 U2 L2 F2 L2 U2 B2 D2|31 simplified"]
-    H1_0 --> F1_0
-    E1_1["FB EO|L' D' R2 F|4"]
-    R1 --> E1_1
-    D1_1["DR|U R' D2 R F2 R D' U' R|13"]
-    E1_1 --> D1_1
-    H1_1["HTR|F U2 F U2 F' D2 F D2 F|22"]
-    D1_1 --> H1_1
-    F1_1["FIN|U2 F2 L2 F2 U2 F2 B2 R2 F2|31 simplified"]
-    H1_1 --> F1_1
-    E1_2["FB EO|L' D' R2 F|4"]
-    R1 --> E1_2
-    D1_2["DR|U R' D2 R F2 R' D' U' R|13"]
-    E1_2 --> D1_2
-    H1_2["HTR|F L2 F' L2 F R2 F' R2 F|22"]
-    D1_2 --> H1_2
-    F1_2["FIN|D2 R2 U2 B2 R2 F2 L2 D2 L2|31 simplified"]
-    H1_2 --> F1_2
-    E1_3["FB EO|L' D' R2 F|4"]
-    R1 --> E1_3
-    D1_3["DR|U' B2 D L U R' D' U2 L|13"]
-    E1_3 --> D1_3
-    H1_3["HTR|F D2 F L2 F' U2 F R2 B|22"]
-    D1_3 --> H1_3
-    F1_3["FIN|U2 F2 L2 U2 F2 R2 B2 L2 U2 F2 L2|33 simplified"]
-    H1_3 --> F1_3
-    E1_4["FB EO|L' D' R2 F|4"]
-    R1 --> E1_4
-    D1_4["DR|D U R' F U L2 F L' D|13"]
-    E1_4 --> D1_4
-    H1_4["HTR|U2 D2 F U2 F' U2 F D2 F|22"]
-    D1_4 --> H1_4
-    F1_4["FIN|U2 R2 U2 F2 L2 F2 U2 R2 F2 D2 F2 U2 B2|35 simplified"]
-    H1_4 --> F1_4
-    style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 3 (30 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">F L B D2 F2 D' L F' B R' F2 U2 F2 U L2 U B2 L2 F2 B2 D'</p><pre class="mermaid">flowchart TD
-    R2["Scramble|F L B D2 F2 D' L F' B R' F2 U2...|0 moves"]
-    E2_0["UD EO|F D' F2 U|4"]
-    R2 --> E2_0
-    D2_0["DR|B' U' B R U' F' L' B' R|13"]
-    E2_0 --> D2_0
-    H2_0["HTR|U R2 L2 F2 B2 U' R2 D|21"]
-    D2_0 --> H2_0
-    F2_0["FIN|U2 F2 D2 B2 L2 U2 L2 D2 F2|30 simplified"]
-    H2_0 --> F2_0
-    E2_1["UD EO|F D' F2 U|4"]
-    R2 --> E2_1
-    D2_1["DR|B' U' B R U' F' L' B' R|13"]
-    E2_1 --> D2_1
-    H2_1["HTR|U R2 B2 R2 U F2 D|20"]
-    D2_1 --> H2_1
-    F2_1["FIN|F2 R2 B2 L2 F2 D2 F2 D2 L2 U2 F2|31 simplified"]
-    H2_1 --> F2_1
-    E2_2["UD EO|F D' F2 U|4"]
-    R2 --> E2_2
-    D2_2["DR|B' U' B R U' F' L' B' R|13"]
-    E2_2 --> D2_2
-    H2_2["HTR|U F2 L2 F2 U F2 D|20"]
-    D2_2 --> H2_2
-    F2_2["FIN|F2 R2 U2 F2 R2 U2 F2 R2 D2 B2 L2|31 simplified"]
-    H2_2 --> F2_2
-    E2_3["UD EO|F D' F2 U|4"]
-    R2 --> E2_3
-    D2_3["DR|B' U' B R U' F' L' B' R|13"]
-    E2_3 --> D2_3
-    H2_3["HTR|U' R2 B2 R2 U' F2 D|20"]
-    D2_3 --> H2_3
-    F2_3["FIN|F2 R2 U2 F2 R2 U2 F2 B2 L2 U2 F2|31 simplified"]
-    H2_3 --> F2_3
-    E2_4["UD EO|F D' F2 U|4"]
-    R2 --> E2_4
-    D2_4["DR|B' U' B R U' F' L' B' R|13"]
-    E2_4 --> D2_4
-    H2_4["HTR|U' B2 R2 B2 U' F2 D|20"]
-    D2_4 --> H2_4
-    F2_4["FIN|R2 F2 R2 F2 U2 F2 L2 D2 L2 D2 B2|31 simplified"]
-    H2_4 --> F2_4
-    style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 4 (30 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">B' D' F B' D2 R' B2 R2 D' L2 U2 F' U2 F2 R2 F L2 F' R2 L2 B2</p><pre class="mermaid">flowchart TD
-    R3["Scramble|B' D' F B' D2 R' B2 R2 D' L2 U...|0 moves"]
-    E3_0["UD EO|D' B R' U|4"]
-    R3 --> E3_0
-    D3_0["DR|D2 B2 L F' U2 R2 B2 L|12"]
-    E3_0 --> D3_0
-    H3_0["HTR|R2 U' R2 L2 F2 U F2 U' B2 D|22"]
-    D3_0 --> H3_0
-    F3_0["FIN|R2 U2 B2 R2 L2 D2 L2 B2|30 simplified"]
-    H3_0 --> F3_0
-    E3_1["UD EO|D' B R' U|4"]
-    R3 --> E3_1
-    D3_1["DR|D2 B2 L F' U2 R2 B2 L|12"]
-    E3_1 --> D3_1
-    H3_1["HTR|R2 U R2 L2 B2 U' B2 U F2 D|22"]
-    D3_1 --> H3_1
-    F3_1["FIN|D2 B2 U2 R2 U2 R2 F2 B2 U2 R2|31 simplified"]
-    H3_1 --> F3_1
-    E3_2["UD EO|D' B R' U|4"]
-    R3 --> E3_2
-    D3_2["DR|D2 B2 L F' U2 R2 B2 L|12"]
-    E3_2 --> D3_2
-    H3_2["HTR|L2 U L2 U' B2 U R2 F2 B2 D|22"]
-    D3_2 --> H3_2
-    F3_2["FIN|R2 D2 R2 D2 B2 U2 R2 B2 R2 D2|31 simplified"]
-    H3_2 --> F3_2
-    E3_3["UD EO|D' B R' U|4"]
-    R3 --> E3_3
-    D3_3["DR|D2 B2 L F' U2 R2 B2 L|12"]
-    E3_3 --> D3_3
-    H3_3["HTR|R2 U' F2 U B2 U' B2 R2 L2 D|22"]
-    D3_3 --> H3_3
-    F3_3["FIN|U2 F2 R2 B2 U2 F2 D2 R2 U2 L2|32 simplified"]
-    H3_3 --> F3_3
-    E3_4["UD EO|D' B R' U|4"]
-    R3 --> E3_4
-    D3_4["DR|D2 B2 L F' U2 R2 B2 L|12"]
-    E3_4 --> D3_4
-    H3_4["HTR|R2 U B2 U' F2 U F2 R2 L2 D|22"]
-    D3_4 --> H3_4
-    F3_4["FIN|D2 R2 B2 R2 B2 U2 F2 L2 U2 R2 F2 D2|33 simplified"]
-    H3_4 --> F3_4
-    style F3_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 5 (28 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">L' D2 L D2 L' F2 L2 D' F R2 F2 L2 D2 B2 D2 R' D2 R' U2 R</p><pre class="mermaid">flowchart TD
-    R4["Scramble|L' D2 L D2 L' F2 L2 D' F R2 F2...|0 moves"]
-    E4_0["UD EO|B' R' D|3"]
-    R4 --> E4_0
-    D4_0["DR|L' B2 D2 F' D2 L' F' R|11"]
-    E4_0 --> D4_0
-    H4_0["HTR|U2 F2 U F2 R2 F2 R2 U|19"]
-    D4_0 --> H4_0
-    F4_0["FIN|U2 F2 L2 U2 B2 R2 D2 B2 D2 F2|28 simplified"]
-    H4_0 --> F4_0
-    E4_1["UD EO|B' R' D|3"]
-    R4 --> E4_1
-    D4_1["DR|L' B2 D2 F' D2 L' F' R|11"]
-    E4_1 --> D4_1
-    H4_1["HTR|U2 F2 U F2 L2 F2 L2 U|19"]
-    D4_1 --> H4_1
-    F4_1["FIN|U2 F2 R2 U2 B2 R2 D2 F2 U2 B2|28 simplified"]
-    H4_1 --> F4_1
-    E4_2["UD EO|B' R' D|3"]
-    R4 --> E4_2
-    D4_2["DR|L' B2 D2 F' D2 L' F' R|11"]
-    E4_2 --> D4_2
-    H4_2["HTR|U F2 U' L2 B2 U F2 U|19"]
-    D4_2 --> H4_2
-    F4_2["FIN|F2 U2 R2 U2 L2 F2 B2 D2 R2 B2|29 simplified"]
-    H4_2 --> F4_2
-    E4_3["UD EO|B' R' D|3"]
-    R4 --> E4_3
-    D4_3["DR|L' B2 D2 F' D2 L' F' R|11"]
-    E4_3 --> D4_3
-    H4_3["HTR|U2 F2 U F2 R2 B2 L2 D|19"]
-    D4_3 --> H4_3
-    F4_3["FIN|U2 F2 L2 U2 R2 B2 L2 F2 U2 B2 D2 F2|31 simplified"]
-    H4_3 --> F4_3
-    E4_4["UD EO|B' R' D|3"]
-    R4 --> E4_4
-    D4_4["DR|L' B2 D2 F' D2 L' F' R|11"]
-    E4_4 --> D4_4
-    H4_4["HTR|U2 F2 U F2 L2 B2 R2 D|19"]
-    D4_4 --> H4_4
-    F4_4["FIN|U2 F2 R2 U2 R2 F2 R2 F2 D2 F2 D2 F2|31 simplified"]
-    H4_4 --> F4_4
-    style F4_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 6 (27 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">U F U B R' L2 D' F2 R B2 D R2 F2 D B2 U D2 B2 R2 D R2 F2</p><pre class="mermaid">flowchart TD
-    R5["Scramble|U F U B R' L2 D' F2 R B2 D R2 ...|0 moves"]
-    E5_0["UD EO|B R' F' U|4"]
-    R5 --> E5_0
-    D5_0["DR|U D' L' U F' R F2 L|12"]
-    E5_0 --> D5_0
-    H5_0["HTR|U' F2 U' R2 U F2 D|19"]
-    D5_0 --> H5_0
-    F5_0["FIN|F2 R2 B2 U2 R2 B2 U2 R2 F2|27 simplified"]
-    H5_0 --> F5_0
-    E5_1["UD EO|B R' F' U|4"]
-    R5 --> E5_1
-    D5_1["DR|U L' U F L F R F|12"]
-    E5_1 --> D5_1
-    H5_1["HTR|B2 U L2 U L2 U2 B2 U|20"]
-    D5_1 --> H5_1
-    F5_1["FIN|F2 R2 D2 B2 D2 F2 B2 R2 B2|28 simplified"]
-    H5_1 --> F5_1
-    E5_2["UD EO|B R' F' U|4"]
-    R5 --> E5_2
-    D5_2["DR|U D' L' U F' R F2 L|12"]
-    E5_2 --> D5_2
-    H5_2["HTR|U F2 U F2 U' R2 D|19"]
-    D5_2 --> H5_2
-    F5_2["FIN|U2 R2 U2 B2 U2 F2 L2 F2 D2 L2 F2|29 simplified"]
-    H5_2 --> F5_2
-    E5_3["UD EO|B R' F' U|4"]
-    R5 --> E5_3
-    D5_3["DR|U L' U F L F R F|12"]
-    E5_3 --> D5_3
-    H5_3["HTR|B2 U R2 U B2 U2 R2 U|20"]
-    D5_3 --> H5_3
-    F5_3["FIN|R2 L2 F2 U2 R2 B2 D2 R2 B2 L2 B2|30 simplified"]
-    H5_3 --> F5_3
-    E5_4["UD EO|B R' F' U|4"]
-    R5 --> E5_4
-    D5_4["DR|U L' U F L F R F|12"]
-    E5_4 --> D5_4
-    H5_4["HTR|B2 U R2 U' R2 U2 B2 U|20"]
-    D5_4 --> H5_4
-    F5_4["FIN|R2 U2 R2 L2 F2 R2 D2 B2 D2 F2 R2 B2|31 simplified"]
-    H5_4 --> F5_4
-    style F5_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 7 (27 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">F R2 B L' F U B' D B' L' B' U2 F' R2 B R2 U2 L2 F2 U2 R2 F2</p><pre class="mermaid">flowchart TD
-    R6["Scramble|F R2 B L' F U B' D B' L' B' U2...|0 moves"]
-    E6_0["UD EO|R2 U' L' F D|5"]
-    R6 --> E6_0
-    D6_0["DR|D2 L2 D2 F' R L B L|13"]
-    E6_0 --> D6_0
-    H6_0["HTR|U R2 L2 U R2 L2 U|20"]
-    D6_0 --> H6_0
-    F6_0["FIN|U2 D2 F2 R2 U2 R2 L2 U2 F2|27 simplified"]
-    H6_0 --> F6_0
-    E6_1["UD EO|R2 U' L' F D|5"]
-    R6 --> E6_1
-    D6_1["DR|D2 L2 D2 F' R L B L|13"]
-    E6_1 --> D6_1
-    H6_1["HTR|U F2 B2 U' F2 B2 U|20"]
-    D6_1 --> H6_1
-    F6_1["FIN|D2 B2 U2 F2 B2 U2 L2 F2|27 simplified"]
-    H6_1 --> F6_1
-    E6_2["UD EO|R2 U' L' F D|5"]
-    R6 --> E6_2
-    D6_2["DR|D2 L2 D2 F' R L B L|13"]
-    E6_2 --> D6_2
-    H6_2["HTR|U R2 L2 U' R2 L2 U|20"]
-    D6_2 --> H6_2
-    F6_2["FIN|U2 R2 U2 L2 U2 L2 F2 L2 U2 B2 U2 F2|30 simplified"]
-    H6_2 --> F6_2
-    E6_3["UD EO|R2 U' L' F D|5"]
-    R6 --> E6_3
-    D6_3["DR|D2 L2 D2 F' R L B L|13"]
-    E6_3 --> D6_3
-    H6_3["HTR|U F2 B2 U F2 B2 U|20"]
-    D6_3 --> H6_3
-    F6_3["FIN|R2 U2 L2 U2 R2 F2 L2 U2 B2 U2 B2|30 simplified"]
-    H6_3 --> F6_3
-    E6_4["UD EO|R2 U F L' D|5"]
-    R6 --> E6_4
-    D6_4["DR|R' D F' U' L2 U' R F|13"]
-    E6_4 --> D6_4
-    H6_4["HTR|U F2 R2 L2 U F2 D|20"]
-    D6_4 --> H6_4
-    F6_4["FIN|U2 R2 F2 R2 D2 R2 U2 B2 D2 F2 U2|31 simplified"]
-    H6_4 --> F6_4
-    style F6_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 8 (29 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">L2 F' U' L' D2 L2 F2 D' B' U2 L2 U2 F2 R' D2 F2 R U2 L' D2 L</p><pre class="mermaid">flowchart TD
-    R7["Scramble|L2 F' U' L' D2 L2 F2 D' B' U2 ...|0 moves"]
-    E7_0["FB EO|D' B' L2 F|4"]
-    R7 --> E7_0
-    D7_0["DR|R2 B2 D R U2 L' B2 U|12"]
-    E7_0 --> D7_0
-    H7_0["HTR|F U2 F' R2 F U2 F|19"]
-    D7_0 --> H7_0
-    F7_0["FIN|R2 F2 U2 R2 F2 U2 L2 F2 D2 F2|29 simplified"]
-    H7_0 --> F7_0
-    E7_1["FB EO|D' B' L2 F|4"]
-    R7 --> E7_1
-    D7_1["DR|R2 B2 D R U2 L' B2 U|12"]
-    E7_1 --> D7_1
-    H7_1["HTR|F' U2 F L2 F' U2 F|19"]
-    D7_1 --> H7_1
-    F7_1["FIN|U2 R2 U2 F2 U2 R2 D2 R2 F2 R2|29 simplified"]
-    H7_1 --> F7_1
-    E7_2["FB EO|D' B' L2 F|4"]
-    R7 --> E7_2
-    D7_2["DR|R2 B2 D R U2 L' B2 U|12"]
-    E7_2 --> D7_2
-    H7_2["HTR|F' D2 F L2 D2 F L2 F|20"]
-    D7_2 --> H7_2
-    F7_2["FIN|F2 L2 F2 U2 R2 U2 L2 B2 D2 R2|29 simplified"]
-    H7_2 --> F7_2
-    E7_3["FB EO|D' B' L2 F|4"]
-    R7 --> E7_3
-    D7_3["DR|F2 U' L2 F2 R' U2 L' B2 U|13"]
-    E7_3 --> D7_3
-    H7_3["HTR|F U2 F' R2 F U2 F|20"]
-    D7_3 --> H7_3
-    F7_3["FIN|U2 R2 U2 R2 U2 L2 F2 D2 F2 D2 R2 B2|31 simplified"]
-    H7_3 --> F7_3
-    E7_4["FB EO|D' B' L2 F|4"]
-    R7 --> E7_4
-    D7_4["DR|R2 B2 D R U2 L' B2 U|12"]
-    E7_4 --> D7_4
-    H7_4["HTR|F D2 F' R2 D2 F' R2 F|20"]
-    D7_4 --> H7_4
-    F7_4["FIN|U2 R2 F2 R2 F2 D2 L2 F2 D2 F2 D2 B2|32 simplified"]
-    H7_4 --> F7_4
-    style F7_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 9 (28 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">B' R U' D' L' F2 L2 B2 U' L' F U2 F2 L2 F U2 F' R2 F' R2 D2 L2</p><pre class="mermaid">flowchart TD
-    R8["Scramble|B' R U' D' L' F2 L2 B2 U' L' F...|0 moves"]
-    E8_0["FB EO|L' B D' F|4"]
-    R8 --> E8_0
-    D8_0["DR|R2 L F B R L2 B' U' R|13"]
-    E8_0 --> D8_0
-    H8_0["HTR|R2 D2 L2 U2 F U2 B|20"]
-    D8_0 --> H8_0
-    F8_0["FIN|F2 U2 F2 U2 F2 L2 D2 R2 F2|28 simplified"]
-    H8_0 --> F8_0
-    E8_1["FB EO|L B D' F|4"]
-    R8 --> E8_1
-    D8_1["DR|U2 F R F R U2 R2 U L|13"]
-    E8_1 --> D8_1
-    H8_1["HTR|F R2 D2 F R2 F|19"]
-    D8_1 --> H8_1
-    F8_1["FIN|U2 F2 R2 F2 U2 F2 L2 D2 R2 F2|29 simplified"]
-    H8_1 --> F8_1
-    E8_2["FB EO|L B D' F|4"]
-    R8 --> E8_2
-    D8_2["DR|L F B2 L2 B' R U' F' R|13"]
-    E8_2 --> D8_2
-    H8_2["HTR|F D2 F R2 F' D2 B|20"]
-    D8_2 --> H8_2
-    F8_2["FIN|R2 B2 L2 B2 U2 B2 U2 L2 D2|29 simplified"]
-    H8_2 --> F8_2
-    E8_3["FB EO|L B D' F|4"]
-    R8 --> E8_3
-    D8_3["DR|L F B2 L2 B' R U' F' R|13"]
-    E8_3 --> D8_3
-    H8_3["HTR|F' D2 F' L2 F D2 B|20"]
-    D8_3 --> H8_3
-    F8_3["FIN|U2 B2 U2 F2 U2 L2 D2 F2 L2|29 simplified"]
-    H8_3 --> F8_3
-    E8_4["FB EO|L' B D' F|4"]
-    R8 --> E8_4
-    D8_4["DR|R2 L F B R L2 B' U' R|13"]
-    E8_4 --> D8_4
-    H8_4["HTR|U2 L2 F D2 R2 L2 F|20"]
-    D8_4 --> H8_4
-    F8_4["FIN|R2 F2 B2 U2 R2 F2 R2 B2 R2|29 simplified"]
-    H8_4 --> F8_4
-    style F8_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre></div>
+    <div id="lang-toggle" role="group" aria-label="Language toggle" data-title-en="FMC DR HTR Trainer - Cubing Pro" data-title-zh-cn="FMC DR HTR 训练器 - Cubing Pro" data-title-zh-tw="FMC DR HTR 訓練器 - Cubing Pro" data-title-ja="FMC DR HTR トレーナー - Cubing Pro" data-title-de="FMC DR HTR Trainer - Cubing Pro" data-title-fr="Entraîneur FMC DR HTR - Cubing Pro" data-title-it="Allenatore FMC DR HTR - Cubing Pro"><button id="btn-en" aria-pressed="false">English</button><button id="btn-zh-cn" aria-pressed="false">简体</button><button id="btn-zh-tw" aria-pressed="false">繁體</button><button id="btn-ja" aria-pressed="false">日本語</button><button id="btn-de" aria-pressed="false">Deutsch</button><button id="btn-fr" aria-pressed="false">Français</button><button id="btn-it" aria-pressed="false">Italiano</button></div><div id="content-en" style="display:none;"><h1>FMC DR HTR Trainer</h1><p>Beam search (K=5) finds the shortest EO → DR → HTR → finish for each scramble. Green path is the best solution. Each node shows cumulative moves.</p></div><div id="content-zh-cn" style="display:none;"><h1>FMC DR HTR 训练器</h1><p>Beam search (K=5) 为每个打乱找出最短的 EO → DR → HTR → 收尾。绿色路径是最优解，每个节点显示累计步数。</p></div><div id="content-zh-tw" style="display:none;"><h1>FMC DR HTR 訓練器</h1><p>Beam search (K=5) 為每個打亂找出最短的 EO → DR → HTR → 收尾。綠色路徑是最優解，每個節點顯示累計步數。</p></div><div id="content-ja" style="display:none;"><h1>FMC DR HTR トレーナー</h1><p>Beam search (K=5) が各スクランブルに対する最短の EO → DR → HTR → フィニッシュを見つけます。</p></div><div id="content-de" style="display:none;"><h1>FMC DR HTR Trainer</h1><p>Beam search (K=5) findet das kürzeste EO → DR → HTR → Finish für jeden Scramble.</p></div><div id="content-fr" style="display:none;"><h1>Entraîneur FMC DR HTR</h1><p>Beam search (K=5) trouve le plus court EO → DR → HTR → finish pour chaque mélange.</p></div><div id="content-it" style="display:none;"><h1>Allenatore FMC DR HTR</h1><p>Beam search (K=5) trova il più breve EO → DR → HTR → finish per ogni scramble.</p></div><div id="dr-trainer-trees"><h2>Scramble 1 <span style="font-weight:normal;font-size:0.8em;">(30 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">B2 U R2 L2 D F' R2 B U R U2 F2 L' U2 D2 B2 L' F2 R2 U2 R</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> D2 L D2 R <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B' U F2 R2 L2 B' D F2 U <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> R D2 R F2 U2 R2 D2 R F2 R <b>(10/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 L2 F2 L2 B2 D2 L2 D2 <b>(8/30)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 33 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> D2 L D2 R <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B' U F2 R2 L2 B' D F2 U <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> R D2 R U2 R2 U2 F2 R D2 R <b>(10/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> B2 U2 L2 U2 R2 U2 B2 R2 U2 R2 <b>(10/33)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 33 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> D2 L D2 R <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B' U F2 R2 L2 B' D F2 U <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> R D2 R B2 R2 F2 U2 R D2 R <b>(10/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 L2 F2 D2 R2 B2 D2 R2 B2 <b>(10/33)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 35 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> D2 L D2 R <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B' U F2 R2 L2 B' D F2 U <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> R U2 R B2 D2 R2 U2 R B2 R <b>(10/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 D2 R2 B2 L2 F2 R2 U2 L2 U2 R2 <b>(12/35)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 35 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> D2 L D2 R <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B' U F2 R2 L2 B' D F2 U <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> R D2 R D2 B2 R2 B2 R B2 R <b>(10/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 U2 D2 F2 L2 B2 R2 D2 B2 D2 L2 <b>(12/35)</b></div>
+</div>
+</div></details><h2>Scramble 2 <span style="background:#ff9800;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8em;">NISS</span> <span style="font-weight:normal;font-size:0.8em;">(27 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">R' U2 R2 F2 L B2 D2 U2 L F2 U2 R' U' B' R2 F D' L2 R2 U' B2</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 27 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D' U B D <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' B2 L' B2 U2 L B R <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' F2 L2 F2 L2 U <b>(6/18)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 B2 R2 D2 F2 U2 L2 D2 B2 L2 <b>(10/27)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 28 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D' U B D <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' B2 L' B2 U2 L B R <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' F2 R2 F2 R2 U <b>(6/18)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 U2 F2 R2 D2 F2 D2 L2 D2 B2 <b>(10/28)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D' U B D <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' B2 L' B2 U2 L B R <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' F2 R2 B2 L2 D <b>(6/18)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 U2 R2 D2 R2 B2 D2 B2 L2 F2 B2 <b>(12/30)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D' U B D <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' B2 L' B2 U2 L B R <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' F2 L2 B2 R2 D <b>(6/18)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 U2 L2 U2 R2 F2 U2 B2 R2 F2 B2 <b>(12/30)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D' U B D <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' B2 L' B2 U2 L B R <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' R2 L2 B2 R2 F2 R2 D <b>(8/20)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 U2 R2 D2 R2 B2 D2 B2 L2 F2 B2 <b>(12/32)</b></div>
+</div>
+</div></details><h2>Scramble 3 <span style="font-weight:normal;font-size:0.8em;">(29 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">U' L F' U' L' F' R' U F2 L' D' R2 U L2 D B2 U2 D L2 B2 U</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 29 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L2 B D U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B R2 D R B D' R' B L <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> B2 L2 U B2 R2 U L2 D <b>(8/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> L2 D2 F2 D2 B2 L2 U2 B2 <b>(8/29)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 29 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L2 B D U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B2 R B R D B2 R2 D' L <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U2 R2 F2 U' B2 U' F2 U <b>(8/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 D2 F2 D2 B2 R2 F2 R2 <b>(8/29)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L2 B D U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B R2 D R B D' R' B L <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> L2 U2 L2 U' L2 U' B2 D <b>(8/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 F2 L2 D2 R2 F2 D2 B2 D2 <b>(10/30)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L2 B D U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B2 R B R D B2 R2 D' L <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U2 R2 U F2 R2 U' R2 U <b>(8/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 F2 R2 U2 F2 U2 F2 U2 R2 <b>(10/30)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L2 B D U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B R2 D R B D' R' B L <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> R2 U2 R2 U' B2 U' F2 U <b>(8/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 U2 F2 U2 L2 F2 U2 R2 D2 R2 U2 <b>(12/32)</b></div>
+</div>
+</div></details><h2>Scramble 4 <span style="background:#ff9800;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8em;">NISS</span> <span style="font-weight:normal;font-size:0.8em;">(30 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">U' B2 L2 D' U2 B2 D' L2 U' R2 D L F2 U' R F L U F L' U</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> L U' D F <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R2 D2 R U2 R F2 U' R <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F' U2 F L2 F2 D2 F U2 F <b>(9/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 U2 D2 F2 L2 B2 R2 B2 D2 <b>(9/30)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 31 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> L U' D F <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R2 D2 R U2 R F2 U' R <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F' D2 F U2 F2 L2 F D2 F <b>(9/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 D2 R2 U2 B2 D2 F2 R2 B2 R2 F2 <b>(11/31)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> L U' D F <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R2 D2 R U2 R F2 U' R <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U2 F R2 F' D2 L2 F R2 F <b>(9/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 D2 F2 U2 L2 U2 F2 R2 F2 R2 F2 <b>(11/32)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> L U' D F <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R2 D2 R U2 R F2 U' R <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F' U2 F' D2 F2 L2 F' U2 F <b>(9/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 U2 D2 F2 L2 F2 B2 U2 B2 L2 F2 <b>(11/32)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 34 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> L U' D F <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R2 D2 R U2 R F2 U' R <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F' D2 F' L2 F2 U2 F' D2 F <b>(9/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 F2 U2 R2 L2 B2 D2 R2 U2 L2 B2 U2 <b>(13/34)</b></div>
+</div>
+</div></details><h2>Scramble 5 <span style="font-weight:normal;font-size:0.8em;">(26 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">L U F2 R' D' L' D L2 F B2 U2 B2 L' F2 R2 D2 L' F2 B2 U2 L' F2</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 26 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> B2 R U2 B <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> U2 R F2 R2 U' L B2 U <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U2 F U2 L2 D2 R2 B <b>(7/19)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> D2 F2 U2 L2 D2 L2 U2 F2 <b>(8/26)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 27 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> B2 R U2 B <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> U2 R F2 R2 U' L B2 U <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U2 F U2 R2 U2 R2 F <b>(7/19)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 D2 R2 D2 B2 U2 L2 B2 L2 B2 <b>(10/27)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 27 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> B2 R U2 B <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> U2 R F2 R2 U' L B2 U <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U2 F U2 L2 U2 L2 F <b>(7/19)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 U2 R2 U2 B2 U2 L2 B2 L2 B2 <b>(10/27)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 28 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> B2 R U2 B <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> U2 R F2 R2 U' L B2 U <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U2 F U2 R2 D2 L2 B <b>(7/19)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 L2 B2 U2 R2 U2 L2 U2 F2 <b>(10/28)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 29 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> B2 R U2 B <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> U2 R F2 R2 U' L B2 U <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> D2 F R2 U2 R2 U2 F <b>(7/19)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> B2 L2 F2 R2 U2 F2 U2 R2 U2 B2 <b>(10/29)</b></div>
+</div>
+</div></details><h2>Scramble 6 <span style="background:#ff9800;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8em;">NISS</span> <span style="font-weight:normal;font-size:0.8em;">(24 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">F2 L U2 B2 F2 L D2 R2 F2 L B2 U2 B2 F' L2 D' L D R F2 U' L'</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 24 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L B' R' U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' B D2 L' B' R' L B <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U R2 U2 F2 U L2 B2 D <b>(8/20)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 D2 B2 L2 <b>(4/24)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L B' R' U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' B D2 L' B' R' L B <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U R2 U2 F2 U R2 F2 U <b>(8/20)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 U2 R2 F2 U2 R2 F2 R2 U2 R2 <b>(10/30)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L B' R' U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' B D2 L' B' R' L B <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U F2 U2 L2 U L2 F2 U <b>(8/20)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 U2 L2 U2 B2 R2 F2 R2 D2 B2 <b>(10/30)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 31 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L B' R' U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' B D2 L' B' R' L B <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' L2 U2 F2 U' R2 B2 D <b>(8/20)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> D2 R2 B2 U2 B2 U2 R2 F2 D2 R2 U2 F2 <b>(12/31)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L B' R' U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' B D2 L' B' R' L B <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U F2 U2 L2 U R2 B2 D <b>(8/20)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 F2 U2 R2 L2 B2 U2 R2 D2 R2 U2 <b>(12/32)</b></div>
+</div>
+</div></details><h2>Scramble 7 <span style="font-weight:normal;font-size:0.8em;">(30 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">R2 B' U F2 L B D' R L2 F U2 B' R2 D2 F2 D2 F' U2 B' D2</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> R L D' L2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' D2 F D2 B D2 B R <b>(8/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F2 U' F2 R2 U R2 U2 F2 U <b>(9/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 F2 D2 F2 B2 R2 F2 U2 B2 <b>(9/30)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> R L D' L2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' D2 F D2 B D2 B R <b>(8/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U F2 U L2 U R2 U' B2 D <b>(9/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 R2 L2 F2 U2 F2 B2 L2 <b>(8/30)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 31 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> R L D' L2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' D2 F D2 B D2 B R <b>(8/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U L2 U' F2 U' B2 U R2 D <b>(9/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 D2 R2 F2 U2 B2 D2 L2 <b>(9/31)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> R L D' L2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' D2 F D2 B D2 B R <b>(8/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F2 U' F2 R2 U' F2 U2 R2 U <b>(9/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> D2 F2 B2 R2 U2 F2 D2 B2 D2 B2 <b>(10/32)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 33 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> R L D' L2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> L' D2 F D2 B D2 B R <b>(8/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F2 U' F2 L2 U F2 U2 L2 U <b>(9/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 U2 R2 D2 L2 F2 B2 D2 R2 F2 R2 <b>(11/33)</b></div>
+</div>
+</div></details><h2>Scramble 8 <span style="background:#ff9800;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8em;">NISS</span> <span style="font-weight:normal;font-size:0.8em;">(28 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">D2 B U2 F D2 F2 D2 R2 B U2 F' L2 R' D B' L' F2 U' B R2</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 28 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D' B' D U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R U2 L2 B R L' B' L <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' L2 U L2 U2 F2 U F2 U <b>(9/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> L2 B2 R2 U2 L2 D2 B2 <b>(7/28)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 29 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D' B' D U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R U2 L2 B R L' B' L <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' R2 U R2 U2 B2 U B2 U <b>(9/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 D2 B2 D2 R2 U2 R2 F2 L2 <b>(9/29)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D' B' D U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R U2 L2 B R L' B' L <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' R2 U F2 U2 R2 U F2 U <b>(9/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 D2 F2 U2 L2 D2 R2 U2 B2 L2 B2 <b>(11/32)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D' B' D U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R U2 L2 B R L' B' L <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' R2 U' R2 U2 F2 U' F2 U <b>(9/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> B2 U2 F2 U2 R2 B2 U2 R2 U2 L2 F2 <b>(11/32)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D' B' D U <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R U2 L2 B R L' B' L <b>(8/12)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' R2 U' B2 U2 R2 U' B2 U <b>(9/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 U2 R2 F2 R2 F2 U2 L2 D2 R2 D2 <b>(11/32)</b></div>
+</div>
+</div></details><h2>Scramble 9 <span style="font-weight:normal;font-size:0.8em;">(28 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">R' B' R' L D B L U' D2 F2 R2 F' R2 B D2 B' R2 F' R2 F R2</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 28 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> B2 U R2 B <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B U F2 R' U2 B' U <b>(7/11)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F U2 R2 F D2 F D2 F2 L2 B <b>(10/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 B2 L2 D2 R2 U2 B2 R2 <b>(8/28)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> B2 U R2 B <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B U F2 R' U2 B' U <b>(7/11)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F2 R2 F L2 F U2 F' R2 B <b>(9/20)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 U2 D2 F2 U2 L2 U2 B2 R2 F2 B2 <b>(11/30)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> B2 U R2 B <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B U F2 R' U2 B' U <b>(7/11)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F2 R2 F' R2 F' U2 F L2 B <b>(9/20)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 U2 R2 L2 F2 L2 U2 R2 D2 F2 <b>(11/30)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> B2 U R2 B <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B U F2 R' U2 B' U <b>(7/11)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F U2 R2 F U2 F L2 F2 U2 B <b>(10/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> D2 R2 D2 F2 U2 F2 R2 B2 L2 B2 <b>(10/30)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 31 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> B2 U R2 B <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B U F2 R' U2 B' U <b>(7/11)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F U2 R2 F U2 F' U2 F2 L2 B <b>(10/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 F2 U2 B2 D2 R2 D2 R2 B2 U2 <b>(11/31)</b></div>
+</div>
+</div></details><h2>Scramble 10 <span style="background:#ff9800;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8em;">NISS</span> <span style="font-weight:normal;font-size:0.8em;">(22 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">R2 F' R2 F R2 B D2 B' R2 F R2 F2 D2 U L' B' D' L' R B R</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 22 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> U' L <b>(2/2)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> D' B R2 D2 B U' F <b>(7/9)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> D2 R D2 B2 U2 F2 L <b>(7/16)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 R2 D2 F2 L2 F2 <b>(6/22)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 24 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> U' L <b>(2/2)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> D' B R2 D2 B U' F <b>(7/9)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> D2 R D2 F2 U2 B2 L <b>(7/16)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 U2 D2 R2 D2 B2 R2 B2 <b>(8/24)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 26 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> U' L <b>(2/2)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> D' B R2 D2 B U' F <b>(7/9)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> D2 R D2 F2 D2 F2 R <b>(7/16)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 L2 U2 B2 U2 B2 U2 L2 F2 D2 <b>(10/26)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 28 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> U' L <b>(2/2)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> D' B R2 D2 B U' F <b>(7/9)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> D2 R D2 B2 D2 B2 R <b>(7/16)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 F2 U2 F2 R2 B2 U2 R2 D2 R2 B2 <b>(12/28)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 28 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> U' L <b>(2/2)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> D' B R2 D2 B U' F <b>(7/9)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U2 R F2 D2 B2 U2 L <b>(7/16)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 U2 R2 F2 U2 L2 B2 R2 F2 B2 U2 B2 <b>(12/28)</b></div>
+</div>
+</div></details><h2>Scramble 11 <span style="font-weight:normal;font-size:0.8em;">(32 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">R2 D' R2 L' F' D2 B U' L F U2 F2 U2 B2 L2 U2 D F2 U F2 R2</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> B' L D' F2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B2 R U2 L B2 L2 D2 B R <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' L2 U L2 U F2 U' F2 U <b>(9/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> L2 F2 R2 F2 U2 F2 B2 R2 F2 <b>(9/32)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> B' L D' F2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B2 R U2 L B2 L2 D2 B R <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' F2 U' F2 U' L2 U L2 U <b>(9/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 B2 L2 U2 B2 R2 U2 F2 D2 R2 <b>(10/32)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> B' L D' F2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B2 R U2 L B2 L2 D2 B R <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> R2 U R2 F2 U' B2 U2 L2 D <b>(9/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 U2 F2 L2 D2 F2 D2 B2 L2 B2 <b>(10/32)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 33 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> B' L D' F2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B2 R U2 L B2 L2 D2 B R <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> R2 U R2 F2 U L2 U2 B2 D <b>(9/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 U2 F2 D2 F2 D2 L2 B2 L2 B2 <b>(11/33)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 33 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> B' L D' F2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B2 R U2 L B2 L2 D2 B R <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> R2 U R2 B2 U F2 U2 L2 D <b>(9/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 D2 F2 U2 R2 B2 R2 U2 B2 U2 L2 <b>(11/33)</b></div>
+</div>
+</div></details><h2>Scramble 12 <span style="background:#ff9800;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8em;">NISS</span> <span style="font-weight:normal;font-size:0.8em;">(28 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">R2 F2 U' F2 D' U2 L2 B2 U2 F2 U2 F' L' U B' D2 F L R2 D R2</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 28 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L D B2 R' U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> U' F U D R' L U2 B' L <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U B2 U2 R2 U B2 D <b>(7/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 D2 F2 U2 F2 B2 R2 U2 <b>(9/28)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 30 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L D B2 R' U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> U' F U D R' L U2 B' L <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' R2 U2 B2 U' B2 D <b>(7/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 F2 U2 R2 U2 F2 U2 F2 B2 L2 B2 <b>(11/30)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 31 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D F2 R' L' D <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F R' U2 R2 F R' B L <b>(8/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F2 U L2 U2 F2 U' L2 F2 U <b>(9/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 F2 D2 F2 R2 D2 L2 B2 R2 <b>(10/31)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 31 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D F2 R' L' D <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F R' U2 R2 F R' B L <b>(8/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F2 U F2 U2 R2 U' R2 F2 U <b>(9/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 F2 B2 R2 U2 F2 B2 U2 F2 B2 <b>(10/31)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> D F2 R' L' D <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F R' U2 R2 F R' B L <b>(8/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F2 U' R2 U2 F2 U R2 F2 U <b>(9/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 L2 F2 D2 R2 D2 R2 L2 B2 U2 <b>(10/32)</b></div>
+</div>
+</div></details><h2>Scramble 13 <span style="font-weight:normal;font-size:0.8em;">(32 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">F2 R' B' U' D2 R' D' F' B2 R2 U F2 L2 D' R2 U F2 U' B2 L2 D</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> D2 B D' R' F <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B R' B2 U' F2 R' L' B R <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F' U2 F' D2 R2 F' U2 F <b>(8/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 B2 R2 D2 F2 D2 B2 L2 U2 B2 <b>(10/32)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> D2 B D' R' F <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B R' B2 U' F2 R' L' B R <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F' D2 F' U2 F R2 D2 F <b>(8/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 B2 R2 F2 L2 U2 F2 R2 B2 <b>(10/32)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> D2 B D' R' F <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B R' B2 U' F2 R' L' B R <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F' D2 F' U2 F L2 U2 B <b>(8/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> L2 B2 D2 F2 U2 R2 B2 R2 U2 F2 <b>(10/32)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 34 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> D2 B D' R' F <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B R' B2 U' F2 R' L' B R <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F L2 D2 F' U2 F U2 B <b>(8/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 U2 D2 F2 R2 F2 R2 B2 U2 R2 F2 <b>(12/34)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 34 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [FB]</span> D2 B D' R' F <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> B R' B2 U' F2 R' L' B R <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> F' L2 D2 F R2 F' R2 B <b>(8/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 B2 R2 U2 F2 D2 B2 R2 D2 F2 L2 <b>(12/34)</b></div>
+</div>
+</div></details><h2>Scramble 14 <span style="background:#ff9800;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8em;">NISS</span> <span style="font-weight:normal;font-size:0.8em;">(26 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">D' L2 B2 U F2 U' R2 D L2 F2 U' R2 B2 F D R D2 U B R F2</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 26 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L' B D B2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R' F U' B' R2 U2 L D' F <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U2 F2 B2 U' B2 D <b>(6/20)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 R2 D2 F2 L2 U2 <b>(6/26)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 28 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L' B D B2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R' F U' B' R2 U2 L D' F <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U2 L2 F2 R2 U R2 D <b>(7/21)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> D2 B2 D2 R2 L2 B2 L2 U2 <b>(8/28)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L' B D B2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R' F U2 D L B' D' L <b>(8/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> R2 B2 U2 R2 U B2 U2 R2 U <b>(9/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 L2 F2 L2 U2 L2 F2 U2 F2 B2 <b>(11/32)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L' B D B2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R' F U2 D L B' D' L <b>(8/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> R2 F2 U2 R2 U F2 U2 L2 D <b>(9/22)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 U2 B2 U2 B2 R2 U2 R2 U2 R2 <b>(10/32)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 34 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> L' B D B2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> R' F U' B' R2 U2 L D' F <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> L2 F2 L2 U' F2 D <b>(6/20)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 D2 R2 U2 R2 F2 U2 R2 F2 L2 B2 L2 B2 D2 <b>(14/34)</b></div>
+</div>
+</div></details><h2>Scramble 15 <span style="font-weight:normal;font-size:0.8em;">(32 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">F U D2 F' D B L' F' R' F U R2 U2 B2 L2 D B2 R2 L2 D F2</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 32 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> F D' B R2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F' R L F B L' D2 R2 F <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U' R2 U2 F2 R2 U F2 R2 U <b>(9/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 F2 U2 L2 B2 U2 L2 B2 U2 <b>(9/32)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 33 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> F D' B R2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F' R L F B L' D2 R2 F <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U F2 L2 U L2 B2 U2 R2 D <b>(9/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 B2 L2 U2 R2 D2 F2 U2 L2 F2 <b>(10/33)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 34 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> F D' B R2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F' R L F B L' D2 R2 F <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U F2 R2 U F2 R2 U2 F2 U <b>(9/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 U2 L2 U2 F2 U2 B2 D2 R2 F2 D2 <b>(12/34)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 34 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> F D' B R2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F' R L F B L' D2 R2 F <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U F2 L2 U R2 F2 U2 L2 U <b>(9/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 U2 L2 F2 U2 B2 D2 F2 L2 F2 R2 <b>(12/34)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 35 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [UD]</span> F D' B R2 U <b>(5/5)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F' R L F B L' D2 R2 F <b>(9/14)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> U F2 R2 U B2 L2 U2 B2 D <b>(9/23)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 R2 D2 F2 U2 L2 U2 F2 R2 B2 R2 B2 <b>(12/35)</b></div>
+</div>
+</div></details><h2>Scramble 16 <span style="background:#ff9800;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8em;">NISS</span> <span style="font-weight:normal;font-size:0.8em;">(33 moves)</span></h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;font-size:0.85em;">F2 D' L2 R2 B2 D' L2 B2 U2 R2 U' F' R F L B' D' F D2 U' F'</p>
+<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">🥇 Best - 33 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> D2 B' R L <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F B R2 F2 D B' R2 U' F <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> B2 R B2 R D2 R' U2 B2 R' F2 L <b>(11/24)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 U2 B2 U2 L2 B2 U2 R2 D2 <b>(9/33)</b></div>
+</div>
+</div><details style="margin:8px 0;"><summary style="cursor:pointer;color:#666;">Other 4 solutions</summary>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#2 - 33 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> D2 B' R L <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F B R2 F2 D B' R2 U' F <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> B2 R B2 R F2 D2 R U2 R' F2 L <b>(11/24)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> U2 F2 L2 U2 B2 U2 B2 L2 U2 <b>(9/33)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#3 - 33 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> D2 B' R L <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F B R2 F2 D B' R2 U' F <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> B2 R B2 R' F2 U2 R' D2 R F2 L <b>(11/24)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> F2 D2 R2 U2 D2 F2 U2 B2 R2 <b>(9/33)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#4 - 33 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> D2 B' R L <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F B R2 F2 D B' R2 U' F <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> B2 R' F2 R B2 U2 R D2 R' B2 L <b>(11/24)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> L2 F2 D2 R2 F2 D2 R2 L2 F2 L2 <b>(10/33)</b></div>
+</div>
+</div>
+<div style="background:#fafafa;border:2px solid #ddd;border-radius:8px;padding:12px;margin:8px 0;">
+<div style="font-weight:bold;margin-bottom:8px;">#5 - 37 moves</div>
+<div style="font-family:monospace;font-size:0.95em;line-height:1.8;">
+<div><span style="background:#fff3e0;padding:2px 6px;border-radius:4px;">EO [RL]</span> D2 B' R L <b>(4/4)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e3f2fd;padding:2px 6px;border-radius:4px;">DR</span> F B R2 F2 D B' R2 U' F <b>(9/13)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#f3e5f5;padding:2px 6px;border-radius:4px;">HTR</span> B2 R B2 R' U2 R D2 B2 R F2 L <b>(11/24)</b></div>
+<div style="text-align:center;color:#999;">↓</div>
+<div><span style="background:#e8f5e9;padding:2px 6px;border-radius:4px;">FIN</span> R2 U2 R2 D2 F2 U2 L2 F2 L2 F2 B2 U2 B2 <b>(13/37)</b></div>
+</div>
+</div></details></div>
 <script>
-const BEAM_DATA = {"/tmp/beam_json5/scramble_1.json": {"scramble": "F' U L' B2 R B D F' L F2 L2 U2 B' U2 B2 D2 B D2 F' D2 F2 L2", "K": 5, "solutions": [{"eo": {"axis": "UD", "moves": "F D R B2 U", "len": 5, "cumulative": 5, "scramble_after": "F' U L' B2 R B D F' L F2 L2 U2 B' U2 B2 D2 B D2 F' D2 F2 L2 F D R B2 U"}, "dr": {"moves": "U2 F' B2 D' F2 D L' D B", "len": 9}, "htr": {"moves": "U2 L2 F2 U' L2 U R2 U", "len": 8}, "finish": {"moves": "F2 U2 R2 B2 R2 F2 R2 D2 B2", "len": 9}, "total": 31, "simplified": {"moves": "F D R B2 U' F' B2 D' F2 D L' D B U2 L2 F2 U' L2 U R2 U F2 U2 R2 B2 R2 F2 R2 D2 B2", "len": 30}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "F D R B2 U", "len": 5, "cumulative": 5, "scramble_after": "F' U L' B2 R B D F' L F2 L2 U2 B' U2 B2 D2 B D2 F' D2 F2 L2 F D R B2 U"}, "dr": {"moves": "U2 F' B2 D' F2 D L' D B", "len": 9}, "htr": {"moves": "U2 R2 F2 U' R2 U L2 U", "len": 8}, "finish": {"moves": "F2 U2 R2 U2 D2 F2 R2 B2 L2 U2 B2", "len": 11}, "total": 33, "simplified": {"moves": "F D R B2 U' F' B2 D' F2 D L' D B U2 R2 F2 U' R2 U L2 U F2 U2 R2 U2 D2 F2 R2 B2 L2 U2 B2", "len": 32}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "F D R B2 U", "len": 5, "cumulative": 5, "scramble_after": "F' U L' B2 R B D F' L F2 L2 U2 B' U2 B2 D2 B D2 F' D2 F2 L2 F D R B2 U"}, "dr": {"moves": "U2 F' B2 D' F2 D L' D B", "len": 9}, "htr": {"moves": "U2 R2 B2 U' F2 U R2 D", "len": 8}, "finish": {"moves": "F2 R2 U2 R2 F2 D2 F2 L2 F2 L2 F2", "len": 11}, "total": 33, "simplified": {"moves": "F D R B2 U' F' B2 D' F2 D L' D B U2 R2 B2 U' F2 U R2 D F2 R2 U2 R2 F2 D2 F2 L2 F2 L2 F2", "len": 32}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "F D R B2 U", "len": 5, "cumulative": 5, "scramble_after": "F' U L' B2 R B D F' L F2 L2 U2 B' U2 B2 D2 B D2 F' D2 F2 L2 F D R B2 U"}, "dr": {"moves": "U2 F' B2 D' F2 D L' D B", "len": 9}, "htr": {"moves": "U2 L2 B2 U' B2 U L2 D", "len": 8}, "finish": {"moves": "R2 D2 R2 D2 F2 U2 R2 B2 R2 U2 B2", "len": 11}, "total": 33, "simplified": {"moves": "F D R B2 U' F' B2 D' F2 D L' D B U2 L2 B2 U' B2 U L2 D R2 D2 R2 D2 F2 U2 R2 B2 R2 U2 B2", "len": 32}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "F D R B2 U", "len": 5, "cumulative": 5, "scramble_after": "F' U L' B2 R B D F' L F2 L2 U2 B' U2 B2 D2 B D2 F' D2 F2 L2 F D R B2 U"}, "dr": {"moves": "U2 F' B2 D' F2 D L' D B", "len": 9}, "htr": {"moves": "F2 U' R2 L2 B2 U R2 D", "len": 8}, "finish": {"moves": "U2 R2 F2 U2 F2 U2 F2 L2 F2 R2 F2", "len": 11}, "total": 33, "simplified": {"moves": "F D R B2 U' F' B2 D' F2 D L' D B F2 U' R2 L2 B2 U R2 D U2 R2 F2 U2 F2 U2 F2 L2 F2 R2 F2", "len": 32}, "total_simplified": 32}], "mermaid": "flowchart TD\n    R0[\"Scramble|F' U L' B2 R B D F' L F2 L2 U2...|0 moves\"]\n    E0_0[\"UD EO|F D R B2 U|5\"]\n    R0 --> E0_0\n    D0_0[\"DR|U2 F' B2 D' F2 D L' D B|14\"]\n    E0_0 --> D0_0\n    H0_0[\"HTR|U2 L2 F2 U' L2 U R2 U|22\"]\n    D0_0 --> H0_0\n    F0_0[\"FIN|F2 U2 R2 B2 R2 F2 R2 D2 B2|30 simplified\"]\n    H0_0 --> F0_0\n    E0_1[\"UD EO|F D R B2 U|5\"]\n    R0 --> E0_1\n    D0_1[\"DR|U2 F' B2 D' F2 D L' D B|14\"]\n    E0_1 --> D0_1\n    H0_1[\"HTR|U2 R2 F2 U' R2 U L2 U|22\"]\n    D0_1 --> H0_1\n    F0_1[\"FIN|F2 U2 R2 U2 D2 F2 R2 B2 L2 U2 B2|32 simplified\"]\n    H0_1 --> F0_1\n    E0_2[\"UD EO|F D R B2 U|5\"]\n    R0 --> E0_2\n    D0_2[\"DR|U2 F' B2 D' F2 D L' D B|14\"]\n    E0_2 --> D0_2\n    H0_2[\"HTR|U2 R2 B2 U' F2 U R2 D|22\"]\n    D0_2 --> H0_2\n    F0_2[\"FIN|F2 R2 U2 R2 F2 D2 F2 L2 F2 L2 F2|32 simplified\"]\n    H0_2 --> F0_2\n    E0_3[\"UD EO|F D R B2 U|5\"]\n    R0 --> E0_3\n    D0_3[\"DR|U2 F' B2 D' F2 D L' D B|14\"]\n    E0_3 --> D0_3\n    H0_3[\"HTR|U2 L2 B2 U' B2 U L2 D|22\"]\n    D0_3 --> H0_3\n    F0_3[\"FIN|R2 D2 R2 D2 F2 U2 R2 B2 R2 U2 B2|32 simplified\"]\n    H0_3 --> F0_3\n    E0_4[\"UD EO|F D R B2 U|5\"]\n    R0 --> E0_4\n    D0_4[\"DR|U2 F' B2 D' F2 D L' D B|14\"]\n    E0_4 --> D0_4\n    H0_4[\"HTR|F2 U' R2 L2 B2 U R2 D|22\"]\n    D0_4 --> H0_4\n    F0_4[\"FIN|U2 R2 F2 U2 F2 U2 F2 L2 F2 R2 F2|32 simplified\"]\n    H0_4 --> F0_4\n    style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json5/scramble_2.json": {"scramble": "B' R2 D' L' U' R' U' D F' U' F2 U L2 U2 R2 B2 U' B2 U2 B2 R2 D2", "K": 5, "solutions": [{"eo": {"axis": "FB", "moves": "R L' D' F", "len": 4, "cumulative": 4, "scramble_after": "B' R2 D' L' U' R' U' D F' U' F2 U L2 U2 R2 B2 U' B2 U2 B2 R2 D2 R L' D' F"}, "dr": {"moves": "F D F U2 F2 L2 U2 R' D", "len": 9}, "htr": {"moves": "D2 F' L2 D2 F' R2 F U2 B", "len": 9}, "finish": {"moves": "U2 B2 U2 F2 U2 L2 F2 L2 U2 B2 D2", "len": 11}, "total": 33, "simplified": {"moves": "R L' D' F2 D F U2 F2 L2 U2 R' D' F' L2 D2 F' R2 F U2 B U2 B2 U2 F2 U2 L2 F2 L2 U2 B2 D2", "len": 31}, "total_simplified": 31}, {"eo": {"axis": "FB", "moves": "L' D' R2 F", "len": 4, "cumulative": 4, "scramble_after": "B' R2 D' L' U' R' U' D F' U' F2 U L2 U2 R2 B2 U' B2 U2 B2 R2 D2 L' D' R2 F"}, "dr": {"moves": "U R' D2 R F2 R D' U' R", "len": 9}, "htr": {"moves": "F U2 F U2 F' D2 F D2 F", "len": 9}, "finish": {"moves": "U2 F2 L2 F2 U2 F2 B2 R2 F2", "len": 9}, "total": 31, "simplified": {"moves": "L' D' R2 F U R' D2 R F2 R D' U' R F U2 F U2 F' D2 F D2 F U2 F2 L2 F2 U2 F2 B2 R2 F2", "len": 31}, "total_simplified": 31}, {"eo": {"axis": "FB", "moves": "L' D' R2 F", "len": 4, "cumulative": 4, "scramble_after": "B' R2 D' L' U' R' U' D F' U' F2 U L2 U2 R2 B2 U' B2 U2 B2 R2 D2 L' D' R2 F"}, "dr": {"moves": "U R' D2 R F2 R' D' U' R", "len": 9}, "htr": {"moves": "F L2 F' L2 F R2 F' R2 F", "len": 9}, "finish": {"moves": "D2 R2 U2 B2 R2 F2 L2 D2 L2", "len": 9}, "total": 31, "simplified": {"moves": "L' D' R2 F U R' D2 R F2 R' D' U' R F L2 F' L2 F R2 F' R2 F D2 R2 U2 B2 R2 F2 L2 D2 L2", "len": 31}, "total_simplified": 31}, {"eo": {"axis": "FB", "moves": "L' D' R2 F", "len": 4, "cumulative": 4, "scramble_after": "B' R2 D' L' U' R' U' D F' U' F2 U L2 U2 R2 B2 U' B2 U2 B2 R2 D2 L' D' R2 F"}, "dr": {"moves": "U' B2 D L U R' D' U2 L", "len": 9}, "htr": {"moves": "F D2 F L2 F' U2 F R2 B", "len": 9}, "finish": {"moves": "U2 F2 L2 U2 F2 R2 B2 L2 U2 F2 L2", "len": 11}, "total": 33, "simplified": {"moves": "L' D' R2 F U' B2 D L U R' D' U2 L F D2 F L2 F' U2 F R2 B U2 F2 L2 U2 F2 R2 B2 L2 U2 F2 L2", "len": 33}, "total_simplified": 33}, {"eo": {"axis": "FB", "moves": "L' D' R2 F", "len": 4, "cumulative": 4, "scramble_after": "B' R2 D' L' U' R' U' D F' U' F2 U L2 U2 R2 B2 U' B2 U2 B2 R2 D2 L' D' R2 F"}, "dr": {"moves": "D U R' F U L2 F L' D", "len": 9}, "htr": {"moves": "U2 D2 F U2 F' U2 F D2 F", "len": 9}, "finish": {"moves": "U2 R2 U2 F2 L2 F2 U2 R2 F2 D2 F2 U2 B2", "len": 13}, "total": 35, "simplified": {"moves": "L' D' R2 F D U R' F U L2 F L' D U2 D2 F U2 F' U2 F D2 F U2 R2 U2 F2 L2 F2 U2 R2 F2 D2 F2 U2 B2", "len": 35}, "total_simplified": 35}], "mermaid": "flowchart TD\n    R1[\"Scramble|B' R2 D' L' U' R' U' D F' U' F...|0 moves\"]\n    E1_0[\"FB EO|R L' D' F|4\"]\n    R1 --> E1_0\n    D1_0[\"DR|F D F U2 F2 L2 U2 R' D|13\"]\n    E1_0 --> D1_0\n    H1_0[\"HTR|D2 F' L2 D2 F' R2 F U2 B|22\"]\n    D1_0 --> H1_0\n    F1_0[\"FIN|U2 B2 U2 F2 U2 L2 F2 L2 U2 B2 D2|31 simplified\"]\n    H1_0 --> F1_0\n    E1_1[\"FB EO|L' D' R2 F|4\"]\n    R1 --> E1_1\n    D1_1[\"DR|U R' D2 R F2 R D' U' R|13\"]\n    E1_1 --> D1_1\n    H1_1[\"HTR|F U2 F U2 F' D2 F D2 F|22\"]\n    D1_1 --> H1_1\n    F1_1[\"FIN|U2 F2 L2 F2 U2 F2 B2 R2 F2|31 simplified\"]\n    H1_1 --> F1_1\n    E1_2[\"FB EO|L' D' R2 F|4\"]\n    R1 --> E1_2\n    D1_2[\"DR|U R' D2 R F2 R' D' U' R|13\"]\n    E1_2 --> D1_2\n    H1_2[\"HTR|F L2 F' L2 F R2 F' R2 F|22\"]\n    D1_2 --> H1_2\n    F1_2[\"FIN|D2 R2 U2 B2 R2 F2 L2 D2 L2|31 simplified\"]\n    H1_2 --> F1_2\n    E1_3[\"FB EO|L' D' R2 F|4\"]\n    R1 --> E1_3\n    D1_3[\"DR|U' B2 D L U R' D' U2 L|13\"]\n    E1_3 --> D1_3\n    H1_3[\"HTR|F D2 F L2 F' U2 F R2 B|22\"]\n    D1_3 --> H1_3\n    F1_3[\"FIN|U2 F2 L2 U2 F2 R2 B2 L2 U2 F2 L2|33 simplified\"]\n    H1_3 --> F1_3\n    E1_4[\"FB EO|L' D' R2 F|4\"]\n    R1 --> E1_4\n    D1_4[\"DR|D U R' F U L2 F L' D|13\"]\n    E1_4 --> D1_4\n    H1_4[\"HTR|U2 D2 F U2 F' U2 F D2 F|22\"]\n    D1_4 --> H1_4\n    F1_4[\"FIN|U2 R2 U2 F2 L2 F2 U2 R2 F2 D2 F2 U2 B2|35 simplified\"]\n    H1_4 --> F1_4\n    style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json5/scramble_3.json": {"scramble": "F L B D2 F2 D' L F' B R' F2 U2 F2 U L2 U B2 L2 F2 B2 D'", "K": 5, "solutions": [{"eo": {"axis": "UD", "moves": "F D' F2 U", "len": 4, "cumulative": 4, "scramble_after": "F L B D2 F2 D' L F' B R' F2 U2 F2 U L2 U B2 L2 F2 B2 D' F D' F2 U"}, "dr": {"moves": "B' U' B R U' F' L' B' R", "len": 9}, "htr": {"moves": "U R2 L2 F2 B2 U' R2 D", "len": 8}, "finish": {"moves": "U2 F2 D2 B2 L2 U2 L2 D2 F2", "len": 9}, "total": 30, "simplified": {"moves": "F D' F2 U B' U' B R U' F' L' B' R U R2 L2 F2 B2 U' R2 D U2 F2 D2 B2 L2 U2 L2 D2 F2", "len": 30}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "F D' F2 U", "len": 4, "cumulative": 4, "scramble_after": "F L B D2 F2 D' L F' B R' F2 U2 F2 U L2 U B2 L2 F2 B2 D' F D' F2 U"}, "dr": {"moves": "B' U' B R U' F' L' B' R", "len": 9}, "htr": {"moves": "U R2 B2 R2 U F2 D", "len": 7}, "finish": {"moves": "F2 R2 B2 L2 F2 D2 F2 D2 L2 U2 F2", "len": 11}, "total": 31, "simplified": {"moves": "F D' F2 U B' U' B R U' F' L' B' R U R2 B2 R2 U F2 D F2 R2 B2 L2 F2 D2 F2 D2 L2 U2 F2", "len": 31}, "total_simplified": 31}, {"eo": {"axis": "UD", "moves": "F D' F2 U", "len": 4, "cumulative": 4, "scramble_after": "F L B D2 F2 D' L F' B R' F2 U2 F2 U L2 U B2 L2 F2 B2 D' F D' F2 U"}, "dr": {"moves": "B' U' B R U' F' L' B' R", "len": 9}, "htr": {"moves": "U F2 L2 F2 U F2 D", "len": 7}, "finish": {"moves": "F2 R2 U2 F2 R2 U2 F2 R2 D2 B2 L2", "len": 11}, "total": 31, "simplified": {"moves": "F D' F2 U B' U' B R U' F' L' B' R U F2 L2 F2 U F2 D F2 R2 U2 F2 R2 U2 F2 R2 D2 B2 L2", "len": 31}, "total_simplified": 31}, {"eo": {"axis": "UD", "moves": "F D' F2 U", "len": 4, "cumulative": 4, "scramble_after": "F L B D2 F2 D' L F' B R' F2 U2 F2 U L2 U B2 L2 F2 B2 D' F D' F2 U"}, "dr": {"moves": "B' U' B R U' F' L' B' R", "len": 9}, "htr": {"moves": "U' R2 B2 R2 U' F2 D", "len": 7}, "finish": {"moves": "F2 R2 U2 F2 R2 U2 F2 B2 L2 U2 F2", "len": 11}, "total": 31, "simplified": {"moves": "F D' F2 U B' U' B R U' F' L' B' R U' R2 B2 R2 U' F2 D F2 R2 U2 F2 R2 U2 F2 B2 L2 U2 F2", "len": 31}, "total_simplified": 31}, {"eo": {"axis": "UD", "moves": "F D' F2 U", "len": 4, "cumulative": 4, "scramble_after": "F L B D2 F2 D' L F' B R' F2 U2 F2 U L2 U B2 L2 F2 B2 D' F D' F2 U"}, "dr": {"moves": "B' U' B R U' F' L' B' R", "len": 9}, "htr": {"moves": "U' B2 R2 B2 U' F2 D", "len": 7}, "finish": {"moves": "R2 F2 R2 F2 U2 F2 L2 D2 L2 D2 B2", "len": 11}, "total": 31, "simplified": {"moves": "F D' F2 U B' U' B R U' F' L' B' R U' B2 R2 B2 U' F2 D R2 F2 R2 F2 U2 F2 L2 D2 L2 D2 B2", "len": 31}, "total_simplified": 31}], "mermaid": "flowchart TD\n    R2[\"Scramble|F L B D2 F2 D' L F' B R' F2 U2...|0 moves\"]\n    E2_0[\"UD EO|F D' F2 U|4\"]\n    R2 --> E2_0\n    D2_0[\"DR|B' U' B R U' F' L' B' R|13\"]\n    E2_0 --> D2_0\n    H2_0[\"HTR|U R2 L2 F2 B2 U' R2 D|21\"]\n    D2_0 --> H2_0\n    F2_0[\"FIN|U2 F2 D2 B2 L2 U2 L2 D2 F2|30 simplified\"]\n    H2_0 --> F2_0\n    E2_1[\"UD EO|F D' F2 U|4\"]\n    R2 --> E2_1\n    D2_1[\"DR|B' U' B R U' F' L' B' R|13\"]\n    E2_1 --> D2_1\n    H2_1[\"HTR|U R2 B2 R2 U F2 D|20\"]\n    D2_1 --> H2_1\n    F2_1[\"FIN|F2 R2 B2 L2 F2 D2 F2 D2 L2 U2 F2|31 simplified\"]\n    H2_1 --> F2_1\n    E2_2[\"UD EO|F D' F2 U|4\"]\n    R2 --> E2_2\n    D2_2[\"DR|B' U' B R U' F' L' B' R|13\"]\n    E2_2 --> D2_2\n    H2_2[\"HTR|U F2 L2 F2 U F2 D|20\"]\n    D2_2 --> H2_2\n    F2_2[\"FIN|F2 R2 U2 F2 R2 U2 F2 R2 D2 B2 L2|31 simplified\"]\n    H2_2 --> F2_2\n    E2_3[\"UD EO|F D' F2 U|4\"]\n    R2 --> E2_3\n    D2_3[\"DR|B' U' B R U' F' L' B' R|13\"]\n    E2_3 --> D2_3\n    H2_3[\"HTR|U' R2 B2 R2 U' F2 D|20\"]\n    D2_3 --> H2_3\n    F2_3[\"FIN|F2 R2 U2 F2 R2 U2 F2 B2 L2 U2 F2|31 simplified\"]\n    H2_3 --> F2_3\n    E2_4[\"UD EO|F D' F2 U|4\"]\n    R2 --> E2_4\n    D2_4[\"DR|B' U' B R U' F' L' B' R|13\"]\n    E2_4 --> D2_4\n    H2_4[\"HTR|U' B2 R2 B2 U' F2 D|20\"]\n    D2_4 --> H2_4\n    F2_4[\"FIN|R2 F2 R2 F2 U2 F2 L2 D2 L2 D2 B2|31 simplified\"]\n    H2_4 --> F2_4\n    style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json5/scramble_4.json": {"scramble": "B' D' F B' D2 R' B2 R2 D' L2 U2 F' U2 F2 R2 F L2 F' R2 L2 B2", "K": 5, "solutions": [{"eo": {"axis": "UD", "moves": "D' B R' U", "len": 4, "cumulative": 4, "scramble_after": "B' D' F B' D2 R' B2 R2 D' L2 U2 F' U2 F2 R2 F L2 F' R2 L2 B2 D' B R' U"}, "dr": {"moves": "D2 B2 L F' U2 R2 B2 L", "len": 8}, "htr": {"moves": "R2 U' R2 L2 F2 U F2 U' B2 D", "len": 10}, "finish": {"moves": "R2 U2 B2 R2 L2 D2 L2 B2", "len": 8}, "total": 30, "simplified": {"moves": "D' B R' U D2 B2 L F' U2 R2 B2 L R2 U' R2 L2 F2 U F2 U' B2 D R2 U2 B2 R2 L2 D2 L2 B2", "len": 30}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "D' B R' U", "len": 4, "cumulative": 4, "scramble_after": "B' D' F B' D2 R' B2 R2 D' L2 U2 F' U2 F2 R2 F L2 F' R2 L2 B2 D' B R' U"}, "dr": {"moves": "D2 B2 L F' U2 R2 B2 L", "len": 8}, "htr": {"moves": "R2 U R2 L2 B2 U' B2 U F2 D", "len": 10}, "finish": {"moves": "D2 B2 U2 R2 U2 R2 F2 B2 U2 R2", "len": 10}, "total": 32, "simplified": {"moves": "D' B R' U D2 B2 L F' U2 R2 B2 L R2 U R2 L2 B2 U' B2 U F2 D' B2 U2 R2 U2 R2 F2 B2 U2 R2", "len": 31}, "total_simplified": 31}, {"eo": {"axis": "UD", "moves": "D' B R' U", "len": 4, "cumulative": 4, "scramble_after": "B' D' F B' D2 R' B2 R2 D' L2 U2 F' U2 F2 R2 F L2 F' R2 L2 B2 D' B R' U"}, "dr": {"moves": "D2 B2 L F' U2 R2 B2 L", "len": 8}, "htr": {"moves": "L2 U L2 U' B2 U R2 F2 B2 D", "len": 10}, "finish": {"moves": "R2 D2 R2 D2 B2 U2 R2 B2 R2 D2", "len": 10}, "total": 32, "simplified": {"moves": "D' B R' U D2 B2 L F' U2 R2 B2 L' U L2 U' B2 U R2 F2 B2 D R2 D2 R2 D2 B2 U2 R2 B2 R2 D2", "len": 31}, "total_simplified": 31}, {"eo": {"axis": "UD", "moves": "D' B R' U", "len": 4, "cumulative": 4, "scramble_after": "B' D' F B' D2 R' B2 R2 D' L2 U2 F' U2 F2 R2 F L2 F' R2 L2 B2 D' B R' U"}, "dr": {"moves": "D2 B2 L F' U2 R2 B2 L", "len": 8}, "htr": {"moves": "R2 U' F2 U B2 U' B2 R2 L2 D", "len": 10}, "finish": {"moves": "U2 F2 R2 B2 U2 F2 D2 R2 U2 L2", "len": 10}, "total": 32, "simplified": {"moves": "D' B R' U D2 B2 L F' U2 R2 B2 L R2 U' F2 U B2 U' B2 R2 L2 D U2 F2 R2 B2 U2 F2 D2 R2 U2 L2", "len": 32}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "D' B R' U", "len": 4, "cumulative": 4, "scramble_after": "B' D' F B' D2 R' B2 R2 D' L2 U2 F' U2 F2 R2 F L2 F' R2 L2 B2 D' B R' U"}, "dr": {"moves": "D2 B2 L F' U2 R2 B2 L", "len": 8}, "htr": {"moves": "R2 U B2 U' F2 U F2 R2 L2 D", "len": 10}, "finish": {"moves": "D2 R2 B2 R2 B2 U2 F2 L2 U2 R2 F2 D2", "len": 12}, "total": 34, "simplified": {"moves": "D' B R' U D2 B2 L F' U2 R2 B2 L R2 U B2 U' F2 U F2 R2 L2 D' R2 B2 R2 B2 U2 F2 L2 U2 R2 F2 D2", "len": 33}, "total_simplified": 33}], "mermaid": "flowchart TD\n    R3[\"Scramble|B' D' F B' D2 R' B2 R2 D' L2 U...|0 moves\"]\n    E3_0[\"UD EO|D' B R' U|4\"]\n    R3 --> E3_0\n    D3_0[\"DR|D2 B2 L F' U2 R2 B2 L|12\"]\n    E3_0 --> D3_0\n    H3_0[\"HTR|R2 U' R2 L2 F2 U F2 U' B2 D|22\"]\n    D3_0 --> H3_0\n    F3_0[\"FIN|R2 U2 B2 R2 L2 D2 L2 B2|30 simplified\"]\n    H3_0 --> F3_0\n    E3_1[\"UD EO|D' B R' U|4\"]\n    R3 --> E3_1\n    D3_1[\"DR|D2 B2 L F' U2 R2 B2 L|12\"]\n    E3_1 --> D3_1\n    H3_1[\"HTR|R2 U R2 L2 B2 U' B2 U F2 D|22\"]\n    D3_1 --> H3_1\n    F3_1[\"FIN|D2 B2 U2 R2 U2 R2 F2 B2 U2 R2|31 simplified\"]\n    H3_1 --> F3_1\n    E3_2[\"UD EO|D' B R' U|4\"]\n    R3 --> E3_2\n    D3_2[\"DR|D2 B2 L F' U2 R2 B2 L|12\"]\n    E3_2 --> D3_2\n    H3_2[\"HTR|L2 U L2 U' B2 U R2 F2 B2 D|22\"]\n    D3_2 --> H3_2\n    F3_2[\"FIN|R2 D2 R2 D2 B2 U2 R2 B2 R2 D2|31 simplified\"]\n    H3_2 --> F3_2\n    E3_3[\"UD EO|D' B R' U|4\"]\n    R3 --> E3_3\n    D3_3[\"DR|D2 B2 L F' U2 R2 B2 L|12\"]\n    E3_3 --> D3_3\n    H3_3[\"HTR|R2 U' F2 U B2 U' B2 R2 L2 D|22\"]\n    D3_3 --> H3_3\n    F3_3[\"FIN|U2 F2 R2 B2 U2 F2 D2 R2 U2 L2|32 simplified\"]\n    H3_3 --> F3_3\n    E3_4[\"UD EO|D' B R' U|4\"]\n    R3 --> E3_4\n    D3_4[\"DR|D2 B2 L F' U2 R2 B2 L|12\"]\n    E3_4 --> D3_4\n    H3_4[\"HTR|R2 U B2 U' F2 U F2 R2 L2 D|22\"]\n    D3_4 --> H3_4\n    F3_4[\"FIN|D2 R2 B2 R2 B2 U2 F2 L2 U2 R2 F2 D2|33 simplified\"]\n    H3_4 --> F3_4\n    style F3_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json5/scramble_5.json": {"scramble": "L' D2 L D2 L' F2 L2 D' F R2 F2 L2 D2 B2 D2 R' D2 R' U2 R", "K": 5, "solutions": [{"eo": {"axis": "UD", "moves": "B' R' D", "len": 3, "cumulative": 3, "scramble_after": "L' D2 L D2 L' F2 L2 D' F R2 F2 L2 D2 B2 D2 R' D2 R' U2 R B' R' D"}, "dr": {"moves": "L' B2 D2 F' D2 L' F' R", "len": 8}, "htr": {"moves": "U2 F2 U F2 R2 F2 R2 U", "len": 8}, "finish": {"moves": "U2 F2 L2 U2 B2 R2 D2 B2 D2 F2", "len": 10}, "total": 29, "simplified": {"moves": "B' R' D L' B2 D2 F' D2 L' F' R U2 F2 U F2 R2 F2 R2 U' F2 L2 U2 B2 R2 D2 B2 D2 F2", "len": 28}, "total_simplified": 28}, {"eo": {"axis": "UD", "moves": "B' R' D", "len": 3, "cumulative": 3, "scramble_after": "L' D2 L D2 L' F2 L2 D' F R2 F2 L2 D2 B2 D2 R' D2 R' U2 R B' R' D"}, "dr": {"moves": "L' B2 D2 F' D2 L' F' R", "len": 8}, "htr": {"moves": "U2 F2 U F2 L2 F2 L2 U", "len": 8}, "finish": {"moves": "U2 F2 R2 U2 B2 R2 D2 F2 U2 B2", "len": 10}, "total": 29, "simplified": {"moves": "B' R' D L' B2 D2 F' D2 L' F' R U2 F2 U F2 L2 F2 L2 U' F2 R2 U2 B2 R2 D2 F2 U2 B2", "len": 28}, "total_simplified": 28}, {"eo": {"axis": "UD", "moves": "B' R' D", "len": 3, "cumulative": 3, "scramble_after": "L' D2 L D2 L' F2 L2 D' F R2 F2 L2 D2 B2 D2 R' D2 R' U2 R B' R' D"}, "dr": {"moves": "L' B2 D2 F' D2 L' F' R", "len": 8}, "htr": {"moves": "U F2 U' L2 B2 U F2 U", "len": 8}, "finish": {"moves": "F2 U2 R2 U2 L2 F2 B2 D2 R2 B2", "len": 10}, "total": 29, "simplified": {"moves": "B' R' D L' B2 D2 F' D2 L' F' R U F2 U' L2 B2 U F2 U F2 U2 R2 U2 L2 F2 B2 D2 R2 B2", "len": 29}, "total_simplified": 29}, {"eo": {"axis": "UD", "moves": "B' R' D", "len": 3, "cumulative": 3, "scramble_after": "L' D2 L D2 L' F2 L2 D' F R2 F2 L2 D2 B2 D2 R' D2 R' U2 R B' R' D"}, "dr": {"moves": "L' B2 D2 F' D2 L' F' R", "len": 8}, "htr": {"moves": "U2 F2 U F2 R2 B2 L2 D", "len": 8}, "finish": {"moves": "U2 F2 L2 U2 R2 B2 L2 F2 U2 B2 D2 F2", "len": 12}, "total": 31, "simplified": {"moves": "B' R' D L' B2 D2 F' D2 L' F' R U2 F2 U F2 R2 B2 L2 D U2 F2 L2 U2 R2 B2 L2 F2 U2 B2 D2 F2", "len": 31}, "total_simplified": 31}, {"eo": {"axis": "UD", "moves": "B' R' D", "len": 3, "cumulative": 3, "scramble_after": "L' D2 L D2 L' F2 L2 D' F R2 F2 L2 D2 B2 D2 R' D2 R' U2 R B' R' D"}, "dr": {"moves": "L' B2 D2 F' D2 L' F' R", "len": 8}, "htr": {"moves": "U2 F2 U F2 L2 B2 R2 D", "len": 8}, "finish": {"moves": "U2 F2 R2 U2 R2 F2 R2 F2 D2 F2 D2 F2", "len": 12}, "total": 31, "simplified": {"moves": "B' R' D L' B2 D2 F' D2 L' F' R U2 F2 U F2 L2 B2 R2 D U2 F2 R2 U2 R2 F2 R2 F2 D2 F2 D2 F2", "len": 31}, "total_simplified": 31}], "mermaid": "flowchart TD\n    R4[\"Scramble|L' D2 L D2 L' F2 L2 D' F R2 F2...|0 moves\"]\n    E4_0[\"UD EO|B' R' D|3\"]\n    R4 --> E4_0\n    D4_0[\"DR|L' B2 D2 F' D2 L' F' R|11\"]\n    E4_0 --> D4_0\n    H4_0[\"HTR|U2 F2 U F2 R2 F2 R2 U|19\"]\n    D4_0 --> H4_0\n    F4_0[\"FIN|U2 F2 L2 U2 B2 R2 D2 B2 D2 F2|28 simplified\"]\n    H4_0 --> F4_0\n    E4_1[\"UD EO|B' R' D|3\"]\n    R4 --> E4_1\n    D4_1[\"DR|L' B2 D2 F' D2 L' F' R|11\"]\n    E4_1 --> D4_1\n    H4_1[\"HTR|U2 F2 U F2 L2 F2 L2 U|19\"]\n    D4_1 --> H4_1\n    F4_1[\"FIN|U2 F2 R2 U2 B2 R2 D2 F2 U2 B2|28 simplified\"]\n    H4_1 --> F4_1\n    E4_2[\"UD EO|B' R' D|3\"]\n    R4 --> E4_2\n    D4_2[\"DR|L' B2 D2 F' D2 L' F' R|11\"]\n    E4_2 --> D4_2\n    H4_2[\"HTR|U F2 U' L2 B2 U F2 U|19\"]\n    D4_2 --> H4_2\n    F4_2[\"FIN|F2 U2 R2 U2 L2 F2 B2 D2 R2 B2|29 simplified\"]\n    H4_2 --> F4_2\n    E4_3[\"UD EO|B' R' D|3\"]\n    R4 --> E4_3\n    D4_3[\"DR|L' B2 D2 F' D2 L' F' R|11\"]\n    E4_3 --> D4_3\n    H4_3[\"HTR|U2 F2 U F2 R2 B2 L2 D|19\"]\n    D4_3 --> H4_3\n    F4_3[\"FIN|U2 F2 L2 U2 R2 B2 L2 F2 U2 B2 D2 F2|31 simplified\"]\n    H4_3 --> F4_3\n    E4_4[\"UD EO|B' R' D|3\"]\n    R4 --> E4_4\n    D4_4[\"DR|L' B2 D2 F' D2 L' F' R|11\"]\n    E4_4 --> D4_4\n    H4_4[\"HTR|U2 F2 U F2 L2 B2 R2 D|19\"]\n    D4_4 --> H4_4\n    F4_4[\"FIN|U2 F2 R2 U2 R2 F2 R2 F2 D2 F2 D2 F2|31 simplified\"]\n    H4_4 --> F4_4\n    style F4_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json5/scramble_6.json": {"scramble": "U F U B R' L2 D' F2 R B2 D R2 F2 D B2 U D2 B2 R2 D R2 F2", "K": 5, "solutions": [{"eo": {"axis": "UD", "moves": "B R' F' U", "len": 4, "cumulative": 4, "scramble_after": "U F U B R' L2 D' F2 R B2 D R2 F2 D B2 U D2 B2 R2 D R2 F2 B R' F' U"}, "dr": {"moves": "U D' L' U F' R F2 L", "len": 8}, "htr": {"moves": "U' F2 U' R2 U F2 D", "len": 7}, "finish": {"moves": "F2 R2 B2 U2 R2 B2 U2 R2 F2", "len": 9}, "total": 28, "simplified": {"moves": "B R' F' U2 D' L' U F' R F2 L U' F2 U' R2 U F2 D F2 R2 B2 U2 R2 B2 U2 R2 F2", "len": 27}, "total_simplified": 27}, {"eo": {"axis": "UD", "moves": "B R' F' U", "len": 4, "cumulative": 4, "scramble_after": "U F U B R' L2 D' F2 R B2 D R2 F2 D B2 U D2 B2 R2 D R2 F2 B R' F' U"}, "dr": {"moves": "U L' U F L F R F", "len": 8}, "htr": {"moves": "B2 U L2 U L2 U2 B2 U", "len": 8}, "finish": {"moves": "F2 R2 D2 B2 D2 F2 B2 R2 B2", "len": 9}, "total": 29, "simplified": {"moves": "B R' F' U2 L' U F L F R F B2 U L2 U L2 U2 B2 U F2 R2 D2 B2 D2 F2 B2 R2 B2", "len": 28}, "total_simplified": 28}, {"eo": {"axis": "UD", "moves": "B R' F' U", "len": 4, "cumulative": 4, "scramble_after": "U F U B R' L2 D' F2 R B2 D R2 F2 D B2 U D2 B2 R2 D R2 F2 B R' F' U"}, "dr": {"moves": "U D' L' U F' R F2 L", "len": 8}, "htr": {"moves": "U F2 U F2 U' R2 D", "len": 7}, "finish": {"moves": "U2 R2 U2 B2 U2 F2 L2 F2 D2 L2 F2", "len": 11}, "total": 30, "simplified": {"moves": "B R' F' U2 D' L' U F' R F2 L U F2 U F2 U' R2 D U2 R2 U2 B2 U2 F2 L2 F2 D2 L2 F2", "len": 29}, "total_simplified": 29}, {"eo": {"axis": "UD", "moves": "B R' F' U", "len": 4, "cumulative": 4, "scramble_after": "U F U B R' L2 D' F2 R B2 D R2 F2 D B2 U D2 B2 R2 D R2 F2 B R' F' U"}, "dr": {"moves": "U L' U F L F R F", "len": 8}, "htr": {"moves": "B2 U R2 U B2 U2 R2 U", "len": 8}, "finish": {"moves": "R2 L2 F2 U2 R2 B2 D2 R2 B2 L2 B2", "len": 11}, "total": 31, "simplified": {"moves": "B R' F' U2 L' U F L F R F B2 U R2 U B2 U2 R2 U R2 L2 F2 U2 R2 B2 D2 R2 B2 L2 B2", "len": 30}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "B R' F' U", "len": 4, "cumulative": 4, "scramble_after": "U F U B R' L2 D' F2 R B2 D R2 F2 D B2 U D2 B2 R2 D R2 F2 B R' F' U"}, "dr": {"moves": "U L' U F L F R F", "len": 8}, "htr": {"moves": "B2 U R2 U' R2 U2 B2 U", "len": 8}, "finish": {"moves": "R2 U2 R2 L2 F2 R2 D2 B2 D2 F2 R2 B2", "len": 12}, "total": 32, "simplified": {"moves": "B R' F' U2 L' U F L F R F B2 U R2 U' R2 U2 B2 U R2 U2 R2 L2 F2 R2 D2 B2 D2 F2 R2 B2", "len": 31}, "total_simplified": 31}], "mermaid": "flowchart TD\n    R5[\"Scramble|U F U B R' L2 D' F2 R B2 D R2 ...|0 moves\"]\n    E5_0[\"UD EO|B R' F' U|4\"]\n    R5 --> E5_0\n    D5_0[\"DR|U D' L' U F' R F2 L|12\"]\n    E5_0 --> D5_0\n    H5_0[\"HTR|U' F2 U' R2 U F2 D|19\"]\n    D5_0 --> H5_0\n    F5_0[\"FIN|F2 R2 B2 U2 R2 B2 U2 R2 F2|27 simplified\"]\n    H5_0 --> F5_0\n    E5_1[\"UD EO|B R' F' U|4\"]\n    R5 --> E5_1\n    D5_1[\"DR|U L' U F L F R F|12\"]\n    E5_1 --> D5_1\n    H5_1[\"HTR|B2 U L2 U L2 U2 B2 U|20\"]\n    D5_1 --> H5_1\n    F5_1[\"FIN|F2 R2 D2 B2 D2 F2 B2 R2 B2|28 simplified\"]\n    H5_1 --> F5_1\n    E5_2[\"UD EO|B R' F' U|4\"]\n    R5 --> E5_2\n    D5_2[\"DR|U D' L' U F' R F2 L|12\"]\n    E5_2 --> D5_2\n    H5_2[\"HTR|U F2 U F2 U' R2 D|19\"]\n    D5_2 --> H5_2\n    F5_2[\"FIN|U2 R2 U2 B2 U2 F2 L2 F2 D2 L2 F2|29 simplified\"]\n    H5_2 --> F5_2\n    E5_3[\"UD EO|B R' F' U|4\"]\n    R5 --> E5_3\n    D5_3[\"DR|U L' U F L F R F|12\"]\n    E5_3 --> D5_3\n    H5_3[\"HTR|B2 U R2 U B2 U2 R2 U|20\"]\n    D5_3 --> H5_3\n    F5_3[\"FIN|R2 L2 F2 U2 R2 B2 D2 R2 B2 L2 B2|30 simplified\"]\n    H5_3 --> F5_3\n    E5_4[\"UD EO|B R' F' U|4\"]\n    R5 --> E5_4\n    D5_4[\"DR|U L' U F L F R F|12\"]\n    E5_4 --> D5_4\n    H5_4[\"HTR|B2 U R2 U' R2 U2 B2 U|20\"]\n    D5_4 --> H5_4\n    F5_4[\"FIN|R2 U2 R2 L2 F2 R2 D2 B2 D2 F2 R2 B2|31 simplified\"]\n    H5_4 --> F5_4\n    style F5_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json5/scramble_7.json": {"scramble": "F R2 B L' F U B' D B' L' B' U2 F' R2 B R2 U2 L2 F2 U2 R2 F2", "K": 5, "solutions": [{"eo": {"axis": "UD", "moves": "R2 U' L' F D", "len": 5, "cumulative": 5, "scramble_after": "F R2 B L' F U B' D B' L' B' U2 F' R2 B R2 U2 L2 F2 U2 R2 F2 R2 U' L' F D"}, "dr": {"moves": "D2 L2 D2 F' R L B L", "len": 8}, "htr": {"moves": "U R2 L2 U R2 L2 U", "len": 7}, "finish": {"moves": "U2 D2 F2 R2 U2 R2 L2 U2 F2", "len": 9}, "total": 29, "simplified": {"moves": "R2 U' L' F D' L2 D2 F' R L B L U R2 L2 U R2 L2 U' D2 F2 R2 U2 R2 L2 U2 F2", "len": 27}, "total_simplified": 27}, {"eo": {"axis": "UD", "moves": "R2 U' L' F D", "len": 5, "cumulative": 5, "scramble_after": "F R2 B L' F U B' D B' L' B' U2 F' R2 B R2 U2 L2 F2 U2 R2 F2 R2 U' L' F D"}, "dr": {"moves": "D2 L2 D2 F' R L B L", "len": 8}, "htr": {"moves": "U F2 B2 U' F2 B2 U", "len": 7}, "finish": {"moves": "D2 B2 U2 F2 B2 U2 L2 F2", "len": 8}, "total": 28, "simplified": {"moves": "R2 U' L' F D' L2 D2 F' R L B L U F2 B2 U' F2 B2 U D2 B2 U2 F2 B2 U2 L2 F2", "len": 27}, "total_simplified": 27}, {"eo": {"axis": "UD", "moves": "R2 U' L' F D", "len": 5, "cumulative": 5, "scramble_after": "F R2 B L' F U B' D B' L' B' U2 F' R2 B R2 U2 L2 F2 U2 R2 F2 R2 U' L' F D"}, "dr": {"moves": "D2 L2 D2 F' R L B L", "len": 8}, "htr": {"moves": "U R2 L2 U' R2 L2 U", "len": 7}, "finish": {"moves": "U2 R2 U2 L2 U2 L2 F2 L2 U2 B2 U2 F2", "len": 12}, "total": 32, "simplified": {"moves": "R2 U' L' F D' L2 D2 F' R L B L U R2 L2 U' R2 L2 U' R2 U2 L2 U2 L2 F2 L2 U2 B2 U2 F2", "len": 30}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "R2 U' L' F D", "len": 5, "cumulative": 5, "scramble_after": "F R2 B L' F U B' D B' L' B' U2 F' R2 B R2 U2 L2 F2 U2 R2 F2 R2 U' L' F D"}, "dr": {"moves": "D2 L2 D2 F' R L B L", "len": 8}, "htr": {"moves": "U F2 B2 U F2 B2 U", "len": 7}, "finish": {"moves": "R2 U2 L2 U2 R2 F2 L2 U2 B2 U2 B2", "len": 11}, "total": 31, "simplified": {"moves": "R2 U' L' F D' L2 D2 F' R L B L U F2 B2 U F2 B2 U R2 U2 L2 U2 R2 F2 L2 U2 B2 U2 B2", "len": 30}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "R2 U F L' D", "len": 5, "cumulative": 5, "scramble_after": "F R2 B L' F U B' D B' L' B' U2 F' R2 B R2 U2 L2 F2 U2 R2 F2 R2 U F L' D"}, "dr": {"moves": "R' D F' U' L2 U' R F", "len": 8}, "htr": {"moves": "U F2 R2 L2 U F2 D", "len": 7}, "finish": {"moves": "U2 R2 F2 R2 D2 R2 U2 B2 D2 F2 U2", "len": 11}, "total": 31, "simplified": {"moves": "R2 U F L' D R' D F' U' L2 U' R F U F2 R2 L2 U F2 D U2 R2 F2 R2 D2 R2 U2 B2 D2 F2 U2", "len": 31}, "total_simplified": 31}], "mermaid": "flowchart TD\n    R6[\"Scramble|F R2 B L' F U B' D B' L' B' U2...|0 moves\"]\n    E6_0[\"UD EO|R2 U' L' F D|5\"]\n    R6 --> E6_0\n    D6_0[\"DR|D2 L2 D2 F' R L B L|13\"]\n    E6_0 --> D6_0\n    H6_0[\"HTR|U R2 L2 U R2 L2 U|20\"]\n    D6_0 --> H6_0\n    F6_0[\"FIN|U2 D2 F2 R2 U2 R2 L2 U2 F2|27 simplified\"]\n    H6_0 --> F6_0\n    E6_1[\"UD EO|R2 U' L' F D|5\"]\n    R6 --> E6_1\n    D6_1[\"DR|D2 L2 D2 F' R L B L|13\"]\n    E6_1 --> D6_1\n    H6_1[\"HTR|U F2 B2 U' F2 B2 U|20\"]\n    D6_1 --> H6_1\n    F6_1[\"FIN|D2 B2 U2 F2 B2 U2 L2 F2|27 simplified\"]\n    H6_1 --> F6_1\n    E6_2[\"UD EO|R2 U' L' F D|5\"]\n    R6 --> E6_2\n    D6_2[\"DR|D2 L2 D2 F' R L B L|13\"]\n    E6_2 --> D6_2\n    H6_2[\"HTR|U R2 L2 U' R2 L2 U|20\"]\n    D6_2 --> H6_2\n    F6_2[\"FIN|U2 R2 U2 L2 U2 L2 F2 L2 U2 B2 U2 F2|30 simplified\"]\n    H6_2 --> F6_2\n    E6_3[\"UD EO|R2 U' L' F D|5\"]\n    R6 --> E6_3\n    D6_3[\"DR|D2 L2 D2 F' R L B L|13\"]\n    E6_3 --> D6_3\n    H6_3[\"HTR|U F2 B2 U F2 B2 U|20\"]\n    D6_3 --> H6_3\n    F6_3[\"FIN|R2 U2 L2 U2 R2 F2 L2 U2 B2 U2 B2|30 simplified\"]\n    H6_3 --> F6_3\n    E6_4[\"UD EO|R2 U F L' D|5\"]\n    R6 --> E6_4\n    D6_4[\"DR|R' D F' U' L2 U' R F|13\"]\n    E6_4 --> D6_4\n    H6_4[\"HTR|U F2 R2 L2 U F2 D|20\"]\n    D6_4 --> H6_4\n    F6_4[\"FIN|U2 R2 F2 R2 D2 R2 U2 B2 D2 F2 U2|31 simplified\"]\n    H6_4 --> F6_4\n    style F6_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json5/scramble_8.json": {"scramble": "L2 F' U' L' D2 L2 F2 D' B' U2 L2 U2 F2 R' D2 F2 R U2 L' D2 L", "K": 5, "solutions": [{"eo": {"axis": "FB", "moves": "D' B' L2 F", "len": 4, "cumulative": 4, "scramble_after": "L2 F' U' L' D2 L2 F2 D' B' U2 L2 U2 F2 R' D2 F2 R U2 L' D2 L D' B' L2 F"}, "dr": {"moves": "R2 B2 D R U2 L' B2 U", "len": 8}, "htr": {"moves": "F U2 F' R2 F U2 F", "len": 7}, "finish": {"moves": "R2 F2 U2 R2 F2 U2 L2 F2 D2 F2", "len": 10}, "total": 29, "simplified": {"moves": "D' B' L2 F R2 B2 D R U2 L' B2 U F U2 F' R2 F U2 F R2 F2 U2 R2 F2 U2 L2 F2 D2 F2", "len": 29}, "total_simplified": 29}, {"eo": {"axis": "FB", "moves": "D' B' L2 F", "len": 4, "cumulative": 4, "scramble_after": "L2 F' U' L' D2 L2 F2 D' B' U2 L2 U2 F2 R' D2 F2 R U2 L' D2 L D' B' L2 F"}, "dr": {"moves": "R2 B2 D R U2 L' B2 U", "len": 8}, "htr": {"moves": "F' U2 F L2 F' U2 F", "len": 7}, "finish": {"moves": "U2 R2 U2 F2 U2 R2 D2 R2 F2 R2", "len": 10}, "total": 29, "simplified": {"moves": "D' B' L2 F R2 B2 D R U2 L' B2 U F' U2 F L2 F' U2 F U2 R2 U2 F2 U2 R2 D2 R2 F2 R2", "len": 29}, "total_simplified": 29}, {"eo": {"axis": "FB", "moves": "D' B' L2 F", "len": 4, "cumulative": 4, "scramble_after": "L2 F' U' L' D2 L2 F2 D' B' U2 L2 U2 F2 R' D2 F2 R U2 L' D2 L D' B' L2 F"}, "dr": {"moves": "R2 B2 D R U2 L' B2 U", "len": 8}, "htr": {"moves": "F' D2 F L2 D2 F L2 F", "len": 8}, "finish": {"moves": "F2 L2 F2 U2 R2 U2 L2 B2 D2 R2", "len": 10}, "total": 30, "simplified": {"moves": "D' B' L2 F R2 B2 D R U2 L' B2 U F' D2 F L2 D2 F L2 F' L2 F2 U2 R2 U2 L2 B2 D2 R2", "len": 29}, "total_simplified": 29}, {"eo": {"axis": "FB", "moves": "D' B' L2 F", "len": 4, "cumulative": 4, "scramble_after": "L2 F' U' L' D2 L2 F2 D' B' U2 L2 U2 F2 R' D2 F2 R U2 L' D2 L D' B' L2 F"}, "dr": {"moves": "F2 U' L2 F2 R' U2 L' B2 U", "len": 9}, "htr": {"moves": "F U2 F' R2 F U2 F", "len": 7}, "finish": {"moves": "U2 R2 U2 R2 U2 L2 F2 D2 F2 D2 R2 B2", "len": 12}, "total": 32, "simplified": {"moves": "D' B' L2 F' U' L2 F2 R' U2 L' B2 U F U2 F' R2 F U2 F U2 R2 U2 R2 U2 L2 F2 D2 F2 D2 R2 B2", "len": 31}, "total_simplified": 31}, {"eo": {"axis": "FB", "moves": "D' B' L2 F", "len": 4, "cumulative": 4, "scramble_after": "L2 F' U' L' D2 L2 F2 D' B' U2 L2 U2 F2 R' D2 F2 R U2 L' D2 L D' B' L2 F"}, "dr": {"moves": "R2 B2 D R U2 L' B2 U", "len": 8}, "htr": {"moves": "F D2 F' R2 D2 F' R2 F", "len": 8}, "finish": {"moves": "U2 R2 F2 R2 F2 D2 L2 F2 D2 F2 D2 B2", "len": 12}, "total": 32, "simplified": {"moves": "D' B' L2 F R2 B2 D R U2 L' B2 U F D2 F' R2 D2 F' R2 F U2 R2 F2 R2 F2 D2 L2 F2 D2 F2 D2 B2", "len": 32}, "total_simplified": 32}], "mermaid": "flowchart TD\n    R7[\"Scramble|L2 F' U' L' D2 L2 F2 D' B' U2 ...|0 moves\"]\n    E7_0[\"FB EO|D' B' L2 F|4\"]\n    R7 --> E7_0\n    D7_0[\"DR|R2 B2 D R U2 L' B2 U|12\"]\n    E7_0 --> D7_0\n    H7_0[\"HTR|F U2 F' R2 F U2 F|19\"]\n    D7_0 --> H7_0\n    F7_0[\"FIN|R2 F2 U2 R2 F2 U2 L2 F2 D2 F2|29 simplified\"]\n    H7_0 --> F7_0\n    E7_1[\"FB EO|D' B' L2 F|4\"]\n    R7 --> E7_1\n    D7_1[\"DR|R2 B2 D R U2 L' B2 U|12\"]\n    E7_1 --> D7_1\n    H7_1[\"HTR|F' U2 F L2 F' U2 F|19\"]\n    D7_1 --> H7_1\n    F7_1[\"FIN|U2 R2 U2 F2 U2 R2 D2 R2 F2 R2|29 simplified\"]\n    H7_1 --> F7_1\n    E7_2[\"FB EO|D' B' L2 F|4\"]\n    R7 --> E7_2\n    D7_2[\"DR|R2 B2 D R U2 L' B2 U|12\"]\n    E7_2 --> D7_2\n    H7_2[\"HTR|F' D2 F L2 D2 F L2 F|20\"]\n    D7_2 --> H7_2\n    F7_2[\"FIN|F2 L2 F2 U2 R2 U2 L2 B2 D2 R2|29 simplified\"]\n    H7_2 --> F7_2\n    E7_3[\"FB EO|D' B' L2 F|4\"]\n    R7 --> E7_3\n    D7_3[\"DR|F2 U' L2 F2 R' U2 L' B2 U|13\"]\n    E7_3 --> D7_3\n    H7_3[\"HTR|F U2 F' R2 F U2 F|20\"]\n    D7_3 --> H7_3\n    F7_3[\"FIN|U2 R2 U2 R2 U2 L2 F2 D2 F2 D2 R2 B2|31 simplified\"]\n    H7_3 --> F7_3\n    E7_4[\"FB EO|D' B' L2 F|4\"]\n    R7 --> E7_4\n    D7_4[\"DR|R2 B2 D R U2 L' B2 U|12\"]\n    E7_4 --> D7_4\n    H7_4[\"HTR|F D2 F' R2 D2 F' R2 F|20\"]\n    D7_4 --> H7_4\n    F7_4[\"FIN|U2 R2 F2 R2 F2 D2 L2 F2 D2 F2 D2 B2|32 simplified\"]\n    H7_4 --> F7_4\n    style F7_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json5/scramble_9.json": {"scramble": "B' R U' D' L' F2 L2 B2 U' L' F U2 F2 L2 F U2 F' R2 F' R2 D2 L2", "K": 5, "solutions": [{"eo": {"axis": "FB", "moves": "L' B D' F", "len": 4, "cumulative": 4, "scramble_after": "B' R U' D' L' F2 L2 B2 U' L' F U2 F2 L2 F U2 F' R2 F' R2 D2 L2 L' B D' F"}, "dr": {"moves": "R2 L F B R L2 B' U' R", "len": 9}, "htr": {"moves": "R2 D2 L2 U2 F U2 B", "len": 7}, "finish": {"moves": "F2 U2 F2 U2 F2 L2 D2 R2 F2", "len": 9}, "total": 29, "simplified": {"moves": "L' B D' F R2 L F B R L2 B' U' R' D2 L2 U2 F U2 B F2 U2 F2 U2 F2 L2 D2 R2 F2", "len": 28}, "total_simplified": 28}, {"eo": {"axis": "FB", "moves": "L B D' F", "len": 4, "cumulative": 4, "scramble_after": "B' R U' D' L' F2 L2 B2 U' L' F U2 F2 L2 F U2 F' R2 F' R2 D2 L2 L B D' F"}, "dr": {"moves": "U2 F R F R U2 R2 U L", "len": 9}, "htr": {"moves": "F R2 D2 F R2 F", "len": 6}, "finish": {"moves": "U2 F2 R2 F2 U2 F2 L2 D2 R2 F2", "len": 10}, "total": 29, "simplified": {"moves": "L B D' F U2 F R F R U2 R2 U L F R2 D2 F R2 F U2 F2 R2 F2 U2 F2 L2 D2 R2 F2", "len": 29}, "total_simplified": 29}, {"eo": {"axis": "FB", "moves": "L B D' F", "len": 4, "cumulative": 4, "scramble_after": "B' R U' D' L' F2 L2 B2 U' L' F U2 F2 L2 F U2 F' R2 F' R2 D2 L2 L B D' F"}, "dr": {"moves": "L F B2 L2 B' R U' F' R", "len": 9}, "htr": {"moves": "F D2 F R2 F' D2 B", "len": 7}, "finish": {"moves": "R2 B2 L2 B2 U2 B2 U2 L2 D2", "len": 9}, "total": 29, "simplified": {"moves": "L B D' F L F B2 L2 B' R U' F' R F D2 F R2 F' D2 B R2 B2 L2 B2 U2 B2 U2 L2 D2", "len": 29}, "total_simplified": 29}, {"eo": {"axis": "FB", "moves": "L B D' F", "len": 4, "cumulative": 4, "scramble_after": "B' R U' D' L' F2 L2 B2 U' L' F U2 F2 L2 F U2 F' R2 F' R2 D2 L2 L B D' F"}, "dr": {"moves": "L F B2 L2 B' R U' F' R", "len": 9}, "htr": {"moves": "F' D2 F' L2 F D2 B", "len": 7}, "finish": {"moves": "U2 B2 U2 F2 U2 L2 D2 F2 L2", "len": 9}, "total": 29, "simplified": {"moves": "L B D' F L F B2 L2 B' R U' F' R F' D2 F' L2 F D2 B U2 B2 U2 F2 U2 L2 D2 F2 L2", "len": 29}, "total_simplified": 29}, {"eo": {"axis": "FB", "moves": "L' B D' F", "len": 4, "cumulative": 4, "scramble_after": "B' R U' D' L' F2 L2 B2 U' L' F U2 F2 L2 F U2 F' R2 F' R2 D2 L2 L' B D' F"}, "dr": {"moves": "R2 L F B R L2 B' U' R", "len": 9}, "htr": {"moves": "U2 L2 F D2 R2 L2 F", "len": 7}, "finish": {"moves": "R2 F2 B2 U2 R2 F2 R2 B2 R2", "len": 9}, "total": 29, "simplified": {"moves": "L' B D' F R2 L F B R L2 B' U' R U2 L2 F D2 R2 L2 F R2 F2 B2 U2 R2 F2 R2 B2 R2", "len": 29}, "total_simplified": 29}], "mermaid": "flowchart TD\n    R8[\"Scramble|B' R U' D' L' F2 L2 B2 U' L' F...|0 moves\"]\n    E8_0[\"FB EO|L' B D' F|4\"]\n    R8 --> E8_0\n    D8_0[\"DR|R2 L F B R L2 B' U' R|13\"]\n    E8_0 --> D8_0\n    H8_0[\"HTR|R2 D2 L2 U2 F U2 B|20\"]\n    D8_0 --> H8_0\n    F8_0[\"FIN|F2 U2 F2 U2 F2 L2 D2 R2 F2|28 simplified\"]\n    H8_0 --> F8_0\n    E8_1[\"FB EO|L B D' F|4\"]\n    R8 --> E8_1\n    D8_1[\"DR|U2 F R F R U2 R2 U L|13\"]\n    E8_1 --> D8_1\n    H8_1[\"HTR|F R2 D2 F R2 F|19\"]\n    D8_1 --> H8_1\n    F8_1[\"FIN|U2 F2 R2 F2 U2 F2 L2 D2 R2 F2|29 simplified\"]\n    H8_1 --> F8_1\n    E8_2[\"FB EO|L B D' F|4\"]\n    R8 --> E8_2\n    D8_2[\"DR|L F B2 L2 B' R U' F' R|13\"]\n    E8_2 --> D8_2\n    H8_2[\"HTR|F D2 F R2 F' D2 B|20\"]\n    D8_2 --> H8_2\n    F8_2[\"FIN|R2 B2 L2 B2 U2 B2 U2 L2 D2|29 simplified\"]\n    H8_2 --> F8_2\n    E8_3[\"FB EO|L B D' F|4\"]\n    R8 --> E8_3\n    D8_3[\"DR|L F B2 L2 B' R U' F' R|13\"]\n    E8_3 --> D8_3\n    H8_3[\"HTR|F' D2 F' L2 F D2 B|20\"]\n    D8_3 --> H8_3\n    F8_3[\"FIN|U2 B2 U2 F2 U2 L2 D2 F2 L2|29 simplified\"]\n    H8_3 --> F8_3\n    E8_4[\"FB EO|L' B D' F|4\"]\n    R8 --> E8_4\n    D8_4[\"DR|R2 L F B R L2 B' U' R|13\"]\n    E8_4 --> D8_4\n    H8_4[\"HTR|U2 L2 F D2 R2 L2 F|20\"]\n    D8_4 --> H8_4\n    F8_4[\"FIN|R2 F2 B2 U2 R2 F2 R2 B2 R2|29 simplified\"]\n    H8_4 --> F8_4\n    style F8_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}};
+const BEAM_DATA = {"/tmp/beam_niss/normal_1.json": {"scramble": "B2 U R2 L2 D F' R2 B U R U2 F2 L' U2 D2 B2 L' F2 R2 U2 R", "K": 5, "niss": false, "solutions": [{"eo": {"axis": "RL", "moves": "D2 L D2 R", "len": 4, "cumulative": 4, "scramble_after": "B2 U R2 L2 D F' R2 B U R U2 F2 L' U2 D2 B2 L' F2 R2 U2 R D2 L D2 R"}, "dr": {"moves": "B' U F2 R2 L2 B' D F2 U", "len": 9}, "htr": {"moves": "R D2 R F2 U2 R2 D2 R F2 R", "len": 10}, "finish": {"moves": "R2 L2 F2 L2 B2 D2 L2 D2", "len": 8}, "total": 31, "simplified": {"moves": "D2 L D2 R B' U F2 R2 L2 B' D F2 U R D2 R F2 U2 R2 D2 R F2 R' L2 F2 L2 B2 D2 L2 D2", "len": 30, "cancelled": 1}, "total_simplified": 30}, {"eo": {"axis": "RL", "moves": "D2 L D2 R", "len": 4, "cumulative": 4, "scramble_after": "B2 U R2 L2 D F' R2 B U R U2 F2 L' U2 D2 B2 L' F2 R2 U2 R D2 L D2 R"}, "dr": {"moves": "B' U F2 R2 L2 B' D F2 U", "len": 9}, "htr": {"moves": "R D2 R U2 R2 U2 F2 R D2 R", "len": 10}, "finish": {"moves": "B2 U2 L2 U2 R2 U2 B2 R2 U2 R2", "len": 10}, "total": 33, "simplified": {"moves": "D2 L D2 R B' U F2 R2 L2 B' D F2 U R D2 R U2 R2 U2 F2 R D2 R B2 U2 L2 U2 R2 U2 B2 R2 U2 R2", "len": 33, "cancelled": 0}, "total_simplified": 33}, {"eo": {"axis": "RL", "moves": "D2 L D2 R", "len": 4, "cumulative": 4, "scramble_after": "B2 U R2 L2 D F' R2 B U R U2 F2 L' U2 D2 B2 L' F2 R2 U2 R D2 L D2 R"}, "dr": {"moves": "B' U F2 R2 L2 B' D F2 U", "len": 9}, "htr": {"moves": "R D2 R B2 R2 F2 U2 R D2 R", "len": 10}, "finish": {"moves": "U2 R2 L2 F2 D2 R2 B2 D2 R2 B2", "len": 10}, "total": 33, "simplified": {"moves": "D2 L D2 R B' U F2 R2 L2 B' D F2 U R D2 R B2 R2 F2 U2 R D2 R U2 R2 L2 F2 D2 R2 B2 D2 R2 B2", "len": 33, "cancelled": 0}, "total_simplified": 33}, {"eo": {"axis": "RL", "moves": "D2 L D2 R", "len": 4, "cumulative": 4, "scramble_after": "B2 U R2 L2 D F' R2 B U R U2 F2 L' U2 D2 B2 L' F2 R2 U2 R D2 L D2 R"}, "dr": {"moves": "B' U F2 R2 L2 B' D F2 U", "len": 9}, "htr": {"moves": "R U2 R B2 D2 R2 U2 R B2 R", "len": 10}, "finish": {"moves": "U2 R2 D2 R2 B2 L2 F2 R2 U2 L2 U2 R2", "len": 12}, "total": 35, "simplified": {"moves": "D2 L D2 R B' U F2 R2 L2 B' D F2 U R U2 R B2 D2 R2 U2 R B2 R U2 R2 D2 R2 B2 L2 F2 R2 U2 L2 U2 R2", "len": 35, "cancelled": 0}, "total_simplified": 35}, {"eo": {"axis": "RL", "moves": "D2 L D2 R", "len": 4, "cumulative": 4, "scramble_after": "B2 U R2 L2 D F' R2 B U R U2 F2 L' U2 D2 B2 L' F2 R2 U2 R D2 L D2 R"}, "dr": {"moves": "B' U F2 R2 L2 B' D F2 U", "len": 9}, "htr": {"moves": "R D2 R D2 B2 R2 B2 R B2 R", "len": 10}, "finish": {"moves": "U2 R2 U2 D2 F2 L2 B2 R2 D2 B2 D2 L2", "len": 12}, "total": 35, "simplified": {"moves": "D2 L D2 R B' U F2 R2 L2 B' D F2 U R D2 R D2 B2 R2 B2 R B2 R U2 R2 U2 D2 F2 L2 B2 R2 D2 B2 D2 L2", "len": 35, "cancelled": 0}, "total_simplified": 35}]}, "/tmp/beam_niss/inverse_1.json": {"scramble": "R' U2 R2 F2 L B2 D2 U2 L F2 U2 R' U' B' R2 F D' L2 R2 U' B2", "K": 5, "niss": true, "solutions": [{"eo": {"axis": "UD", "moves": "D' U B D", "len": 4, "cumulative": 4, "scramble_after": "R' U2 R2 F2 L B2 D2 U2 L F2 U2 R' U' B' R2 F D' L2 R2 U' B2 D' U B D"}, "dr": {"moves": "L' B2 L' B2 U2 L B R", "len": 8}, "htr": {"moves": "U' F2 L2 F2 L2 U", "len": 6}, "finish": {"moves": "U2 B2 R2 D2 F2 U2 L2 D2 B2 L2", "len": 10}, "total": 28, "simplified": {"moves": "D' U B D L' B2 L' B2 U2 L B R U' F2 L2 F2 L2 U' B2 R2 D2 F2 U2 L2 D2 B2 L2", "len": 27, "cancelled": 1}, "total_simplified": 27}, {"eo": {"axis": "UD", "moves": "D' U B D", "len": 4, "cumulative": 4, "scramble_after": "R' U2 R2 F2 L B2 D2 U2 L F2 U2 R' U' B' R2 F D' L2 R2 U' B2 D' U B D"}, "dr": {"moves": "L' B2 L' B2 U2 L B R", "len": 8}, "htr": {"moves": "U' F2 R2 F2 R2 U", "len": 6}, "finish": {"moves": "R2 U2 F2 R2 D2 F2 D2 L2 D2 B2", "len": 10}, "total": 28, "simplified": {"moves": "D' U B D L' B2 L' B2 U2 L B R U' F2 R2 F2 R2 U R2 U2 F2 R2 D2 F2 D2 L2 D2 B2", "len": 28, "cancelled": 0}, "total_simplified": 28}, {"eo": {"axis": "UD", "moves": "D' U B D", "len": 4, "cumulative": 4, "scramble_after": "R' U2 R2 F2 L B2 D2 U2 L F2 U2 R' U' B' R2 F D' L2 R2 U' B2 D' U B D"}, "dr": {"moves": "L' B2 L' B2 U2 L B R", "len": 8}, "htr": {"moves": "U' F2 R2 B2 L2 D", "len": 6}, "finish": {"moves": "U2 R2 U2 R2 D2 R2 B2 D2 B2 L2 F2 B2", "len": 12}, "total": 30, "simplified": {"moves": "D' U B D L' B2 L' B2 U2 L B R U' F2 R2 B2 L2 D U2 R2 U2 R2 D2 R2 B2 D2 B2 L2 F2 B2", "len": 30, "cancelled": 0}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "D' U B D", "len": 4, "cumulative": 4, "scramble_after": "R' U2 R2 F2 L B2 D2 U2 L F2 U2 R' U' B' R2 F D' L2 R2 U' B2 D' U B D"}, "dr": {"moves": "L' B2 L' B2 U2 L B R", "len": 8}, "htr": {"moves": "U' F2 L2 B2 R2 D", "len": 6}, "finish": {"moves": "U2 R2 U2 L2 U2 R2 F2 U2 B2 R2 F2 B2", "len": 12}, "total": 30, "simplified": {"moves": "D' U B D L' B2 L' B2 U2 L B R U' F2 L2 B2 R2 D U2 R2 U2 L2 U2 R2 F2 U2 B2 R2 F2 B2", "len": 30, "cancelled": 0}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "D' U B D", "len": 4, "cumulative": 4, "scramble_after": "R' U2 R2 F2 L B2 D2 U2 L F2 U2 R' U' B' R2 F D' L2 R2 U' B2 D' U B D"}, "dr": {"moves": "L' B2 L' B2 U2 L B R", "len": 8}, "htr": {"moves": "U' R2 L2 B2 R2 F2 R2 D", "len": 8}, "finish": {"moves": "U2 R2 U2 R2 D2 R2 B2 D2 B2 L2 F2 B2", "len": 12}, "total": 32, "simplified": {"moves": "D' U B D L' B2 L' B2 U2 L B R U' R2 L2 B2 R2 F2 R2 D U2 R2 U2 R2 D2 R2 B2 D2 B2 L2 F2 B2", "len": 32, "cancelled": 0}, "total_simplified": 32}]}, "/tmp/beam_niss/normal_2.json": {"scramble": "U' L F' U' L' F' R' U F2 L' D' R2 U L2 D B2 U2 D L2 B2 U", "K": 5, "niss": false, "solutions": [{"eo": {"axis": "UD", "moves": "L2 B D U", "len": 4, "cumulative": 4, "scramble_after": "U' L F' U' L' F' R' U F2 L' D' R2 U L2 D B2 U2 D L2 B2 U L2 B D U"}, "dr": {"moves": "B R2 D R B D' R' B L", "len": 9}, "htr": {"moves": "B2 L2 U B2 R2 U L2 D", "len": 8}, "finish": {"moves": "L2 D2 F2 D2 B2 L2 U2 B2", "len": 8}, "total": 29, "simplified": {"moves": "L2 B D U B R2 D R B D' R' B L B2 L2 U B2 R2 U L2 D L2 D2 F2 D2 B2 L2 U2 B2", "len": 29, "cancelled": 0}, "total_simplified": 29}, {"eo": {"axis": "UD", "moves": "L2 B D U", "len": 4, "cumulative": 4, "scramble_after": "U' L F' U' L' F' R' U F2 L' D' R2 U L2 D B2 U2 D L2 B2 U L2 B D U"}, "dr": {"moves": "B2 R B R D B2 R2 D' L", "len": 9}, "htr": {"moves": "U2 R2 F2 U' B2 U' F2 U", "len": 8}, "finish": {"moves": "F2 D2 F2 D2 B2 R2 F2 R2", "len": 8}, "total": 29, "simplified": {"moves": "L2 B D U B2 R B R D B2 R2 D' L U2 R2 F2 U' B2 U' F2 U F2 D2 F2 D2 B2 R2 F2 R2", "len": 29, "cancelled": 0}, "total_simplified": 29}, {"eo": {"axis": "UD", "moves": "L2 B D U", "len": 4, "cumulative": 4, "scramble_after": "U' L F' U' L' F' R' U F2 L' D' R2 U L2 D B2 U2 D L2 B2 U L2 B D U"}, "dr": {"moves": "B R2 D R B D' R' B L", "len": 9}, "htr": {"moves": "L2 U2 L2 U' L2 U' B2 D", "len": 8}, "finish": {"moves": "U2 R2 F2 L2 D2 R2 F2 D2 B2 D2", "len": 10}, "total": 31, "simplified": {"moves": "L2 B D U B R2 D R B D' R' B L' U2 L2 U' L2 U' B2 D U2 R2 F2 L2 D2 R2 F2 D2 B2 D2", "len": 30, "cancelled": 1}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "L2 B D U", "len": 4, "cumulative": 4, "scramble_after": "U' L F' U' L' F' R' U F2 L' D' R2 U L2 D B2 U2 D L2 B2 U L2 B D U"}, "dr": {"moves": "B2 R B R D B2 R2 D' L", "len": 9}, "htr": {"moves": "U2 R2 U F2 R2 U' R2 U", "len": 8}, "finish": {"moves": "U2 R2 F2 R2 U2 F2 U2 F2 U2 R2", "len": 10}, "total": 31, "simplified": {"moves": "L2 B D U B2 R B R D B2 R2 D' L U2 R2 U F2 R2 U' R2 U' R2 F2 R2 U2 F2 U2 F2 U2 R2", "len": 30, "cancelled": 1}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "L2 B D U", "len": 4, "cumulative": 4, "scramble_after": "U' L F' U' L' F' R' U F2 L' D' R2 U L2 D B2 U2 D L2 B2 U L2 B D U"}, "dr": {"moves": "B R2 D R B D' R' B L", "len": 9}, "htr": {"moves": "R2 U2 R2 U' B2 U' F2 U", "len": 8}, "finish": {"moves": "U2 R2 U2 F2 U2 L2 F2 U2 R2 D2 R2 U2", "len": 12}, "total": 33, "simplified": {"moves": "L2 B D U B R2 D R B D' R' B L R2 U2 R2 U' B2 U' F2 U' R2 U2 F2 U2 L2 F2 U2 R2 D2 R2 U2", "len": 32, "cancelled": 1}, "total_simplified": 32}]}, "/tmp/beam_niss/inverse_2.json": {"scramble": "U' B2 L2 D' U2 B2 D' L2 U' R2 D L F2 U' R F L U F L' U", "K": 5, "niss": true, "solutions": [{"eo": {"axis": "FB", "moves": "L U' D F", "len": 4, "cumulative": 4, "scramble_after": "U' B2 L2 D' U2 B2 D' L2 U' R2 D L F2 U' R F L U F L' U L U' D F"}, "dr": {"moves": "R2 D2 R U2 R F2 U' R", "len": 8}, "htr": {"moves": "F' U2 F L2 F2 D2 F U2 F", "len": 9}, "finish": {"moves": "R2 U2 D2 F2 L2 B2 R2 B2 D2", "len": 9}, "total": 30, "simplified": {"moves": "L U' D F R2 D2 R U2 R F2 U' R F' U2 F L2 F2 D2 F U2 F R2 U2 D2 F2 L2 B2 R2 B2 D2", "len": 30, "cancelled": 0}, "total_simplified": 30}, {"eo": {"axis": "FB", "moves": "L U' D F", "len": 4, "cumulative": 4, "scramble_after": "U' B2 L2 D' U2 B2 D' L2 U' R2 D L F2 U' R F L U F L' U L U' D F"}, "dr": {"moves": "R2 D2 R U2 R F2 U' R", "len": 8}, "htr": {"moves": "F' D2 F U2 F2 L2 F D2 F", "len": 9}, "finish": {"moves": "F2 D2 R2 U2 B2 D2 F2 R2 B2 R2 F2", "len": 11}, "total": 32, "simplified": {"moves": "L U' D F R2 D2 R U2 R F2 U' R F' D2 F U2 F2 L2 F D2 F' D2 R2 U2 B2 D2 F2 R2 B2 R2 F2", "len": 31, "cancelled": 1}, "total_simplified": 31}, {"eo": {"axis": "FB", "moves": "L U' D F", "len": 4, "cumulative": 4, "scramble_after": "U' B2 L2 D' U2 B2 D' L2 U' R2 D L F2 U' R F L U F L' U L U' D F"}, "dr": {"moves": "R2 D2 R U2 R F2 U' R", "len": 8}, "htr": {"moves": "U2 F R2 F' D2 L2 F R2 F", "len": 9}, "finish": {"moves": "U2 D2 F2 U2 L2 U2 F2 R2 F2 R2 F2", "len": 11}, "total": 32, "simplified": {"moves": "L U' D F R2 D2 R U2 R F2 U' R U2 F R2 F' D2 L2 F R2 F U2 D2 F2 U2 L2 U2 F2 R2 F2 R2 F2", "len": 32, "cancelled": 0}, "total_simplified": 32}, {"eo": {"axis": "FB", "moves": "L U' D F", "len": 4, "cumulative": 4, "scramble_after": "U' B2 L2 D' U2 B2 D' L2 U' R2 D L F2 U' R F L U F L' U L U' D F"}, "dr": {"moves": "R2 D2 R U2 R F2 U' R", "len": 8}, "htr": {"moves": "F' U2 F' D2 F2 L2 F' U2 F", "len": 9}, "finish": {"moves": "R2 U2 D2 F2 L2 F2 B2 U2 B2 L2 F2", "len": 11}, "total": 32, "simplified": {"moves": "L U' D F R2 D2 R U2 R F2 U' R F' U2 F' D2 F2 L2 F' U2 F R2 U2 D2 F2 L2 F2 B2 U2 B2 L2 F2", "len": 32, "cancelled": 0}, "total_simplified": 32}, {"eo": {"axis": "FB", "moves": "L U' D F", "len": 4, "cumulative": 4, "scramble_after": "U' B2 L2 D' U2 B2 D' L2 U' R2 D L F2 U' R F L U F L' U L U' D F"}, "dr": {"moves": "R2 D2 R U2 R F2 U' R", "len": 8}, "htr": {"moves": "F' D2 F' L2 F2 U2 F' D2 F", "len": 9}, "finish": {"moves": "U2 R2 F2 U2 R2 L2 B2 D2 R2 U2 L2 B2 U2", "len": 13}, "total": 34, "simplified": {"moves": "L U' D F R2 D2 R U2 R F2 U' R F' D2 F' L2 F2 U2 F' D2 F U2 R2 F2 U2 R2 L2 B2 D2 R2 U2 L2 B2 U2", "len": 34, "cancelled": 0}, "total_simplified": 34}]}, "/tmp/beam_niss/normal_3.json": {"scramble": "L U F2 R' D' L' D L2 F B2 U2 B2 L' F2 R2 D2 L' F2 B2 U2 L' F2", "K": 5, "niss": false, "solutions": [{"eo": {"axis": "FB", "moves": "B2 R U2 B", "len": 4, "cumulative": 4, "scramble_after": "L U F2 R' D' L' D L2 F B2 U2 B2 L' F2 R2 D2 L' F2 B2 U2 L' F2 B2 R U2 B"}, "dr": {"moves": "U2 R F2 R2 U' L B2 U", "len": 8}, "htr": {"moves": "U2 F U2 L2 D2 R2 B", "len": 7}, "finish": {"moves": "D2 F2 U2 L2 D2 L2 U2 F2", "len": 8}, "total": 27, "simplified": {"moves": "B2 R U2 B U2 R F2 R2 U' L B2 U' F U2 L2 D2 R2 B D2 F2 U2 L2 D2 L2 U2 F2", "len": 26, "cancelled": 1}, "total_simplified": 26}, {"eo": {"axis": "FB", "moves": "B2 R U2 B", "len": 4, "cumulative": 4, "scramble_after": "L U F2 R' D' L' D L2 F B2 U2 B2 L' F2 R2 D2 L' F2 B2 U2 L' F2 B2 R U2 B"}, "dr": {"moves": "U2 R F2 R2 U' L B2 U", "len": 8}, "htr": {"moves": "U2 F U2 R2 U2 R2 F", "len": 7}, "finish": {"moves": "F2 D2 R2 D2 B2 U2 L2 B2 L2 B2", "len": 10}, "total": 29, "simplified": {"moves": "B2 R U2 B U2 R F2 R2 U' L B2 U' F U2 R2 U2 R2 F' D2 R2 D2 B2 U2 L2 B2 L2 B2", "len": 27, "cancelled": 2}, "total_simplified": 27}, {"eo": {"axis": "FB", "moves": "B2 R U2 B", "len": 4, "cumulative": 4, "scramble_after": "L U F2 R' D' L' D L2 F B2 U2 B2 L' F2 R2 D2 L' F2 B2 U2 L' F2 B2 R U2 B"}, "dr": {"moves": "U2 R F2 R2 U' L B2 U", "len": 8}, "htr": {"moves": "U2 F U2 L2 U2 L2 F", "len": 7}, "finish": {"moves": "F2 U2 R2 U2 B2 U2 L2 B2 L2 B2", "len": 10}, "total": 29, "simplified": {"moves": "B2 R U2 B U2 R F2 R2 U' L B2 U' F U2 L2 U2 L2 F' U2 R2 U2 B2 U2 L2 B2 L2 B2", "len": 27, "cancelled": 2}, "total_simplified": 27}, {"eo": {"axis": "FB", "moves": "B2 R U2 B", "len": 4, "cumulative": 4, "scramble_after": "L U F2 R' D' L' D L2 F B2 U2 B2 L' F2 R2 D2 L' F2 B2 U2 L' F2 B2 R U2 B"}, "dr": {"moves": "U2 R F2 R2 U' L B2 U", "len": 8}, "htr": {"moves": "U2 F U2 R2 D2 L2 B", "len": 7}, "finish": {"moves": "U2 R2 L2 B2 U2 R2 U2 L2 U2 F2", "len": 10}, "total": 29, "simplified": {"moves": "B2 R U2 B U2 R F2 R2 U' L B2 U' F U2 R2 D2 L2 B U2 R2 L2 B2 U2 R2 U2 L2 U2 F2", "len": 28, "cancelled": 1}, "total_simplified": 28}, {"eo": {"axis": "FB", "moves": "B2 R U2 B", "len": 4, "cumulative": 4, "scramble_after": "L U F2 R' D' L' D L2 F B2 U2 B2 L' F2 R2 D2 L' F2 B2 U2 L' F2 B2 R U2 B"}, "dr": {"moves": "U2 R F2 R2 U' L B2 U", "len": 8}, "htr": {"moves": "D2 F R2 U2 R2 U2 F", "len": 7}, "finish": {"moves": "B2 L2 F2 R2 U2 F2 U2 R2 U2 B2", "len": 10}, "total": 29, "simplified": {"moves": "B2 R U2 B U2 R F2 R2 U' L B2 U D2 F R2 U2 R2 U2 F B2 L2 F2 R2 U2 F2 U2 R2 U2 B2", "len": 29, "cancelled": 0}, "total_simplified": 29}]}, "/tmp/beam_niss/inverse_3.json": {"scramble": "F2 L U2 B2 F2 L D2 R2 F2 L B2 U2 B2 F' L2 D' L D R F2 U' L'", "K": 5, "niss": true, "solutions": [{"eo": {"axis": "UD", "moves": "L B' R' U", "len": 4, "cumulative": 4, "scramble_after": "F2 L U2 B2 F2 L D2 R2 F2 L B2 U2 B2 F' L2 D' L D R F2 U' L' L B' R' U"}, "dr": {"moves": "L' B D2 L' B' R' L B", "len": 8}, "htr": {"moves": "U R2 U2 F2 U L2 B2 D", "len": 8}, "finish": {"moves": "R2 D2 B2 L2", "len": 4}, "total": 24, "simplified": {"moves": "L B' R' U L' B D2 L' B' R' L B U R2 U2 F2 U L2 B2 D R2 D2 B2 L2", "len": 24, "cancelled": 0}, "total_simplified": 24}, {"eo": {"axis": "UD", "moves": "L B' R' U", "len": 4, "cumulative": 4, "scramble_after": "F2 L U2 B2 F2 L D2 R2 F2 L B2 U2 B2 F' L2 D' L D R F2 U' L' L B' R' U"}, "dr": {"moves": "L' B D2 L' B' R' L B", "len": 8}, "htr": {"moves": "U R2 U2 F2 U R2 F2 U", "len": 8}, "finish": {"moves": "R2 U2 R2 F2 U2 R2 F2 R2 U2 R2", "len": 10}, "total": 30, "simplified": {"moves": "L B' R' U L' B D2 L' B' R' L B U R2 U2 F2 U R2 F2 U R2 U2 R2 F2 U2 R2 F2 R2 U2 R2", "len": 30, "cancelled": 0}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "L B' R' U", "len": 4, "cumulative": 4, "scramble_after": "F2 L U2 B2 F2 L D2 R2 F2 L B2 U2 B2 F' L2 D' L D R F2 U' L' L B' R' U"}, "dr": {"moves": "L' B D2 L' B' R' L B", "len": 8}, "htr": {"moves": "U F2 U2 L2 U L2 F2 U", "len": 8}, "finish": {"moves": "R2 U2 L2 U2 B2 R2 F2 R2 D2 B2", "len": 10}, "total": 30, "simplified": {"moves": "L B' R' U L' B D2 L' B' R' L B U F2 U2 L2 U L2 F2 U R2 U2 L2 U2 B2 R2 F2 R2 D2 B2", "len": 30, "cancelled": 0}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "L B' R' U", "len": 4, "cumulative": 4, "scramble_after": "F2 L U2 B2 F2 L D2 R2 F2 L B2 U2 B2 F' L2 D' L D R F2 U' L' L B' R' U"}, "dr": {"moves": "L' B D2 L' B' R' L B", "len": 8}, "htr": {"moves": "U' L2 U2 F2 U' R2 B2 D", "len": 8}, "finish": {"moves": "D2 R2 B2 U2 B2 U2 R2 F2 D2 R2 U2 F2", "len": 12}, "total": 32, "simplified": {"moves": "L B' R' U L' B D2 L' B' R' L B U' L2 U2 F2 U' R2 B2 D' R2 B2 U2 B2 U2 R2 F2 D2 R2 U2 F2", "len": 31, "cancelled": 1}, "total_simplified": 31}, {"eo": {"axis": "UD", "moves": "L B' R' U", "len": 4, "cumulative": 4, "scramble_after": "F2 L U2 B2 F2 L D2 R2 F2 L B2 U2 B2 F' L2 D' L D R F2 U' L' L B' R' U"}, "dr": {"moves": "L' B D2 L' B' R' L B", "len": 8}, "htr": {"moves": "U F2 U2 L2 U R2 B2 D", "len": 8}, "finish": {"moves": "U2 R2 F2 U2 R2 L2 B2 U2 R2 D2 R2 U2", "len": 12}, "total": 32, "simplified": {"moves": "L B' R' U L' B D2 L' B' R' L B U F2 U2 L2 U R2 B2 D U2 R2 F2 U2 R2 L2 B2 U2 R2 D2 R2 U2", "len": 32, "cancelled": 0}, "total_simplified": 32}]}, "/tmp/beam_niss/normal_4.json": {"scramble": "R2 B' U F2 L B D' R L2 F U2 B' R2 D2 F2 D2 F' U2 B' D2", "K": 5, "niss": false, "solutions": [{"eo": {"axis": "UD", "moves": "R L D' L2 U", "len": 5, "cumulative": 5, "scramble_after": "R2 B' U F2 L B D' R L2 F U2 B' R2 D2 F2 D2 F' U2 B' D2 R L D' L2 U"}, "dr": {"moves": "L' D2 F D2 B D2 B R", "len": 8}, "htr": {"moves": "F2 U' F2 R2 U R2 U2 F2 U", "len": 9}, "finish": {"moves": "U2 F2 D2 F2 B2 R2 F2 U2 B2", "len": 9}, "total": 31, "simplified": {"moves": "R L D' L2 U L' D2 F D2 B D2 B R F2 U' F2 R2 U R2 U2 F2 U' F2 D2 F2 B2 R2 F2 U2 B2", "len": 30, "cancelled": 1}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "R L D' L2 U", "len": 5, "cumulative": 5, "scramble_after": "R2 B' U F2 L B D' R L2 F U2 B' R2 D2 F2 D2 F' U2 B' D2 R L D' L2 U"}, "dr": {"moves": "L' D2 F D2 B D2 B R", "len": 8}, "htr": {"moves": "U F2 U L2 U R2 U' B2 D", "len": 9}, "finish": {"moves": "F2 R2 L2 F2 U2 F2 B2 L2", "len": 8}, "total": 30, "simplified": {"moves": "R L D' L2 U L' D2 F D2 B D2 B R U F2 U L2 U R2 U' B2 D F2 R2 L2 F2 U2 F2 B2 L2", "len": 30, "cancelled": 0}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "R L D' L2 U", "len": 5, "cumulative": 5, "scramble_after": "R2 B' U F2 L B D' R L2 F U2 B' R2 D2 F2 D2 F' U2 B' D2 R L D' L2 U"}, "dr": {"moves": "L' D2 F D2 B D2 B R", "len": 8}, "htr": {"moves": "U L2 U' F2 U' B2 U R2 D", "len": 9}, "finish": {"moves": "U2 R2 D2 R2 F2 U2 B2 D2 L2", "len": 9}, "total": 31, "simplified": {"moves": "R L D' L2 U L' D2 F D2 B D2 B R U L2 U' F2 U' B2 U R2 D U2 R2 D2 R2 F2 U2 B2 D2 L2", "len": 31, "cancelled": 0}, "total_simplified": 31}, {"eo": {"axis": "UD", "moves": "R L D' L2 U", "len": 5, "cumulative": 5, "scramble_after": "R2 B' U F2 L B D' R L2 F U2 B' R2 D2 F2 D2 F' U2 B' D2 R L D' L2 U"}, "dr": {"moves": "L' D2 F D2 B D2 B R", "len": 8}, "htr": {"moves": "F2 U' F2 R2 U' F2 U2 R2 U", "len": 9}, "finish": {"moves": "D2 F2 B2 R2 U2 F2 D2 B2 D2 B2", "len": 10}, "total": 32, "simplified": {"moves": "R L D' L2 U L' D2 F D2 B D2 B R F2 U' F2 R2 U' F2 U2 R2 U D2 F2 B2 R2 U2 F2 D2 B2 D2 B2", "len": 32, "cancelled": 0}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "R L D' L2 U", "len": 5, "cumulative": 5, "scramble_after": "R2 B' U F2 L B D' R L2 F U2 B' R2 D2 F2 D2 F' U2 B' D2 R L D' L2 U"}, "dr": {"moves": "L' D2 F D2 B D2 B R", "len": 8}, "htr": {"moves": "F2 U' F2 L2 U F2 U2 L2 U", "len": 9}, "finish": {"moves": "F2 U2 R2 D2 L2 F2 B2 D2 R2 F2 R2", "len": 11}, "total": 33, "simplified": {"moves": "R L D' L2 U L' D2 F D2 B D2 B R F2 U' F2 L2 U F2 U2 L2 U F2 U2 R2 D2 L2 F2 B2 D2 R2 F2 R2", "len": 33, "cancelled": 0}, "total_simplified": 33}]}, "/tmp/beam_niss/inverse_4.json": {"scramble": "D2 B U2 F D2 F2 D2 R2 B U2 F' L2 R' D B' L' F2 U' B R2", "K": 5, "niss": true, "solutions": [{"eo": {"axis": "UD", "moves": "D' B' D U", "len": 4, "cumulative": 4, "scramble_after": "D2 B U2 F D2 F2 D2 R2 B U2 F' L2 R' D B' L' F2 U' B R2 D' B' D U"}, "dr": {"moves": "R U2 L2 B R L' B' L", "len": 8}, "htr": {"moves": "U' L2 U L2 U2 F2 U F2 U", "len": 9}, "finish": {"moves": "L2 B2 R2 U2 L2 D2 B2", "len": 7}, "total": 28, "simplified": {"moves": "D' B' D U R U2 L2 B R L' B' L U' L2 U L2 U2 F2 U F2 U L2 B2 R2 U2 L2 D2 B2", "len": 28, "cancelled": 0}, "total_simplified": 28}, {"eo": {"axis": "UD", "moves": "D' B' D U", "len": 4, "cumulative": 4, "scramble_after": "D2 B U2 F D2 F2 D2 R2 B U2 F' L2 R' D B' L' F2 U' B R2 D' B' D U"}, "dr": {"moves": "R U2 L2 B R L' B' L", "len": 8}, "htr": {"moves": "U' R2 U R2 U2 B2 U B2 U", "len": 9}, "finish": {"moves": "U2 D2 B2 D2 R2 U2 R2 F2 L2", "len": 9}, "total": 30, "simplified": {"moves": "D' B' D U R U2 L2 B R L' B' L U' R2 U R2 U2 B2 U B2 U' D2 B2 D2 R2 U2 R2 F2 L2", "len": 29, "cancelled": 1}, "total_simplified": 29}, {"eo": {"axis": "UD", "moves": "D' B' D U", "len": 4, "cumulative": 4, "scramble_after": "D2 B U2 F D2 F2 D2 R2 B U2 F' L2 R' D B' L' F2 U' B R2 D' B' D U"}, "dr": {"moves": "R U2 L2 B R L' B' L", "len": 8}, "htr": {"moves": "U' R2 U F2 U2 R2 U F2 U", "len": 9}, "finish": {"moves": "F2 D2 F2 U2 L2 D2 R2 U2 B2 L2 B2", "len": 11}, "total": 32, "simplified": {"moves": "D' B' D U R U2 L2 B R L' B' L U' R2 U F2 U2 R2 U F2 U F2 D2 F2 U2 L2 D2 R2 U2 B2 L2 B2", "len": 32, "cancelled": 0}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "D' B' D U", "len": 4, "cumulative": 4, "scramble_after": "D2 B U2 F D2 F2 D2 R2 B U2 F' L2 R' D B' L' F2 U' B R2 D' B' D U"}, "dr": {"moves": "R U2 L2 B R L' B' L", "len": 8}, "htr": {"moves": "U' R2 U' R2 U2 F2 U' F2 U", "len": 9}, "finish": {"moves": "B2 U2 F2 U2 R2 B2 U2 R2 U2 L2 F2", "len": 11}, "total": 32, "simplified": {"moves": "D' B' D U R U2 L2 B R L' B' L U' R2 U' R2 U2 F2 U' F2 U B2 U2 F2 U2 R2 B2 U2 R2 U2 L2 F2", "len": 32, "cancelled": 0}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "D' B' D U", "len": 4, "cumulative": 4, "scramble_after": "D2 B U2 F D2 F2 D2 R2 B U2 F' L2 R' D B' L' F2 U' B R2 D' B' D U"}, "dr": {"moves": "R U2 L2 B R L' B' L", "len": 8}, "htr": {"moves": "U' R2 U' B2 U2 R2 U' B2 U", "len": 9}, "finish": {"moves": "R2 U2 R2 F2 R2 F2 U2 L2 D2 R2 D2", "len": 11}, "total": 32, "simplified": {"moves": "D' B' D U R U2 L2 B R L' B' L U' R2 U' B2 U2 R2 U' B2 U R2 U2 R2 F2 R2 F2 U2 L2 D2 R2 D2", "len": 32, "cancelled": 0}, "total_simplified": 32}]}, "/tmp/beam_niss/normal_5.json": {"scramble": "R' B' R' L D B L U' D2 F2 R2 F' R2 B D2 B' R2 F' R2 F R2", "K": 5, "niss": false, "solutions": [{"eo": {"axis": "FB", "moves": "B2 U R2 B", "len": 4, "cumulative": 4, "scramble_after": "R' B' R' L D B L U' D2 F2 R2 F' R2 B D2 B' R2 F' R2 F R2 B2 U R2 B"}, "dr": {"moves": "B U F2 R' U2 B' U", "len": 7}, "htr": {"moves": "F U2 R2 F D2 F D2 F2 L2 B", "len": 10}, "finish": {"moves": "R2 B2 L2 D2 R2 U2 B2 R2", "len": 8}, "total": 29, "simplified": {"moves": "B2 U R2 B2 U F2 R' U2 B' U F U2 R2 F D2 F D2 F2 L2 B R2 B2 L2 D2 R2 U2 B2 R2", "len": 28, "cancelled": 1}, "total_simplified": 28}, {"eo": {"axis": "FB", "moves": "B2 U R2 B", "len": 4, "cumulative": 4, "scramble_after": "R' B' R' L D B L U' D2 F2 R2 F' R2 B D2 B' R2 F' R2 F R2 B2 U R2 B"}, "dr": {"moves": "B U F2 R' U2 B' U", "len": 7}, "htr": {"moves": "F2 R2 F L2 F U2 F' R2 B", "len": 9}, "finish": {"moves": "R2 U2 D2 F2 U2 L2 U2 B2 R2 F2 B2", "len": 11}, "total": 31, "simplified": {"moves": "B2 U R2 B2 U F2 R' U2 B' U F2 R2 F L2 F U2 F' R2 B R2 U2 D2 F2 U2 L2 U2 B2 R2 F2 B2", "len": 30, "cancelled": 1}, "total_simplified": 30}, {"eo": {"axis": "FB", "moves": "B2 U R2 B", "len": 4, "cumulative": 4, "scramble_after": "R' B' R' L D B L U' D2 F2 R2 F' R2 B D2 B' R2 F' R2 F R2 B2 U R2 B"}, "dr": {"moves": "B U F2 R' U2 B' U", "len": 7}, "htr": {"moves": "F2 R2 F' R2 F' U2 F L2 B", "len": 9}, "finish": {"moves": "U2 R2 U2 R2 L2 F2 L2 U2 R2 D2 F2", "len": 11}, "total": 31, "simplified": {"moves": "B2 U R2 B2 U F2 R' U2 B' U F2 R2 F' R2 F' U2 F L2 B U2 R2 U2 R2 L2 F2 L2 U2 R2 D2 F2", "len": 30, "cancelled": 1}, "total_simplified": 30}, {"eo": {"axis": "FB", "moves": "B2 U R2 B", "len": 4, "cumulative": 4, "scramble_after": "R' B' R' L D B L U' D2 F2 R2 F' R2 B D2 B' R2 F' R2 F R2 B2 U R2 B"}, "dr": {"moves": "B U F2 R' U2 B' U", "len": 7}, "htr": {"moves": "F U2 R2 F U2 F L2 F2 U2 B", "len": 10}, "finish": {"moves": "D2 R2 D2 F2 U2 F2 R2 B2 L2 B2", "len": 10}, "total": 31, "simplified": {"moves": "B2 U R2 B2 U F2 R' U2 B' U F U2 R2 F U2 F L2 F2 U2 B D2 R2 D2 F2 U2 F2 R2 B2 L2 B2", "len": 30, "cancelled": 1}, "total_simplified": 30}, {"eo": {"axis": "FB", "moves": "B2 U R2 B", "len": 4, "cumulative": 4, "scramble_after": "R' B' R' L D B L U' D2 F2 R2 F' R2 B D2 B' R2 F' R2 F R2 B2 U R2 B"}, "dr": {"moves": "B U F2 R' U2 B' U", "len": 7}, "htr": {"moves": "F U2 R2 F U2 F' U2 F2 L2 B", "len": 10}, "finish": {"moves": "U2 R2 F2 U2 B2 D2 R2 D2 R2 B2 U2", "len": 11}, "total": 32, "simplified": {"moves": "B2 U R2 B2 U F2 R' U2 B' U F U2 R2 F U2 F' U2 F2 L2 B U2 R2 F2 U2 B2 D2 R2 D2 R2 B2 U2", "len": 31, "cancelled": 1}, "total_simplified": 31}]}, "/tmp/beam_niss/inverse_5.json": {"scramble": "R2 F' R2 F R2 B D2 B' R2 F R2 F2 D2 U L' B' D' L' R B R", "K": 5, "niss": true, "solutions": [{"eo": {"axis": "RL", "moves": "U' L", "len": 2, "cumulative": 2, "scramble_after": "R2 F' R2 F R2 B D2 B' R2 F R2 F2 D2 U L' B' D' L' R B R U' L"}, "dr": {"moves": "D' B R2 D2 B U' F", "len": 7}, "htr": {"moves": "D2 R D2 B2 U2 F2 L", "len": 7}, "finish": {"moves": "F2 R2 D2 F2 L2 F2", "len": 6}, "total": 22, "simplified": {"moves": "U' L D' B R2 D2 B U' F D2 R D2 B2 U2 F2 L F2 R2 D2 F2 L2 F2", "len": 22, "cancelled": 0}, "total_simplified": 22}, {"eo": {"axis": "RL", "moves": "U' L", "len": 2, "cumulative": 2, "scramble_after": "R2 F' R2 F R2 B D2 B' R2 F R2 F2 D2 U L' B' D' L' R B R U' L"}, "dr": {"moves": "D' B R2 D2 B U' F", "len": 7}, "htr": {"moves": "D2 R D2 F2 U2 B2 L", "len": 7}, "finish": {"moves": "F2 U2 D2 R2 D2 B2 R2 B2", "len": 8}, "total": 24, "simplified": {"moves": "U' L D' B R2 D2 B U' F D2 R D2 F2 U2 B2 L F2 U2 D2 R2 D2 B2 R2 B2", "len": 24, "cancelled": 0}, "total_simplified": 24}, {"eo": {"axis": "RL", "moves": "U' L", "len": 2, "cumulative": 2, "scramble_after": "R2 F' R2 F R2 B D2 B' R2 F R2 F2 D2 U L' B' D' L' R B R U' L"}, "dr": {"moves": "D' B R2 D2 B U' F", "len": 7}, "htr": {"moves": "D2 R D2 F2 D2 F2 R", "len": 7}, "finish": {"moves": "F2 L2 U2 B2 U2 B2 U2 L2 F2 D2", "len": 10}, "total": 26, "simplified": {"moves": "U' L D' B R2 D2 B U' F D2 R D2 F2 D2 F2 R F2 L2 U2 B2 U2 B2 U2 L2 F2 D2", "len": 26, "cancelled": 0}, "total_simplified": 26}, {"eo": {"axis": "RL", "moves": "U' L", "len": 2, "cumulative": 2, "scramble_after": "R2 F' R2 F R2 B D2 B' R2 F R2 F2 D2 U L' B' D' L' R B R U' L"}, "dr": {"moves": "D' B R2 D2 B U' F", "len": 7}, "htr": {"moves": "D2 R D2 B2 D2 B2 R", "len": 7}, "finish": {"moves": "U2 R2 F2 U2 F2 R2 B2 U2 R2 D2 R2 B2", "len": 12}, "total": 28, "simplified": {"moves": "U' L D' B R2 D2 B U' F D2 R D2 B2 D2 B2 R U2 R2 F2 U2 F2 R2 B2 U2 R2 D2 R2 B2", "len": 28, "cancelled": 0}, "total_simplified": 28}, {"eo": {"axis": "RL", "moves": "U' L", "len": 2, "cumulative": 2, "scramble_after": "R2 F' R2 F R2 B D2 B' R2 F R2 F2 D2 U L' B' D' L' R B R U' L"}, "dr": {"moves": "D' B R2 D2 B U' F", "len": 7}, "htr": {"moves": "U2 R F2 D2 B2 U2 L", "len": 7}, "finish": {"moves": "R2 U2 R2 F2 U2 L2 B2 R2 F2 B2 U2 B2", "len": 12}, "total": 28, "simplified": {"moves": "U' L D' B R2 D2 B U' F U2 R F2 D2 B2 U2 L R2 U2 R2 F2 U2 L2 B2 R2 F2 B2 U2 B2", "len": 28, "cancelled": 0}, "total_simplified": 28}]}, "/tmp/beam_niss/normal_6.json": {"scramble": "R2 D' R2 L' F' D2 B U' L F U2 F2 U2 B2 L2 U2 D F2 U F2 R2", "K": 5, "niss": false, "solutions": [{"eo": {"axis": "UD", "moves": "B' L D' F2 U", "len": 5, "cumulative": 5, "scramble_after": "R2 D' R2 L' F' D2 B U' L F U2 F2 U2 B2 L2 U2 D F2 U F2 R2 B' L D' F2 U"}, "dr": {"moves": "B2 R U2 L B2 L2 D2 B R", "len": 9}, "htr": {"moves": "U' L2 U L2 U F2 U' F2 U", "len": 9}, "finish": {"moves": "L2 F2 R2 F2 U2 F2 B2 R2 F2", "len": 9}, "total": 32, "simplified": {"moves": "B' L D' F2 U B2 R U2 L B2 L2 D2 B R U' L2 U L2 U F2 U' F2 U L2 F2 R2 F2 U2 F2 B2 R2 F2", "len": 32, "cancelled": 0}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "B' L D' F2 U", "len": 5, "cumulative": 5, "scramble_after": "R2 D' R2 L' F' D2 B U' L F U2 F2 U2 B2 L2 U2 D F2 U F2 R2 B' L D' F2 U"}, "dr": {"moves": "B2 R U2 L B2 L2 D2 B R", "len": 9}, "htr": {"moves": "U' F2 U' F2 U' L2 U L2 U", "len": 9}, "finish": {"moves": "U2 B2 L2 U2 B2 R2 U2 F2 D2 R2", "len": 10}, "total": 33, "simplified": {"moves": "B' L D' F2 U B2 R U2 L B2 L2 D2 B R U' F2 U' F2 U' L2 U L2 U' B2 L2 U2 B2 R2 U2 F2 D2 R2", "len": 32, "cancelled": 1}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "B' L D' F2 U", "len": 5, "cumulative": 5, "scramble_after": "R2 D' R2 L' F' D2 B U' L F U2 F2 U2 B2 L2 U2 D F2 U F2 R2 B' L D' F2 U"}, "dr": {"moves": "B2 R U2 L B2 L2 D2 B R", "len": 9}, "htr": {"moves": "R2 U R2 F2 U' B2 U2 L2 D", "len": 9}, "finish": {"moves": "R2 U2 F2 L2 D2 F2 D2 B2 L2 B2", "len": 10}, "total": 33, "simplified": {"moves": "B' L D' F2 U B2 R U2 L B2 L2 D2 B R' U R2 F2 U' B2 U2 L2 D R2 U2 F2 L2 D2 F2 D2 B2 L2 B2", "len": 32, "cancelled": 1}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "B' L D' F2 U", "len": 5, "cumulative": 5, "scramble_after": "R2 D' R2 L' F' D2 B U' L F U2 F2 U2 B2 L2 U2 D F2 U F2 R2 B' L D' F2 U"}, "dr": {"moves": "B2 R U2 L B2 L2 D2 B R", "len": 9}, "htr": {"moves": "R2 U R2 F2 U L2 U2 B2 D", "len": 9}, "finish": {"moves": "U2 R2 U2 F2 D2 F2 D2 L2 B2 L2 B2", "len": 11}, "total": 34, "simplified": {"moves": "B' L D' F2 U B2 R U2 L B2 L2 D2 B R' U R2 F2 U L2 U2 B2 D U2 R2 U2 F2 D2 F2 D2 L2 B2 L2 B2", "len": 33, "cancelled": 1}, "total_simplified": 33}, {"eo": {"axis": "UD", "moves": "B' L D' F2 U", "len": 5, "cumulative": 5, "scramble_after": "R2 D' R2 L' F' D2 B U' L F U2 F2 U2 B2 L2 U2 D F2 U F2 R2 B' L D' F2 U"}, "dr": {"moves": "B2 R U2 L B2 L2 D2 B R", "len": 9}, "htr": {"moves": "R2 U R2 B2 U F2 U2 L2 D", "len": 9}, "finish": {"moves": "R2 D2 F2 U2 R2 B2 R2 U2 B2 U2 L2", "len": 11}, "total": 34, "simplified": {"moves": "B' L D' F2 U B2 R U2 L B2 L2 D2 B R' U R2 B2 U F2 U2 L2 D R2 D2 F2 U2 R2 B2 R2 U2 B2 U2 L2", "len": 33, "cancelled": 1}, "total_simplified": 33}]}, "/tmp/beam_niss/inverse_6.json": {"scramble": "R2 F2 U' F2 D' U2 L2 B2 U2 F2 U2 F' L' U B' D2 F L R2 D R2", "K": 5, "niss": true, "solutions": [{"eo": {"axis": "UD", "moves": "L D B2 R' U", "len": 5, "cumulative": 5, "scramble_after": "R2 F2 U' F2 D' U2 L2 B2 U2 F2 U2 F' L' U B' D2 F L R2 D R2 L D B2 R' U"}, "dr": {"moves": "U' F U D R' L U2 B' L", "len": 9}, "htr": {"moves": "U B2 U2 R2 U B2 D", "len": 7}, "finish": {"moves": "U2 R2 D2 F2 U2 F2 B2 R2 U2", "len": 9}, "total": 30, "simplified": {"moves": "L D B2 R' F U D R' L U2 B' L U B2 U2 R2 U B2 D U2 R2 D2 F2 U2 F2 B2 R2 U2", "len": 28, "cancelled": 2}, "total_simplified": 28}, {"eo": {"axis": "UD", "moves": "L D B2 R' U", "len": 5, "cumulative": 5, "scramble_after": "R2 F2 U' F2 D' U2 L2 B2 U2 F2 U2 F' L' U B' D2 F L R2 D R2 L D B2 R' U"}, "dr": {"moves": "U' F U D R' L U2 B' L", "len": 9}, "htr": {"moves": "U' R2 U2 B2 U' B2 D", "len": 7}, "finish": {"moves": "U2 F2 U2 R2 U2 F2 U2 F2 B2 L2 B2", "len": 11}, "total": 32, "simplified": {"moves": "L D B2 R' F U D R' L U2 B' L U' R2 U2 B2 U' B2 D U2 F2 U2 R2 U2 F2 U2 F2 B2 L2 B2", "len": 30, "cancelled": 2}, "total_simplified": 30}, {"eo": {"axis": "UD", "moves": "D F2 R' L' D", "len": 5, "cumulative": 5, "scramble_after": "R2 F2 U' F2 D' U2 L2 B2 U2 F2 U2 F' L' U B' D2 F L R2 D R2 D F2 R' L' D"}, "dr": {"moves": "F R' U2 R2 F R' B L", "len": 8}, "htr": {"moves": "F2 U L2 U2 F2 U' L2 F2 U", "len": 9}, "finish": {"moves": "U2 R2 F2 D2 F2 R2 D2 L2 B2 R2", "len": 10}, "total": 32, "simplified": {"moves": "D F2 R' L' D F R' U2 R2 F R' B L F2 U L2 U2 F2 U' L2 F2 U' R2 F2 D2 F2 R2 D2 L2 B2 R2", "len": 31, "cancelled": 1}, "total_simplified": 31}, {"eo": {"axis": "UD", "moves": "D F2 R' L' D", "len": 5, "cumulative": 5, "scramble_after": "R2 F2 U' F2 D' U2 L2 B2 U2 F2 U2 F' L' U B' D2 F L R2 D R2 D F2 R' L' D"}, "dr": {"moves": "F R' U2 R2 F R' B L", "len": 8}, "htr": {"moves": "F2 U F2 U2 R2 U' R2 F2 U", "len": 9}, "finish": {"moves": "U2 F2 B2 R2 U2 F2 B2 U2 F2 B2", "len": 10}, "total": 32, "simplified": {"moves": "D F2 R' L' D F R' U2 R2 F R' B L F2 U F2 U2 R2 U' R2 F2 U' F2 B2 R2 U2 F2 B2 U2 F2 B2", "len": 31, "cancelled": 1}, "total_simplified": 31}, {"eo": {"axis": "UD", "moves": "D F2 R' L' D", "len": 5, "cumulative": 5, "scramble_after": "R2 F2 U' F2 D' U2 L2 B2 U2 F2 U2 F' L' U B' D2 F L R2 D R2 D F2 R' L' D"}, "dr": {"moves": "F R' U2 R2 F R' B L", "len": 8}, "htr": {"moves": "F2 U' R2 U2 F2 U R2 F2 U", "len": 9}, "finish": {"moves": "R2 L2 F2 D2 R2 D2 R2 L2 B2 U2", "len": 10}, "total": 32, "simplified": {"moves": "D F2 R' L' D F R' U2 R2 F R' B L F2 U' R2 U2 F2 U R2 F2 U R2 L2 F2 D2 R2 D2 R2 L2 B2 U2", "len": 32, "cancelled": 0}, "total_simplified": 32}]}, "/tmp/beam_niss/normal_7.json": {"scramble": "F2 R' B' U' D2 R' D' F' B2 R2 U F2 L2 D' R2 U F2 U' B2 L2 D", "K": 5, "niss": false, "solutions": [{"eo": {"axis": "FB", "moves": "D2 B D' R' F", "len": 5, "cumulative": 5, "scramble_after": "F2 R' B' U' D2 R' D' F' B2 R2 U F2 L2 D' R2 U F2 U' B2 L2 D D2 B D' R' F"}, "dr": {"moves": "B R' B2 U' F2 R' L' B R", "len": 9}, "htr": {"moves": "F' U2 F' D2 R2 F' U2 F", "len": 8}, "finish": {"moves": "R2 B2 R2 D2 F2 D2 B2 L2 U2 B2", "len": 10}, "total": 32, "simplified": {"moves": "D2 B D' R' F B R' B2 U' F2 R' L' B R F' U2 F' D2 R2 F' U2 F R2 B2 R2 D2 F2 D2 B2 L2 U2 B2", "len": 32, "cancelled": 0}, "total_simplified": 32}, {"eo": {"axis": "FB", "moves": "D2 B D' R' F", "len": 5, "cumulative": 5, "scramble_after": "F2 R' B' U' D2 R' D' F' B2 R2 U F2 L2 D' R2 U F2 U' B2 L2 D D2 B D' R' F"}, "dr": {"moves": "B R' B2 U' F2 R' L' B R", "len": 9}, "htr": {"moves": "F' D2 F' U2 F R2 D2 F", "len": 8}, "finish": {"moves": "U2 R2 B2 R2 F2 L2 U2 F2 R2 B2", "len": 10}, "total": 32, "simplified": {"moves": "D2 B D' R' F B R' B2 U' F2 R' L' B R F' D2 F' U2 F R2 D2 F U2 R2 B2 R2 F2 L2 U2 F2 R2 B2", "len": 32, "cancelled": 0}, "total_simplified": 32}, {"eo": {"axis": "FB", "moves": "D2 B D' R' F", "len": 5, "cumulative": 5, "scramble_after": "F2 R' B' U' D2 R' D' F' B2 R2 U F2 L2 D' R2 U F2 U' B2 L2 D D2 B D' R' F"}, "dr": {"moves": "B R' B2 U' F2 R' L' B R", "len": 9}, "htr": {"moves": "F' D2 F' U2 F L2 U2 B", "len": 8}, "finish": {"moves": "L2 B2 D2 F2 U2 R2 B2 R2 U2 F2", "len": 10}, "total": 32, "simplified": {"moves": "D2 B D' R' F B R' B2 U' F2 R' L' B R F' D2 F' U2 F L2 U2 B L2 B2 D2 F2 U2 R2 B2 R2 U2 F2", "len": 32, "cancelled": 0}, "total_simplified": 32}, {"eo": {"axis": "FB", "moves": "D2 B D' R' F", "len": 5, "cumulative": 5, "scramble_after": "F2 R' B' U' D2 R' D' F' B2 R2 U F2 L2 D' R2 U F2 U' B2 L2 D D2 B D' R' F"}, "dr": {"moves": "B R' B2 U' F2 R' L' B R", "len": 9}, "htr": {"moves": "F L2 D2 F' U2 F U2 B", "len": 8}, "finish": {"moves": "U2 R2 U2 D2 F2 R2 F2 R2 B2 U2 R2 F2", "len": 12}, "total": 34, "simplified": {"moves": "D2 B D' R' F B R' B2 U' F2 R' L' B R F L2 D2 F' U2 F U2 B U2 R2 U2 D2 F2 R2 F2 R2 B2 U2 R2 F2", "len": 34, "cancelled": 0}, "total_simplified": 34}, {"eo": {"axis": "FB", "moves": "D2 B D' R' F", "len": 5, "cumulative": 5, "scramble_after": "F2 R' B' U' D2 R' D' F' B2 R2 U F2 L2 D' R2 U F2 U' B2 L2 D D2 B D' R' F"}, "dr": {"moves": "B R' B2 U' F2 R' L' B R", "len": 9}, "htr": {"moves": "F' L2 D2 F R2 F' R2 B", "len": 8}, "finish": {"moves": "U2 R2 B2 R2 U2 F2 D2 B2 R2 D2 F2 L2", "len": 12}, "total": 34, "simplified": {"moves": "D2 B D' R' F B R' B2 U' F2 R' L' B R F' L2 D2 F R2 F' R2 B U2 R2 B2 R2 U2 F2 D2 B2 R2 D2 F2 L2", "len": 34, "cancelled": 0}, "total_simplified": 34}]}, "/tmp/beam_niss/inverse_7.json": {"scramble": "D' L2 B2 U F2 U' R2 D L2 F2 U' R2 B2 F D R D2 U B R F2", "K": 5, "niss": true, "solutions": [{"eo": {"axis": "UD", "moves": "L' B D B2 U", "len": 5, "cumulative": 5, "scramble_after": "D' L2 B2 U F2 U' R2 D L2 F2 U' R2 B2 F D R D2 U B R F2 L' B D B2 U"}, "dr": {"moves": "R' F U' B' R2 U2 L D' F", "len": 9}, "htr": {"moves": "U2 F2 B2 U' B2 D", "len": 6}, "finish": {"moves": "F2 R2 D2 F2 L2 U2", "len": 6}, "total": 26, "simplified": {"moves": "L' B D B2 U R' F U' B' R2 U2 L D' F U2 F2 B2 U' B2 D F2 R2 D2 F2 L2 U2", "len": 26, "cancelled": 0}, "total_simplified": 26}, {"eo": {"axis": "UD", "moves": "L' B D B2 U", "len": 5, "cumulative": 5, "scramble_after": "D' L2 B2 U F2 U' R2 D L2 F2 U' R2 B2 F D R D2 U B R F2 L' B D B2 U"}, "dr": {"moves": "R' F U' B' R2 U2 L D' F", "len": 9}, "htr": {"moves": "U2 L2 F2 R2 U R2 D", "len": 7}, "finish": {"moves": "D2 B2 D2 R2 L2 B2 L2 U2", "len": 8}, "total": 29, "simplified": {"moves": "L' B D B2 U R' F U' B' R2 U2 L D' F U2 L2 F2 R2 U R2 D' B2 D2 R2 L2 B2 L2 U2", "len": 28, "cancelled": 1}, "total_simplified": 28}, {"eo": {"axis": "UD", "moves": "L' B D B2 U", "len": 5, "cumulative": 5, "scramble_after": "D' L2 B2 U F2 U' R2 D L2 F2 U' R2 B2 F D R D2 U B R F2 L' B D B2 U"}, "dr": {"moves": "R' F U2 D L B' D' L", "len": 8}, "htr": {"moves": "R2 B2 U2 R2 U B2 U2 R2 U", "len": 9}, "finish": {"moves": "U2 R2 L2 F2 L2 U2 L2 F2 U2 F2 B2", "len": 11}, "total": 33, "simplified": {"moves": "L' B D B2 U R' F U2 D L B' D' L R2 B2 U2 R2 U B2 U2 R2 U' R2 L2 F2 L2 U2 L2 F2 U2 F2 B2", "len": 32, "cancelled": 1}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "L' B D B2 U", "len": 5, "cumulative": 5, "scramble_after": "D' L2 B2 U F2 U' R2 D L2 F2 U' R2 B2 F D R D2 U B R F2 L' B D B2 U"}, "dr": {"moves": "R' F U2 D L B' D' L", "len": 8}, "htr": {"moves": "R2 F2 U2 R2 U F2 U2 L2 D", "len": 9}, "finish": {"moves": "R2 U2 B2 U2 B2 R2 U2 R2 U2 R2", "len": 10}, "total": 32, "simplified": {"moves": "L' B D B2 U R' F U2 D L B' D' L R2 F2 U2 R2 U F2 U2 L2 D R2 U2 B2 U2 B2 R2 U2 R2 U2 R2", "len": 32, "cancelled": 0}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "L' B D B2 U", "len": 5, "cumulative": 5, "scramble_after": "D' L2 B2 U F2 U' R2 D L2 F2 U' R2 B2 F D R D2 U B R F2 L' B D B2 U"}, "dr": {"moves": "R' F U' B' R2 U2 L D' F", "len": 9}, "htr": {"moves": "L2 F2 L2 U' F2 D", "len": 6}, "finish": {"moves": "U2 D2 R2 U2 R2 F2 U2 R2 F2 L2 B2 L2 B2 D2", "len": 14}, "total": 34, "simplified": {"moves": "L' B D B2 U R' F U' B' R2 U2 L D' F L2 F2 L2 U' F2 D U2 D2 R2 U2 R2 F2 U2 R2 F2 L2 B2 L2 B2 D2", "len": 34, "cancelled": 0}, "total_simplified": 34}]}, "/tmp/beam_niss/normal_8.json": {"scramble": "F U D2 F' D B L' F' R' F U R2 U2 B2 L2 D B2 R2 L2 D F2", "K": 5, "niss": false, "solutions": [{"eo": {"axis": "UD", "moves": "F D' B R2 U", "len": 5, "cumulative": 5, "scramble_after": "F U D2 F' D B L' F' R' F U R2 U2 B2 L2 D B2 R2 L2 D F2 F D' B R2 U"}, "dr": {"moves": "F' R L F B L' D2 R2 F", "len": 9}, "htr": {"moves": "U' R2 U2 F2 R2 U F2 R2 U", "len": 9}, "finish": {"moves": "R2 F2 U2 L2 B2 U2 L2 B2 U2", "len": 9}, "total": 32, "simplified": {"moves": "F D' B R2 U F' R L F B L' D2 R2 F U' R2 U2 F2 R2 U F2 R2 U R2 F2 U2 L2 B2 U2 L2 B2 U2", "len": 32, "cancelled": 0}, "total_simplified": 32}, {"eo": {"axis": "UD", "moves": "F D' B R2 U", "len": 5, "cumulative": 5, "scramble_after": "F U D2 F' D B L' F' R' F U R2 U2 B2 L2 D B2 R2 L2 D F2 F D' B R2 U"}, "dr": {"moves": "F' R L F B L' D2 R2 F", "len": 9}, "htr": {"moves": "U F2 L2 U L2 B2 U2 R2 D", "len": 9}, "finish": {"moves": "U2 B2 L2 U2 R2 D2 F2 U2 L2 F2", "len": 10}, "total": 33, "simplified": {"moves": "F D' B R2 U F' R L F B L' D2 R2 F U F2 L2 U L2 B2 U2 R2 D U2 B2 L2 U2 R2 D2 F2 U2 L2 F2", "len": 33, "cancelled": 0}, "total_simplified": 33}, {"eo": {"axis": "UD", "moves": "F D' B R2 U", "len": 5, "cumulative": 5, "scramble_after": "F U D2 F' D B L' F' R' F U R2 U2 B2 L2 D B2 R2 L2 D F2 F D' B R2 U"}, "dr": {"moves": "F' R L F B L' D2 R2 F", "len": 9}, "htr": {"moves": "U F2 R2 U F2 R2 U2 F2 U", "len": 9}, "finish": {"moves": "U2 R2 U2 L2 U2 F2 U2 B2 D2 R2 F2 D2", "len": 12}, "total": 35, "simplified": {"moves": "F D' B R2 U F' R L F B L' D2 R2 F U F2 R2 U F2 R2 U2 F2 U' R2 U2 L2 U2 F2 U2 B2 D2 R2 F2 D2", "len": 34, "cancelled": 1}, "total_simplified": 34}, {"eo": {"axis": "UD", "moves": "F D' B R2 U", "len": 5, "cumulative": 5, "scramble_after": "F U D2 F' D B L' F' R' F U R2 U2 B2 L2 D B2 R2 L2 D F2 F D' B R2 U"}, "dr": {"moves": "F' R L F B L' D2 R2 F", "len": 9}, "htr": {"moves": "U F2 L2 U R2 F2 U2 L2 U", "len": 9}, "finish": {"moves": "U2 R2 U2 L2 F2 U2 B2 D2 F2 L2 F2 R2", "len": 12}, "total": 35, "simplified": {"moves": "F D' B R2 U F' R L F B L' D2 R2 F U F2 L2 U R2 F2 U2 L2 U' R2 U2 L2 F2 U2 B2 D2 F2 L2 F2 R2", "len": 34, "cancelled": 1}, "total_simplified": 34}, {"eo": {"axis": "UD", "moves": "F D' B R2 U", "len": 5, "cumulative": 5, "scramble_after": "F U D2 F' D B L' F' R' F U R2 U2 B2 L2 D B2 R2 L2 D F2 F D' B R2 U"}, "dr": {"moves": "F' R L F B L' D2 R2 F", "len": 9}, "htr": {"moves": "U F2 R2 U B2 L2 U2 B2 D", "len": 9}, "finish": {"moves": "U2 R2 D2 F2 U2 L2 U2 F2 R2 B2 R2 B2", "len": 12}, "total": 35, "simplified": {"moves": "F D' B R2 U F' R L F B L' D2 R2 F U F2 R2 U B2 L2 U2 B2 D U2 R2 D2 F2 U2 L2 U2 F2 R2 B2 R2 B2", "len": 35, "cancelled": 0}, "total_simplified": 35}]}, "/tmp/beam_niss/inverse_8.json": {"scramble": "F2 D' L2 R2 B2 D' L2 B2 U2 R2 U' F' R F L B' D' F D2 U' F'", "K": 5, "niss": true, "solutions": [{"eo": {"axis": "RL", "moves": "D2 B' R L", "len": 4, "cumulative": 4, "scramble_after": "F2 D' L2 R2 B2 D' L2 B2 U2 R2 U' F' R F L B' D' F D2 U' F' D2 B' R L"}, "dr": {"moves": "F B R2 F2 D B' R2 U' F", "len": 9}, "htr": {"moves": "B2 R B2 R D2 R' U2 B2 R' F2 L", "len": 11}, "finish": {"moves": "F2 U2 B2 U2 L2 B2 U2 R2 D2", "len": 9}, "total": 33, "simplified": {"moves": "D2 B' R L F B R2 F2 D B' R2 U' F B2 R B2 R D2 R' U2 B2 R' F2 L F2 U2 B2 U2 L2 B2 U2 R2 D2", "len": 33, "cancelled": 0}, "total_simplified": 33}, {"eo": {"axis": "RL", "moves": "D2 B' R L", "len": 4, "cumulative": 4, "scramble_after": "F2 D' L2 R2 B2 D' L2 B2 U2 R2 U' F' R F L B' D' F D2 U' F' D2 B' R L"}, "dr": {"moves": "F B R2 F2 D B' R2 U' F", "len": 9}, "htr": {"moves": "B2 R B2 R F2 D2 R U2 R' F2 L", "len": 11}, "finish": {"moves": "U2 F2 L2 U2 B2 U2 B2 L2 U2", "len": 9}, "total": 33, "simplified": {"moves": "D2 B' R L F B R2 F2 D B' R2 U' F B2 R B2 R F2 D2 R U2 R' F2 L U2 F2 L2 U2 B2 U2 B2 L2 U2", "len": 33, "cancelled": 0}, "total_simplified": 33}, {"eo": {"axis": "RL", "moves": "D2 B' R L", "len": 4, "cumulative": 4, "scramble_after": "F2 D' L2 R2 B2 D' L2 B2 U2 R2 U' F' R F L B' D' F D2 U' F' D2 B' R L"}, "dr": {"moves": "F B R2 F2 D B' R2 U' F", "len": 9}, "htr": {"moves": "B2 R B2 R' F2 U2 R' D2 R F2 L", "len": 11}, "finish": {"moves": "F2 D2 R2 U2 D2 F2 U2 B2 R2", "len": 9}, "total": 33, "simplified": {"moves": "D2 B' R L F B R2 F2 D B' R2 U' F B2 R B2 R' F2 U2 R' D2 R F2 L F2 D2 R2 U2 D2 F2 U2 B2 R2", "len": 33, "cancelled": 0}, "total_simplified": 33}, {"eo": {"axis": "RL", "moves": "D2 B' R L", "len": 4, "cumulative": 4, "scramble_after": "F2 D' L2 R2 B2 D' L2 B2 U2 R2 U' F' R F L B' D' F D2 U' F' D2 B' R L"}, "dr": {"moves": "F B R2 F2 D B' R2 U' F", "len": 9}, "htr": {"moves": "B2 R' F2 R B2 U2 R D2 R' B2 L", "len": 11}, "finish": {"moves": "L2 F2 D2 R2 F2 D2 R2 L2 F2 L2", "len": 10}, "total": 34, "simplified": {"moves": "D2 B' R L F B R2 F2 D B' R2 U' F B2 R' F2 R B2 U2 R D2 R' B2 L' F2 D2 R2 F2 D2 R2 L2 F2 L2", "len": 33, "cancelled": 1}, "total_simplified": 33}, {"eo": {"axis": "RL", "moves": "D2 B' R L", "len": 4, "cumulative": 4, "scramble_after": "F2 D' L2 R2 B2 D' L2 B2 U2 R2 U' F' R F L B' D' F D2 U' F' D2 B' R L"}, "dr": {"moves": "F B R2 F2 D B' R2 U' F", "len": 9}, "htr": {"moves": "B2 R B2 R' U2 R D2 B2 R F2 L", "len": 11}, "finish": {"moves": "R2 U2 R2 D2 F2 U2 L2 F2 L2 F2 B2 U2 B2", "len": 13}, "total": 37, "simplified": {"moves": "D2 B' R L F B R2 F2 D B' R2 U' F B2 R B2 R' U2 R D2 B2 R F2 L R2 U2 R2 D2 F2 U2 L2 F2 L2 F2 B2 U2 B2", "len": 37, "cancelled": 0}, "total_simplified": 37}]}};
 function renderTrees() {
     const container = document.getElementById('dr-trainer-trees');
     BEAM_DATA.forEach((d, idx) => {
