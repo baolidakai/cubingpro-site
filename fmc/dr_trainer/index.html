@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FMC DR Trainer - Cubing Pro</title>
+<meta name="description" content="Beam search trainer for FMC Domino Reduction: EO → DR → HTR → finish trees.">
+<meta name="keywords" content="FMC,DR,HTR,trainer,beam search">
+<!-- Baidu site verification: replace with your code from zhanjiang.baidu.com -->
+<!-- <meta name="baidu-site-verification" content="YOUR_CODE_HERE"> -->
+<link rel="stylesheet" href="../../static/css/main.css">
+
+
+<style>
+.oll-cases,.pll-cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1em;margin-bottom:2.5em}
+.oll-case,.pll-case{display:flex;gap:1em;align-items:center;border:1px solid #e5e5e5;border-radius:10px;padding:.9em;background:#fff}
+.oll-fig,.pll-fig{flex:0 0 auto}
+.oll-diagram{width:150px;height:auto;display:block}
+.pll-diagram{width:172px;height:auto;display:block}
+.oll-body,.pll-body{min-width:0;flex:1;display:flex;flex-direction:column;gap:.4em}
+.oll-name,.pll-name{font-weight:600;font-size:.95em;color:#333}
+.oll-body code,.pll-body code{font-size:.92em;word-break:break-all;background:#fafafa;border:1px solid #eee;border-radius:6px;padding:.35em .5em}
+@media (max-width:480px){.oll-cases,.pll-cases{grid-template-columns:1fr}.pll-diagram{width:150px}}
+</style>
+
+
+</head>
+<body>
+<header class="site-header">
+  <button id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">&#9776;</button>
+  <a class="site-title" href="../../">Cubing Pro</a>
+</header>
+<div class="layout">
+  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details><summary>Timer</summary><ul><li><a href="../../timer">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details open><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../../fmc/recon.html">FMC Recon</a></li><li><a href="../../fmc/theory.html">FMC Theory</a></li><li><a href="../../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../../3x3x3/cfop">CFOP method</a></li><li><a href="../../3x3x3/cross">Cross tutorial</a></li><li><a href="../../3x3x3/f2l">F2L algorithms</a></li><li><a href="../../3x3x3/oll">OLL algorithms</a></li><li><a href="../../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../../3x3x3/pll">PLL algorithms</a></li><li><a href="../../3x3x3/oh_cmll">OH CMLL algorithms</a></li><li><a href="../../3x3x3/roux">Roux Method</a></li><li><a href="../../3x3x3/zb_stepping_stone">VHLS + COLL</a></li><li><a href="../../fmc/dr_trainer" aria-current="page">FMC DR Trainer</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../../2x2x2/eg_intro">EG method</a></li><li><a href="../../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../../big_cube/yau.html">Yau method</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../../fto/tutorial">FTO Beginner Tutorial</a></li><li><a href="../../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../../sq1/eo">EO</a></li><li><a href="../../sq1/obl">OBL</a></li><li><a href="../../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details><summary>Misc</summary><ul><li><a href="../../game/geoguesser.html">GeoGuesser Tips</a></li></ul></details></li></ul></nav>
+  <main class="content">
+    <div id="lang-toggle" role="group" aria-label="Language toggle" data-title-en="FMC DR Trainer - Cubing Pro" data-title-zh-cn="FMC DR 训练器 - Cubing Pro" data-title-zh-tw="FMC DR 訓練器 - Cubing Pro" data-title-ja="FMC DR トレーナー - Cubing Pro" data-title-de="FMC DR Trainer - Cubing Pro" data-title-fr="Entraîneur FMC DR - Cubing Pro" data-title-it="Allenatore FMC DR - Cubing Pro"><button id="btn-en" aria-pressed="false">English</button><button id="btn-zh-cn" aria-pressed="false">简体</button><button id="btn-zh-tw" aria-pressed="false">繁體</button><button id="btn-ja" aria-pressed="false">日本語</button><button id="btn-de" aria-pressed="false">Deutsch</button><button id="btn-fr" aria-pressed="false">Français</button><button id="btn-it" aria-pressed="false">Italiano</button></div>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.initialize({ startOnLoad: true });
+</script><div id="content-en" style="display:none;"><h1>FMC DR Trainer</h1><p>Beam search (K=3) finds the shortest EO → DR → HTR → finish for each scramble. Green path is the best solution. Each node shows cumulative moves.</p><div id="dr-trainer-trees"></div></div><div id="content-zh-cn" style="display:none;"><h1>FMC DR 训练器</h1><p>Beam search (K=3) 为每个打乱找出最短的 EO → DR → HTR → 收尾。绿色路径是最优解，每个节点显示累计步数。</p><div id="dr-trainer-trees"></div></div><div id="content-zh-tw" style="display:none;"><h1>FMC DR 訓練器</h1><p>Beam search (K=3) 為每個打亂找出最短的 EO → DR → HTR → 收尾。綠色路徑是最優解，每個節點顯示累計步數。</p><div id="dr-trainer-trees"></div></div><div id="content-ja" style="display:none;"><h1>FMC DR トレーナー</h1><p>Beam search (K=3) が各スクランブルに対する最短の EO → DR → HTR → フィニッシュを見つけます。</p><div id="dr-trainer-trees"></div></div><div id="content-de" style="display:none;"><h1>FMC DR Trainer</h1><p>Beam search (K=3) findet das kürzeste EO → DR → HTR → Finish für jeden Scramble.</p><div id="dr-trainer-trees"></div></div><div id="content-fr" style="display:none;"><h1>Entraîneur FMC DR</h1><p>Beam search (K=3) trouve le plus court EO → DR → HTR → finish pour chaque mélange.</p><div id="dr-trainer-trees"></div></div><div id="content-it" style="display:none;"><h1>Allenatore FMC DR</h1><p>Beam search (K=3) trova il più breve EO → DR → HTR → finish per ogni scramble.</p><div id="dr-trainer-trees"></div></div>
+<script>
+const BEAM_DATA = {"/tmp/beam_json/scramble_1.json": {"scramble": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F", "K": 3, "solutions": [{"eo": {"axis": "RL", "moves": "L", "len": 1, "cumulative": 1, "scramble_after": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F L"}, "dr": {"moves": "R' B2 R U B2 U", "len": 6}, "htr": {"moves": "R' U2 R2 B2 R B2 R", "len": 7}, "finish": {"moves": "U2 D2 F2 U2 R2 L2 F2 L2 U2 F2", "len": 10}, "total": 24}, {"eo": {"axis": "RL", "moves": "L", "len": 1, "cumulative": 1, "scramble_after": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F L"}, "dr": {"moves": "R' B2 R U B2 U", "len": 6}, "htr": {"moves": "R B2 R2 U2 R' B2 R", "len": 7}, "finish": {"moves": "F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2", "len": 12}, "total": 26}, {"eo": {"axis": "RL", "moves": "L", "len": 1, "cumulative": 1, "scramble_after": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F L"}, "dr": {"moves": "R' B2 R D L2 D", "len": 6}, "htr": {"moves": "R U2 R2 F2 R' B2 L", "len": 7}, "finish": {"moves": "U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2", "len": 12}, "total": 26}], "mermaid": "flowchart TD\n    R0[\"Scramble<br/>R' U' F D2 R2 B2 D2 R2 B' F' L...<br/>0 moves\"]\n    E0_0[\"RL EO<br/>L<br/>1\"]\n    R0 --> E0_0\n    D0_0[\"DR<br/>R' B2 R U B2 U<br/>7\"]\n    E0_0 --> D0_0\n    H0_0[\"HTR<br/>R' U2 R2 B2 R B2 R<br/>14\"]\n    D0_0 --> H0_0\n    F0_0[\"FIN<br/>U2 D2 F2 U2 R2 L2 F2 L2 U2 F2<br/>24\"]\n    H0_0 --> F0_0\n    E0_1[\"RL EO<br/>L<br/>1\"]\n    R0 --> E0_1\n    D0_1[\"DR<br/>R' B2 R U B2 U<br/>7\"]\n    E0_1 --> D0_1\n    H0_1[\"HTR<br/>R B2 R2 U2 R' B2 R<br/>14\"]\n    D0_1 --> H0_1\n    F0_1[\"FIN<br/>F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2<br/>26\"]\n    H0_1 --> F0_1\n    E0_2[\"RL EO<br/>L<br/>1\"]\n    R0 --> E0_2\n    D0_2[\"DR<br/>R' B2 R D L2 D<br/>7\"]\n    E0_2 --> D0_2\n    H0_2[\"HTR<br/>R U2 R2 F2 R' B2 L<br/>14\"]\n    D0_2 --> H0_2\n    F0_2[\"FIN<br/>U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2<br/>26\"]\n    H0_2 --> F0_2\n    style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json/scramble_2.json": {"scramble": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B'", "K": 3, "solutions": [{"eo": {"axis": "UD", "moves": "L D U", "len": 3, "cumulative": 3, "scramble_after": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B' L D U"}, "dr": {"moves": "D2 F2 U2 D2 L' U R2 U' F", "len": 9}, "htr": {"moves": "U L2 U R2 U' B2 U L2 U", "len": 9}, "finish": {"moves": "L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2", "len": 11}, "total": 32}, {"eo": {"axis": "UD", "moves": "L D U", "len": 3, "cumulative": 3, "scramble_after": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B' L D U"}, "dr": {"moves": "D2 F2 U2 D2 L' U R2 U' F", "len": 9}, "htr": {"moves": "U L2 U' L2 U B2 U' R2 U", "len": 9}, "finish": {"moves": "R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2", "len": 11}, "total": 32}, {"eo": {"axis": "UD", "moves": "L D U", "len": 3, "cumulative": 3, "scramble_after": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B' L D U"}, "dr": {"moves": "U2 B2 U2 D2 R' D F2 D' B", "len": 9}, "htr": {"moves": "U R2 U L2 U' F2 U R2 U", "len": 9}, "finish": {"moves": "R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2", "len": 11}, "total": 32}], "mermaid": "flowchart TD\n    R1[\"Scramble<br/>U' B L' U D' R' D L' U' F D2 F...<br/>0 moves\"]\n    E1_0[\"UD EO<br/>L D U<br/>3\"]\n    R1 --> E1_0\n    D1_0[\"DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12\"]\n    E1_0 --> D1_0\n    H1_0[\"HTR<br/>U L2 U R2 U' B2 U L2 U<br/>21\"]\n    D1_0 --> H1_0\n    F1_0[\"FIN<br/>L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2<br/>32\"]\n    H1_0 --> F1_0\n    E1_1[\"UD EO<br/>L D U<br/>3\"]\n    R1 --> E1_1\n    D1_1[\"DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12\"]\n    E1_1 --> D1_1\n    H1_1[\"HTR<br/>U L2 U' L2 U B2 U' R2 U<br/>21\"]\n    D1_1 --> H1_1\n    F1_1[\"FIN<br/>R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2<br/>32\"]\n    H1_1 --> F1_1\n    E1_2[\"UD EO<br/>L D U<br/>3\"]\n    R1 --> E1_2\n    D1_2[\"DR<br/>U2 B2 U2 D2 R' D F2 D' B<br/>12\"]\n    E1_2 --> D1_2\n    H1_2[\"HTR<br/>U R2 U L2 U' F2 U R2 U<br/>21\"]\n    D1_2 --> H1_2\n    F1_2[\"FIN<br/>R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2<br/>32\"]\n    H1_2 --> F1_2\n    style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json/scramble_3.json": {"scramble": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2", "K": 3, "solutions": [{"eo": {"axis": "UD", "moves": "B U L' D", "len": 4, "cumulative": 4, "scramble_after": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2 B U L' D"}, "dr": {"moves": "R2 L F' B' U R U' B2 L", "len": 9}, "htr": {"moves": "L2 U' R2 U2 B2 U' F2 D", "len": 8}, "finish": {"moves": "U2 R2 L2 F2 R2 B2 D2 B2 L2 F2", "len": 10}, "total": 31}, {"eo": {"axis": "UD", "moves": "B U L' D", "len": 4, "cumulative": 4, "scramble_after": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2 B U L' D"}, "dr": {"moves": "R2 L F' B' U R U' B2 L", "len": 9}, "htr": {"moves": "L2 U B2 U2 R2 U F2 D", "len": 8}, "finish": {"moves": "U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2", "len": 12}, "total": 33}, {"eo": {"axis": "UD", "moves": "B U L' D", "len": 4, "cumulative": 4, "scramble_after": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2 B U L' D"}, "dr": {"moves": "R2 L F' B' U R U' B2 L", "len": 9}, "htr": {"moves": "U R2 U B2 U' L2 U' R2 U", "len": 9}, "finish": {"moves": "U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2", "len": 12}, "total": 34}], "mermaid": "flowchart TD\n    R2[\"Scramble<br/>F2 L D' B' R2 U' F' D F B2 R F...<br/>0 moves\"]\n    E2_0[\"UD EO<br/>B U L' D<br/>4\"]\n    R2 --> E2_0\n    D2_0[\"DR<br/>R2 L F' B' U R U' B2 L<br/>13\"]\n    E2_0 --> D2_0\n    H2_0[\"HTR<br/>L2 U' R2 U2 B2 U' F2 D<br/>21\"]\n    D2_0 --> H2_0\n    F2_0[\"FIN<br/>U2 R2 L2 F2 R2 B2 D2 B2 L2 F2<br/>31\"]\n    H2_0 --> F2_0\n    E2_1[\"UD EO<br/>B U L' D<br/>4\"]\n    R2 --> E2_1\n    D2_1[\"DR<br/>R2 L F' B' U R U' B2 L<br/>13\"]\n    E2_1 --> D2_1\n    H2_1[\"HTR<br/>L2 U B2 U2 R2 U F2 D<br/>21\"]\n    D2_1 --> H2_1\n    F2_1[\"FIN<br/>U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2<br/>33\"]\n    H2_1 --> F2_1\n    E2_2[\"UD EO<br/>B U L' D<br/>4\"]\n    R2 --> E2_2\n    D2_2[\"DR<br/>R2 L F' B' U R U' B2 L<br/>13\"]\n    E2_2 --> D2_2\n    H2_2[\"HTR<br/>U R2 U B2 U' L2 U' R2 U<br/>22\"]\n    D2_2 --> H2_2\n    F2_2[\"FIN<br/>U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2<br/>34\"]\n    H2_2 --> F2_2\n    style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}};
+function renderTrees() {
+    const container = document.getElementById('dr-trainer-trees');
+    BEAM_DATA.forEach((d, idx) => {
+        const div = document.createElement('div');
+        div.innerHTML = `<h2>Scramble ${idx+1} (${d.solutions[0].total} moves best)</h2>
+        <p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">${d.scramble}</p>
+        <div class="mermaid">${d.mermaid}</div>`;
+        container.appendChild(div);
+    });
+}
+document.addEventListener('DOMContentLoaded', renderTrees);
+</script>
+<script>
+(function () {
+  var KEY = 'cubingpro-lang';
+  var LANGS = ['en', 'zh-cn', 'zh-tw', 'ja', 'de', 'fr', 'it'];
+  var HTML_LANG = {'en': 'en', 'zh-cn': 'zh-CN', 'zh-tw': 'zh-TW',
+                   'ja': 'ja', 'de': 'de', 'fr': 'fr', 'it': 'it'};
+  function defaultLang() {
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      if (/Asia\/(Shanghai|Chongqing|Urumqi)/.test(tz)) return 'zh-cn';
+      if (/Asia\/(Taipei|Hong_Kong|Macau)/.test(tz)) return 'zh-tw';
+      if (tz === 'Asia/Tokyo') return 'ja';
+      if (/Europe\/(Berlin|Vienna|Zurich)/.test(tz)) return 'de';
+      if (/Europe\/(Paris|Brussels|Monaco|Luxembourg)/.test(tz)) return 'fr';
+      if (/Europe\/(Rome|Vatican|San_Marino)/.test(tz)) return 'it';
+    } catch (e) {}
+    var off = new Date().getTimezoneOffset();
+    if (off / 60 === -8) return 'zh-cn';
+    if (off / 60 === -9) return 'ja';
+    return 'en';
+  }
+  var lang = null;
+  try { lang = localStorage.getItem(KEY); } catch (e) {}
+  if (LANGS.indexOf(lang) === -1) lang = defaultLang();
+
+  var toggle = document.getElementById('lang-toggle');
+  var btns = {};
+  LANGS.forEach(function (k) {
+    btns[k] = document.getElementById('btn-' + k);
+  });
+
+  function show(l) {
+    lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) {}
+    LANGS.forEach(function (k) {
+      var el = document.getElementById('content-' + k);
+      if (el) el.style.display = (k === l ? 'block' : 'none');
+      var b = btns[k];
+      if (b) {
+        b.classList.toggle('active', k === l);
+        b.setAttribute('aria-pressed', k === l ? 'true' : 'false');
+      }
+    });
+    document.querySelectorAll('.i18n').forEach(function (el) {
+      var t = el.getAttribute('data-' + l);
+      if (t) el.textContent = t;
+    });
+    if (toggle) {
+      var tt = toggle.getAttribute('data-title-' + l);
+      if (tt) document.title = tt;
+    }
+    document.documentElement.lang = HTML_LANG[l] || 'en';
+  }
+
+  LANGS.forEach(function (k) {
+    if (btns[k]) btns[k].addEventListener('click', function () { if (lang !== k) show(k); });
+  });
+
+  show(lang);
+})();
+</script>
+
+  </main>
+</div>
+<footer class="site-footer">
+  <span>&copy; 2025 Bowen Deng</span>
+  <span class="dot">&middot;</span>
+  <span>Cubing Pro</span>
+  <span class="dot">&middot;</span>
+  <span>&#129352; 5% off at TheCubicle &amp; SpeedCubeShop with code <button id="discount-code" title="Click to copy">CUBINGPRO</button></span>
+</footer>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var nav = document.getElementById('site-nav');
+  toggle.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && window.innerWidth <= 900) {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  var code = document.getElementById('discount-code');
+  code.addEventListener('click', function () {
+    var done = function () {
+      code.textContent = 'COPIED!';
+      setTimeout(function () { code.textContent = 'CUBINGPRO'; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('CUBINGPRO').then(done, done);
+    } else { done(); }
+  });
+})();
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850" crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-CK6MWC01K0');
+</script>
+</body>
+</html>
