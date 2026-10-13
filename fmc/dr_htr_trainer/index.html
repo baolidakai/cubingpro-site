@@ -40,554 +40,554 @@ import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.mi
 window.mermaid = mermaid;
 mermaid.initialize({ startOnLoad: true });
 </script><div id="content-en" style="display:none;"><h1>FMC DR HTR Trainer</h1><p>Beam search (K=3) finds the shortest EO → DR → HTR → finish for each scramble. Green path is the best solution. Each node shows cumulative moves.</p><h2>Scramble 1 (24 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F</p><pre class="mermaid">flowchart TD
-    R0["Scramble<br/>R' U' F D2 R2 B2 D2 R2 B' F' L...<br/>0 moves"]
-    E0_0["RL EO<br/>L<br/>1"]
+    R0["Scramble|R' U' F D2 R2 B2 D2 R2 B' F' L...|0 moves"]
+    E0_0["RL EO|L|1"]
     R0 --> E0_0
-    D0_0["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_0["DR|R' B2 R U B2 U|7"]
     E0_0 --> D0_0
-    H0_0["HTR<br/>R' U2 R2 B2 R B2 R<br/>14"]
+    H0_0["HTR|R' U2 R2 B2 R B2 R|14"]
     D0_0 --> H0_0
-    F0_0["FIN<br/>U2 D2 F2 U2 R2 L2 F2 L2 U2 F2<br/>24"]
+    F0_0["FIN|U2 D2 F2 U2 R2 L2 F2 L2 U2 F2|24"]
     H0_0 --> F0_0
-    E0_1["RL EO<br/>L<br/>1"]
+    E0_1["RL EO|L|1"]
     R0 --> E0_1
-    D0_1["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_1["DR|R' B2 R U B2 U|7"]
     E0_1 --> D0_1
-    H0_1["HTR<br/>R B2 R2 U2 R' B2 R<br/>14"]
+    H0_1["HTR|R B2 R2 U2 R' B2 R|14"]
     D0_1 --> H0_1
-    F0_1["FIN<br/>F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2<br/>26"]
+    F0_1["FIN|F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2|26"]
     H0_1 --> F0_1
-    E0_2["RL EO<br/>L<br/>1"]
+    E0_2["RL EO|L|1"]
     R0 --> E0_2
-    D0_2["DR<br/>R' B2 R D L2 D<br/>7"]
+    D0_2["DR|R' B2 R D L2 D|7"]
     E0_2 --> D0_2
-    H0_2["HTR<br/>R U2 R2 F2 R' B2 L<br/>14"]
+    H0_2["HTR|R U2 R2 F2 R' B2 L|14"]
     D0_2 --> H0_2
-    F0_2["FIN<br/>U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2<br/>26"]
+    F0_2["FIN|U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2|26"]
     H0_2 --> F0_2
     style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 2 (32 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B'</p><pre class="mermaid">flowchart TD
-    R1["Scramble<br/>U' B L' U D' R' D L' U' F D2 F...<br/>0 moves"]
-    E1_0["UD EO<br/>L D U<br/>3"]
+    R1["Scramble|U' B L' U D' R' D L' U' F D2 F...|0 moves"]
+    E1_0["UD EO|L D U|3"]
     R1 --> E1_0
-    D1_0["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_0["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_0 --> D1_0
-    H1_0["HTR<br/>U L2 U R2 U' B2 U L2 U<br/>21"]
+    H1_0["HTR|U L2 U R2 U' B2 U L2 U|21"]
     D1_0 --> H1_0
-    F1_0["FIN<br/>L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2<br/>32"]
+    F1_0["FIN|L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2|32"]
     H1_0 --> F1_0
-    E1_1["UD EO<br/>L D U<br/>3"]
+    E1_1["UD EO|L D U|3"]
     R1 --> E1_1
-    D1_1["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_1["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_1 --> D1_1
-    H1_1["HTR<br/>U L2 U' L2 U B2 U' R2 U<br/>21"]
+    H1_1["HTR|U L2 U' L2 U B2 U' R2 U|21"]
     D1_1 --> H1_1
-    F1_1["FIN<br/>R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2<br/>32"]
+    F1_1["FIN|R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2|32"]
     H1_1 --> F1_1
-    E1_2["UD EO<br/>L D U<br/>3"]
+    E1_2["UD EO|L D U|3"]
     R1 --> E1_2
-    D1_2["DR<br/>U2 B2 U2 D2 R' D F2 D' B<br/>12"]
+    D1_2["DR|U2 B2 U2 D2 R' D F2 D' B|12"]
     E1_2 --> D1_2
-    H1_2["HTR<br/>U R2 U L2 U' F2 U R2 U<br/>21"]
+    H1_2["HTR|U R2 U L2 U' F2 U R2 U|21"]
     D1_2 --> H1_2
-    F1_2["FIN<br/>R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2<br/>32"]
+    F1_2["FIN|R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2|32"]
     H1_2 --> F1_2
     style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 3 (31 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2</p><pre class="mermaid">flowchart TD
-    R2["Scramble<br/>F2 L D' B' R2 U' F' D F B2 R F...<br/>0 moves"]
-    E2_0["UD EO<br/>B U L' D<br/>4"]
+    R2["Scramble|F2 L D' B' R2 U' F' D F B2 R F...|0 moves"]
+    E2_0["UD EO|B U L' D|4"]
     R2 --> E2_0
-    D2_0["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_0["DR|R2 L F' B' U R U' B2 L|13"]
     E2_0 --> D2_0
-    H2_0["HTR<br/>L2 U' R2 U2 B2 U' F2 D<br/>21"]
+    H2_0["HTR|L2 U' R2 U2 B2 U' F2 D|21"]
     D2_0 --> H2_0
-    F2_0["FIN<br/>U2 R2 L2 F2 R2 B2 D2 B2 L2 F2<br/>31"]
+    F2_0["FIN|U2 R2 L2 F2 R2 B2 D2 B2 L2 F2|31"]
     H2_0 --> F2_0
-    E2_1["UD EO<br/>B U L' D<br/>4"]
+    E2_1["UD EO|B U L' D|4"]
     R2 --> E2_1
-    D2_1["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_1["DR|R2 L F' B' U R U' B2 L|13"]
     E2_1 --> D2_1
-    H2_1["HTR<br/>L2 U B2 U2 R2 U F2 D<br/>21"]
+    H2_1["HTR|L2 U B2 U2 R2 U F2 D|21"]
     D2_1 --> H2_1
-    F2_1["FIN<br/>U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2<br/>33"]
+    F2_1["FIN|U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2|33"]
     H2_1 --> F2_1
-    E2_2["UD EO<br/>B U L' D<br/>4"]
+    E2_2["UD EO|B U L' D|4"]
     R2 --> E2_2
-    D2_2["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_2["DR|R2 L F' B' U R U' B2 L|13"]
     E2_2 --> D2_2
-    H2_2["HTR<br/>U R2 U B2 U' L2 U' R2 U<br/>22"]
+    H2_2["HTR|U R2 U B2 U' L2 U' R2 U|22"]
     D2_2 --> H2_2
-    F2_2["FIN<br/>U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2<br/>34"]
+    F2_2["FIN|U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2|34"]
     H2_2 --> F2_2
     style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre></div><div id="content-zh-cn" style="display:none;"><h1>FMC DR HTR 训练器</h1><p>Beam search (K=3) 为每个打乱找出最短的 EO → DR → HTR → 收尾。绿色路径是最优解，每个节点显示累计步数。</p><h2>Scramble 1 (24 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F</p><pre class="mermaid">flowchart TD
-    R0["Scramble<br/>R' U' F D2 R2 B2 D2 R2 B' F' L...<br/>0 moves"]
-    E0_0["RL EO<br/>L<br/>1"]
+    R0["Scramble|R' U' F D2 R2 B2 D2 R2 B' F' L...|0 moves"]
+    E0_0["RL EO|L|1"]
     R0 --> E0_0
-    D0_0["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_0["DR|R' B2 R U B2 U|7"]
     E0_0 --> D0_0
-    H0_0["HTR<br/>R' U2 R2 B2 R B2 R<br/>14"]
+    H0_0["HTR|R' U2 R2 B2 R B2 R|14"]
     D0_0 --> H0_0
-    F0_0["FIN<br/>U2 D2 F2 U2 R2 L2 F2 L2 U2 F2<br/>24"]
+    F0_0["FIN|U2 D2 F2 U2 R2 L2 F2 L2 U2 F2|24"]
     H0_0 --> F0_0
-    E0_1["RL EO<br/>L<br/>1"]
+    E0_1["RL EO|L|1"]
     R0 --> E0_1
-    D0_1["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_1["DR|R' B2 R U B2 U|7"]
     E0_1 --> D0_1
-    H0_1["HTR<br/>R B2 R2 U2 R' B2 R<br/>14"]
+    H0_1["HTR|R B2 R2 U2 R' B2 R|14"]
     D0_1 --> H0_1
-    F0_1["FIN<br/>F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2<br/>26"]
+    F0_1["FIN|F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2|26"]
     H0_1 --> F0_1
-    E0_2["RL EO<br/>L<br/>1"]
+    E0_2["RL EO|L|1"]
     R0 --> E0_2
-    D0_2["DR<br/>R' B2 R D L2 D<br/>7"]
+    D0_2["DR|R' B2 R D L2 D|7"]
     E0_2 --> D0_2
-    H0_2["HTR<br/>R U2 R2 F2 R' B2 L<br/>14"]
+    H0_2["HTR|R U2 R2 F2 R' B2 L|14"]
     D0_2 --> H0_2
-    F0_2["FIN<br/>U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2<br/>26"]
+    F0_2["FIN|U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2|26"]
     H0_2 --> F0_2
     style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 2 (32 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B'</p><pre class="mermaid">flowchart TD
-    R1["Scramble<br/>U' B L' U D' R' D L' U' F D2 F...<br/>0 moves"]
-    E1_0["UD EO<br/>L D U<br/>3"]
+    R1["Scramble|U' B L' U D' R' D L' U' F D2 F...|0 moves"]
+    E1_0["UD EO|L D U|3"]
     R1 --> E1_0
-    D1_0["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_0["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_0 --> D1_0
-    H1_0["HTR<br/>U L2 U R2 U' B2 U L2 U<br/>21"]
+    H1_0["HTR|U L2 U R2 U' B2 U L2 U|21"]
     D1_0 --> H1_0
-    F1_0["FIN<br/>L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2<br/>32"]
+    F1_0["FIN|L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2|32"]
     H1_0 --> F1_0
-    E1_1["UD EO<br/>L D U<br/>3"]
+    E1_1["UD EO|L D U|3"]
     R1 --> E1_1
-    D1_1["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_1["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_1 --> D1_1
-    H1_1["HTR<br/>U L2 U' L2 U B2 U' R2 U<br/>21"]
+    H1_1["HTR|U L2 U' L2 U B2 U' R2 U|21"]
     D1_1 --> H1_1
-    F1_1["FIN<br/>R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2<br/>32"]
+    F1_1["FIN|R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2|32"]
     H1_1 --> F1_1
-    E1_2["UD EO<br/>L D U<br/>3"]
+    E1_2["UD EO|L D U|3"]
     R1 --> E1_2
-    D1_2["DR<br/>U2 B2 U2 D2 R' D F2 D' B<br/>12"]
+    D1_2["DR|U2 B2 U2 D2 R' D F2 D' B|12"]
     E1_2 --> D1_2
-    H1_2["HTR<br/>U R2 U L2 U' F2 U R2 U<br/>21"]
+    H1_2["HTR|U R2 U L2 U' F2 U R2 U|21"]
     D1_2 --> H1_2
-    F1_2["FIN<br/>R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2<br/>32"]
+    F1_2["FIN|R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2|32"]
     H1_2 --> F1_2
     style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 3 (31 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2</p><pre class="mermaid">flowchart TD
-    R2["Scramble<br/>F2 L D' B' R2 U' F' D F B2 R F...<br/>0 moves"]
-    E2_0["UD EO<br/>B U L' D<br/>4"]
+    R2["Scramble|F2 L D' B' R2 U' F' D F B2 R F...|0 moves"]
+    E2_0["UD EO|B U L' D|4"]
     R2 --> E2_0
-    D2_0["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_0["DR|R2 L F' B' U R U' B2 L|13"]
     E2_0 --> D2_0
-    H2_0["HTR<br/>L2 U' R2 U2 B2 U' F2 D<br/>21"]
+    H2_0["HTR|L2 U' R2 U2 B2 U' F2 D|21"]
     D2_0 --> H2_0
-    F2_0["FIN<br/>U2 R2 L2 F2 R2 B2 D2 B2 L2 F2<br/>31"]
+    F2_0["FIN|U2 R2 L2 F2 R2 B2 D2 B2 L2 F2|31"]
     H2_0 --> F2_0
-    E2_1["UD EO<br/>B U L' D<br/>4"]
+    E2_1["UD EO|B U L' D|4"]
     R2 --> E2_1
-    D2_1["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_1["DR|R2 L F' B' U R U' B2 L|13"]
     E2_1 --> D2_1
-    H2_1["HTR<br/>L2 U B2 U2 R2 U F2 D<br/>21"]
+    H2_1["HTR|L2 U B2 U2 R2 U F2 D|21"]
     D2_1 --> H2_1
-    F2_1["FIN<br/>U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2<br/>33"]
+    F2_1["FIN|U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2|33"]
     H2_1 --> F2_1
-    E2_2["UD EO<br/>B U L' D<br/>4"]
+    E2_2["UD EO|B U L' D|4"]
     R2 --> E2_2
-    D2_2["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_2["DR|R2 L F' B' U R U' B2 L|13"]
     E2_2 --> D2_2
-    H2_2["HTR<br/>U R2 U B2 U' L2 U' R2 U<br/>22"]
+    H2_2["HTR|U R2 U B2 U' L2 U' R2 U|22"]
     D2_2 --> H2_2
-    F2_2["FIN<br/>U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2<br/>34"]
+    F2_2["FIN|U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2|34"]
     H2_2 --> F2_2
     style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre></div><div id="content-zh-tw" style="display:none;"><h1>FMC DR HTR 訓練器</h1><p>Beam search (K=3) 為每個打亂找出最短的 EO → DR → HTR → 收尾。綠色路徑是最優解，每個節點顯示累計步數。</p><h2>Scramble 1 (24 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F</p><pre class="mermaid">flowchart TD
-    R0["Scramble<br/>R' U' F D2 R2 B2 D2 R2 B' F' L...<br/>0 moves"]
-    E0_0["RL EO<br/>L<br/>1"]
+    R0["Scramble|R' U' F D2 R2 B2 D2 R2 B' F' L...|0 moves"]
+    E0_0["RL EO|L|1"]
     R0 --> E0_0
-    D0_0["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_0["DR|R' B2 R U B2 U|7"]
     E0_0 --> D0_0
-    H0_0["HTR<br/>R' U2 R2 B2 R B2 R<br/>14"]
+    H0_0["HTR|R' U2 R2 B2 R B2 R|14"]
     D0_0 --> H0_0
-    F0_0["FIN<br/>U2 D2 F2 U2 R2 L2 F2 L2 U2 F2<br/>24"]
+    F0_0["FIN|U2 D2 F2 U2 R2 L2 F2 L2 U2 F2|24"]
     H0_0 --> F0_0
-    E0_1["RL EO<br/>L<br/>1"]
+    E0_1["RL EO|L|1"]
     R0 --> E0_1
-    D0_1["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_1["DR|R' B2 R U B2 U|7"]
     E0_1 --> D0_1
-    H0_1["HTR<br/>R B2 R2 U2 R' B2 R<br/>14"]
+    H0_1["HTR|R B2 R2 U2 R' B2 R|14"]
     D0_1 --> H0_1
-    F0_1["FIN<br/>F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2<br/>26"]
+    F0_1["FIN|F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2|26"]
     H0_1 --> F0_1
-    E0_2["RL EO<br/>L<br/>1"]
+    E0_2["RL EO|L|1"]
     R0 --> E0_2
-    D0_2["DR<br/>R' B2 R D L2 D<br/>7"]
+    D0_2["DR|R' B2 R D L2 D|7"]
     E0_2 --> D0_2
-    H0_2["HTR<br/>R U2 R2 F2 R' B2 L<br/>14"]
+    H0_2["HTR|R U2 R2 F2 R' B2 L|14"]
     D0_2 --> H0_2
-    F0_2["FIN<br/>U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2<br/>26"]
+    F0_2["FIN|U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2|26"]
     H0_2 --> F0_2
     style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 2 (32 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B'</p><pre class="mermaid">flowchart TD
-    R1["Scramble<br/>U' B L' U D' R' D L' U' F D2 F...<br/>0 moves"]
-    E1_0["UD EO<br/>L D U<br/>3"]
+    R1["Scramble|U' B L' U D' R' D L' U' F D2 F...|0 moves"]
+    E1_0["UD EO|L D U|3"]
     R1 --> E1_0
-    D1_0["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_0["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_0 --> D1_0
-    H1_0["HTR<br/>U L2 U R2 U' B2 U L2 U<br/>21"]
+    H1_0["HTR|U L2 U R2 U' B2 U L2 U|21"]
     D1_0 --> H1_0
-    F1_0["FIN<br/>L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2<br/>32"]
+    F1_0["FIN|L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2|32"]
     H1_0 --> F1_0
-    E1_1["UD EO<br/>L D U<br/>3"]
+    E1_1["UD EO|L D U|3"]
     R1 --> E1_1
-    D1_1["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_1["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_1 --> D1_1
-    H1_1["HTR<br/>U L2 U' L2 U B2 U' R2 U<br/>21"]
+    H1_1["HTR|U L2 U' L2 U B2 U' R2 U|21"]
     D1_1 --> H1_1
-    F1_1["FIN<br/>R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2<br/>32"]
+    F1_1["FIN|R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2|32"]
     H1_1 --> F1_1
-    E1_2["UD EO<br/>L D U<br/>3"]
+    E1_2["UD EO|L D U|3"]
     R1 --> E1_2
-    D1_2["DR<br/>U2 B2 U2 D2 R' D F2 D' B<br/>12"]
+    D1_2["DR|U2 B2 U2 D2 R' D F2 D' B|12"]
     E1_2 --> D1_2
-    H1_2["HTR<br/>U R2 U L2 U' F2 U R2 U<br/>21"]
+    H1_2["HTR|U R2 U L2 U' F2 U R2 U|21"]
     D1_2 --> H1_2
-    F1_2["FIN<br/>R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2<br/>32"]
+    F1_2["FIN|R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2|32"]
     H1_2 --> F1_2
     style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 3 (31 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2</p><pre class="mermaid">flowchart TD
-    R2["Scramble<br/>F2 L D' B' R2 U' F' D F B2 R F...<br/>0 moves"]
-    E2_0["UD EO<br/>B U L' D<br/>4"]
+    R2["Scramble|F2 L D' B' R2 U' F' D F B2 R F...|0 moves"]
+    E2_0["UD EO|B U L' D|4"]
     R2 --> E2_0
-    D2_0["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_0["DR|R2 L F' B' U R U' B2 L|13"]
     E2_0 --> D2_0
-    H2_0["HTR<br/>L2 U' R2 U2 B2 U' F2 D<br/>21"]
+    H2_0["HTR|L2 U' R2 U2 B2 U' F2 D|21"]
     D2_0 --> H2_0
-    F2_0["FIN<br/>U2 R2 L2 F2 R2 B2 D2 B2 L2 F2<br/>31"]
+    F2_0["FIN|U2 R2 L2 F2 R2 B2 D2 B2 L2 F2|31"]
     H2_0 --> F2_0
-    E2_1["UD EO<br/>B U L' D<br/>4"]
+    E2_1["UD EO|B U L' D|4"]
     R2 --> E2_1
-    D2_1["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_1["DR|R2 L F' B' U R U' B2 L|13"]
     E2_1 --> D2_1
-    H2_1["HTR<br/>L2 U B2 U2 R2 U F2 D<br/>21"]
+    H2_1["HTR|L2 U B2 U2 R2 U F2 D|21"]
     D2_1 --> H2_1
-    F2_1["FIN<br/>U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2<br/>33"]
+    F2_1["FIN|U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2|33"]
     H2_1 --> F2_1
-    E2_2["UD EO<br/>B U L' D<br/>4"]
+    E2_2["UD EO|B U L' D|4"]
     R2 --> E2_2
-    D2_2["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_2["DR|R2 L F' B' U R U' B2 L|13"]
     E2_2 --> D2_2
-    H2_2["HTR<br/>U R2 U B2 U' L2 U' R2 U<br/>22"]
+    H2_2["HTR|U R2 U B2 U' L2 U' R2 U|22"]
     D2_2 --> H2_2
-    F2_2["FIN<br/>U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2<br/>34"]
+    F2_2["FIN|U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2|34"]
     H2_2 --> F2_2
     style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre></div><div id="content-ja" style="display:none;"><h1>FMC DR HTR トレーナー</h1><p>Beam search (K=3) が各スクランブルに対する最短の EO → DR → HTR → フィニッシュを見つけます。</p><h2>Scramble 1 (24 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F</p><pre class="mermaid">flowchart TD
-    R0["Scramble<br/>R' U' F D2 R2 B2 D2 R2 B' F' L...<br/>0 moves"]
-    E0_0["RL EO<br/>L<br/>1"]
+    R0["Scramble|R' U' F D2 R2 B2 D2 R2 B' F' L...|0 moves"]
+    E0_0["RL EO|L|1"]
     R0 --> E0_0
-    D0_0["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_0["DR|R' B2 R U B2 U|7"]
     E0_0 --> D0_0
-    H0_0["HTR<br/>R' U2 R2 B2 R B2 R<br/>14"]
+    H0_0["HTR|R' U2 R2 B2 R B2 R|14"]
     D0_0 --> H0_0
-    F0_0["FIN<br/>U2 D2 F2 U2 R2 L2 F2 L2 U2 F2<br/>24"]
+    F0_0["FIN|U2 D2 F2 U2 R2 L2 F2 L2 U2 F2|24"]
     H0_0 --> F0_0
-    E0_1["RL EO<br/>L<br/>1"]
+    E0_1["RL EO|L|1"]
     R0 --> E0_1
-    D0_1["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_1["DR|R' B2 R U B2 U|7"]
     E0_1 --> D0_1
-    H0_1["HTR<br/>R B2 R2 U2 R' B2 R<br/>14"]
+    H0_1["HTR|R B2 R2 U2 R' B2 R|14"]
     D0_1 --> H0_1
-    F0_1["FIN<br/>F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2<br/>26"]
+    F0_1["FIN|F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2|26"]
     H0_1 --> F0_1
-    E0_2["RL EO<br/>L<br/>1"]
+    E0_2["RL EO|L|1"]
     R0 --> E0_2
-    D0_2["DR<br/>R' B2 R D L2 D<br/>7"]
+    D0_2["DR|R' B2 R D L2 D|7"]
     E0_2 --> D0_2
-    H0_2["HTR<br/>R U2 R2 F2 R' B2 L<br/>14"]
+    H0_2["HTR|R U2 R2 F2 R' B2 L|14"]
     D0_2 --> H0_2
-    F0_2["FIN<br/>U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2<br/>26"]
+    F0_2["FIN|U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2|26"]
     H0_2 --> F0_2
     style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 2 (32 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B'</p><pre class="mermaid">flowchart TD
-    R1["Scramble<br/>U' B L' U D' R' D L' U' F D2 F...<br/>0 moves"]
-    E1_0["UD EO<br/>L D U<br/>3"]
+    R1["Scramble|U' B L' U D' R' D L' U' F D2 F...|0 moves"]
+    E1_0["UD EO|L D U|3"]
     R1 --> E1_0
-    D1_0["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_0["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_0 --> D1_0
-    H1_0["HTR<br/>U L2 U R2 U' B2 U L2 U<br/>21"]
+    H1_0["HTR|U L2 U R2 U' B2 U L2 U|21"]
     D1_0 --> H1_0
-    F1_0["FIN<br/>L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2<br/>32"]
+    F1_0["FIN|L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2|32"]
     H1_0 --> F1_0
-    E1_1["UD EO<br/>L D U<br/>3"]
+    E1_1["UD EO|L D U|3"]
     R1 --> E1_1
-    D1_1["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_1["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_1 --> D1_1
-    H1_1["HTR<br/>U L2 U' L2 U B2 U' R2 U<br/>21"]
+    H1_1["HTR|U L2 U' L2 U B2 U' R2 U|21"]
     D1_1 --> H1_1
-    F1_1["FIN<br/>R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2<br/>32"]
+    F1_1["FIN|R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2|32"]
     H1_1 --> F1_1
-    E1_2["UD EO<br/>L D U<br/>3"]
+    E1_2["UD EO|L D U|3"]
     R1 --> E1_2
-    D1_2["DR<br/>U2 B2 U2 D2 R' D F2 D' B<br/>12"]
+    D1_2["DR|U2 B2 U2 D2 R' D F2 D' B|12"]
     E1_2 --> D1_2
-    H1_2["HTR<br/>U R2 U L2 U' F2 U R2 U<br/>21"]
+    H1_2["HTR|U R2 U L2 U' F2 U R2 U|21"]
     D1_2 --> H1_2
-    F1_2["FIN<br/>R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2<br/>32"]
+    F1_2["FIN|R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2|32"]
     H1_2 --> F1_2
     style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 3 (31 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2</p><pre class="mermaid">flowchart TD
-    R2["Scramble<br/>F2 L D' B' R2 U' F' D F B2 R F...<br/>0 moves"]
-    E2_0["UD EO<br/>B U L' D<br/>4"]
+    R2["Scramble|F2 L D' B' R2 U' F' D F B2 R F...|0 moves"]
+    E2_0["UD EO|B U L' D|4"]
     R2 --> E2_0
-    D2_0["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_0["DR|R2 L F' B' U R U' B2 L|13"]
     E2_0 --> D2_0
-    H2_0["HTR<br/>L2 U' R2 U2 B2 U' F2 D<br/>21"]
+    H2_0["HTR|L2 U' R2 U2 B2 U' F2 D|21"]
     D2_0 --> H2_0
-    F2_0["FIN<br/>U2 R2 L2 F2 R2 B2 D2 B2 L2 F2<br/>31"]
+    F2_0["FIN|U2 R2 L2 F2 R2 B2 D2 B2 L2 F2|31"]
     H2_0 --> F2_0
-    E2_1["UD EO<br/>B U L' D<br/>4"]
+    E2_1["UD EO|B U L' D|4"]
     R2 --> E2_1
-    D2_1["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_1["DR|R2 L F' B' U R U' B2 L|13"]
     E2_1 --> D2_1
-    H2_1["HTR<br/>L2 U B2 U2 R2 U F2 D<br/>21"]
+    H2_1["HTR|L2 U B2 U2 R2 U F2 D|21"]
     D2_1 --> H2_1
-    F2_1["FIN<br/>U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2<br/>33"]
+    F2_1["FIN|U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2|33"]
     H2_1 --> F2_1
-    E2_2["UD EO<br/>B U L' D<br/>4"]
+    E2_2["UD EO|B U L' D|4"]
     R2 --> E2_2
-    D2_2["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_2["DR|R2 L F' B' U R U' B2 L|13"]
     E2_2 --> D2_2
-    H2_2["HTR<br/>U R2 U B2 U' L2 U' R2 U<br/>22"]
+    H2_2["HTR|U R2 U B2 U' L2 U' R2 U|22"]
     D2_2 --> H2_2
-    F2_2["FIN<br/>U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2<br/>34"]
+    F2_2["FIN|U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2|34"]
     H2_2 --> F2_2
     style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre></div><div id="content-de" style="display:none;"><h1>FMC DR HTR Trainer</h1><p>Beam search (K=3) findet das kürzeste EO → DR → HTR → Finish für jeden Scramble.</p><h2>Scramble 1 (24 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F</p><pre class="mermaid">flowchart TD
-    R0["Scramble<br/>R' U' F D2 R2 B2 D2 R2 B' F' L...<br/>0 moves"]
-    E0_0["RL EO<br/>L<br/>1"]
+    R0["Scramble|R' U' F D2 R2 B2 D2 R2 B' F' L...|0 moves"]
+    E0_0["RL EO|L|1"]
     R0 --> E0_0
-    D0_0["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_0["DR|R' B2 R U B2 U|7"]
     E0_0 --> D0_0
-    H0_0["HTR<br/>R' U2 R2 B2 R B2 R<br/>14"]
+    H0_0["HTR|R' U2 R2 B2 R B2 R|14"]
     D0_0 --> H0_0
-    F0_0["FIN<br/>U2 D2 F2 U2 R2 L2 F2 L2 U2 F2<br/>24"]
+    F0_0["FIN|U2 D2 F2 U2 R2 L2 F2 L2 U2 F2|24"]
     H0_0 --> F0_0
-    E0_1["RL EO<br/>L<br/>1"]
+    E0_1["RL EO|L|1"]
     R0 --> E0_1
-    D0_1["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_1["DR|R' B2 R U B2 U|7"]
     E0_1 --> D0_1
-    H0_1["HTR<br/>R B2 R2 U2 R' B2 R<br/>14"]
+    H0_1["HTR|R B2 R2 U2 R' B2 R|14"]
     D0_1 --> H0_1
-    F0_1["FIN<br/>F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2<br/>26"]
+    F0_1["FIN|F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2|26"]
     H0_1 --> F0_1
-    E0_2["RL EO<br/>L<br/>1"]
+    E0_2["RL EO|L|1"]
     R0 --> E0_2
-    D0_2["DR<br/>R' B2 R D L2 D<br/>7"]
+    D0_2["DR|R' B2 R D L2 D|7"]
     E0_2 --> D0_2
-    H0_2["HTR<br/>R U2 R2 F2 R' B2 L<br/>14"]
+    H0_2["HTR|R U2 R2 F2 R' B2 L|14"]
     D0_2 --> H0_2
-    F0_2["FIN<br/>U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2<br/>26"]
+    F0_2["FIN|U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2|26"]
     H0_2 --> F0_2
     style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 2 (32 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B'</p><pre class="mermaid">flowchart TD
-    R1["Scramble<br/>U' B L' U D' R' D L' U' F D2 F...<br/>0 moves"]
-    E1_0["UD EO<br/>L D U<br/>3"]
+    R1["Scramble|U' B L' U D' R' D L' U' F D2 F...|0 moves"]
+    E1_0["UD EO|L D U|3"]
     R1 --> E1_0
-    D1_0["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_0["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_0 --> D1_0
-    H1_0["HTR<br/>U L2 U R2 U' B2 U L2 U<br/>21"]
+    H1_0["HTR|U L2 U R2 U' B2 U L2 U|21"]
     D1_0 --> H1_0
-    F1_0["FIN<br/>L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2<br/>32"]
+    F1_0["FIN|L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2|32"]
     H1_0 --> F1_0
-    E1_1["UD EO<br/>L D U<br/>3"]
+    E1_1["UD EO|L D U|3"]
     R1 --> E1_1
-    D1_1["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_1["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_1 --> D1_1
-    H1_1["HTR<br/>U L2 U' L2 U B2 U' R2 U<br/>21"]
+    H1_1["HTR|U L2 U' L2 U B2 U' R2 U|21"]
     D1_1 --> H1_1
-    F1_1["FIN<br/>R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2<br/>32"]
+    F1_1["FIN|R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2|32"]
     H1_1 --> F1_1
-    E1_2["UD EO<br/>L D U<br/>3"]
+    E1_2["UD EO|L D U|3"]
     R1 --> E1_2
-    D1_2["DR<br/>U2 B2 U2 D2 R' D F2 D' B<br/>12"]
+    D1_2["DR|U2 B2 U2 D2 R' D F2 D' B|12"]
     E1_2 --> D1_2
-    H1_2["HTR<br/>U R2 U L2 U' F2 U R2 U<br/>21"]
+    H1_2["HTR|U R2 U L2 U' F2 U R2 U|21"]
     D1_2 --> H1_2
-    F1_2["FIN<br/>R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2<br/>32"]
+    F1_2["FIN|R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2|32"]
     H1_2 --> F1_2
     style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 3 (31 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2</p><pre class="mermaid">flowchart TD
-    R2["Scramble<br/>F2 L D' B' R2 U' F' D F B2 R F...<br/>0 moves"]
-    E2_0["UD EO<br/>B U L' D<br/>4"]
+    R2["Scramble|F2 L D' B' R2 U' F' D F B2 R F...|0 moves"]
+    E2_0["UD EO|B U L' D|4"]
     R2 --> E2_0
-    D2_0["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_0["DR|R2 L F' B' U R U' B2 L|13"]
     E2_0 --> D2_0
-    H2_0["HTR<br/>L2 U' R2 U2 B2 U' F2 D<br/>21"]
+    H2_0["HTR|L2 U' R2 U2 B2 U' F2 D|21"]
     D2_0 --> H2_0
-    F2_0["FIN<br/>U2 R2 L2 F2 R2 B2 D2 B2 L2 F2<br/>31"]
+    F2_0["FIN|U2 R2 L2 F2 R2 B2 D2 B2 L2 F2|31"]
     H2_0 --> F2_0
-    E2_1["UD EO<br/>B U L' D<br/>4"]
+    E2_1["UD EO|B U L' D|4"]
     R2 --> E2_1
-    D2_1["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_1["DR|R2 L F' B' U R U' B2 L|13"]
     E2_1 --> D2_1
-    H2_1["HTR<br/>L2 U B2 U2 R2 U F2 D<br/>21"]
+    H2_1["HTR|L2 U B2 U2 R2 U F2 D|21"]
     D2_1 --> H2_1
-    F2_1["FIN<br/>U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2<br/>33"]
+    F2_1["FIN|U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2|33"]
     H2_1 --> F2_1
-    E2_2["UD EO<br/>B U L' D<br/>4"]
+    E2_2["UD EO|B U L' D|4"]
     R2 --> E2_2
-    D2_2["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_2["DR|R2 L F' B' U R U' B2 L|13"]
     E2_2 --> D2_2
-    H2_2["HTR<br/>U R2 U B2 U' L2 U' R2 U<br/>22"]
+    H2_2["HTR|U R2 U B2 U' L2 U' R2 U|22"]
     D2_2 --> H2_2
-    F2_2["FIN<br/>U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2<br/>34"]
+    F2_2["FIN|U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2|34"]
     H2_2 --> F2_2
     style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre></div><div id="content-fr" style="display:none;"><h1>Entraîneur FMC DR HTR</h1><p>Beam search (K=3) trouve le plus court EO → DR → HTR → finish pour chaque mélange.</p><h2>Scramble 1 (24 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F</p><pre class="mermaid">flowchart TD
-    R0["Scramble<br/>R' U' F D2 R2 B2 D2 R2 B' F' L...<br/>0 moves"]
-    E0_0["RL EO<br/>L<br/>1"]
+    R0["Scramble|R' U' F D2 R2 B2 D2 R2 B' F' L...|0 moves"]
+    E0_0["RL EO|L|1"]
     R0 --> E0_0
-    D0_0["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_0["DR|R' B2 R U B2 U|7"]
     E0_0 --> D0_0
-    H0_0["HTR<br/>R' U2 R2 B2 R B2 R<br/>14"]
+    H0_0["HTR|R' U2 R2 B2 R B2 R|14"]
     D0_0 --> H0_0
-    F0_0["FIN<br/>U2 D2 F2 U2 R2 L2 F2 L2 U2 F2<br/>24"]
+    F0_0["FIN|U2 D2 F2 U2 R2 L2 F2 L2 U2 F2|24"]
     H0_0 --> F0_0
-    E0_1["RL EO<br/>L<br/>1"]
+    E0_1["RL EO|L|1"]
     R0 --> E0_1
-    D0_1["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_1["DR|R' B2 R U B2 U|7"]
     E0_1 --> D0_1
-    H0_1["HTR<br/>R B2 R2 U2 R' B2 R<br/>14"]
+    H0_1["HTR|R B2 R2 U2 R' B2 R|14"]
     D0_1 --> H0_1
-    F0_1["FIN<br/>F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2<br/>26"]
+    F0_1["FIN|F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2|26"]
     H0_1 --> F0_1
-    E0_2["RL EO<br/>L<br/>1"]
+    E0_2["RL EO|L|1"]
     R0 --> E0_2
-    D0_2["DR<br/>R' B2 R D L2 D<br/>7"]
+    D0_2["DR|R' B2 R D L2 D|7"]
     E0_2 --> D0_2
-    H0_2["HTR<br/>R U2 R2 F2 R' B2 L<br/>14"]
+    H0_2["HTR|R U2 R2 F2 R' B2 L|14"]
     D0_2 --> H0_2
-    F0_2["FIN<br/>U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2<br/>26"]
+    F0_2["FIN|U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2|26"]
     H0_2 --> F0_2
     style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 2 (32 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B'</p><pre class="mermaid">flowchart TD
-    R1["Scramble<br/>U' B L' U D' R' D L' U' F D2 F...<br/>0 moves"]
-    E1_0["UD EO<br/>L D U<br/>3"]
+    R1["Scramble|U' B L' U D' R' D L' U' F D2 F...|0 moves"]
+    E1_0["UD EO|L D U|3"]
     R1 --> E1_0
-    D1_0["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_0["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_0 --> D1_0
-    H1_0["HTR<br/>U L2 U R2 U' B2 U L2 U<br/>21"]
+    H1_0["HTR|U L2 U R2 U' B2 U L2 U|21"]
     D1_0 --> H1_0
-    F1_0["FIN<br/>L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2<br/>32"]
+    F1_0["FIN|L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2|32"]
     H1_0 --> F1_0
-    E1_1["UD EO<br/>L D U<br/>3"]
+    E1_1["UD EO|L D U|3"]
     R1 --> E1_1
-    D1_1["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_1["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_1 --> D1_1
-    H1_1["HTR<br/>U L2 U' L2 U B2 U' R2 U<br/>21"]
+    H1_1["HTR|U L2 U' L2 U B2 U' R2 U|21"]
     D1_1 --> H1_1
-    F1_1["FIN<br/>R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2<br/>32"]
+    F1_1["FIN|R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2|32"]
     H1_1 --> F1_1
-    E1_2["UD EO<br/>L D U<br/>3"]
+    E1_2["UD EO|L D U|3"]
     R1 --> E1_2
-    D1_2["DR<br/>U2 B2 U2 D2 R' D F2 D' B<br/>12"]
+    D1_2["DR|U2 B2 U2 D2 R' D F2 D' B|12"]
     E1_2 --> D1_2
-    H1_2["HTR<br/>U R2 U L2 U' F2 U R2 U<br/>21"]
+    H1_2["HTR|U R2 U L2 U' F2 U R2 U|21"]
     D1_2 --> H1_2
-    F1_2["FIN<br/>R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2<br/>32"]
+    F1_2["FIN|R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2|32"]
     H1_2 --> F1_2
     style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 3 (31 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2</p><pre class="mermaid">flowchart TD
-    R2["Scramble<br/>F2 L D' B' R2 U' F' D F B2 R F...<br/>0 moves"]
-    E2_0["UD EO<br/>B U L' D<br/>4"]
+    R2["Scramble|F2 L D' B' R2 U' F' D F B2 R F...|0 moves"]
+    E2_0["UD EO|B U L' D|4"]
     R2 --> E2_0
-    D2_0["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_0["DR|R2 L F' B' U R U' B2 L|13"]
     E2_0 --> D2_0
-    H2_0["HTR<br/>L2 U' R2 U2 B2 U' F2 D<br/>21"]
+    H2_0["HTR|L2 U' R2 U2 B2 U' F2 D|21"]
     D2_0 --> H2_0
-    F2_0["FIN<br/>U2 R2 L2 F2 R2 B2 D2 B2 L2 F2<br/>31"]
+    F2_0["FIN|U2 R2 L2 F2 R2 B2 D2 B2 L2 F2|31"]
     H2_0 --> F2_0
-    E2_1["UD EO<br/>B U L' D<br/>4"]
+    E2_1["UD EO|B U L' D|4"]
     R2 --> E2_1
-    D2_1["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_1["DR|R2 L F' B' U R U' B2 L|13"]
     E2_1 --> D2_1
-    H2_1["HTR<br/>L2 U B2 U2 R2 U F2 D<br/>21"]
+    H2_1["HTR|L2 U B2 U2 R2 U F2 D|21"]
     D2_1 --> H2_1
-    F2_1["FIN<br/>U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2<br/>33"]
+    F2_1["FIN|U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2|33"]
     H2_1 --> F2_1
-    E2_2["UD EO<br/>B U L' D<br/>4"]
+    E2_2["UD EO|B U L' D|4"]
     R2 --> E2_2
-    D2_2["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_2["DR|R2 L F' B' U R U' B2 L|13"]
     E2_2 --> D2_2
-    H2_2["HTR<br/>U R2 U B2 U' L2 U' R2 U<br/>22"]
+    H2_2["HTR|U R2 U B2 U' L2 U' R2 U|22"]
     D2_2 --> H2_2
-    F2_2["FIN<br/>U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2<br/>34"]
+    F2_2["FIN|U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2|34"]
     H2_2 --> F2_2
     style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre></div><div id="content-it" style="display:none;"><h1>Allenatore FMC DR HTR</h1><p>Beam search (K=3) trova il più breve EO → DR → HTR → finish per ogni scramble.</p><h2>Scramble 1 (24 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F</p><pre class="mermaid">flowchart TD
-    R0["Scramble<br/>R' U' F D2 R2 B2 D2 R2 B' F' L...<br/>0 moves"]
-    E0_0["RL EO<br/>L<br/>1"]
+    R0["Scramble|R' U' F D2 R2 B2 D2 R2 B' F' L...|0 moves"]
+    E0_0["RL EO|L|1"]
     R0 --> E0_0
-    D0_0["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_0["DR|R' B2 R U B2 U|7"]
     E0_0 --> D0_0
-    H0_0["HTR<br/>R' U2 R2 B2 R B2 R<br/>14"]
+    H0_0["HTR|R' U2 R2 B2 R B2 R|14"]
     D0_0 --> H0_0
-    F0_0["FIN<br/>U2 D2 F2 U2 R2 L2 F2 L2 U2 F2<br/>24"]
+    F0_0["FIN|U2 D2 F2 U2 R2 L2 F2 L2 U2 F2|24"]
     H0_0 --> F0_0
-    E0_1["RL EO<br/>L<br/>1"]
+    E0_1["RL EO|L|1"]
     R0 --> E0_1
-    D0_1["DR<br/>R' B2 R U B2 U<br/>7"]
+    D0_1["DR|R' B2 R U B2 U|7"]
     E0_1 --> D0_1
-    H0_1["HTR<br/>R B2 R2 U2 R' B2 R<br/>14"]
+    H0_1["HTR|R B2 R2 U2 R' B2 R|14"]
     D0_1 --> H0_1
-    F0_1["FIN<br/>F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2<br/>26"]
+    F0_1["FIN|F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2|26"]
     H0_1 --> F0_1
-    E0_2["RL EO<br/>L<br/>1"]
+    E0_2["RL EO|L|1"]
     R0 --> E0_2
-    D0_2["DR<br/>R' B2 R D L2 D<br/>7"]
+    D0_2["DR|R' B2 R D L2 D|7"]
     E0_2 --> D0_2
-    H0_2["HTR<br/>R U2 R2 F2 R' B2 L<br/>14"]
+    H0_2["HTR|R U2 R2 F2 R' B2 L|14"]
     D0_2 --> H0_2
-    F0_2["FIN<br/>U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2<br/>26"]
+    F0_2["FIN|U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2|26"]
     H0_2 --> F0_2
     style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 2 (32 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B'</p><pre class="mermaid">flowchart TD
-    R1["Scramble<br/>U' B L' U D' R' D L' U' F D2 F...<br/>0 moves"]
-    E1_0["UD EO<br/>L D U<br/>3"]
+    R1["Scramble|U' B L' U D' R' D L' U' F D2 F...|0 moves"]
+    E1_0["UD EO|L D U|3"]
     R1 --> E1_0
-    D1_0["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_0["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_0 --> D1_0
-    H1_0["HTR<br/>U L2 U R2 U' B2 U L2 U<br/>21"]
+    H1_0["HTR|U L2 U R2 U' B2 U L2 U|21"]
     D1_0 --> H1_0
-    F1_0["FIN<br/>L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2<br/>32"]
+    F1_0["FIN|L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2|32"]
     H1_0 --> F1_0
-    E1_1["UD EO<br/>L D U<br/>3"]
+    E1_1["UD EO|L D U|3"]
     R1 --> E1_1
-    D1_1["DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12"]
+    D1_1["DR|D2 F2 U2 D2 L' U R2 U' F|12"]
     E1_1 --> D1_1
-    H1_1["HTR<br/>U L2 U' L2 U B2 U' R2 U<br/>21"]
+    H1_1["HTR|U L2 U' L2 U B2 U' R2 U|21"]
     D1_1 --> H1_1
-    F1_1["FIN<br/>R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2<br/>32"]
+    F1_1["FIN|R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2|32"]
     H1_1 --> F1_1
-    E1_2["UD EO<br/>L D U<br/>3"]
+    E1_2["UD EO|L D U|3"]
     R1 --> E1_2
-    D1_2["DR<br/>U2 B2 U2 D2 R' D F2 D' B<br/>12"]
+    D1_2["DR|U2 B2 U2 D2 R' D F2 D' B|12"]
     E1_2 --> D1_2
-    H1_2["HTR<br/>U R2 U L2 U' F2 U R2 U<br/>21"]
+    H1_2["HTR|U R2 U L2 U' F2 U R2 U|21"]
     D1_2 --> H1_2
-    F1_2["FIN<br/>R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2<br/>32"]
+    F1_2["FIN|R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2|32"]
     H1_2 --> F1_2
     style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre><h2>Scramble 3 (31 moves best)</h2><p style="font-family:monospace;word-break:break-all;background:#f5f5f5;padding:8px;border-radius:4px;">F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2</p><pre class="mermaid">flowchart TD
-    R2["Scramble<br/>F2 L D' B' R2 U' F' D F B2 R F...<br/>0 moves"]
-    E2_0["UD EO<br/>B U L' D<br/>4"]
+    R2["Scramble|F2 L D' B' R2 U' F' D F B2 R F...|0 moves"]
+    E2_0["UD EO|B U L' D|4"]
     R2 --> E2_0
-    D2_0["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_0["DR|R2 L F' B' U R U' B2 L|13"]
     E2_0 --> D2_0
-    H2_0["HTR<br/>L2 U' R2 U2 B2 U' F2 D<br/>21"]
+    H2_0["HTR|L2 U' R2 U2 B2 U' F2 D|21"]
     D2_0 --> H2_0
-    F2_0["FIN<br/>U2 R2 L2 F2 R2 B2 D2 B2 L2 F2<br/>31"]
+    F2_0["FIN|U2 R2 L2 F2 R2 B2 D2 B2 L2 F2|31"]
     H2_0 --> F2_0
-    E2_1["UD EO<br/>B U L' D<br/>4"]
+    E2_1["UD EO|B U L' D|4"]
     R2 --> E2_1
-    D2_1["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_1["DR|R2 L F' B' U R U' B2 L|13"]
     E2_1 --> D2_1
-    H2_1["HTR<br/>L2 U B2 U2 R2 U F2 D<br/>21"]
+    H2_1["HTR|L2 U B2 U2 R2 U F2 D|21"]
     D2_1 --> H2_1
-    F2_1["FIN<br/>U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2<br/>33"]
+    F2_1["FIN|U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2|33"]
     H2_1 --> F2_1
-    E2_2["UD EO<br/>B U L' D<br/>4"]
+    E2_2["UD EO|B U L' D|4"]
     R2 --> E2_2
-    D2_2["DR<br/>R2 L F' B' U R U' B2 L<br/>13"]
+    D2_2["DR|R2 L F' B' U R U' B2 L|13"]
     E2_2 --> D2_2
-    H2_2["HTR<br/>U R2 U B2 U' L2 U' R2 U<br/>22"]
+    H2_2["HTR|U R2 U B2 U' L2 U' R2 U|22"]
     D2_2 --> H2_2
-    F2_2["FIN<br/>U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2<br/>34"]
+    F2_2["FIN|U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2|34"]
     H2_2 --> F2_2
     style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff</pre></div>
 <script>
-const BEAM_DATA = {"/tmp/beam_json/scramble_1.json": {"scramble": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F", "K": 3, "solutions": [{"eo": {"axis": "RL", "moves": "L", "len": 1, "cumulative": 1, "scramble_after": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F L"}, "dr": {"moves": "R' B2 R U B2 U", "len": 6}, "htr": {"moves": "R' U2 R2 B2 R B2 R", "len": 7}, "finish": {"moves": "U2 D2 F2 U2 R2 L2 F2 L2 U2 F2", "len": 10}, "total": 24}, {"eo": {"axis": "RL", "moves": "L", "len": 1, "cumulative": 1, "scramble_after": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F L"}, "dr": {"moves": "R' B2 R U B2 U", "len": 6}, "htr": {"moves": "R B2 R2 U2 R' B2 R", "len": 7}, "finish": {"moves": "F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2", "len": 12}, "total": 26}, {"eo": {"axis": "RL", "moves": "L", "len": 1, "cumulative": 1, "scramble_after": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F L"}, "dr": {"moves": "R' B2 R D L2 D", "len": 6}, "htr": {"moves": "R U2 R2 F2 R' B2 L", "len": 7}, "finish": {"moves": "U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2", "len": 12}, "total": 26}], "mermaid": "flowchart TD\n    R0[\"Scramble<br/>R' U' F D2 R2 B2 D2 R2 B' F' L...<br/>0 moves\"]\n    E0_0[\"RL EO<br/>L<br/>1\"]\n    R0 --> E0_0\n    D0_0[\"DR<br/>R' B2 R U B2 U<br/>7\"]\n    E0_0 --> D0_0\n    H0_0[\"HTR<br/>R' U2 R2 B2 R B2 R<br/>14\"]\n    D0_0 --> H0_0\n    F0_0[\"FIN<br/>U2 D2 F2 U2 R2 L2 F2 L2 U2 F2<br/>24\"]\n    H0_0 --> F0_0\n    E0_1[\"RL EO<br/>L<br/>1\"]\n    R0 --> E0_1\n    D0_1[\"DR<br/>R' B2 R U B2 U<br/>7\"]\n    E0_1 --> D0_1\n    H0_1[\"HTR<br/>R B2 R2 U2 R' B2 R<br/>14\"]\n    D0_1 --> H0_1\n    F0_1[\"FIN<br/>F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2<br/>26\"]\n    H0_1 --> F0_1\n    E0_2[\"RL EO<br/>L<br/>1\"]\n    R0 --> E0_2\n    D0_2[\"DR<br/>R' B2 R D L2 D<br/>7\"]\n    E0_2 --> D0_2\n    H0_2[\"HTR<br/>R U2 R2 F2 R' B2 L<br/>14\"]\n    D0_2 --> H0_2\n    F0_2[\"FIN<br/>U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2<br/>26\"]\n    H0_2 --> F0_2\n    style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json/scramble_2.json": {"scramble": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B'", "K": 3, "solutions": [{"eo": {"axis": "UD", "moves": "L D U", "len": 3, "cumulative": 3, "scramble_after": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B' L D U"}, "dr": {"moves": "D2 F2 U2 D2 L' U R2 U' F", "len": 9}, "htr": {"moves": "U L2 U R2 U' B2 U L2 U", "len": 9}, "finish": {"moves": "L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2", "len": 11}, "total": 32}, {"eo": {"axis": "UD", "moves": "L D U", "len": 3, "cumulative": 3, "scramble_after": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B' L D U"}, "dr": {"moves": "D2 F2 U2 D2 L' U R2 U' F", "len": 9}, "htr": {"moves": "U L2 U' L2 U B2 U' R2 U", "len": 9}, "finish": {"moves": "R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2", "len": 11}, "total": 32}, {"eo": {"axis": "UD", "moves": "L D U", "len": 3, "cumulative": 3, "scramble_after": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B' L D U"}, "dr": {"moves": "U2 B2 U2 D2 R' D F2 D' B", "len": 9}, "htr": {"moves": "U R2 U L2 U' F2 U R2 U", "len": 9}, "finish": {"moves": "R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2", "len": 11}, "total": 32}], "mermaid": "flowchart TD\n    R1[\"Scramble<br/>U' B L' U D' R' D L' U' F D2 F...<br/>0 moves\"]\n    E1_0[\"UD EO<br/>L D U<br/>3\"]\n    R1 --> E1_0\n    D1_0[\"DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12\"]\n    E1_0 --> D1_0\n    H1_0[\"HTR<br/>U L2 U R2 U' B2 U L2 U<br/>21\"]\n    D1_0 --> H1_0\n    F1_0[\"FIN<br/>L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2<br/>32\"]\n    H1_0 --> F1_0\n    E1_1[\"UD EO<br/>L D U<br/>3\"]\n    R1 --> E1_1\n    D1_1[\"DR<br/>D2 F2 U2 D2 L' U R2 U' F<br/>12\"]\n    E1_1 --> D1_1\n    H1_1[\"HTR<br/>U L2 U' L2 U B2 U' R2 U<br/>21\"]\n    D1_1 --> H1_1\n    F1_1[\"FIN<br/>R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2<br/>32\"]\n    H1_1 --> F1_1\n    E1_2[\"UD EO<br/>L D U<br/>3\"]\n    R1 --> E1_2\n    D1_2[\"DR<br/>U2 B2 U2 D2 R' D F2 D' B<br/>12\"]\n    E1_2 --> D1_2\n    H1_2[\"HTR<br/>U R2 U L2 U' F2 U R2 U<br/>21\"]\n    D1_2 --> H1_2\n    F1_2[\"FIN<br/>R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2<br/>32\"]\n    H1_2 --> F1_2\n    style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json/scramble_3.json": {"scramble": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2", "K": 3, "solutions": [{"eo": {"axis": "UD", "moves": "B U L' D", "len": 4, "cumulative": 4, "scramble_after": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2 B U L' D"}, "dr": {"moves": "R2 L F' B' U R U' B2 L", "len": 9}, "htr": {"moves": "L2 U' R2 U2 B2 U' F2 D", "len": 8}, "finish": {"moves": "U2 R2 L2 F2 R2 B2 D2 B2 L2 F2", "len": 10}, "total": 31}, {"eo": {"axis": "UD", "moves": "B U L' D", "len": 4, "cumulative": 4, "scramble_after": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2 B U L' D"}, "dr": {"moves": "R2 L F' B' U R U' B2 L", "len": 9}, "htr": {"moves": "L2 U B2 U2 R2 U F2 D", "len": 8}, "finish": {"moves": "U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2", "len": 12}, "total": 33}, {"eo": {"axis": "UD", "moves": "B U L' D", "len": 4, "cumulative": 4, "scramble_after": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2 B U L' D"}, "dr": {"moves": "R2 L F' B' U R U' B2 L", "len": 9}, "htr": {"moves": "U R2 U B2 U' L2 U' R2 U", "len": 9}, "finish": {"moves": "U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2", "len": 12}, "total": 34}], "mermaid": "flowchart TD\n    R2[\"Scramble<br/>F2 L D' B' R2 U' F' D F B2 R F...<br/>0 moves\"]\n    E2_0[\"UD EO<br/>B U L' D<br/>4\"]\n    R2 --> E2_0\n    D2_0[\"DR<br/>R2 L F' B' U R U' B2 L<br/>13\"]\n    E2_0 --> D2_0\n    H2_0[\"HTR<br/>L2 U' R2 U2 B2 U' F2 D<br/>21\"]\n    D2_0 --> H2_0\n    F2_0[\"FIN<br/>U2 R2 L2 F2 R2 B2 D2 B2 L2 F2<br/>31\"]\n    H2_0 --> F2_0\n    E2_1[\"UD EO<br/>B U L' D<br/>4\"]\n    R2 --> E2_1\n    D2_1[\"DR<br/>R2 L F' B' U R U' B2 L<br/>13\"]\n    E2_1 --> D2_1\n    H2_1[\"HTR<br/>L2 U B2 U2 R2 U F2 D<br/>21\"]\n    D2_1 --> H2_1\n    F2_1[\"FIN<br/>U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2<br/>33\"]\n    H2_1 --> F2_1\n    E2_2[\"UD EO<br/>B U L' D<br/>4\"]\n    R2 --> E2_2\n    D2_2[\"DR<br/>R2 L F' B' U R U' B2 L<br/>13\"]\n    E2_2 --> D2_2\n    H2_2[\"HTR<br/>U R2 U B2 U' L2 U' R2 U<br/>22\"]\n    D2_2 --> H2_2\n    F2_2[\"FIN<br/>U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2<br/>34\"]\n    H2_2 --> F2_2\n    style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}};
+const BEAM_DATA = {"/tmp/beam_json/scramble_1.json": {"scramble": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F", "K": 3, "solutions": [{"eo": {"axis": "RL", "moves": "L", "len": 1, "cumulative": 1, "scramble_after": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F L"}, "dr": {"moves": "R' B2 R U B2 U", "len": 6}, "htr": {"moves": "R' U2 R2 B2 R B2 R", "len": 7}, "finish": {"moves": "U2 D2 F2 U2 R2 L2 F2 L2 U2 F2", "len": 10}, "total": 24}, {"eo": {"axis": "RL", "moves": "L", "len": 1, "cumulative": 1, "scramble_after": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F L"}, "dr": {"moves": "R' B2 R U B2 U", "len": 6}, "htr": {"moves": "R B2 R2 U2 R' B2 R", "len": 7}, "finish": {"moves": "F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2", "len": 12}, "total": 26}, {"eo": {"axis": "RL", "moves": "L", "len": 1, "cumulative": 1, "scramble_after": "R' U' F D2 R2 B2 D2 R2 B' F' L2 U' F2 U2 L D U' F' L' D' R2 U R' U' F U' F L"}, "dr": {"moves": "R' B2 R D L2 D", "len": 6}, "htr": {"moves": "R U2 R2 F2 R' B2 L", "len": 7}, "finish": {"moves": "U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2", "len": 12}, "total": 26}], "mermaid": "flowchart TD\n    R0[\"Scramble|R' U' F D2 R2 B2 D2 R2 B' F' L...|0 moves\"]\n    E0_0[\"RL EO|L|1\"]\n    R0 --> E0_0\n    D0_0[\"DR|R' B2 R U B2 U|7\"]\n    E0_0 --> D0_0\n    H0_0[\"HTR|R' U2 R2 B2 R B2 R|14\"]\n    D0_0 --> H0_0\n    F0_0[\"FIN|U2 D2 F2 U2 R2 L2 F2 L2 U2 F2|24\"]\n    H0_0 --> F0_0\n    E0_1[\"RL EO|L|1\"]\n    R0 --> E0_1\n    D0_1[\"DR|R' B2 R U B2 U|7\"]\n    E0_1 --> D0_1\n    H0_1[\"HTR|R B2 R2 U2 R' B2 R|14\"]\n    D0_1 --> H0_1\n    F0_1[\"FIN|F2 U2 F2 U2 L2 F2 L2 U2 L2 B2 D2 F2|26\"]\n    H0_1 --> F0_1\n    E0_2[\"RL EO|L|1\"]\n    R0 --> E0_2\n    D0_2[\"DR|R' B2 R D L2 D|7\"]\n    E0_2 --> D0_2\n    H0_2[\"HTR|R U2 R2 F2 R' B2 L|14\"]\n    D0_2 --> H0_2\n    F0_2[\"FIN|U2 R2 D2 F2 U2 L2 B2 L2 F2 B2 U2 B2|26\"]\n    H0_2 --> F0_2\n    style F0_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json/scramble_2.json": {"scramble": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B'", "K": 3, "solutions": [{"eo": {"axis": "UD", "moves": "L D U", "len": 3, "cumulative": 3, "scramble_after": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B' L D U"}, "dr": {"moves": "D2 F2 U2 D2 L' U R2 U' F", "len": 9}, "htr": {"moves": "U L2 U R2 U' B2 U L2 U", "len": 9}, "finish": {"moves": "L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2", "len": 11}, "total": 32}, {"eo": {"axis": "UD", "moves": "L D U", "len": 3, "cumulative": 3, "scramble_after": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B' L D U"}, "dr": {"moves": "D2 F2 U2 D2 L' U R2 U' F", "len": 9}, "htr": {"moves": "U L2 U' L2 U B2 U' R2 U", "len": 9}, "finish": {"moves": "R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2", "len": 11}, "total": 32}, {"eo": {"axis": "UD", "moves": "L D U", "len": 3, "cumulative": 3, "scramble_after": "U' B L' U D' R' D L' U' F D2 F R2 F2 D2 B' U2 L2 F L2 U2 D2 B' L D U"}, "dr": {"moves": "U2 B2 U2 D2 R' D F2 D' B", "len": 9}, "htr": {"moves": "U R2 U L2 U' F2 U R2 U", "len": 9}, "finish": {"moves": "R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2", "len": 11}, "total": 32}], "mermaid": "flowchart TD\n    R1[\"Scramble|U' B L' U D' R' D L' U' F D2 F...|0 moves\"]\n    E1_0[\"UD EO|L D U|3\"]\n    R1 --> E1_0\n    D1_0[\"DR|D2 F2 U2 D2 L' U R2 U' F|12\"]\n    E1_0 --> D1_0\n    H1_0[\"HTR|U L2 U R2 U' B2 U L2 U|21\"]\n    D1_0 --> H1_0\n    F1_0[\"FIN|L2 U2 R2 B2 L2 F2 R2 U2 B2 D2 L2|32\"]\n    H1_0 --> F1_0\n    E1_1[\"UD EO|L D U|3\"]\n    R1 --> E1_1\n    D1_1[\"DR|D2 F2 U2 D2 L' U R2 U' F|12\"]\n    E1_1 --> D1_1\n    H1_1[\"HTR|U L2 U' L2 U B2 U' R2 U|21\"]\n    D1_1 --> H1_1\n    F1_1[\"FIN|R2 F2 U2 L2 F2 U2 F2 U2 B2 R2 B2|32\"]\n    H1_1 --> F1_1\n    E1_2[\"UD EO|L D U|3\"]\n    R1 --> E1_2\n    D1_2[\"DR|U2 B2 U2 D2 R' D F2 D' B|12\"]\n    E1_2 --> D1_2\n    H1_2[\"HTR|U R2 U L2 U' F2 U R2 U|21\"]\n    D1_2 --> H1_2\n    F1_2[\"FIN|R2 U2 L2 U2 F2 R2 F2 D2 F2 D2 F2|32\"]\n    H1_2 --> F1_2\n    style F1_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}, "/tmp/beam_json/scramble_3.json": {"scramble": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2", "K": 3, "solutions": [{"eo": {"axis": "UD", "moves": "B U L' D", "len": 4, "cumulative": 4, "scramble_after": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2 B U L' D"}, "dr": {"moves": "R2 L F' B' U R U' B2 L", "len": 9}, "htr": {"moves": "L2 U' R2 U2 B2 U' F2 D", "len": 8}, "finish": {"moves": "U2 R2 L2 F2 R2 B2 D2 B2 L2 F2", "len": 10}, "total": 31}, {"eo": {"axis": "UD", "moves": "B U L' D", "len": 4, "cumulative": 4, "scramble_after": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2 B U L' D"}, "dr": {"moves": "R2 L F' B' U R U' B2 L", "len": 9}, "htr": {"moves": "L2 U B2 U2 R2 U F2 D", "len": 8}, "finish": {"moves": "U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2", "len": 12}, "total": 33}, {"eo": {"axis": "UD", "moves": "B U L' D", "len": 4, "cumulative": 4, "scramble_after": "F2 L D' B' R2 U' F' D F B2 R F2 R L2 F2 D2 L F2 R' F2 R' D2 B U L' D"}, "dr": {"moves": "R2 L F' B' U R U' B2 L", "len": 9}, "htr": {"moves": "U R2 U B2 U' L2 U' R2 U", "len": 9}, "finish": {"moves": "U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2", "len": 12}, "total": 34}], "mermaid": "flowchart TD\n    R2[\"Scramble|F2 L D' B' R2 U' F' D F B2 R F...|0 moves\"]\n    E2_0[\"UD EO|B U L' D|4\"]\n    R2 --> E2_0\n    D2_0[\"DR|R2 L F' B' U R U' B2 L|13\"]\n    E2_0 --> D2_0\n    H2_0[\"HTR|L2 U' R2 U2 B2 U' F2 D|21\"]\n    D2_0 --> H2_0\n    F2_0[\"FIN|U2 R2 L2 F2 R2 B2 D2 B2 L2 F2|31\"]\n    H2_0 --> F2_0\n    E2_1[\"UD EO|B U L' D|4\"]\n    R2 --> E2_1\n    D2_1[\"DR|R2 L F' B' U R U' B2 L|13\"]\n    E2_1 --> D2_1\n    H2_1[\"HTR|L2 U B2 U2 R2 U F2 D|21\"]\n    D2_1 --> H2_1\n    F2_1[\"FIN|U2 R2 F2 D2 F2 R2 F2 R2 U2 B2 D2 R2|33\"]\n    H2_1 --> F2_1\n    E2_2[\"UD EO|B U L' D|4\"]\n    R2 --> E2_2\n    D2_2[\"DR|R2 L F' B' U R U' B2 L|13\"]\n    E2_2 --> D2_2\n    H2_2[\"HTR|U R2 U B2 U' L2 U' R2 U|22\"]\n    D2_2 --> H2_2\n    F2_2[\"FIN|U2 D2 R2 B2 U2 L2 B2 U2 L2 U2 L2 D2|34\"]\n    H2_2 --> F2_2\n    style F2_0 fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff"}};
 function renderTrees() {
     const container = document.getElementById('dr-trainer-trees');
     BEAM_DATA.forEach((d, idx) => {
