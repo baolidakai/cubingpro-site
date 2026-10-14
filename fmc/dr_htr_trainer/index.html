@@ -47,6 +47,29 @@
 <div id="random-eo-output" style="margin-top:12px;"></div>
 </div>
 <script>
+// RZP Trigger guide (static, educational)
+const RZP_GUIDE = [
+  { kase: "4c2e", trigger: "R", setup: "U/D to align", desc: "4 bad corners, 2 bad edges. Single move!" },
+  { kase: "3c1e", trigger: "R U' R'", setup: "U/D to align", desc: "3 bad corners, 1 bad edge. F2L-like." },
+  { kase: "3c1e", trigger: "R U R'", setup: "U/D to align", desc: "3 bad corners, 1 bad edge. Mirror." },
+  { kase: "4c1e", trigger: "R U2 R'", setup: "U/D to align", desc: "4 bad corners, 1 bad edge. Double turn." },
+];
+
+function showRZPGuide(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  let html = '<div style="margin:12px 0;"><b>🎯 RZP Triggers (intuitive DR):</b></div>';
+  html += '<div style="font-size:0.9em;color:#666;margin-bottom:8px;">From EO: do a few intuitive moves to reach a good case (3-4 bad corners, 1-2 bad edges), then setup with U/D, then trigger.</div>';
+  for (const g of RZP_GUIDE) {
+    html += `<div style="background:#f3e5f5;padding:8px;margin:6px 0;border-radius:4px;border-left:3px solid #9c27b0;">
+      <b>${g.kase}</b>: <code style="background:#fff;padding:2px 6px;border-radius:3px;">${g.trigger}</code>
+      <span style="color:#666;">(${g.setup})</span><br/>
+      <span style="font-size:0.85em;color:#888;">${g.desc}</span>
+    </div>`;
+  }
+  el.innerHTML = html;
+}
+
 function randomEOUI() {
   const scr = window.EOSolver2.randomScramble(20);
   const out = document.getElementById('random-eo-output');
@@ -67,8 +90,10 @@ function randomEOUI() {
     }
   }
   out.innerHTML = html;
+  showRZPGuide('rzp-guide-random');
 }
 </script>
+<div id="rzp-guide-random"></div>
 <script src="/static/js/eo_solver.js"></script>
 <script>
 function solveEOLiveUI() {
