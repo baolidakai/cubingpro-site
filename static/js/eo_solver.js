@@ -325,3 +325,67 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined') {
   module.exports.getRZPState = getRZPState;
 }
+
+// === RZP Setup Search: find 0-3 moves to reach an RZP case ===
+const RZP_GOOD_CASES = ['4c2e', '3c1e', '4c1e', '4c4e', '3c2e'];
+
+function findRZPSetup(scramble, maxDepth = 3) {
+  // BFS for setup moves to reach a good RZP case
+  // Returns {setup, case, trigger} or null
+  const DR_MOVES = ['U', "U'", 'U2', 'D', "D'", 'D2', 'R', "R'", 'R2', 'L', "L'", 'L2', 'F2', 'B2'];
+  const TRIGGER_FOR_CASE = {
+    '4c2e': 'R',
+    '3c1e': "R U' R' or R U R'",
+    '4c1e': 'R U2 R\'',
+    '4c4e': 'R (or setup further)',
+    '3c2e': 'setup further',
+  };
+  
+  // Check depth 0
+  let state = getRZPState(scramble);
+  if (RZP_GOOD_CASES.includes(state.case)) {
+    return { setup: '', case: state.case, trigger: TRIGGER_FOR_CASE[state.case] };
+  }
+  
+  // BFS
+  let queue = [{ moves: [], scramble: scramble }];
+  let visited = new Set([scramble]);
+  
+  for (let depth = 1; depth <= maxDepth; depth++) {
+    let nextQueue = [];
+    for (const node of queue) {
+      for (const m of DR_MOVES) {
+        // Avoid same-face consecutive
+        if (node.moves.length > 0) {
+          const lastFace = node.moves[node.moves.length - 1][0];
+          if (m[0] === lastFace) continue;
+        }
+        const newScramble = (node.scramble + ' ' + m).trim();
+        if (visited.has(newScramble)) continue;
+        visited.add(newScramble);
+        
+        const s = getRZPState(newScramble);
+        if (RZP_GOOD_CASES.includes(s.case)) {
+          return {
+            setup: [...node.moves, m].join(' '),
+            case: s.case,
+            trigger: TRIGGER_FOR_CASE[s.case],
+          };
+        }
+        if (depth < maxDepth) {
+          nextQueue.push({ moves: [...node.moves, m], scramble: newScramble });
+        }
+      }
+    }
+    queue = nextQueue;
+    if (queue.length === 0) break;
+  }
+  return null;
+}
+
+if (typeof window !== 'undefined') {
+  window.EOSolver2.findRZPSetup = findRZPSetup;
+}
+if (typeof module !== 'undefined') {
+  module.exports.findRZPSetup = findRZPSetup;
+}
