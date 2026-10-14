@@ -101,7 +101,16 @@ function solveEOLiveUI() {
   const out = document.getElementById('eo-output');
   if (!scr.trim()) { out.innerHTML = '<p style="color:#999;">Enter a scramble first.</p>'; return; }
   try {
+    // Show RZP state of the scramble itself
     let html = '';
+    try {
+      const rzp = window.EOSolver2.getRZPState(scr);
+      const isGood = ['4c2e','3c1e','4c1e','4c4e','3c2e'].includes(rzp.case);
+      html += `<div style="background:${isGood ? '#e8f5e9' : '#fff3e0'};padding:8px;border-radius:4px;margin-bottom:12px;border-left:3px solid ${isGood ? '#4caf50' : '#ff9800'};">
+        <b>RZP State:</b> <code>${rzp.case}</code> (${rzp.badCorners} bad corners, ${rzp.badEdges} bad E-edges)
+        ${isGood ? ' ✅ Good RZP case!' : ''}
+      </div>`;
+    } catch(e) {}
     for (const axis of ['UD', 'FB', 'RL']) {
       const label = axis === 'UD' ? 'EOUD' : axis === 'FB' ? 'EOFB' : 'EOLR';
       const sols = window.EOSolver2.solveEO(scr, 2, axis);
