@@ -42,9 +42,9 @@
 <h2>Core Idea: Commutators Only</h2>
 <p>Wide moves move whole columns of centers, U turns only the top layer. Combine them into a commutator:</p>
 <p><strong>[wide, U] = wide + U + wide inverse + U inverse</strong></p>
-<p>Benefit: <strong>only U and F centers move, the other four stay untouched</strong>. The three triggers below are all this shape, verified by 6x6 simulation.</p>
+<p>Benefit: <strong>only U and F centers move, the other four stay untouched</strong>. The five triggers below are all this shape, verified by 6x6 simulation.</p>
 <p>Notation: <code>2R</code> = turn 2 layers from the right, <code>3R</code> = 3 layers, <code>U</code> = top outer layer only.</p>
-<h2>Three Triggers: When the Bad Block Is on the Right Edge</h2>
+<h2>Five Triggers: When the Bad Block Is on the Right Edge</h2>
 <p>Each diagram below shows the bad block already moved to the right edge. In a real solve, just move your bad block to that position, then apply the formula.</p>
 <h3>Case 1: Outer Column, 3 Pieces Swap</h3>
 <p>Bottom 3 of U's right column are green, top 3 of F's right column are white.</p>
@@ -61,13 +61,23 @@
 <canvas id="l2c-case3-en" width="300" height="170"></canvas>
 <p>Solution: <strong>U 2R' 3R U' 3R' 2R</strong></p>
 <p><code>2R' 3R</code> is just the middle slice — only the 3rd column moves, outer column untouched.</p>
+<h3>Case 4: Outer Column, Mirror — 3 Pieces Swap the Other Way</h3>
+<p>Top 3 of U's right column are green, bottom 3 of F's right column are white — the mirror of Case 1.</p>
+<canvas id="l2c-case4-en" width="300" height="170"></canvas>
+<p>Solution: <strong>2R U 2R' U'</strong></p>
+<p>Same outer column, opposite direction. Case 1's trigger would give you the mirror back.</p>
+<h3>Case 5: Inner 3rd Column, Mirror — 3 Pieces Swap the Other Way</h3>
+<p>Same 3rd column as Case 3, swapped the other way — the mirror of Case 3.</p>
+<canvas id="l2c-case5-en" width="300" height="170"></canvas>
+<p>Solution: <strong>2R' 3R U 3R' 2R U'</strong></p>
+<p>Same slice, opposite direction. Only the 3rd column moves.</p>
 <h2>In Practice: Setup → Trigger → Undo Setup</h2>
 <ol><li>Look at the U/F interface, find which column and which group (C / E / I) is wrong.</li><li><strong>Setup</strong>: only turn U or F (U / U' / U2 / F / F'), move the bad block to the right-side position in the diagrams. Do not rotate the whole cube.</li><li>Apply the matching trigger.</li><li><strong>Undo setup</strong>: if setup was U, do U'; if U2, do U2 again.</li><li>Repeat until U and F are solved.</li></ol>
 <p>Order: <strong>inner first, then outer</strong>. Case 3 only touches column 3, Case 1 only touches the outer column — they do not interfere. Case 2 touches two columns at once, save it as a shortcut for last.</p>
 <h2>Common Mistakes</h2>
 <ul><li>Forgot to undo setup — the trigger is correct, but an un-undone setup drags other columns off.</li><li>Rotating the cube (y / x) mid-solve — U/F change, so “right side” is no longer the same. Keep the grip, only turn U/F.</li><li>Trying to fix with a single U — U rotates the U center internally; it may look solved but positions are wrong. Use a trigger, not a lone U.</li></ul>
 <h2>Relation to 5x5 L2E</h2>
-<p>The 5x5 L2E on the Yau page is “last two edges”, this is “last two centers”. Same drawing style, same idea: find the interface, do a commutator, protect what is solved. With L2C, you do not need a long case list — three triggers + setup are enough.</p>
+<p>The 5x5 L2E on the Yau page is “last two edges”, this is “last two centers”. Same drawing style, same idea: find the interface, do a commutator, protect what is solved. With L2C, you do not need a long case list — five triggers + setup cover every single-trigger case (see the full table below).</p>
 </div>
 
 <div id="content-zh-cn" style="display:none;">
@@ -88,9 +98,9 @@
 <h2>核心思想：只用 commutator</h2>
 <p>宽转动会整列搬中心块，U 只转顶层。把两者拼成 commutator：</p>
 <p><strong>[宽转动, U] = 宽转动 + U + 宽转动逆 + U逆</strong></p>
-<p>好处是：<strong>只动 U 和 F 的中心，另外四个中心完全不动</strong>。下面三个触发器都是这个结构，效果经 6x6 模拟验证过。</p>
+<p>好处是：<strong>只动 U 和 F 的中心，另外四个中心完全不动</strong>。下面五个触发器都是这个结构，效果经 6x6 模拟验证过。</p>
 <p>记号：<code>2R</code> = 从右数 2 层一起转，<code>3R</code> = 从右数 3 层一起转，<code>U</code> = 只转顶层外层。</p>
-<h2>三个触发器：错块在右侧交界时直接用</h2>
+<h2>五个触发器：错块在右侧交界时直接用</h2>
 <p>下面每张图都是“错块已经转到右侧交界”的样子。你的实战 case 只要把错块转到这个位置，就能直接套公式。</p>
 <h3>Case 1：最外列 3 块互换</h3>
 <p>U 右列下 3 块是绿，F 右列上 3 块是白。</p>
@@ -107,13 +117,23 @@
 <canvas id="l2c-case3-zh-cn" width="300" height="170"></canvas>
 <p>解法： <strong>U 2R' 3R U' 3R' 2R</strong></p>
 <p>其中 <code>2R' 3R</code> 就是只转中间那一层 slice，只动第 3 列，不动最外列。</p>
+<h3>Case 4：最外列 3 块互换（镜像）</h3>
+<p>U 右列上 3 块是绿，F 右列下 3 块是白，是 Case 1 的镜像。</p>
+<canvas id="l2c-case4-zh-cn" width="300" height="170"></canvas>
+<p>解法： <strong>2R U 2R' U'</strong></p>
+<p>同一最外列，方向相反。拿 Case 1 的公式去解会得到镜像。</p>
+<h3>Case 5：内侧第 3 列 3 块互换（镜像）</h3>
+<p>和 Case 3 同一第 3 列，方向相反的镜像。</p>
+<canvas id="l2c-case5-zh-cn" width="300" height="170"></canvas>
+<p>解法： <strong>2R' 3R U 3R' 2R U'</strong></p>
+<p>同一 slice，方向相反，只动第 3 列。</p>
 <h2>实战流程：setup → 触发器 → 还原 setup</h2>
 <ol><li>看 U、F 交界，找出错块在哪一列、在哪一类（C / E / I）。</li><li><strong>Setup</strong>：只转 U 或 F（U / U' / U2 / F / F'），把错块转到上面三个图里对应的右侧位置。不要转整个魔方。</li><li>用对应的触发器。</li><li><strong>还原 setup</strong>：setup 是 U，就做 U' 还原；是 U2，就再做 U2。</li><li>重复，直到 U、F 全对。</li></ol>
 <p>顺序建议：<strong>先内后外</strong>。Case 3 只动第 3 列，Case 1 只动最外列，两者互不干扰；Case 2 一次动两列，留在最后当捷径。</p>
 <h2>常见坑</h2>
 <ul><li>忘了还原 setup —— 触发器本身是对的，setup 没还原会把别的列带偏。</li><li>中途转体（y / x）—— U、F 换了，触发器的“右侧”就不是原来的右侧了。固定握法，转 U / F 就够了。</li><li>用 U 一个人“转回去”—— U 会把 U 中心内部旋转，中心看起来对了、实际位置错了，要用触发器而不是单 U。</li></ul>
 <h2>和 5x5 L2E 的关系</h2>
-<p>Yau 页的 5x5 L2E 是“最后两条棱”，这里是“最后两个中心”。画法一样、思路一样：都是找交界、做 commutator、保住已拼好的部分。学会 L2C，6x6 的中心就不用背一堆 case，三个触发器 + setup 就够了。</p>
+<p>Yau 页的 5x5 L2E 是“最后两条棱”，这里是“最后两个中心”。画法一样、思路一样：都是找交界、做 commutator、保住已拼好的部分。学会 L2C，6x6 的中心就不用背一堆 case，五个触发器 + setup 就能覆盖全部单触发器 case（全表见下）。</p>
 </div>
 
 <div id="content-zh-tw" style="display:none;">
@@ -134,9 +154,9 @@
 <h2>核心思想：只用 commutator</h2>
 <p>寬轉動會整列搬中心塊，U 只轉頂層。把兩者拼成 commutator：</p>
 <p><strong>[寬轉動, U] = 寬轉動 + U + 寬轉動逆 + U逆</strong></p>
-<p>好處是：<strong>只動 U 和 F 的中心，另外四個中心完全不動</strong>。下面三個觸發器都是這個結構，效果經 6x6 模擬驗證過。</p>
+<p>好處是：<strong>只動 U 和 F 的中心，另外四個中心完全不動</strong>。下面五個觸發器都是這個結構，效果經 6x6 模擬驗證過。</p>
 <p>記號：<code>2R</code> = 從右數 2 層一起轉，<code>3R</code> = 從右數 3 層一起轉，<code>U</code> = 只轉頂層外層。</p>
-<h2>三個觸發器：錯塊在右側交界時直接用</h2>
+<h2>五個觸發器：錯塊在右側交界時直接用</h2>
 <p>下面每張圖都是「錯塊已經轉到右側交界」的樣子。你的實戰 case 只要把錯塊轉到這個位置，就能直接套公式。</p>
 <h3>Case 1：最外列 3 塊互換</h3>
 <p>U 右列下 3 塊是綠，F 右列上 3 塊是白。</p>
@@ -153,13 +173,23 @@
 <canvas id="l2c-case3-zh-tw" width="300" height="170"></canvas>
 <p>解法： <strong>U 2R' 3R U' 3R' 2R</strong></p>
 <p>其中 <code>2R' 3R</code> 就是只轉中間那一層 slice，只動第 3 列，不動最外列。</p>
+<h3>Case 4：最外列 3 塊互換（鏡像）</h3>
+<p>U 右列上 3 塊是綠，F 右列下 3 塊是白，是 Case 1 的鏡像。</p>
+<canvas id="l2c-case4-zh-tw" width="300" height="170"></canvas>
+<p>解法： <strong>2R U 2R' U'</strong></p>
+<p>同一最外列，方向相反。拿 Case 1 的公式去解會得到鏡像。</p>
+<h3>Case 5：內側第 3 列 3 塊互換（鏡像）</h3>
+<p>和 Case 3 同一第 3 列，方向相反的鏡像。</p>
+<canvas id="l2c-case5-zh-tw" width="300" height="170"></canvas>
+<p>解法： <strong>2R' 3R U 3R' 2R U'</strong></p>
+<p>同一 slice，方向相反，只動第 3 列。</p>
 <h2>實戰流程：setup → 觸發器 → 還原 setup</h2>
 <ol><li>看 U、F 交界，找出错塊在哪一列、在哪一類（C / E / I）。</li><li><strong>Setup</strong>：只轉 U 或 F（U / U' / U2 / F / F'），把錯塊轉到上面三個圖裡對應的右側位置。不要轉整個魔方。</li><li>用對應的觸發器。</li><li><strong>還原 setup</strong>：setup 是 U，就做 U' 還原；是 U2，就再做 U2。</li><li>重複，直到 U、F 全對。</li></ol>
 <p>順序建議：<strong>先內後外</strong>。Case 3 只動第 3 列，Case 1 只動最外列，兩者互不干擾；Case 2 一次動兩列，留在最後當捷徑。</p>
 <h2>常見坑</h2>
 <ul><li>忘了還原 setup —— 觸發器本身是對的，setup 沒還原會把別的列帶偏。</li><li>中途轉體（y / x）—— U、F 換了，觸發器的「右側」就不是原來的右側了。固定握法，轉 U / F 就夠了。</li><li>用 U 一個人「轉回去」—— U 會把 U 中心內部旋轉，中心看起來對了、實際位置錯了，要用觸發器而不是單 U。</li></ul>
 <h2>和 5x5 L2E 的關係</h2>
-<p>Yau 頁的 5x5 L2E 是「最後兩條棱」，這裡是「最後兩個中心」。畫法一樣、思路一樣：都是找交界、做 commutator、保住已拼好的部分。學會 L2C，6x6 的中心就不用背一堆 case，三個觸發器 + setup 就夠了。</p>
+<p>Yau 頁的 5x5 L2E 是「最後兩條棱」，這裡是「最後兩個中心」。畫法一樣、思路一樣：都是找交界、做 commutator、保住已拼好的部分。學會 L2C，6x6 的中心就不用背一堆 case，五個觸發器 + setup 就能覆蓋全部單觸發器 case（全表見下）。</p>
 </div>
 
 <div id="content-ja" style="display:none;">
@@ -180,9 +210,9 @@
 <h2>核心アイデア：コミュテーターだけ</h2>
 <p>ワイドムーブはセンターを列ごと動かし、U は最上層だけ回します。組み合わせるとコミュテーターになります：</p>
 <p><strong>[ワイド, U] = ワイド + U + ワイド逆 + U逆</strong></p>
-<p>利点：<strong>U と F のセンターだけ動き、他の4つは untouched</strong>。下の3トリガーは全てこの形で、6x6 シミュレーションで検証済みです。</p>
+<p>利点：<strong>U と F のセンターだけ動き、他の4つは untouched</strong>。下の5トリガーは全てこの形で、6x6 シミュレーションで検証済みです。</p>
 <p>記号：<code>2R</code> = 右から2層、<code>3R</code> = 右から3層、<code>U</code> = 最上層の外層のみ。</p>
-<h2>3つのトリガー：悪いブロックが右端にあるとき</h2>
+<h2>5つのトリガー：悪いブロックが右端にあるとき</h2>
 <p>下の各図は、悪いブロックをすでに右端に寄せた状態です。実戦では悪いブロックをその位置に持ってきて、公式を当てはめるだけです。</p>
 <h3>Case 1：最外列 3個交換</h3>
 <p>U 右列の下3個が緑、F 右列の上3個が白。</p>
@@ -199,13 +229,23 @@
 <canvas id="l2c-case3-ja" width="300" height="170"></canvas>
 <p>解法： <strong>U 2R' 3R U' 3R' 2R</strong></p>
 <p><code>2R' 3R</code> は真ん中のスライスだけ — 3列目だけ動き、最外列は untouched。</p>
+<h3>Case 4：最外列 3個交換（鏡像）</h3>
+<p>U 右列の上3個が緑、F 右列の下3個が白 — Case 1 の鏡像。</p>
+<canvas id="l2c-case4-ja" width="300" height="170"></canvas>
+<p>解法： <strong>2R U 2R' U'</strong></p>
+<p>同じ最外列、逆方向。Case 1 のトリガーでは鏡像に戻ります。</p>
+<h3>Case 5：内側3列目 3個交換（鏡像）</h3>
+<p>Case 3 と同じ3列目、逆方向の鏡像。</p>
+<canvas id="l2c-case5-ja" width="300" height="170"></canvas>
+<p>解法： <strong>2R' 3R U 3R' 2R U'</strong></p>
+<p>同じスライス、逆方向。3列目だけ動きます。</p>
 <h2>実戦：セットアップ → トリガー → セットアップ戻し</h2>
 <ol><li>U / F の境界を見て、どの列・どのグループ（C / E / I）が間違っているか確認。</li><li><strong>セットアップ</strong>：U か F だけ回す（U / U' / U2 / F / F'）、悪いブロックを図の右側位置に持ってくる。全体を回転させない。</li><li>対応するトリガーを使う。</li><li><strong>セットアップ戻し</strong>：セットアップが U なら U'、U2 ならもう一度 U2。</li><li>U・F が揃うまで繰り返す。</li></ol>
 <p>順序：<strong>内側から、外側へ</strong>。Case 3 は3列目だけ、Case 1 は最外列だけ — 干渉しません。Case 2 は2列同時なので、最後のショートカットに。</p>
 <h2>よくあるミス</h2>
 <ul><li>セットアップ戻し忘れ — トリガーは正しいのに、戻し忘れで他の列がずれる。</li><li>途中で回転（y / x）— U・F が変わり、「右側」が変わってしまう。持ち方固定で U / F だけ回す。</li><li>単独の U で「戻す」— U は U センター内部を回転させるため、見た目は揃っても位置が違う。単独 U ではなくトリガーを使う。</li></ul>
 <h2>5x5 L2E との関係</h2>
-<p>Yau ページの 5x5 L2E は「最後の2エッジ」、こちらは「最後の2センター」。描き方も考え方も同じ：境界を見つけ、コミュテーターを使い、完成部分を守る。L2C では長い case リストは不要 — 3トリガー + セットアップで十分です。</p>
+<p>Yau ページの 5x5 L2E は「最後の2エッジ」、こちらは「最後の2センター」。描き方も考え方も同じ：境界を見つけ、コミュテーターを使い、完成部分を守る。L2C では長い case リストは不要 — 5トリガー + セットアップで全ての単一トリガー case をカバーできます（全表は下）。</p>
 </div>
 
 <div id="content-de" style="display:none;">
@@ -226,9 +266,9 @@
 <h2>Kernidee: Nur Kommutatoren</h2>
 <p>Wide-Moves verschieben ganze Center-Spalten, U dreht nur die oberste Schicht. Zusammen ergeben sie einen Kommutator:</p>
 <p><strong>[wide, U] = wide + U + wide invers + U invers</strong></p>
-<p>Vorteil: <strong>nur U- und F-Center bewegen sich, die anderen vier bleiben untouched</strong>. Die drei Trigger unten haben alle diese Form, per 6x6-Simulation verifiziert.</p>
+<p>Vorteil: <strong>nur U- und F-Center bewegen sich, die anderen vier bleiben untouched</strong>. Die fünf Trigger unten haben alle diese Form, per 6x6-Simulation verifiziert.</p>
 <p>Notation: <code>2R</code> = 2 Schichten von rechts, <code>3R</code> = 3 Schichten, <code>U</code> = nur die oberste Außenschicht.</p>
-<h2>Drei Trigger: Wenn der falsche Block rechts an der Kante ist</h2>
+<h2>Fünf Trigger: Wenn der falsche Block rechts an der Kante ist</h2>
 <p>Jedes Diagramm unten zeigt den falschen Block bereits an die rechte Kante bewegt. Im echten Solve einfach den falschen Block dorthin bringen, dann die Formel anwenden.</p>
 <h3>Fall 1: Äußerste Spalte, 3 Steine tauschen</h3>
 <p>Untere 3 der rechten Spalte von U sind grün, obere 3 der rechten Spalte von F sind weiß.</p>
@@ -245,13 +285,23 @@
 <canvas id="l2c-case3-de" width="300" height="170"></canvas>
 <p>Lösung: <strong>U 2R' 3R U' 3R' 2R</strong></p>
 <p><code>2R' 3R</code> ist nur der mittlere Slice — nur die 3. Spalte bewegt sich, äußerste Spalte untouched.</p>
+<h3>Fall 4: Äußerste Spalte, Spiegel — 3 Steine tauschen andersherum</h3>
+<p>Obere 3 der rechten Spalte von U sind grün, untere 3 der rechten Spalte von F sind weiß — das Spiegelbild von Fall 1.</p>
+<canvas id="l2c-case4-de" width="300" height="170"></canvas>
+<p>Lösung: <strong>2R U 2R' U'</strong></p>
+<p>Gleiche äußerste Spalte, entgegengesetzte Richtung. Der Trigger von Fall 1 würde das Spiegelbild zurückgeben.</p>
+<h3>Fall 5: Innere 3. Spalte, Spiegel — 3 Steine tauschen andersherum</h3>
+<p>Gleiche 3. Spalte wie Fall 3, andersherum getauscht — das Spiegelbild von Fall 3.</p>
+<canvas id="l2c-case5-de" width="300" height="170"></canvas>
+<p>Lösung: <strong>2R' 3R U 3R' 2R U'</strong></p>
+<p>Gleicher Slice, entgegengesetzte Richtung. Nur die 3. Spalte bewegt sich.</p>
 <h2>In der Praxis: Setup → Trigger → Setup rückgängig</h2>
 <ol><li>U/F-Grenze anschauen, welche Spalte und welche Gruppe (C / E / I) falsch ist.</li><li><strong>Setup</strong>: nur U oder F drehen (U / U' / U2 / F / F'), falschen Block an die rechte Position in den Diagrammen bringen. Nicht den ganzen Würfel drehen.</li><li>Passenden Trigger anwenden.</li><li><strong>Setup rückgängig</strong>: war Setup U, dann U'; war es U2, dann nochmal U2.</li><li>Wiederholen, bis U und F gelöst sind.</li></ol>
 <p>Reihenfolge: <strong>erst innen, dann außen</strong>. Fall 3 berührt nur Spalte 3, Fall 1 nur die äußerste Spalte — sie stören sich nicht. Fall 2 berührt zwei Spalten auf einmal, als Shortcut für den Schluss aufheben.</p>
 <h2>Häufige Fehler</h2>
 <ul><li>Setup vergessen rückgängig zu machen — Trigger ist richtig, aber ohne Undo geraten andere Spalten durcheinander.</li><li>Würfel zwischendurch drehen (y / x) — U/F ändern sich, „rechts“ ist nicht mehr dasselbe. Griff halten, nur U/F drehen.</li><li>Mit einem einzelnen U „zurückdrehen“ — U rotiert das U-Center intern; es sieht gelöst aus, aber Positionen stimmen nicht. Trigger benutzen, kein einzelnes U.</li></ul>
 <h2>Beziehung zu 5x5 L2E</h2>
-<p>Das 5x5 L2E auf der Yau-Seite ist „letzte zwei Kanten“, hier sind es „letzte zwei Center“. Gleicher Zeichenstil, gleiche Idee: Grenze finden, Kommutator machen, Gelöstes schützen. Bei L2C brauchst du keine lange Fallliste — drei Trigger + Setup reichen.</p>
+<p>Das 5x5 L2E auf der Yau-Seite ist „letzte zwei Kanten“, hier sind es „letzte zwei Center“. Gleicher Zeichenstil, gleiche Idee: Grenze finden, Kommutator machen, Gelöstes schützen. Bei L2C brauchst du keine lange Fallliste — fünf Trigger + Setup decken alle Einzel-Trigger-Fälle ab (volle Tabelle unten).</p>
 </div>
 
 <div id="content-fr" style="display:none;">
@@ -272,9 +322,9 @@
 <h2>Idée clé : commutateurs seulement</h2>
 <p>Les mouvements larges déplacent des colonnes entières de centres, U ne tourne que la couche du haut. Ensemble, ils forment un commutateur :</p>
 <p><strong>[large, U] = large + U + large inverse + U inverse</strong></p>
-<p>Avantage : <strong>seuls les centres U et F bougent, les quatre autres restent intacts</strong>. Les trois triggers ci-dessous ont tous cette forme, vérifiés par simulation 6x6.</p>
+<p>Avantage : <strong>seuls les centres U et F bougent, les quatre autres restent intacts</strong>. Les cinq triggers ci-dessous ont tous cette forme, vérifiés par simulation 6x6.</p>
 <p>Notation : <code>2R</code> = 2 couches depuis la droite, <code>3R</code> = 3 couches, <code>U</code> = couche externe du haut seulement.</p>
-<h2>Trois triggers : quand le mauvais bloc est sur le bord droit</h2>
+<h2>Cinq triggers : quand le mauvais bloc est sur le bord droit</h2>
 <p>Chaque schéma ci-dessous montre le mauvais bloc déjà amené sur le bord droit. En vrai solve, amène juste ton mauvais bloc à cette place, puis applique la formule.</p>
 <h3>Cas 1 : Colonne extérieure, 3 pièces échangées</h3>
 <p>Les 3 du bas de la colonne droite de U sont vertes, les 3 du haut de la colonne droite de F sont blanches.</p>
@@ -291,13 +341,23 @@
 <canvas id="l2c-case3-fr" width="300" height="170"></canvas>
 <p>Solution : <strong>U 2R' 3R U' 3R' 2R</strong></p>
 <p><code>2R' 3R</code> n'est que la tranche du milieu — seule la 3e colonne bouge, colonne extérieure intacte.</p>
+<h3>Cas 4 : Colonne extérieure, miroir — 3 pièces échangées dans l'autre sens</h3>
+<p>Les 3 du haut de la colonne droite de U sont vertes, les 3 du bas de la colonne droite de F sont blanches — le miroir du Cas 1.</p>
+<canvas id="l2c-case4-fr" width="300" height="170"></canvas>
+<p>Solution : <strong>2R U 2R' U'</strong></p>
+<p>Même colonne extérieure, sens opposé. Le trigger du Cas 1 redonnerait le miroir.</p>
+<h3>Cas 5 : 3e colonne intérieure, miroir — 3 pièces échangées dans l'autre sens</h3>
+<p>Même 3e colonne que le Cas 3, échangée dans l'autre sens — le miroir du Cas 3.</p>
+<canvas id="l2c-case5-fr" width="300" height="170"></canvas>
+<p>Solution : <strong>2R' 3R U 3R' 2R U'</strong></p>
+<p>Même tranche, sens opposé. Seule la 3e colonne bouge.</p>
 <h2>En pratique : Setup → Trigger → Annuler le setup</h2>
 <ol><li>Regarde l'interface U/F, trouve quelle colonne et quel groupe (C / E / I) est faux.</li><li><strong>Setup</strong> : ne tourne que U ou F (U / U' / U2 / F / F'), amène le mauvais bloc à la position droite des schémas. Ne tourne pas tout le cube.</li><li>Applique le trigger correspondant.</li><li><strong>Annule le setup</strong> : si setup était U, fais U' ; si U2, refais U2.</li><li>Répète jusqu'à ce que U et F soient résolus.</li></ol>
 <p>Ordre : <strong>d'abord l'intérieur, puis l'extérieur</strong>. Le Cas 3 ne touche que la colonne 3, le Cas 1 que la colonne extérieure — ils ne se gênent pas. Le Cas 2 touche deux colonnes à la fois, garde-le en raccourci pour la fin.</p>
 <h2>Erreurs fréquentes</h2>
 <ul><li>Oublier d'annuler le setup — le trigger est bon, mais sans annulation les autres colonnes dérivent.</li><li>Tourner le cube (y / x) en cours de route — U/F changent, donc « à droite » n'est plus pareil. Garde la prise, ne tourne que U/F.</li><li>Essayer de corriger avec un seul U — U fait tourner le centre U sur lui-même ; ça a l'air résolu mais les positions sont fausses. Utilise un trigger, pas un U seul.</li></ul>
 <h2>Lien avec le L2E 5x5</h2>
-<p>Le L2E 5x5 de la page Yau, c'est « deux dernières arêtes », ici ce sont « deux derniers centres ». Même style de dessin, même idée : trouver l'interface, faire un commutateur, protéger ce qui est résolu. En L2C, pas besoin d'une longue liste de cas — trois triggers + setup suffisent.</p>
+<p>Le L2E 5x5 de la page Yau, c'est « deux dernières arêtes », ici ce sont « deux derniers centres ». Même style de dessin, même idée : trouver l'interface, faire un commutateur, protéger ce qui est résolu. En L2C, pas besoin d'une longue liste de cas — cinq triggers + setup couvrent tous les cas à un seul trigger (table complète ci-dessous).</p>
 </div>
 
 <div id="content-it" style="display:none;">
@@ -318,9 +378,9 @@
 <h2>Idea chiave: solo commutatori</h2>
 <p>Le mosse larghe spostano intere colonne di centri, U gira solo lo strato in alto. Insieme formano un commutatore:</p>
 <p><strong>[larga, U] = larga + U + larga inversa + U inversa</strong></p>
-<p>Vantaggio: <strong>solo i centri U e F si muovono, gli altri quattro restano intatti</strong>. I tre trigger sotto hanno tutti questa forma, verificati con simulazione 6x6.</p>
+<p>Vantaggio: <strong>solo i centri U e F si muovono, gli altri quattro restano intatti</strong>. I cinque trigger sotto hanno tutti questa forma, verificati con simulazione 6x6.</p>
 <p>Notazione: <code>2R</code> = 2 strati da destra, <code>3R</code> = 3 strati, <code>U</code> = solo lo strato esterno in alto.</p>
-<h2>Tre trigger: quando il blocco sbagliato è sul bordo destro</h2>
+<h2>Cinque trigger: quando il blocco sbagliato è sul bordo destro</h2>
 <p>Ogni diagramma sotto mostra il blocco sbagliato già portato sul bordo destro. In una solve vera, porta solo il tuo blocco sbagliato in quella posizione, poi applica la formula.</p>
 <h3>Caso 1: Colonna esterna, 3 pezzi scambiati</h3>
 <p>I 3 in basso della colonna destra di U sono verdi, i 3 in alto della colonna destra di F sono bianchi.</p>
@@ -337,13 +397,41 @@
 <canvas id="l2c-case3-it" width="300" height="170"></canvas>
 <p>Soluzione: <strong>U 2R' 3R U' 3R' 2R</strong></p>
 <p><code>2R' 3R</code> è solo la fetta centrale — si muove solo la 3a colonna, colonna esterna intatta.</p>
+<h3>Caso 4: Colonna esterna, specchio — 3 pezzi scambiati nell'altro verso</h3>
+<p>I 3 in alto della colonna destra di U sono verdi, i 3 in basso della colonna destra di F sono bianchi — lo specchio del Caso 1.</p>
+<canvas id="l2c-case4-it" width="300" height="170"></canvas>
+<p>Soluzione: <strong>2R U 2R' U'</strong></p>
+<p>Stessa colonna esterna, verso opposto. Il trigger del Caso 1 ridarebbe lo specchio.</p>
+<h3>Caso 5: 3a colonna interna, specchio — 3 pezzi scambiati nell'altro verso</h3>
+<p>Stessa 3a colonna del Caso 3, scambiata nell'altro verso — lo specchio del Caso 3.</p>
+<canvas id="l2c-case5-it" width="300" height="170"></canvas>
+<p>Soluzione: <strong>2R' 3R U 3R' 2R U'</strong></p>
+<p>Stessa fetta, verso opposto. Si muove solo la 3a colonna.</p>
 <h2>In pratica: Setup → Trigger → Annulla setup</h2>
 <ol><li>Guarda l'interfaccia U/F, trova quale colonna e quale gruppo (C / E / I) è sbagliato.</li><li><strong>Setup</strong>: gira solo U o F (U / U' / U2 / F / F'), porta il blocco sbagliato nella posizione destra dei diagrammi. Non ruotare tutto il cubo.</li><li>Applica il trigger corrispondente.</li><li><strong>Annulla setup</strong>: se il setup era U, fai U'; se U2, rifai U2.</li><li>Ripeti finché U e F sono risolti.</li></ol>
 <p>Ordine: <strong>prima l'interno, poi l'esterno</strong>. Il Caso 3 tocca solo la colonna 3, il Caso 1 solo la colonna esterna — non interferiscono. Il Caso 2 tocca due colonne insieme, tienilo come scorciatoia per la fine.</p>
 <h2>Errori comuni</h2>
 <ul><li>Dimenticare di annullare il setup — il trigger è giusto, ma senza annullamento le altre colonne si spostano.</li><li>Ruotare il cubo (y / x) a metà — U/F cambiano, quindi “a destra” non è più lo stesso. Tieni la presa, gira solo U/F.</li><li>Provare a sistemare con una sola U — U ruota il centro U su sé stesso; sembra risolto ma le posizioni sono sbagliate. Usa un trigger, non una U sola.</li></ul>
 <h2>Relazione con L2E 5x5</h2>
-<p>Il L2E 5x5 nella pagina Yau è “ultimi due spigoli”, qui sono “ultimi due centri”. Stesso stile di disegno, stessa idea: trova l'interfaccia, fai un commutatore, proteggi ciò che è risolto. In L2C non serve una lunga lista di casi — tre trigger + setup bastano.</p>
+<p>Il L2E 5x5 nella pagina Yau è “ultimi due spigoli”, qui sono “ultimi due centri”. Stesso stile di disegno, stessa idea: trova l'interfaccia, fai un commutatore, proteggi ciò che è risolto. In L2C non serve una lunga lista di casi — cinque trigger + setup coprono tutti i casi a singolo trigger (tabella completa sotto).</p>
+</div>
+
+
+<div id="l2c-all-cases">
+<h2><span class="i18n" data-en="All Single-Trigger Cases: 5 Patterns × 16 Setups = 80" data-zh-cn="全部单触发器 Case：5 种标准型 × 16 种 Setup = 80 个" data-zh-tw="全部單觸發器 Case：5 種標準型 × 16 種 Setup = 80 個" data-ja="全単一トリガー case：5パターン × 16セットアップ = 80" data-de="Alle Einzel-Trigger-Fälle: 5 Muster × 16 Setups = 80" data-fr="Tous les cas à un seul trigger : 5 motifs × 16 setups = 80" data-it="Tutti i casi a singolo trigger: 5 schemi × 16 setup = 80">All Single-Trigger Cases: 5 Patterns × 16 Setups = 80</span></h2>
+<p><span class="i18n" data-en="The five patterns above, each moved to 16 positions by U/F setups, give all 80 single-trigger positions. Each row is setup + trigger + undo setup, simplified. Every alg was verified by 6x6 simulation: it solves its position and moves only U/F centers." data-zh-cn="上面五种标准型，每种用 U/F setup 移到 16 个位置，就是全部 80 个单触发器位置。每行都是 setup + 触发器 + 还原 setup，化简后给出。每个公式都经 6x6 模拟验证：解开对应位置，且只动 U/F 中心。" data-zh-tw="上面五種標準型，每種用 U/F setup 移到 16 個位置，就是全部 80 個單觸發器位置。每行都是 setup + 觸發器 + 還原 setup，化簡後給出。每個公式都經 6x6 模擬驗證：解開對應位置，且只動 U/F 中心。" data-ja="上の5パターンを U/F セットアップで16位置に動かすと、全80の単一トリガー位置になります。各行は setup + トリガー + setup戻しを簡略化したもの。全公式は6x6シミュレーションで検証済み：対応位置を解き、U/Fセンターだけ動きます。" data-de="Die fünf Muster oben, jeweils per U/F-Setup auf 16 Positionen bewegt, ergeben alle 80 Einzel-Trigger-Positionen. Jede Zeile ist Setup + Trigger + Setup rückgängig, vereinfacht. Jede Formel wurde per 6x6-Simulation verifiziert: sie löst ihre Position und bewegt nur U/F-Center." data-fr="Les cinq motifs ci-dessus, chacun déplacé vers 16 positions par setups U/F, donnent les 80 positions à un seul trigger. Chaque ligne est setup + trigger + annulation du setup, simplifiée. Chaque formule a été vérifiée par simulation 6x6 : elle résout sa position et ne bouge que les centres U/F." data-it="I cinque schemi sopra, ciascuno spostato in 16 posizioni tramite setup U/F, danno tutte le 80 posizioni a singolo trigger. Ogni riga è setup + trigger + annullamento setup, semplificata. Ogni formula è stata verificata con simulazione 6x6: risolve la sua posizione e muove solo i centri U/F.">The five patterns above, each moved to 16 positions by U/F setups, give all 80 single-trigger positions. Each row is setup + trigger + undo setup, simplified. Every alg was verified by 6x6 simulation: it solves its position and moves only U/F centers.</span></p>
+<p><span class="i18n" data-en="Cases needing two triggers are combinations — just repeat Setup → Trigger → Undo. No separate list is needed." data-zh-cn="需要两次触发器的 case 都是组合——重复 Setup → 触发器 → 还原 即可，不用另列清单。" data-zh-tw="需要兩次觸發器的 case 都是組合——重複 Setup → 觸發器 → 還原 即可，不用另列清單。" data-ja="2トリガー必要な case は組み合わせ — Setup → トリガー → 戻しを繰り返すだけです。別リストは不要です。" data-de="Fälle mit zwei Triggern sind Kombinationen — einfach Setup → Trigger → Rückgängig wiederholen. Keine separate Liste nötig." data-fr="Les cas à deux triggers sont des combinaisons — répétez simplement Setup → Trigger → Annulation. Pas besoin de liste séparée." data-it="I casi a due trigger sono combinazioni — ripeti semplicemente Setup → Trigger → Annulla. Nessuna lista separata necessaria.">Cases needing two triggers are combinations — just repeat Setup → Trigger → Undo. No separate list is needed.</span></p>
+<h3>Outer — U 2R U' 2R'</h3>
+<canvas id="l2c-all-outer" width="300" height="170"></canvas>
+<table><thead><tr><th>Setup</th><th>Solve</th></tr></thead><tbody><tr><td>(none)</td><td><strong>U 2R U' 2R'</strong></td></tr><tr><td>F</td><td><strong>F U 2R U' 2R' F'</strong></td></tr><tr><td>F'</td><td><strong>F' U 2R U' 2R' F</strong></td></tr><tr><td>F2</td><td><strong>F2 U 2R U' 2R' F2</strong></td></tr><tr><td>U</td><td><strong>U2 2R U' 2R' U'</strong></td></tr><tr><td>U F</td><td><strong>U F U 2R U' 2R' F' U'</strong></td></tr><tr><td>U F'</td><td><strong>U F' U 2R U' 2R' F U'</strong></td></tr><tr><td>U F2</td><td><strong>U F2 U 2R U' 2R' F2 U'</strong></td></tr><tr><td>U'</td><td><strong>2R U' 2R' U</strong></td></tr><tr><td>U' F</td><td><strong>U' F U 2R U' 2R' F' U</strong></td></tr><tr><td>U' F'</td><td><strong>U' F' U 2R U' 2R' F U</strong></td></tr><tr><td>U' F2</td><td><strong>U' F2 U 2R U' 2R' F2 U</strong></td></tr><tr><td>U2</td><td><strong>U' 2R U' 2R' U2</strong></td></tr><tr><td>U2 F</td><td><strong>U2 F U 2R U' 2R' F' U2</strong></td></tr><tr><td>U2 F'</td><td><strong>U2 F' U 2R U' 2R' F U2</strong></td></tr><tr><td>U2 F2</td><td><strong>U2 F2 U 2R U' 2R' F2 U2</strong></td></tr></tbody></table><h3>Outer mirror — 2R U 2R' U'</h3>
+<canvas id="l2c-all-outer_inv" width="300" height="170"></canvas>
+<table><thead><tr><th>Setup</th><th>Solve</th></tr></thead><tbody><tr><td>(none)</td><td><strong>2R U 2R' U'</strong></td></tr><tr><td>F</td><td><strong>F 2R U 2R' U' F'</strong></td></tr><tr><td>F'</td><td><strong>F' 2R U 2R' U' F</strong></td></tr><tr><td>F2</td><td><strong>F2 2R U 2R' U' F2</strong></td></tr><tr><td>U</td><td><strong>U 2R U 2R' U2</strong></td></tr><tr><td>U F</td><td><strong>U F 2R U 2R' U' F' U'</strong></td></tr><tr><td>U F'</td><td><strong>U F' 2R U 2R' U' F U'</strong></td></tr><tr><td>U F2</td><td><strong>U F2 2R U 2R' U' F2 U'</strong></td></tr><tr><td>U'</td><td><strong>U' 2R U 2R'</strong></td></tr><tr><td>U' F</td><td><strong>U' F 2R U 2R' U' F' U</strong></td></tr><tr><td>U' F'</td><td><strong>U' F' 2R U 2R' U' F U</strong></td></tr><tr><td>U' F2</td><td><strong>U' F2 2R U 2R' U' F2 U</strong></td></tr><tr><td>U2</td><td><strong>U2 2R U 2R' U</strong></td></tr><tr><td>U2 F</td><td><strong>U2 F 2R U 2R' U' F' U2</strong></td></tr><tr><td>U2 F'</td><td><strong>U2 F' 2R U 2R' U' F U2</strong></td></tr><tr><td>U2 F2</td><td><strong>U2 F2 2R U 2R' U' F2 U2</strong></td></tr></tbody></table><h3>2x2 block — U 3R U' 3R'</h3>
+<canvas id="l2c-all-block2x2" width="300" height="170"></canvas>
+<table><thead><tr><th>Setup</th><th>Solve</th></tr></thead><tbody><tr><td>(none)</td><td><strong>U 3R U' 3R'</strong></td></tr><tr><td>F</td><td><strong>F U 3R U' 3R' F'</strong></td></tr><tr><td>F'</td><td><strong>F' U 3R U' 3R' F</strong></td></tr><tr><td>F2</td><td><strong>F2 U 3R U' 3R' F2</strong></td></tr><tr><td>U</td><td><strong>U2 3R U' 3R' U'</strong></td></tr><tr><td>U F</td><td><strong>U F U 3R U' 3R' F' U'</strong></td></tr><tr><td>U F'</td><td><strong>U F' U 3R U' 3R' F U'</strong></td></tr><tr><td>U F2</td><td><strong>U F2 U 3R U' 3R' F2 U'</strong></td></tr><tr><td>U'</td><td><strong>3R U' 3R' U</strong></td></tr><tr><td>U' F</td><td><strong>U' F U 3R U' 3R' F' U</strong></td></tr><tr><td>U' F'</td><td><strong>U' F' U 3R U' 3R' F U</strong></td></tr><tr><td>U' F2</td><td><strong>U' F2 U 3R U' 3R' F2 U</strong></td></tr><tr><td>U2</td><td><strong>U' 3R U' 3R' U2</strong></td></tr><tr><td>U2 F</td><td><strong>U2 F U 3R U' 3R' F' U2</strong></td></tr><tr><td>U2 F'</td><td><strong>U2 F' U 3R U' 3R' F U2</strong></td></tr><tr><td>U2 F2</td><td><strong>U2 F2 U 3R U' 3R' F2 U2</strong></td></tr></tbody></table><h3>Inner col 3 — U 2R' 3R U' 3R' 2R</h3>
+<canvas id="l2c-all-slice" width="300" height="170"></canvas>
+<table><thead><tr><th>Setup</th><th>Solve</th></tr></thead><tbody><tr><td>(none)</td><td><strong>U 2R' 3R U' 3R' 2R</strong></td></tr><tr><td>F</td><td><strong>F U 2R' 3R U' 3R' 2R F'</strong></td></tr><tr><td>F'</td><td><strong>F' U 2R' 3R U' 3R' 2R F</strong></td></tr><tr><td>F2</td><td><strong>F2 U 2R' 3R U' 3R' 2R F2</strong></td></tr><tr><td>U</td><td><strong>U2 2R' 3R U' 3R' 2R U'</strong></td></tr><tr><td>U F</td><td><strong>U F U 2R' 3R U' 3R' 2R F' U'</strong></td></tr><tr><td>U F'</td><td><strong>U F' U 2R' 3R U' 3R' 2R F U'</strong></td></tr><tr><td>U F2</td><td><strong>U F2 U 2R' 3R U' 3R' 2R F2 U'</strong></td></tr><tr><td>U'</td><td><strong>2R' 3R U' 3R' 2R U</strong></td></tr><tr><td>U' F</td><td><strong>U' F U 2R' 3R U' 3R' 2R F' U</strong></td></tr><tr><td>U' F'</td><td><strong>U' F' U 2R' 3R U' 3R' 2R F U</strong></td></tr><tr><td>U' F2</td><td><strong>U' F2 U 2R' 3R U' 3R' 2R F2 U</strong></td></tr><tr><td>U2</td><td><strong>U' 2R' 3R U' 3R' 2R U2</strong></td></tr><tr><td>U2 F</td><td><strong>U2 F U 2R' 3R U' 3R' 2R F' U2</strong></td></tr><tr><td>U2 F'</td><td><strong>U2 F' U 2R' 3R U' 3R' 2R F U2</strong></td></tr><tr><td>U2 F2</td><td><strong>U2 F2 U 2R' 3R U' 3R' 2R F2 U2</strong></td></tr></tbody></table><h3>Inner col 3 mirror — 2R' 3R U 3R' 2R U'</h3>
+<canvas id="l2c-all-slice_inv" width="300" height="170"></canvas>
+<table><thead><tr><th>Setup</th><th>Solve</th></tr></thead><tbody><tr><td>(none)</td><td><strong>2R' 3R U 3R' 2R U'</strong></td></tr><tr><td>F</td><td><strong>F 2R' 3R U 3R' 2R U' F'</strong></td></tr><tr><td>F'</td><td><strong>F' 2R' 3R U 3R' 2R U' F</strong></td></tr><tr><td>F2</td><td><strong>F2 2R' 3R U 3R' 2R U' F2</strong></td></tr><tr><td>U</td><td><strong>U 2R' 3R U 3R' 2R U2</strong></td></tr><tr><td>U F</td><td><strong>U F 2R' 3R U 3R' 2R U' F' U'</strong></td></tr><tr><td>U F'</td><td><strong>U F' 2R' 3R U 3R' 2R U' F U'</strong></td></tr><tr><td>U F2</td><td><strong>U F2 2R' 3R U 3R' 2R U' F2 U'</strong></td></tr><tr><td>U'</td><td><strong>U' 2R' 3R U 3R' 2R</strong></td></tr><tr><td>U' F</td><td><strong>U' F 2R' 3R U 3R' 2R U' F' U</strong></td></tr><tr><td>U' F'</td><td><strong>U' F' 2R' 3R U 3R' 2R U' F U</strong></td></tr><tr><td>U' F2</td><td><strong>U' F2 2R' 3R U 3R' 2R U' F2 U</strong></td></tr><tr><td>U2</td><td><strong>U2 2R' 3R U 3R' 2R U</strong></td></tr><tr><td>U2 F</td><td><strong>U2 F 2R' 3R U 3R' 2R U' F' U2</strong></td></tr><tr><td>U2 F'</td><td><strong>U2 F' 2R' 3R U 3R' 2R U' F U2</strong></td></tr><tr><td>U2 F2</td><td><strong>U2 F2 2R' 3R U 3R' 2R U' F2 U2</strong></td></tr></tbody></table>
 </div>
 
 <script>
@@ -431,6 +519,25 @@
     render6_l2c("l2c-case1-it", "wwww,wwwg,wwwg,wwwg;gggw,gggw,gggw,gggg");
     render6_l2c("l2c-case2-it", "wwww,wwww,wwgg,wwgg;ggww,ggww,gggg,gggg");
     render6_l2c("l2c-case3-it", "wwgw,wwww,wwgw,wwgw;ggwg,ggwg,gggg,ggwg");
+    render6_l2c("l2c-case4-en", "gggw,wwww,wwww,wwww;gggg,gggw,gggw,gggw");
+    render6_l2c("l2c-case5-en", "wwww,ggwg,wwww,wwww;ggwg,gggg,ggwg,ggwg");
+    render6_l2c("l2c-case4-zh-cn", "gggw,wwww,wwww,wwww;gggg,gggw,gggw,gggw");
+    render6_l2c("l2c-case5-zh-cn", "wwww,ggwg,wwww,wwww;ggwg,gggg,ggwg,ggwg");
+    render6_l2c("l2c-case4-zh-tw", "gggw,wwww,wwww,wwww;gggg,gggw,gggw,gggw");
+    render6_l2c("l2c-case5-zh-tw", "wwww,ggwg,wwww,wwww;ggwg,gggg,ggwg,ggwg");
+    render6_l2c("l2c-case4-ja", "gggw,wwww,wwww,wwww;gggg,gggw,gggw,gggw");
+    render6_l2c("l2c-case5-ja", "wwww,ggwg,wwww,wwww;ggwg,gggg,ggwg,ggwg");
+    render6_l2c("l2c-case4-de", "gggw,wwww,wwww,wwww;gggg,gggw,gggw,gggw");
+    render6_l2c("l2c-case5-de", "wwww,ggwg,wwww,wwww;ggwg,gggg,ggwg,ggwg");
+    render6_l2c("l2c-case4-fr", "gggw,wwww,wwww,wwww;gggg,gggw,gggw,gggw");
+    render6_l2c("l2c-case5-fr", "wwww,ggwg,wwww,wwww;ggwg,gggg,ggwg,ggwg");
+    render6_l2c("l2c-case4-it", "gggw,wwww,wwww,wwww;gggg,gggw,gggw,gggw");
+    render6_l2c("l2c-case5-it", "wwww,ggwg,wwww,wwww;ggwg,gggg,ggwg,ggwg");
+    render6_l2c("l2c-all-outer", "wwww,wwwg,wwwg,wwwg;gggw,gggw,gggw,gggg");
+    render6_l2c("l2c-all-outer_inv", "gggw,wwww,wwww,wwww;gggg,gggw,gggw,gggw");
+    render6_l2c("l2c-all-block2x2", "wwww,wwww,wwgg,wwgg;ggww,ggww,gggg,gggg");
+    render6_l2c("l2c-all-slice", "wwgw,wwww,wwgw,wwgw;ggwg,ggwg,gggg,ggwg");
+    render6_l2c("l2c-all-slice_inv", "wwww,ggwg,wwww,wwww;ggwg,gggg,ggwg,ggwg");
 </script>
 
 
