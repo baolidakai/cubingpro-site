@@ -274,10 +274,22 @@ function getTriggerForCase(caseStr) {
   if (caseStr === '4c1e') return 'R U2 R\'';
   return null;
 }
+function getEOPreservingMoves(axis) {
+  // Moves that preserve EO for the given axis (no quarter turns on the flip axis)
+  // UD: U/D flip, so no U/U'/D/D'. Allowed: F,B,R,L,U2,D2
+  // FB: F/B flip, so no F/F'/B/B'. Allowed: U,D,R,L,F2,B2
+  // RL: R/L flip, so no R/R'/L/L'. Allowed: U,D,F,B,R2,L2
+  if (axis === 'UD') return ['F', "F'", 'F2', 'B', "B'", 'B2', 'R', "R'", 'R2', 'L', "L'", 'L2', 'U2', 'D2'];
+  if (axis === 'FB') return ['U', "U'", 'U2', 'D', "D'", 'D2', 'R', "R'", 'R2', 'L', "L'", 'L2', 'F2', 'B2'];
+  if (axis === 'RL') return ['U', "U'", 'U2', 'D', "D'", 'D2', 'F', "F'", 'F2', 'B', "B'", 'B2', 'R2', 'L2'];
+  return Object.keys(PERM);
+}
+
 function findRZPSetups(scramble, axis, maxDepth) {
   if (typeof axis === 'number') { maxDepth = axis; axis = 'UD'; }
   axis = axis || 'UD';
   maxDepth = maxDepth || 3;
+  const allowedMoves = getEOPreservingMoves(axis);
   const nonMain = axis === 'UD' ? ['FB','RL'] : axis === 'FB' ? ['UD','RL'] : ['UD','FB'];
   const start = getRZPStateFull(scramble, axis);
   for (const ax of nonMain) {
@@ -294,7 +306,7 @@ function findRZPSetups(scramble, axis, maxDepth) {
   while (queue.length) {
     const cur = queue.shift();
     if (cur.path.length >= maxDepth) continue;
-    for (const m of Object.keys(PERM)) {
+    for (const m of allowedMoves) {
       if (cur.path.length && m[0] === cur.path[cur.path.length-1][0]) continue;
       const neo = applyMoveEO(cur.eo, m, axis);
       const [npieces, norients] = applyCornerPieces(cur.pieces, cur.orients, m);
