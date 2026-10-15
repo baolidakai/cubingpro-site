@@ -81,7 +81,7 @@ function toggleEO(eoId, scr, eoMoves, axis) {
         html += `<b>🎯 RZP (0-3 moves):</b><br/>`;
         for (const r of rzpList.slice(0, 10)) {
           const setupDisp = r.setup ? `<code>${r.setup}</code>` : '<i>(0 moves)</i>';
-          html += `<div>${setupDisp} → <b>${r.case}</b> → <code>${r.trigger}</code></div>`;
+          html += `<div>${setupDisp} → <b>${r.case}</b> <span style="color:#666;font-size:0.85em;">(${r.axis || 'UD'})</span> → <code>${r.trigger}</code></div>`;
         }
       } else {
         html += `<span style="color:#999;">RZP: N/A (no 0-3 move setup)</span>`;
@@ -112,7 +112,7 @@ function checkCustomEO() {
         html += `<b>🎯 RZP:</b><br/>`;
         for (const r of rzpList.slice(0, 10)) {
           const setupDisp = r.setup ? `<code>${r.setup}</code>` : '<i>(0 moves)</i>';
-          html += `<div>${setupDisp} → <b>${r.case}</b> → <code>${r.trigger}</code></div>`;
+          html += `<div>${setupDisp} → <b>${r.case}</b> <span style="color:#666;font-size:0.85em;">(${r.axis || 'UD'})</span> → <code>${r.trigger}</code></div>`;
         }
       } else {
         html += `<span style="color:#999;">RZP: N/A</span>`;
