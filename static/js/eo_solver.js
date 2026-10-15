@@ -190,19 +190,78 @@ function countBadEEdges(epos) {
   }
   return c;
 }
+// Multi-axis CO: track piece + orientation, check letter on axis face
+const PIECE_CYCLE = [
+  ['U','F','R'], ['U','L','F'], ['U','B','L'], ['U','R','B'],
+  ['D','R','F'], ['D','F','L'], ['D','L','B'], ['D','B','R'],
+];
+const FACE_CYCLE = [
+  ['U','F','R'], ['U','L','F'], ['U','B','L'], ['U','R','B'],
+  ['D','R','F'], ['D','F','L'], ['D','L','B'], ['D','B','R'],
+];
+function getColorOnFace(piece, pos, udOrient, targetFace) {
+  const faces = FACE_CYCLE[pos];
+  const faceIdx = faces.indexOf(targetFace);
+  if (faceIdx === -1) return null;
+  const colors = PIECE_CYCLE[piece];
+  const colorIdx = (faceIdx - udOrient + 3) % 3;
+  return colors[colorIdx];
+}
+function isBadForAxis(piece, pos, udOrient, axis) {
+  const faces = FACE_CYCLE[pos];
+  const axisFaces = axis === 'UD' ? ['U','D'] : axis === 'FB' ? ['F','B'] : ['R','L'];
+  let axisFace = null;
+  for (const f of faces) { if (axisFaces.includes(f)) { axisFace = f; break; } }
+  if (!axisFace) return false;
+  const color = getColorOnFace(piece, pos, udOrient, axisFace);
+  return !axisFaces.includes(color);
+}
+function applyCornerPieces(pieces, orients, move) {
+  const perm = CORNER_PERM[move];
+  const delta = CORNER_DELTA[move];
+  const np = new Array(8), no = new Array(8);
+  for (let i = 0; i < 8; i++) {
+    const src = perm[i];
+    np[i] = pieces[src];
+    no[i] = (orients[src] + delta[src]) % 3;
+  }
+  return [np, no];
+}
+function countBadForAxis(pieces, orients, axis) {
+  let c = 0;
+  for (let pos = 0; pos < 8; pos++) {
+    if (isBadForAxis(pieces[pos], pos, orients[pos], axis)) c++;
+  }
+  return c;
+}
 function getRZPStateFull(scramble, axis) {
   let eo = 0;
-  let co = [0,0,0,0,0,0,0,0];
+  let pieces = [0,1,2,3,4,5,6,7];
+  let orients = [0,0,0,0,0,0,0,0];
   let epos = [0,1,2,3,4,5,6,7,8,9,10,11];
   for (const m of scramble.trim().split(/\s+/)) {
     if (!PERM[m]) continue;
     eo = applyMoveEO(eo, m, axis);
-    co = applyCornerCO(co, m);
+    [pieces, orients] = applyCornerPieces(pieces, orients, m);
     epos = applyEdgePos(epos, m);
   }
-  const badC = countBadCorners(co);
   const badE = countBadEEdges(epos);
-  return { badCorners: badC, badEdges: badE, case: badC + 'c' + badE + 'e', eo, co, epos };
+  // For RZP, consider the two non-main axes
+  const nonMain = axis === 'UD' ? ['FB','RL'] : axis === 'FB' ? ['UD','RL'] : ['UD','FB'];
+  let best = null;
+  for (const ax of nonMain) {
+    const badC = countBadForAxis(pieces, orients, ax);
+    const caseStr = badC + 'c' + badE + 'e';
+    if (!best || (isRZP({badCorners: badC, badEdges: badE}) && !isRZP(best))) {
+      best = { badCorners: badC, badEdges: badE, case: caseStr, axis: ax, eo, pieces, orients, epos };
+    }
+  }
+  // Fallback to UD if no RZP found
+  if (!best) {
+    const badC = countBadForAxis(pieces, orients, 'UD');
+    best = { badCorners: badC, badEdges: badE, case: badC + 'c' + badE + 'e', axis: 'UD', eo, pieces, orients, epos };
+  }
+  return best;
 }
 function isRZP(state) {
   return (state.badCorners === 4 && state.badEdges === 2) ||
@@ -216,52 +275,62 @@ function getTriggerForCase(caseStr) {
   return null;
 }
 function findRZPSetups(scramble, axis, maxDepth) {
-  // BFS from scramble state, find setups to RZP cases
+  if (typeof axis === 'number') { maxDepth = axis; axis = 'UD'; }
+  axis = axis || 'UD';
   maxDepth = maxDepth || 3;
+  const nonMain = axis === 'UD' ? ['FB','RL'] : axis === 'FB' ? ['UD','RL'] : ['UD','FB'];
   const start = getRZPStateFull(scramble, axis);
-  if (isRZP(start)) {
-    return [{ setup: '', case: start.case, trigger: getTriggerForCase(start.case) }];
+  for (const ax of nonMain) {
+    const badC = countBadForAxis(start.pieces, start.orients, ax);
+    const badE = countBadEEdges(start.epos);
+    if (isRZP({badCorners: badC, badEdges: badE})) {
+      return [{ setup: '', case: badC + 'c' + badE + 'e', trigger: getTriggerForCase(badC + 'c' + badE + 'e'), axis: ax }];
+    }
   }
   const results = [];
-  const queue = [{ eo: start.eo, co: start.co, epos: start.epos, path: [] }];
+  const queue = [{ eo: start.eo, pieces: start.pieces, orients: start.orients, epos: start.epos, path: [] }];
   const seen = new Set();
-  seen.add(start.eo + '|' + start.co.join('') + '|' + start.epos.join(','));
+  seen.add(start.eo + '|' + start.pieces.join(',') + '|' + start.orients.join('') + '|' + start.epos.join(','));
   while (queue.length) {
     const cur = queue.shift();
     if (cur.path.length >= maxDepth) continue;
     for (const m of Object.keys(PERM)) {
       if (cur.path.length && m[0] === cur.path[cur.path.length-1][0]) continue;
       const neo = applyMoveEO(cur.eo, m, axis);
-      const nco = applyCornerCO(cur.co, m);
+      const [npieces, norients] = applyCornerPieces(cur.pieces, cur.orients, m);
       const nepos = applyEdgePos(cur.epos, m);
-      const key = neo + '|' + nco.join('') + '|' + nepos.join(',');
+      const key = neo + '|' + npieces.join(',') + '|' + norients.join('') + '|' + nepos.join(',');
       if (seen.has(key)) continue;
       seen.add(key);
       const npath = [...cur.path, m];
-      const badC = countBadCorners(nco);
       const badE = countBadEEdges(nepos);
-      const caseStr = badC + 'c' + badE + 'e';
-      if (isRZP({ badCorners: badC, badEdges: badE })) {
-        results.push({ setup: npath.join(' '), case: caseStr, trigger: getTriggerForCase(caseStr) });
-        if (results.length >= 10) return results;
+      for (const ax of nonMain) {
+        const badC = countBadForAxis(npieces, norients, ax);
+        if (isRZP({badCorners: badC, badEdges: badE})) {
+          results.push({ setup: npath.join(' '), case: badC + 'c' + badE + 'e', trigger: getTriggerForCase(badC + 'c' + badE + 'e'), axis: ax });
+          if (results.length >= 10) return results;
+        }
       }
       if (npath.length < maxDepth) {
-        queue.push({ eo: neo, co: nco, epos: nepos, path: npath });
+        queue.push({ eo: neo, pieces: npieces, orients: norients, epos: nepos, path: npath });
       }
     }
   }
   return results;
 }
 
+
 // Override stub RZP functions
-function getRZPState(scramble) {
-  const s = getRZPStateFull(scramble, 'UD');
+function getRZPState(scramble, axis) {
+  const s = getRZPStateFull(scramble, axis || 'UD');
   return { badCorners: s.badCorners, badEdges: s.badEdges, case: s.case };
 }
-function findRZPSetup(scramble, maxDepth) {
-  const r = findRZPSetups(scramble, 'UD', maxDepth || 3);
+function findRZPSetup(scramble, axis, maxDepth) {
+  if (typeof axis === 'number') { maxDepth = axis; axis = 'UD'; }
+  const r = findRZPSetups(scramble, axis || 'UD', maxDepth || 3);
   return r.length ? r[0] : null;
 }
-function findAllRZPSetups(scramble, maxDepth) {
-  return findRZPSetups(scramble, 'UD', maxDepth || 3);
+function findAllRZPSetups(scramble, axis, maxDepth) {
+  if (typeof axis === 'number') { maxDepth = axis; axis = 'UD'; }
+  return findRZPSetups(scramble, axis || 'UD', maxDepth || 3);
 }
