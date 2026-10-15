@@ -70,6 +70,62 @@ function showRZPGuide(containerId) {
   el.innerHTML = html;
 }
 
+function toggleEO(eoId, scr, eoMoves) {
+  const el = document.getElementById(eoId);
+  if (el.style.display === 'none') {
+    try {
+      const afterEO = (scr + ' ' + eoMoves).trim();
+      const rzpList = window.EOSolver2.findAllRZPSetups(afterEO, 3);
+      let html = '';
+      if (rzpList.length > 0) {
+        html += `<b>🎯 RZP (0-3 moves):</b><br/>`;
+        for (const r of rzpList.slice(0, 10)) {
+          const setupDisp = r.setup ? `<code>${r.setup}</code>` : '<i>(0 moves)</i>';
+          html += `<div>${setupDisp} → <b>${r.case}</b> → <code>${r.trigger}</code></div>`;
+        }
+      } else {
+        html += `<span style="color:#999;">RZP: N/A (no 0-3 move setup)</span>`;
+      }
+      el.innerHTML = html;
+    } catch(e) { el.innerHTML = 'Error: ' + e.message; }
+    el.style.display = 'block';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+function checkCustomEO() {
+  const scr = window._currentScramble || document.getElementById('eo-input').value;
+  const eoMoves = document.getElementById('custom-eo-input').value.trim();
+  const axis = document.getElementById('custom-eo-axis').value;
+  const resultEl = document.getElementById('custom-eo-result');
+  if (!eoMoves) { resultEl.innerHTML = '<span style="color:#999;">Enter EO moves first.</span>'; return; }
+  try {
+    // Validate: check if after scramble + EO moves, EO is solved for this axis
+    const afterEO = (scr + ' ' + eoMoves).trim();
+    const eoState = window.EOSolver2.getEOState(afterEO, axis);
+    const isValid = eoState === 0;
+    if (isValid) {
+      let html = `<span style="color:#4caf50;">✅ Valid EO for ${axis} axis!</span><br/>`;
+      const rzpList = window.EOSolver2.findAllRZPSetups(afterEO, 3);
+      if (rzpList.length > 0) {
+        html += `<b>🎯 RZP:</b><br/>`;
+        for (const r of rzpList.slice(0, 10)) {
+          const setupDisp = r.setup ? `<code>${r.setup}</code>` : '<i>(0 moves)</i>';
+          html += `<div>${setupDisp} → <b>${r.case}</b> → <code>${r.trigger}</code></div>`;
+        }
+      } else {
+        html += `<span style="color:#999;">RZP: N/A</span>`;
+      }
+      resultEl.innerHTML = html;
+    } else {
+      resultEl.innerHTML = `<span style="color:#f44336;">❌ Not a valid EO for ${axis} axis. EO state: ${eoState}</span>`;
+    }
+  } catch(e) {
+    resultEl.innerHTML = `<span style="color:#f44336;">Error: ${e.message}</span>`;
+  }
+}
+
 function randomEOUI() {
   const scr = window.EOSolver2.randomScramble(20);
   const out = document.getElementById('random-eo-output');

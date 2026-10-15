@@ -451,3 +451,24 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined') {
   module.exports.findAllRZPSetups = findAllRZPSetups;
 }
+
+// === Get EO state (0 = solved) for validation ===
+function getEOState(scramble, axis = 'UD') {
+  let eo = new Array(12).fill(0);
+  const moves = scramble.trim().split(/\s+/).filter(m => m);
+  for (const m of moves) {
+    if (!MOVES[m]) continue;
+    eo = applyMove(eo, m, axis);
+  }
+  // Count bad edges
+  let bad = 0;
+  for (let i = 0; i < 12; i++) if (eo[i] !== 0) bad++;
+  return bad;
+}
+
+if (typeof window !== 'undefined') {
+  window.EOSolver2.getEOState = getEOState;
+}
+if (typeof module !== 'undefined') {
+  module.exports.getEOState = getEOState;
+}
