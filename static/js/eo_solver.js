@@ -10,15 +10,22 @@
 // UD axis: F,B,R,L flip (standard)
 // FB axis: U,D,R,L flip
 // RL axis: U,D,F,B flip
+// Edge indices: 0=UF,1=UR,2=UB,3=UL, 4=DF,5=DR,6=DB,7=DL, 8=FR,9=FL,10=BL,11=BR
+// F face: UF(0),DF(4),FR(8),FL(9)
+// B face: UB(2),DB(6),BL(10),BR(11)
+// R face: UR(1),DR(5),FR(8),BR(11)
+// L face: UL(3),DL(7),FL(9),BL(10)
+// U face: UF(0),UR(1),UB(2),UL(3)
+// D face: DF(4),DR(5),DB(6),DL(7)
 const AXES = {
   'UD': {
-    'F': [1,5,8,9], 'B': [3,7,10,11], 'R': [0,4,8,11], 'L': [2,6,9,10],
+    'F': [0,4,8,9], 'B': [2,6,10,11], 'R': [1,5,8,11], 'L': [3,7,9,10],
   },
   'FB': {
-    'U': [0,1,2,3], 'D': [4,5,6,7], 'R': [0,4,8,11], 'L': [2,6,9,10],
+    'U': [0,1,2,3], 'D': [4,5,6,7], 'R': [1,5,8,11], 'L': [3,7,9,10],
   },
   'RL': {
-    'U': [0,1,2,3], 'D': [4,5,6,7], 'F': [1,5,8,9], 'B': [3,7,10,11],
+    'U': [0,1,2,3], 'D': [4,5,6,7], 'F': [0,4,8,9], 'B': [2,6,10,11],
   }
 };
 
@@ -26,24 +33,24 @@ const AXES = {
 // permutation[i] = where edge at position i goes to
 // flipped = set of positions (after move) where edge is flipped
 const MOVES = {
-  'U':  { perm: [1,2,3,0, 4,5,6,7, 8,9,10,11], flip: [] },
-  'U\'': { perm: [3,0,1,2, 4,5,6,7, 8,9,10,11], flip: [] },
-  'U2': { perm: [2,3,0,1, 4,5,6,7, 8,9,10,11], flip: [] },
-  'D':  { perm: [0,1,2,3, 5,6,7,4, 8,9,10,11], flip: [] },
-  'D\'': { perm: [0,1,2,3, 7,4,5,6, 8,9,10,11], flip: [] },
-  'D2': { perm: [0,1,2,3, 6,7,4,5, 8,9,10,11], flip: [] },
-  'F':  { perm: [0,8,2,3, 4,9,6,7, 5,1,10,11], flip: [1,5,8,9] },
-  'F\'': { perm: [0,9,2,3, 4,8,6,7, 1,5,10,11], flip: [1,5,8,9] },
-  'F2': { perm: [0,5,2,3, 4,1,6,7, 9,8,10,11], flip: [] },
-  'B':  { perm: [0,1,11,3, 4,5,10,7, 8,9,6,2], flip: [2,3,10,11] }, // Wait, need correct
-  'B\'': { perm: [0,1,10,3, 4,5,11,7, 8,9,2,6], flip: [2,3,10,11] },
-  'B2': { perm: [0,1,6,3, 4,5,2,7, 8,9,10,11], flip: [] },
-  'R':  { perm: [8,1,2,3, 11,5,6,7, 4,9,10,0], flip: [0,4,8,11] },
-  'R\'': { perm: [11,1,2,3, 8,5,6,7, 0,9,10,4], flip: [0,4,8,11] },
-  'R2': { perm: [4,1,2,3, 0,5,6,7, 11,9,10,8], flip: [] },
-  'L':  { perm: [0,1,10,3, 4,5,9,7, 8,6,2,11], flip: [2,6,9,10] },
-  'L\'': { perm: [0,1,9,3, 4,5,10,7, 8,2,6,11], flip: [2,6,9,10] },
-  'L2': { perm: [0,1,6,3, 4,5,2,7, 8,10,9,11], flip: [] },
+  'U': { perm: [1, 2, 3, 0, 4, 5, 6, 7, 8, 9, 10, 11], flip: [] },
+  "U'": { perm: [3, 0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11], flip: [] },
+  'U2': { perm: [2, 3, 0, 1, 4, 5, 6, 7, 8, 9, 10, 11], flip: [] },
+  'D': { perm: [0, 1, 2, 3, 7, 4, 5, 6, 8, 9, 10, 11], flip: [] },
+  "D'": { perm: [0, 1, 2, 3, 5, 6, 7, 4, 8, 9, 10, 11], flip: [] },
+  'D2': { perm: [0, 1, 2, 3, 6, 7, 4, 5, 8, 9, 10, 11], flip: [] },
+  'F': { perm: [8, 1, 2, 3, 9, 5, 6, 7, 4, 0, 10, 11], flip: [] },
+  "F'": { perm: [9, 1, 2, 3, 8, 5, 6, 7, 0, 4, 10, 11], flip: [] },
+  'F2': { perm: [4, 1, 2, 3, 0, 5, 6, 7, 9, 8, 10, 11], flip: [] },
+  'B': { perm: [0, 1, 11, 3, 4, 5, 10, 7, 8, 9, 2, 6], flip: [] },
+  "B'": { perm: [0, 1, 10, 3, 4, 5, 11, 7, 8, 9, 6, 2], flip: [] },
+  'B2': { perm: [0, 1, 6, 3, 4, 5, 2, 7, 8, 9, 11, 10], flip: [] },
+  'R': { perm: [0, 8, 2, 3, 4, 11, 6, 7, 5, 9, 10, 1], flip: [] },
+  "R'": { perm: [0, 11, 2, 3, 4, 8, 6, 7, 1, 9, 10, 5], flip: [] },
+  'R2': { perm: [0, 5, 2, 3, 4, 1, 6, 7, 11, 9, 10, 8], flip: [] },
+  'L': { perm: [0, 1, 2, 10, 4, 5, 6, 9, 8, 3, 7, 11], flip: [] },
+  "L'": { perm: [0, 1, 2, 9, 4, 5, 6, 10, 8, 7, 3, 11], flip: [] },
+  'L2': { perm: [0, 1, 2, 7, 4, 5, 6, 3, 8, 10, 9, 11], flip: [] },
 };
 
 // Note: B perm above is wrong, fixing:
@@ -63,6 +70,7 @@ const MOVE_LIST = Object.keys(MOVES);
 
 // Get flip set for a move on a specific axis
 function getFlip(move, axis='UD') {
+  if (move.endsWith('2')) return []; // Double move: flip twice = cancel
   const base = move[0]; // F, B, R, L, U, D
   const ax = AXES[axis];
   if (ax[base]) return ax[base];
@@ -114,7 +122,7 @@ function applyMove(eo, move, axis='UD') {
   for (let j = 0; j < 12; j++) {
     const i = inv[j]; // edge comes from position i
     let bit = arr[i];
-    if (flip.includes(j)) bit ^= 1; // flip if destination is in flip set
+    if (flip.includes(i)) bit ^= 1; // flip if SOURCE edge is in flip set
     result[j] = bit;
   }
   return result;
