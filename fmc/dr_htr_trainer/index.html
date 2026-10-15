@@ -101,22 +101,8 @@ function solveEOLiveUI() {
   const out = document.getElementById('eo-output');
   if (!scr.trim()) { out.innerHTML = '<p style="color:#999;">Enter a scramble first.</p>'; return; }
   try {
-    // Show RZP setup: find 0-3 moves to reach a good RZP case
     let html = '';
-    try {
-      const rzpSetup = window.EOSolver2.findRZPSetup(scr, 3);
-      if (rzpSetup) {
-        const setupDisplay = rzpSetup.setup ? `<code>${rzpSetup.setup}</code>` : '(already there!)';
-        html += `<div style="background:#e8f5e9;padding:10px;border-radius:4px;margin-bottom:12px;border-left:3px solid #4caf50;">
-          <b>🎯 RZP:</b> ${setupDisplay} → <b>${rzpSetup.case}</b> → trigger <code>${rzpSetup.trigger}</code><br/>
-          <span style="font-size:0.85em;color:#666;">Setup (0-3 moves) → RZP case → Trigger = DR!</span>
-        </div>`;
-      } else {
-        html += `<div style="background:#fff3e0;padding:8px;border-radius:4px;margin-bottom:12px;">
-          No RZP case found within 3 setup moves. Try a different EO.
-        </div>`;
-      }
-    } catch(e) { console.log('RZP error', e); }
+    // Per-EO RZP display is handled in the EO loop below
     for (const axis of ['UD', 'FB', 'RL']) {
       const label = axis === 'UD' ? 'EOUD' : axis === 'FB' ? 'EOFB' : 'EOLR';
       const sols = window.EOSolver2.solveEO(scr, 2, axis);
