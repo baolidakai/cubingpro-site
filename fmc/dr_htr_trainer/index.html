@@ -148,7 +148,7 @@ function solveEOLiveUI() {
       html += '<div style="margin:12px 0;"><b>' + label + ':</b> ';
       if (!sols.length) { html += '<span style="color:#999;">none</span></div>'; continue; }
       html += '<span style="color:#666;">' + sols.length + ' solutions — click to see RZP</span></div>';
-      sols.slice(0, 5).forEach((s, i) => {
+      sols.slice(0, 10).forEach((s, i) => {
         const badge = i === 0 ? '🥇' : '#' + (i+1);
         const eoId = 'eo-' + axis + '-' + i;
         html += '<div class="eo-card" data-eo-id="' + eoId + '" data-scr="' + scr.replace(/"/g, '&quot;') + '" data-moves="' + s.moves.replace(/"/g, '&quot;') + '" style="font-family:monospace;background:#fff;padding:6px 10px;margin:4px 0;border-radius:4px;border-left:3px solid #4caf50;cursor:pointer;">▶ ' + badge + ' ' + s.moves + ' <b>(' + s.length + ')</b></div>';
