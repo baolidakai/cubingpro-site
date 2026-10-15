@@ -327,7 +327,7 @@ if (typeof module !== 'undefined') {
 }
 
 // === RZP Setup Search: find 0-3 moves to reach an RZP case ===
-const RZP_GOOD_CASES = ['4c2e', '3c1e', '4c1e', '4c4e', '3c2e'];
+const RZP_GOOD_CASES = ['4c2e', '3c1e', '4c1e'];
 
 function findRZPSetup(scramble, maxDepth = 3) {
   // BFS for setup moves to reach a good RZP case
@@ -397,8 +397,6 @@ function findAllRZPSetups(scramble, maxDepth = 3) {
     '4c2e': 'R',
     '3c1e': "R U' R' / R U R'",
     '4c1e': 'R U2 R\'',
-    '4c4e': 'R (or setup further)',
-    '3c2e': 'setup further',
   };
   const results = [];
   
