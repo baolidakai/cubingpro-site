@@ -127,8 +127,141 @@ function findRZPSetup(scramble, maxDepth) { return null; }
 function findAllRZPSetups(scramble, maxDepth) { return []; }
 
 if (typeof window !== 'undefined') {
-  window.EOSolver2 = { solveEO, getEOState, randomScramble, getRZPState, findRZPSetup, findAllRZPSetups };
+  window.EOSolver2 = { solveEO, getEOState, randomScramble, getRZPState, findRZPSetup, findAllRZPSetups, getRZPStateFull, findRZPSetups };
 }
 if (typeof module !== 'undefined') {
-  module.exports = { solveEO, getEOState, randomScramble, applyMoveEO, eoFromScramble };
+  module.exports = { solveEO, getEOState, randomScramble, applyMoveEO, eoFromScramble, getRZPState, findRZPSetup, findAllRZPSetups, getRZPStateFull, findRZPSetups };
+}
+
+// ===== RZP: Corner Orientation + E-edge tracking =====
+// CORNER_POSITIONS: UFR, UFL, UBL, UBR, DFR, DFL, DBL, DBR
+// Indices: 0=UFR,1=UFL,2=UBL,3=UBR,4=DFR,5=DFL,6=DBL,7=DBR
+const CORNER_PERM = {
+  'U': [3, 0, 1, 2, 4, 5, 6, 7], "U'": [1, 2, 3, 0, 4, 5, 6, 7], 'U2': [2, 3, 0, 1, 4, 5, 6, 7],
+  'D': [0, 1, 2, 3, 5, 6, 7, 4], "D'": [0, 1, 2, 3, 7, 4, 5, 6], 'D2': [0, 1, 2, 3, 6, 7, 4, 5],
+  'R': [4, 1, 2, 0, 7, 5, 6, 3], "R'": [3, 1, 2, 7, 0, 5, 6, 4], 'R2': [7, 1, 2, 4, 3, 5, 6, 0],
+  'L': [0, 2, 6, 3, 4, 1, 5, 7], "L'": [0, 5, 1, 3, 4, 6, 2, 7], 'L2': [0, 6, 5, 3, 4, 2, 1, 7],
+  'F': [1, 5, 2, 3, 0, 4, 6, 7], "F'": [4, 0, 2, 3, 5, 1, 6, 7], 'F2': [5, 4, 2, 3, 1, 0, 6, 7],
+  'B': [0, 1, 3, 7, 4, 5, 2, 6], "B'": [0, 1, 6, 2, 4, 5, 7, 3], 'B2': [0, 1, 7, 6, 4, 5, 3, 2],
+};
+// CORNER_DELTA indexed by SOURCE position (piece at src gets delta[src])
+// From user's Python: delta = orientation_change[(i-1) % len] for piece at cycle[i]
+const CORNER_DELTA = {
+  'U': [0,0,0,0,0,0,0,0], "U'": [0,0,0,0,0,0,0,0], 'U2': [0,0,0,0,0,0,0,0],
+  'D': [0,0,0,0,0,0,0,0], "D'": [0,0,0,0,0,0,0,0], 'D2': [0,0,0,0,0,0,0,0],
+  'R': [1,0,0,2,2,0,0,1], "R'": [1,0,0,2,2,0,0,1], 'R2': [0,0,0,0,0,0,0,0],
+  'L': [0,2,1,0,0,1,2,0], "L'": [0,2,1,0,0,1,2,0], 'L2': [0,0,0,0,0,0,0,0],
+  'F': [2,1,0,0,1,2,0,0], "F'": [2,1,0,0,1,2,0,0], 'F2': [0,0,0,0,0,0,0,0],
+  'B': [0,0,2,1,0,0,1,2], "B'": [0,0,2,1,0,0,1,2], 'B2': [0,0,0,0,0,0,0,0],
+};
+// Edge position tracking: E-edges are FR(8), FL(9), BL(10), BR(11) in solved state
+// After moves, track where they are. E-layer positions are 8,9,10,11.
+function applyCornerCO(co, move) {
+  const perm = CORNER_PERM[move];
+  const delta = CORNER_DELTA[move];
+  const result = new Array(8);
+  for (let i = 0; i < 8; i++) {
+    const src = perm[i];
+    result[i] = (co[src] + delta[src]) % 3; // delta indexed by SOURCE
+  }
+  return result;
+}
+function applyEdgePos(epos, move) {
+  const perm = PERM[move];
+  const result = new Array(12);
+  for (let i = 0; i < 12; i++) {
+    result[i] = epos[perm[i]];
+  }
+  return result;
+}
+function countBadCorners(co) {
+  let c = 0;
+  for (let i = 0; i < 8; i++) if (co[i] !== 0) c++;
+  return c;
+}
+function countBadEEdges(epos) {
+  // E-edges are pieces 8,9,10,11 (FR,FL,BL,BR in solved). Count those NOT in E-layer positions (8,9,10,11).
+  let c = 0;
+  for (let pos = 0; pos < 12; pos++) {
+    const piece = epos[pos];
+    if (piece >= 8 && piece <= 11) {
+      if (pos < 8) c++; // E-edge in U/D layer = bad
+    }
+  }
+  return c;
+}
+function getRZPStateFull(scramble, axis) {
+  let eo = 0;
+  let co = [0,0,0,0,0,0,0,0];
+  let epos = [0,1,2,3,4,5,6,7,8,9,10,11];
+  for (const m of scramble.trim().split(/\s+/)) {
+    if (!PERM[m]) continue;
+    eo = applyMoveEO(eo, m, axis);
+    co = applyCornerCO(co, m);
+    epos = applyEdgePos(epos, m);
+  }
+  const badC = countBadCorners(co);
+  const badE = countBadEEdges(epos);
+  return { badCorners: badC, badEdges: badE, case: badC + 'c' + badE + 'e', eo, co, epos };
+}
+function isRZP(state) {
+  return (state.badCorners === 4 && state.badEdges === 2) ||
+         (state.badCorners === 3 && state.badEdges === 1) ||
+         (state.badCorners === 4 && state.badEdges === 1);
+}
+function getTriggerForCase(caseStr) {
+  if (caseStr === '4c2e') return 'R';
+  if (caseStr === '3c1e') return "R U' R' / R U R'";
+  if (caseStr === '4c1e') return 'R U2 R\'';
+  return null;
+}
+function findRZPSetups(scramble, axis, maxDepth) {
+  // BFS from scramble state, find setups to RZP cases
+  maxDepth = maxDepth || 3;
+  const start = getRZPStateFull(scramble, axis);
+  if (isRZP(start)) {
+    return [{ setup: '', case: start.case, trigger: getTriggerForCase(start.case) }];
+  }
+  const results = [];
+  const queue = [{ eo: start.eo, co: start.co, epos: start.epos, path: [] }];
+  const seen = new Set();
+  seen.add(start.eo + '|' + start.co.join('') + '|' + start.epos.join(','));
+  while (queue.length) {
+    const cur = queue.shift();
+    if (cur.path.length >= maxDepth) continue;
+    for (const m of Object.keys(PERM)) {
+      if (cur.path.length && m[0] === cur.path[cur.path.length-1][0]) continue;
+      const neo = applyMoveEO(cur.eo, m, axis);
+      const nco = applyCornerCO(cur.co, m);
+      const nepos = applyEdgePos(cur.epos, m);
+      const key = neo + '|' + nco.join('') + '|' + nepos.join(',');
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const npath = [...cur.path, m];
+      const badC = countBadCorners(nco);
+      const badE = countBadEEdges(nepos);
+      const caseStr = badC + 'c' + badE + 'e';
+      if (isRZP({ badCorners: badC, badEdges: badE })) {
+        results.push({ setup: npath.join(' '), case: caseStr, trigger: getTriggerForCase(caseStr) });
+        if (results.length >= 10) return results;
+      }
+      if (npath.length < maxDepth) {
+        queue.push({ eo: neo, co: nco, epos: nepos, path: npath });
+      }
+    }
+  }
+  return results;
+}
+
+// Override stub RZP functions
+function getRZPState(scramble) {
+  const s = getRZPStateFull(scramble, 'UD');
+  return { badCorners: s.badCorners, badEdges: s.badEdges, case: s.case };
+}
+function findRZPSetup(scramble, maxDepth) {
+  const r = findRZPSetups(scramble, 'UD', maxDepth || 3);
+  return r.length ? r[0] : null;
+}
+function findAllRZPSetups(scramble, maxDepth) {
+  return findRZPSetups(scramble, 'UD', maxDepth || 3);
 }
