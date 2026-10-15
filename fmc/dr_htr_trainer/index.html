@@ -164,13 +164,21 @@ function solveEOLiveUI() {
       const sols = window.EOSolver2.solveEO(scr, 2, axis);
       html += '<div style="margin:12px 0;"><b>' + label + ':</b> ';
       if (!sols.length) { html += '<span style="color:#999;">none</span></div>'; continue; }
-      html += '<span style="color:#666;">' + sols.length + ' solutions</span></div>';
+      html += '<span style="color:#666;">' + sols.length + ' solutions — click to see RZP</span></div>';
       sols.slice(0, 5).forEach((s, i) => {
         const badge = i === 0 ? '🥇' : '#' + (i+1);
-        html += '<div style="font-family:monospace;background:#fff;padding:6px 10px;margin:4px 0;border-radius:4px;border-left:3px solid #4caf50;">' + badge + ' ' + s.moves + ' <b>(' + s.length + ')</b></div>';
+        const eoId = 'eo-' + axis + '-' + i;
+        html += '<div class="eo-card" data-eo-id="' + eoId + '" data-scr="' + scr.replace(/"/g, '&quot;') + '" data-moves="' + s.moves.replace(/"/g, '&quot;') + '" style="font-family:monospace;background:#fff;padding:6px 10px;margin:4px 0;border-radius:4px;border-left:3px solid #4caf50;cursor:pointer;">▶ ' + badge + ' ' + s.moves + ' <b>(' + s.length + ')</b></div>';
+        html += '<div id="' + eoId + '" style="display:none;margin-left:16px;font-size:0.9em;"></div>';
       });
     }
     out.innerHTML = html;
+    // Attach click handlers to EO cards
+    out.querySelectorAll('.eo-card').forEach(card => {
+      card.addEventListener('click', () => {
+        toggleEO(card.dataset.eoId, card.dataset.scr, card.dataset.moves);
+      });
+    });
   } catch(e) {
     out.innerHTML = '<p style="color:red;">Error: ' + e.message + '</p>';
   }
