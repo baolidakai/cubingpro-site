@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cubing Pro</title>
+<meta name="description" content="Home for competitive speedcubers.">
+<meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs">
+<!-- Baidu site verification: replace with your code from zhanjiang.baidu.com -->
+<!-- <meta name="baidu-site-verification" content="YOUR_CODE_HERE"> -->
+<link rel="stylesheet" href="../static/css/main.css">
+<script src="../static/js/big_cube.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <button id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">&#9776;</button>
+  <a class="site-title" href="../">Cubing Pro</a>
+</header>
+<div class="layout">
+  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details><summary>Timer</summary><ul><li><a href="../timer">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../fmc/recon.html">FMC Recon</a></li><li><a href="../fmc/theory.html">FMC Theory</a></li><li><a href="../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../3x3x3/cfop">CFOP method</a></li><li><a href="../3x3x3/cross">Cross tutorial</a></li><li><a href="../3x3x3/f2l">F2L algorithms</a></li><li><a href="../3x3x3/oll">OLL algorithms</a></li><li><a href="../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../3x3x3/pll">PLL algorithms</a></li><li><a href="../3x3x3/oh_cmll">OH CMLL algorithms</a></li><li><a href="../3x3x3/roux">Roux Method</a></li><li><a href="../3x3x3/zb_stepping_stone">VHLS + COLL</a></li><li><a href="../fmc/dr_htr_trainer">FMC DR HTR Trainer</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../2x2x2/eg_intro">EG method</a></li><li><a href="../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details open><summary>Big Cube</summary><ul><li><a href="../big_cube/yau.html">Yau method</a></li><li><a href="../big_cube/l2c_6x6.html" aria-current="page">6x6 Last Two Centers</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../fto/tutorial">FTO Beginner Tutorial</a></li><li><a href="../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../sq1/eo">EO</a></li><li><a href="../sq1/obl">OBL</a></li><li><a href="../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details><summary>Misc</summary><ul><li><a href="../game/geoguesser.html">GeoGuesser Tips</a></li><li><a href="../game/flag_trainer.html">Flag Trainer</a></li><li><a href="../game/turtle_soup.html">海龟汤题库</a></li></ul></details></li></ul></nav>
+  <main class="content">
+    
+
+<h1>6x6 Last Two Centers (L2C)</h1>
+
+<p>六阶最后两个中心。Reduction / Yau 做到只剩两个中心没拼好时，就是 L2C。</p>
+<p>摆法：把最后两个中心放到 <strong>U（顶）和 F（前）</strong>，另外四个中心已经拼好、整个过程不能动它们。</p>
+<p>图和 Yau 页里 5x5 L2E 是同一套画法：只画要看的面，不画整个魔方。</p>
+
+<h2>怎么看图</h2>
+<p>左图 = U 中心 4x4，右图 = F 中心 4x4。白色 = 属于 U 的块，绿色 = 属于 F 的块。</p>
+<p>U 的底边就是 F 的顶边 —— 两图贴着的那条边是同一个交界。</p>
+<canvas id="l2c-howto" width="300" height="170"></canvas>
+<p>上面是拼好的样子：左全白，右全绿。</p>
+
+<h2>中心块分三种</h2>
+<p>6x6 一个面的中心是 4x4 = 16 块，分三类，互不串门：</p>
+<canvas id="l2c-orbit" width="170" height="165"></canvas>
+<ul>
+    <li><strong>C 角中心 ×4</strong>：四个角。</li>
+    <li><strong>E 边中心 ×8</strong>：四条边上、每边 2 块。</li>
+    <li><strong>I 内中心 ×4</strong>：中间 2x2。</li>
+</ul>
+<p>所以 L2C 不是“16 块乱了”，而是三类各自在 U、F 之间换位置。先认清是哪一类错了，再动手。</p>
+
+<h2>核心思想：只用 commutator</h2>
+<p>宽转动会整列搬中心块，U 只转顶层。把两者拼成 commutator：</p>
+<p><strong>[宽转动, U] = 宽转动 + U + 宽转动逆 + U逆</strong></p>
+<p>好处是：<strong>只动 U 和 F 的中心，另外四个中心完全不动</strong>。下面三个触发器都是这个结构，效果经 6x6 模拟验证过。</p>
+<p>记号：<code>2R</code> = 从右数 2 层一起转，<code>3R</code> = 从右数 3 层一起转，<code>U</code> = 只转顶层外层。</p>
+
+<h2>三个触发器：错块在右侧交界时直接用</h2>
+<p>下面每张图都是“错块已经转到右侧交界”的样子。你的实战 case 只要把错块转到这个位置，就能直接套公式。</p>
+
+<h3>Case 1：最外列 3 块互换</h3>
+<p>U 右列下 3 块是绿，F 右列上 3 块是白。</p>
+<canvas id="l2c-case1" width="300" height="170"></canvas>
+<p>解法：<strong>U 2R U' 2R'</strong></p>
+<p>只动最外列，不动内侧 2x2。</p>
+
+<h3>Case 2：右下 / 右上 2x2 块互换</h3>
+<p>U 右下 2x2 是绿，F 右上 2x2 是白。</p>
+<canvas id="l2c-case2" width="300" height="170"></canvas>
+<p>解法：<strong>U 3R U' 3R'</strong></p>
+<p>一次搬 2x2 块，是 Case 1 的“加宽版”。</p>
+
+<h3>Case 3：内侧第 3 列 3 块互换</h3>
+<p>U 第 3 列（从左数第 3 列）有 3 块是绿，F 第 3 列有 3 块是白，最外列全对。</p>
+<canvas id="l2c-case3" width="300" height="170"></canvas>
+<p>解法：<strong>U 2R' 3R U' 3R' 2R</strong></p>
+<p>其中 <code>2R' 3R</code> 就是只转中间那一层 slice，只动第 3 列，不动最外列。</p>
+
+<h2>实战流程：setup → 触发器 → 还原 setup</h2>
+<ol>
+    <li>看 U、F 交界，找出错块在哪一列、在哪一类（C / E / I）。</li>
+    <li><strong>Setup</strong>：只转 U 或 F（U / U' / U2 / F / F'），把错块转到上面三个图里对应的右侧位置。不要转整个魔方。</li>
+    <li>用对应的触发器。</li>
+    <li><strong>还原 setup</strong>：setup 是 U，就做 U' 还原；是 U2，就再做 U2。</li>
+    <li>重复，直到 U、F 全对。</li>
+</ol>
+<p>顺序建议：<strong>先内后外</strong>。Case 3 只动第 3 列，Case 1 只动最外列，两者互不干扰；Case 2 一次动两列，留在最后当捷径。</p>
+
+<h2>常见坑</h2>
+<ul>
+    <li>忘了还原 setup —— 触发器本身是对的，setup 没还原会把别的列带偏。</li>
+    <li>中途转体（y / x）—— U、F 换了，触发器的“右侧”就不是原来的右侧了。固定握法，转 U / F 就够了。</li>
+    <li>用 U 一个人“转回去”—— U 会把 U 中心内部旋转，中心看起来对了、实际位置错了，要用触发器而不是单 U。</li>
+</ul>
+
+<h2>和 5x5 L2E 的关系</h2>
+<p>Yau 页的 5x5 L2E 是“最后两条棱”，这里是“最后两个中心”。画法一样、思路一样：都是找交界、做 commutator、保住已拼好的部分。学会 L2C，6x6 的中心就不用背一堆 case，三个触发器 + setup 就够了。</p>
+
+<script>
+    render6_l2c("l2c-howto", "wwww,wwww,wwww,wwww;gggg,gggg,gggg,gggg");
+    render6_orbit("l2c-orbit");
+    render6_l2c("l2c-case1", "wwww,wwwg,wwwg,wwwg;gggw,gggw,gggw,gggg");
+    render6_l2c("l2c-case2", "wwww,wwww,wwgg,wwgg;ggww,ggww,gggg,gggg");
+    render6_l2c("l2c-case3", "wwgw,wwww,wwgw,wwgw;ggwg,ggwg,gggg,ggwg");
+</script>
+
+
+  </main>
+</div>
+<footer class="site-footer">
+  <span>&copy; 2025 Bowen Deng</span>
+  <span class="dot">&middot;</span>
+  <span>Cubing Pro</span>
+  <span class="dot">&middot;</span>
+  <span>&#129352; 5% off at TheCubicle &amp; SpeedCubeShop with code <button id="discount-code" title="Click to copy">CUBINGPRO</button></span>
+</footer>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var nav = document.getElementById('site-nav');
+  toggle.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && window.innerWidth <= 900) {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  var code = document.getElementById('discount-code');
+  code.addEventListener('click', function () {
+    var done = function () {
+      code.textContent = 'COPIED!';
+      setTimeout(function () { code.textContent = 'CUBINGPRO'; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('CUBINGPRO').then(done, done);
+    } else { done(); }
+  });
+})();
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850" crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-CK6MWC01K0');
+</script>
+</body>
+</html>
