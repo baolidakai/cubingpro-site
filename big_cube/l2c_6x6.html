@@ -22,81 +22,415 @@
   <main class="content">
     
 
-<h1>6x6 Last Two Centers (L2C)</h1>
+<div id="lang-toggle" role="group" aria-label="Language toggle" data-title-en="6x6 Last Two Centers - Cubing Pro" data-title-zh-cn="6x6 最后两个中心 - Cubing Pro" data-title-zh-tw="6x6 最後兩個中心 - Cubing Pro" data-title-ja="6x6 ラスト2センター - Cubing Pro" data-title-de="6x6 Letzte zwei Center - Cubing Pro" data-title-fr="6x6 Deux derniers centres - Cubing Pro" data-title-it="6x6 Ultimi due centri - Cubing Pro"><button id="btn-en" aria-pressed="false">English</button><button id="btn-zh-cn" aria-pressed="false">简体</button><button id="btn-zh-tw" aria-pressed="false">繁體</button><button id="btn-ja" aria-pressed="false">日本語</button><button id="btn-de" aria-pressed="false">Deutsch</button><button id="btn-fr" aria-pressed="false">Français</button><button id="btn-it" aria-pressed="false">Italiano</button></div>
 
+<div id="content-en" style="display:none;">
+<h1>6x6 Last Two Centers (L2C)</h1>
+<p>The last two centers on 6x6. In Reduction / Yau, when only two centers are left unsolved, that is L2C.</p>
+<p>Setup: put the last two centers on <strong>U (top) and F (front)</strong>. The other four centers are already solved — do not break them.</p>
+<p>Diagrams use the same style as the 5x5 L2E on the Yau page: only the faces you need, not the whole cube.</p>
+<h2>How to Read the Diagrams</h2>
+<p>Left = U center 4x4, right = F center 4x4. White = pieces that belong to U, green = pieces that belong to F.</p>
+<p>The bottom edge of U is the top edge of F — the two diagrams share that edge.</p>
+<canvas id="l2c-howto-en" width="300" height="170"></canvas>
+<p>Above is solved: left all white, right all green.</p>
+<h2>Three Kinds of Center Pieces</h2>
+<p>One face center is 4x4 = 16 pieces, in three groups that never mix:</p>
+<canvas id="l2c-orbit-en" width="170" height="165"></canvas>
+<ul><li><strong>C corner-center x4</strong>: the four corners.</li><li><strong>E edge-center x8</strong>: two per edge.</li><li><strong>I inner-center x4</strong>: the middle 2x2.</li></ul>
+<p>So L2C is not “16 pieces scrambled” — each group swaps between U and F on its own. Identify which group is wrong before moving.</p>
+<h2>Core Idea: Commutators Only</h2>
+<p>Wide moves move whole columns of centers, U turns only the top layer. Combine them into a commutator:</p>
+<p><strong>[wide, U] = wide + U + wide inverse + U inverse</strong></p>
+<p>Benefit: <strong>only U and F centers move, the other four stay untouched</strong>. The three triggers below are all this shape, verified by 6x6 simulation.</p>
+<p>Notation: <code>2R</code> = turn 2 layers from the right, <code>3R</code> = 3 layers, <code>U</code> = top outer layer only.</p>
+<h2>Three Triggers: When the Bad Block Is on the Right Edge</h2>
+<p>Each diagram below shows the bad block already moved to the right edge. In a real solve, just move your bad block to that position, then apply the formula.</p>
+<h3>Case 1: Outer Column, 3 Pieces Swap</h3>
+<p>Bottom 3 of U's right column are green, top 3 of F's right column are white.</p>
+<canvas id="l2c-case1-en" width="300" height="170"></canvas>
+<p>Solution: <strong>U 2R U' 2R'</strong></p>
+<p>Only the outer column moves, inner 2x2 untouched.</p>
+<h3>Case 2: Bottom-Right / Top-Right 2x2 Block Swap</h3>
+<p>Bottom-right 2x2 of U is green, top-right 2x2 of F is white.</p>
+<canvas id="l2c-case2-en" width="300" height="170"></canvas>
+<p>Solution: <strong>U 3R U' 3R'</strong></p>
+<p>Moves a 2x2 block at once — a wider version of Case 1.</p>
+<h3>Case 3: Inner 3rd Column, 3 Pieces Swap</h3>
+<p>3 pieces in U's 3rd column (from the left) are green, 3 in F's 3rd column are white, outer column all correct.</p>
+<canvas id="l2c-case3-en" width="300" height="170"></canvas>
+<p>Solution: <strong>U 2R' 3R U' 3R' 2R</strong></p>
+<p><code>2R' 3R</code> is just the middle slice — only the 3rd column moves, outer column untouched.</p>
+<h2>In Practice: Setup → Trigger → Undo Setup</h2>
+<ol><li>Look at the U/F interface, find which column and which group (C / E / I) is wrong.</li><li><strong>Setup</strong>: only turn U or F (U / U' / U2 / F / F'), move the bad block to the right-side position in the diagrams. Do not rotate the whole cube.</li><li>Apply the matching trigger.</li><li><strong>Undo setup</strong>: if setup was U, do U'; if U2, do U2 again.</li><li>Repeat until U and F are solved.</li></ol>
+<p>Order: <strong>inner first, then outer</strong>. Case 3 only touches column 3, Case 1 only touches the outer column — they do not interfere. Case 2 touches two columns at once, save it as a shortcut for last.</p>
+<h2>Common Mistakes</h2>
+<ul><li>Forgot to undo setup — the trigger is correct, but an un-undone setup drags other columns off.</li><li>Rotating the cube (y / x) mid-solve — U/F change, so “right side” is no longer the same. Keep the grip, only turn U/F.</li><li>Trying to fix with a single U — U rotates the U center internally; it may look solved but positions are wrong. Use a trigger, not a lone U.</li></ul>
+<h2>Relation to 5x5 L2E</h2>
+<p>The 5x5 L2E on the Yau page is “last two edges”, this is “last two centers”. Same drawing style, same idea: find the interface, do a commutator, protect what is solved. With L2C, you do not need a long case list — three triggers + setup are enough.</p>
+</div>
+
+<div id="content-zh-cn" style="display:none;">
+<h1>6x6 Last Two Centers (L2C)</h1>
 <p>六阶最后两个中心。Reduction / Yau 做到只剩两个中心没拼好时，就是 L2C。</p>
 <p>摆法：把最后两个中心放到 <strong>U（顶）和 F（前）</strong>，另外四个中心已经拼好、整个过程不能动它们。</p>
 <p>图和 Yau 页里 5x5 L2E 是同一套画法：只画要看的面，不画整个魔方。</p>
-
 <h2>怎么看图</h2>
 <p>左图 = U 中心 4x4，右图 = F 中心 4x4。白色 = 属于 U 的块，绿色 = 属于 F 的块。</p>
 <p>U 的底边就是 F 的顶边 —— 两图贴着的那条边是同一个交界。</p>
-<canvas id="l2c-howto" width="300" height="170"></canvas>
+<canvas id="l2c-howto-zh-cn" width="300" height="170"></canvas>
 <p>上面是拼好的样子：左全白，右全绿。</p>
-
 <h2>中心块分三种</h2>
 <p>6x6 一个面的中心是 4x4 = 16 块，分三类，互不串门：</p>
-<canvas id="l2c-orbit" width="170" height="165"></canvas>
-<ul>
-    <li><strong>C 角中心 ×4</strong>：四个角。</li>
-    <li><strong>E 边中心 ×8</strong>：四条边上、每边 2 块。</li>
-    <li><strong>I 内中心 ×4</strong>：中间 2x2。</li>
-</ul>
+<canvas id="l2c-orbit-zh-cn" width="170" height="165"></canvas>
+<ul><li><strong>C 角中心 ×4</strong>：四个角。</li><li><strong>E 边中心 ×8</strong>：四条边上、每边 2 块。</li><li><strong>I 内中心 ×4</strong>：中间 2x2。</li></ul>
 <p>所以 L2C 不是“16 块乱了”，而是三类各自在 U、F 之间换位置。先认清是哪一类错了，再动手。</p>
-
 <h2>核心思想：只用 commutator</h2>
 <p>宽转动会整列搬中心块，U 只转顶层。把两者拼成 commutator：</p>
 <p><strong>[宽转动, U] = 宽转动 + U + 宽转动逆 + U逆</strong></p>
 <p>好处是：<strong>只动 U 和 F 的中心，另外四个中心完全不动</strong>。下面三个触发器都是这个结构，效果经 6x6 模拟验证过。</p>
 <p>记号：<code>2R</code> = 从右数 2 层一起转，<code>3R</code> = 从右数 3 层一起转，<code>U</code> = 只转顶层外层。</p>
-
 <h2>三个触发器：错块在右侧交界时直接用</h2>
 <p>下面每张图都是“错块已经转到右侧交界”的样子。你的实战 case 只要把错块转到这个位置，就能直接套公式。</p>
-
 <h3>Case 1：最外列 3 块互换</h3>
 <p>U 右列下 3 块是绿，F 右列上 3 块是白。</p>
-<canvas id="l2c-case1" width="300" height="170"></canvas>
-<p>解法：<strong>U 2R U' 2R'</strong></p>
+<canvas id="l2c-case1-zh-cn" width="300" height="170"></canvas>
+<p>解法： <strong>U 2R U' 2R'</strong></p>
 <p>只动最外列，不动内侧 2x2。</p>
-
 <h3>Case 2：右下 / 右上 2x2 块互换</h3>
 <p>U 右下 2x2 是绿，F 右上 2x2 是白。</p>
-<canvas id="l2c-case2" width="300" height="170"></canvas>
-<p>解法：<strong>U 3R U' 3R'</strong></p>
+<canvas id="l2c-case2-zh-cn" width="300" height="170"></canvas>
+<p>解法： <strong>U 3R U' 3R'</strong></p>
 <p>一次搬 2x2 块，是 Case 1 的“加宽版”。</p>
-
 <h3>Case 3：内侧第 3 列 3 块互换</h3>
 <p>U 第 3 列（从左数第 3 列）有 3 块是绿，F 第 3 列有 3 块是白，最外列全对。</p>
-<canvas id="l2c-case3" width="300" height="170"></canvas>
-<p>解法：<strong>U 2R' 3R U' 3R' 2R</strong></p>
+<canvas id="l2c-case3-zh-cn" width="300" height="170"></canvas>
+<p>解法： <strong>U 2R' 3R U' 3R' 2R</strong></p>
 <p>其中 <code>2R' 3R</code> 就是只转中间那一层 slice，只动第 3 列，不动最外列。</p>
-
 <h2>实战流程：setup → 触发器 → 还原 setup</h2>
-<ol>
-    <li>看 U、F 交界，找出错块在哪一列、在哪一类（C / E / I）。</li>
-    <li><strong>Setup</strong>：只转 U 或 F（U / U' / U2 / F / F'），把错块转到上面三个图里对应的右侧位置。不要转整个魔方。</li>
-    <li>用对应的触发器。</li>
-    <li><strong>还原 setup</strong>：setup 是 U，就做 U' 还原；是 U2，就再做 U2。</li>
-    <li>重复，直到 U、F 全对。</li>
-</ol>
+<ol><li>看 U、F 交界，找出错块在哪一列、在哪一类（C / E / I）。</li><li><strong>Setup</strong>：只转 U 或 F（U / U' / U2 / F / F'），把错块转到上面三个图里对应的右侧位置。不要转整个魔方。</li><li>用对应的触发器。</li><li><strong>还原 setup</strong>：setup 是 U，就做 U' 还原；是 U2，就再做 U2。</li><li>重复，直到 U、F 全对。</li></ol>
 <p>顺序建议：<strong>先内后外</strong>。Case 3 只动第 3 列，Case 1 只动最外列，两者互不干扰；Case 2 一次动两列，留在最后当捷径。</p>
-
 <h2>常见坑</h2>
-<ul>
-    <li>忘了还原 setup —— 触发器本身是对的，setup 没还原会把别的列带偏。</li>
-    <li>中途转体（y / x）—— U、F 换了，触发器的“右侧”就不是原来的右侧了。固定握法，转 U / F 就够了。</li>
-    <li>用 U 一个人“转回去”—— U 会把 U 中心内部旋转，中心看起来对了、实际位置错了，要用触发器而不是单 U。</li>
-</ul>
-
+<ul><li>忘了还原 setup —— 触发器本身是对的，setup 没还原会把别的列带偏。</li><li>中途转体（y / x）—— U、F 换了，触发器的“右侧”就不是原来的右侧了。固定握法，转 U / F 就够了。</li><li>用 U 一个人“转回去”—— U 会把 U 中心内部旋转，中心看起来对了、实际位置错了，要用触发器而不是单 U。</li></ul>
 <h2>和 5x5 L2E 的关系</h2>
 <p>Yau 页的 5x5 L2E 是“最后两条棱”，这里是“最后两个中心”。画法一样、思路一样：都是找交界、做 commutator、保住已拼好的部分。学会 L2C，6x6 的中心就不用背一堆 case，三个触发器 + setup 就够了。</p>
+</div>
+
+<div id="content-zh-tw" style="display:none;">
+<h1>6x6 Last Two Centers (L2C)</h1>
+<p>六階最後兩個中心。Reduction / Yau 做到只剩兩個中心沒拼好時，就是 L2C。</p>
+<p>擺法：把最後兩個中心放到 <strong>U（頂）和 F（前）</strong>，另外四個中心已經拼好、整個過程不能動它們。</p>
+<p>圖和 Yau 頁裡 5x5 L2E 是同一套畫法：只畫要看的面，不畫整個魔方。</p>
+<h2>怎麼看圖</h2>
+<p>左圖 = U 中心 4x4，右圖 = F 中心 4x4。白色 = 屬於 U 的塊，綠色 = 屬於 F 的塊。</p>
+<p>U 的底邊就是 F 的頂邊 —— 兩圖貼著的那條邊是同一個交界。</p>
+<canvas id="l2c-howto-zh-tw" width="300" height="170"></canvas>
+<p>上面是拼好的樣子：左全白，右全綠。</p>
+<h2>中心塊分三種</h2>
+<p>6x6 一個面的中心是 4x4 = 16 塊，分三類，互不串門：</p>
+<canvas id="l2c-orbit-zh-tw" width="170" height="165"></canvas>
+<ul><li><strong>C 角中心 ×4</strong>：四個角。</li><li><strong>E 邊中心 ×8</strong>：四條邊上、每邊 2 塊。</li><li><strong>I 內中心 ×4</strong>：中間 2x2。</li></ul>
+<p>所以 L2C 不是「16 塊亂了」，而是三類各自在 U、F 之間換位置。先認清是哪一類錯了，再動手。</p>
+<h2>核心思想：只用 commutator</h2>
+<p>寬轉動會整列搬中心塊，U 只轉頂層。把兩者拼成 commutator：</p>
+<p><strong>[寬轉動, U] = 寬轉動 + U + 寬轉動逆 + U逆</strong></p>
+<p>好處是：<strong>只動 U 和 F 的中心，另外四個中心完全不動</strong>。下面三個觸發器都是這個結構，效果經 6x6 模擬驗證過。</p>
+<p>記號：<code>2R</code> = 從右數 2 層一起轉，<code>3R</code> = 從右數 3 層一起轉，<code>U</code> = 只轉頂層外層。</p>
+<h2>三個觸發器：錯塊在右側交界時直接用</h2>
+<p>下面每張圖都是「錯塊已經轉到右側交界」的樣子。你的實戰 case 只要把錯塊轉到這個位置，就能直接套公式。</p>
+<h3>Case 1：最外列 3 塊互換</h3>
+<p>U 右列下 3 塊是綠，F 右列上 3 塊是白。</p>
+<canvas id="l2c-case1-zh-tw" width="300" height="170"></canvas>
+<p>解法： <strong>U 2R U' 2R'</strong></p>
+<p>只動最外列，不動內側 2x2。</p>
+<h3>Case 2：右下 / 右上 2x2 塊互換</h3>
+<p>U 右下 2x2 是綠，F 右上 2x2 是白。</p>
+<canvas id="l2c-case2-zh-tw" width="300" height="170"></canvas>
+<p>解法： <strong>U 3R U' 3R'</strong></p>
+<p>一次搬 2x2 塊，是 Case 1 的「加寬版」。</p>
+<h3>Case 3：內側第 3 列 3 塊互換</h3>
+<p>U 第 3 列（從左數第 3 列）有 3 塊是綠，F 第 3 列有 3 塊是白，最外列全對。</p>
+<canvas id="l2c-case3-zh-tw" width="300" height="170"></canvas>
+<p>解法： <strong>U 2R' 3R U' 3R' 2R</strong></p>
+<p>其中 <code>2R' 3R</code> 就是只轉中間那一層 slice，只動第 3 列，不動最外列。</p>
+<h2>實戰流程：setup → 觸發器 → 還原 setup</h2>
+<ol><li>看 U、F 交界，找出错塊在哪一列、在哪一類（C / E / I）。</li><li><strong>Setup</strong>：只轉 U 或 F（U / U' / U2 / F / F'），把錯塊轉到上面三個圖裡對應的右側位置。不要轉整個魔方。</li><li>用對應的觸發器。</li><li><strong>還原 setup</strong>：setup 是 U，就做 U' 還原；是 U2，就再做 U2。</li><li>重複，直到 U、F 全對。</li></ol>
+<p>順序建議：<strong>先內後外</strong>。Case 3 只動第 3 列，Case 1 只動最外列，兩者互不干擾；Case 2 一次動兩列，留在最後當捷徑。</p>
+<h2>常見坑</h2>
+<ul><li>忘了還原 setup —— 觸發器本身是對的，setup 沒還原會把別的列帶偏。</li><li>中途轉體（y / x）—— U、F 換了，觸發器的「右側」就不是原來的右側了。固定握法，轉 U / F 就夠了。</li><li>用 U 一個人「轉回去」—— U 會把 U 中心內部旋轉，中心看起來對了、實際位置錯了，要用觸發器而不是單 U。</li></ul>
+<h2>和 5x5 L2E 的關係</h2>
+<p>Yau 頁的 5x5 L2E 是「最後兩條棱」，這裡是「最後兩個中心」。畫法一樣、思路一樣：都是找交界、做 commutator、保住已拼好的部分。學會 L2C，6x6 的中心就不用背一堆 case，三個觸發器 + setup 就夠了。</p>
+</div>
+
+<div id="content-ja" style="display:none;">
+<h1>6x6 Last Two Centers (L2C)</h1>
+<p>6x6 の最後の2センター。Reduction / Yau で残り2センターだけ未完成の状態が L2C です。</p>
+<p>配置：最後の2センターを <strong>U（上）と F（前）</strong> に置きます。他の4センターは完成済み — 壊さないこと。</p>
+<p>図は Yau ページの 5x5 L2E と同じスタイル：必要な面だけ描き、全体は描きません。</p>
+<h2>図の見方</h2>
+<p>左 = U センター 4x4、右 = F センター 4x4。白 = U のピース、緑 = F のピース。</p>
+<p>U の下辺が F の上辺 — 2つの図はその辺で接しています。</p>
+<canvas id="l2c-howto-ja" width="300" height="170"></canvas>
+<p>上は完成形：左は全白、右は全緑。</p>
+<h2>センターは3種類</h2>
+<p>1面のセンターは 4x4 = 16ピース、混ざらない3グループに分かれます：</p>
+<canvas id="l2c-orbit-ja" width="170" height="165"></canvas>
+<ul><li><strong>C コーナーセンター ×4</strong>：四隅。</li><li><strong>E エッジセンター ×8</strong>：各辺2個。</li><li><strong>I インナーセンター ×4</strong>：中央 2x2。</li></ul>
+<p>つまり L2C は「16個がバラバラ」ではなく、各グループが U・F 間で入れ替わっているだけ。まずどのグループが間違っているか見極めましょう。</p>
+<h2>核心アイデア：コミュテーターだけ</h2>
+<p>ワイドムーブはセンターを列ごと動かし、U は最上層だけ回します。組み合わせるとコミュテーターになります：</p>
+<p><strong>[ワイド, U] = ワイド + U + ワイド逆 + U逆</strong></p>
+<p>利点：<strong>U と F のセンターだけ動き、他の4つは untouched</strong>。下の3トリガーは全てこの形で、6x6 シミュレーションで検証済みです。</p>
+<p>記号：<code>2R</code> = 右から2層、<code>3R</code> = 右から3層、<code>U</code> = 最上層の外層のみ。</p>
+<h2>3つのトリガー：悪いブロックが右端にあるとき</h2>
+<p>下の各図は、悪いブロックをすでに右端に寄せた状態です。実戦では悪いブロックをその位置に持ってきて、公式を当てはめるだけです。</p>
+<h3>Case 1：最外列 3個交換</h3>
+<p>U 右列の下3個が緑、F 右列の上3個が白。</p>
+<canvas id="l2c-case1-ja" width="300" height="170"></canvas>
+<p>解法： <strong>U 2R U' 2R'</strong></p>
+<p>最外列だけ動き、内側 2x2 は untouched。</p>
+<h3>Case 2：右下 / 右上 2x2 ブロック交換</h3>
+<p>U の右下 2x2 が緑、F の右上 2x2 が白。</p>
+<canvas id="l2c-case2-ja" width="300" height="170"></canvas>
+<p>解法： <strong>U 3R U' 3R'</strong></p>
+<p>2x2 ブロックを一度に動かす — Case 1 の幅広版。</p>
+<h3>Case 3：内側3列目 3個交換</h3>
+<p>U の3列目（左から3列目）3個が緑、F の3列目3個が白、最外列は全て正しい。</p>
+<canvas id="l2c-case3-ja" width="300" height="170"></canvas>
+<p>解法： <strong>U 2R' 3R U' 3R' 2R</strong></p>
+<p><code>2R' 3R</code> は真ん中のスライスだけ — 3列目だけ動き、最外列は untouched。</p>
+<h2>実戦：セットアップ → トリガー → セットアップ戻し</h2>
+<ol><li>U / F の境界を見て、どの列・どのグループ（C / E / I）が間違っているか確認。</li><li><strong>セットアップ</strong>：U か F だけ回す（U / U' / U2 / F / F'）、悪いブロックを図の右側位置に持ってくる。全体を回転させない。</li><li>対応するトリガーを使う。</li><li><strong>セットアップ戻し</strong>：セットアップが U なら U'、U2 ならもう一度 U2。</li><li>U・F が揃うまで繰り返す。</li></ol>
+<p>順序：<strong>内側から、外側へ</strong>。Case 3 は3列目だけ、Case 1 は最外列だけ — 干渉しません。Case 2 は2列同時なので、最後のショートカットに。</p>
+<h2>よくあるミス</h2>
+<ul><li>セットアップ戻し忘れ — トリガーは正しいのに、戻し忘れで他の列がずれる。</li><li>途中で回転（y / x）— U・F が変わり、「右側」が変わってしまう。持ち方固定で U / F だけ回す。</li><li>単独の U で「戻す」— U は U センター内部を回転させるため、見た目は揃っても位置が違う。単独 U ではなくトリガーを使う。</li></ul>
+<h2>5x5 L2E との関係</h2>
+<p>Yau ページの 5x5 L2E は「最後の2エッジ」、こちらは「最後の2センター」。描き方も考え方も同じ：境界を見つけ、コミュテーターを使い、完成部分を守る。L2C では長い case リストは不要 — 3トリガー + セットアップで十分です。</p>
+</div>
+
+<div id="content-de" style="display:none;">
+<h1>6x6 Last Two Centers (L2C)</h1>
+<p>Die letzten zwei Center beim 6x6. Bei Reduction / Yau, wenn nur noch zwei Center ungelöst sind, ist das L2C.</p>
+<p>Setup: die letzten zwei Center auf <strong>U (oben) und F (vorne)</strong> legen. Die anderen vier Center sind schon gelöst — nicht kaputtmachen.</p>
+<p>Diagramme im selben Stil wie das 5x5 L2E auf der Yau-Seite: nur die Flächen, die du brauchst, nicht der ganze Würfel.</p>
+<h2>Diagramme lesen</h2>
+<p>Links = U-Center 4x4, rechts = F-Center 4x4. Weiß = Steine, die zu U gehören, grün = Steine, die zu F gehören.</p>
+<p>Die Unterkante von U ist die Oberkante von F — die beiden Diagramme teilen sich diese Kante.</p>
+<canvas id="l2c-howto-de" width="300" height="170"></canvas>
+<p>Oben ist gelöst: links alles weiß, rechts alles grün.</p>
+<h2>Drei Arten von Center-Steinen</h2>
+<p>Ein Flächen-Center ist 4x4 = 16 Steine, in drei Gruppen, die sich nie mischen:</p>
+<canvas id="l2c-orbit-de" width="170" height="165"></canvas>
+<ul><li><strong>C Ecken-Center x4</strong>: die vier Ecken.</li><li><strong>E Kanten-Center x8</strong>: zwei pro Kante.</li><li><strong>I Innen-Center x4</strong>: das mittlere 2x2.</li></ul>
+<p>L2C ist also nicht „16 Steine durcheinander“ — jede Gruppe tauscht für sich zwischen U und F. Erst erkennen, welche Gruppe falsch ist, dann ziehen.</p>
+<h2>Kernidee: Nur Kommutatoren</h2>
+<p>Wide-Moves verschieben ganze Center-Spalten, U dreht nur die oberste Schicht. Zusammen ergeben sie einen Kommutator:</p>
+<p><strong>[wide, U] = wide + U + wide invers + U invers</strong></p>
+<p>Vorteil: <strong>nur U- und F-Center bewegen sich, die anderen vier bleiben untouched</strong>. Die drei Trigger unten haben alle diese Form, per 6x6-Simulation verifiziert.</p>
+<p>Notation: <code>2R</code> = 2 Schichten von rechts, <code>3R</code> = 3 Schichten, <code>U</code> = nur die oberste Außenschicht.</p>
+<h2>Drei Trigger: Wenn der falsche Block rechts an der Kante ist</h2>
+<p>Jedes Diagramm unten zeigt den falschen Block bereits an die rechte Kante bewegt. Im echten Solve einfach den falschen Block dorthin bringen, dann die Formel anwenden.</p>
+<h3>Fall 1: Äußerste Spalte, 3 Steine tauschen</h3>
+<p>Untere 3 der rechten Spalte von U sind grün, obere 3 der rechten Spalte von F sind weiß.</p>
+<canvas id="l2c-case1-de" width="300" height="170"></canvas>
+<p>Lösung: <strong>U 2R U' 2R'</strong></p>
+<p>Nur die äußerste Spalte bewegt sich, inneres 2x2 untouched.</p>
+<h3>Fall 2: Rechts-unten / Rechts-oben 2x2-Block tauschen</h3>
+<p>Rechts-unten 2x2 von U ist grün, rechts-oben 2x2 von F ist weiß.</p>
+<canvas id="l2c-case2-de" width="300" height="170"></canvas>
+<p>Lösung: <strong>U 3R U' 3R'</strong></p>
+<p>Bewegt einen 2x2-Block auf einmal — die breitere Version von Fall 1.</p>
+<h3>Fall 3: Innere 3. Spalte, 3 Steine tauschen</h3>
+<p>3 Steine in der 3. Spalte von U (von links) sind grün, 3 in der 3. Spalte von F sind weiß, äußerste Spalte komplett richtig.</p>
+<canvas id="l2c-case3-de" width="300" height="170"></canvas>
+<p>Lösung: <strong>U 2R' 3R U' 3R' 2R</strong></p>
+<p><code>2R' 3R</code> ist nur der mittlere Slice — nur die 3. Spalte bewegt sich, äußerste Spalte untouched.</p>
+<h2>In der Praxis: Setup → Trigger → Setup rückgängig</h2>
+<ol><li>U/F-Grenze anschauen, welche Spalte und welche Gruppe (C / E / I) falsch ist.</li><li><strong>Setup</strong>: nur U oder F drehen (U / U' / U2 / F / F'), falschen Block an die rechte Position in den Diagrammen bringen. Nicht den ganzen Würfel drehen.</li><li>Passenden Trigger anwenden.</li><li><strong>Setup rückgängig</strong>: war Setup U, dann U'; war es U2, dann nochmal U2.</li><li>Wiederholen, bis U und F gelöst sind.</li></ol>
+<p>Reihenfolge: <strong>erst innen, dann außen</strong>. Fall 3 berührt nur Spalte 3, Fall 1 nur die äußerste Spalte — sie stören sich nicht. Fall 2 berührt zwei Spalten auf einmal, als Shortcut für den Schluss aufheben.</p>
+<h2>Häufige Fehler</h2>
+<ul><li>Setup vergessen rückgängig zu machen — Trigger ist richtig, aber ohne Undo geraten andere Spalten durcheinander.</li><li>Würfel zwischendurch drehen (y / x) — U/F ändern sich, „rechts“ ist nicht mehr dasselbe. Griff halten, nur U/F drehen.</li><li>Mit einem einzelnen U „zurückdrehen“ — U rotiert das U-Center intern; es sieht gelöst aus, aber Positionen stimmen nicht. Trigger benutzen, kein einzelnes U.</li></ul>
+<h2>Beziehung zu 5x5 L2E</h2>
+<p>Das 5x5 L2E auf der Yau-Seite ist „letzte zwei Kanten“, hier sind es „letzte zwei Center“. Gleicher Zeichenstil, gleiche Idee: Grenze finden, Kommutator machen, Gelöstes schützen. Bei L2C brauchst du keine lange Fallliste — drei Trigger + Setup reichen.</p>
+</div>
+
+<div id="content-fr" style="display:none;">
+<h1>6x6 Last Two Centers (L2C)</h1>
+<p>Les deux derniers centres du 6x6. En Reduction / Yau, quand il ne reste que deux centres non résolus, c'est le L2C.</p>
+<p>Mise en place : mets les deux derniers centres sur <strong>U (haut) et F (avant)</strong>. Les quatre autres centres sont déjà résolus — ne les casse pas.</p>
+<p>Schémas dans le même style que le L2E 5x5 de la page Yau : seulement les faces utiles, pas tout le cube.</p>
+<h2>Lire les schémas</h2>
+<p>Gauche = centre U 4x4, droite = centre F 4x4. Blanc = pièces de U, vert = pièces de F.</p>
+<p>Le bord inférieur de U est le bord supérieur de F — les deux schémas partagent ce bord.</p>
+<canvas id="l2c-howto-fr" width="300" height="170"></canvas>
+<p>Ci-dessus, résolu : tout blanc à gauche, tout vert à droite.</p>
+<h2>Trois types de pièces de centre</h2>
+<p>Un centre de face fait 4x4 = 16 pièces, en trois groupes qui ne se mélangent jamais :</p>
+<canvas id="l2c-orbit-fr" width="170" height="165"></canvas>
+<ul><li><strong>C centre-coin x4</strong> : les quatre coins.</li><li><strong>C centre-arête x8</strong> : deux par arête.</li><li><strong>I centre intérieur x4</strong> : le 2x2 central.</li></ul>
+<p>Donc le L2C n'est pas « 16 pièces mélangées » — chaque groupe s'échange entre U et F de son côté. Identifie quel groupe est faux avant de bouger.</p>
+<h2>Idée clé : commutateurs seulement</h2>
+<p>Les mouvements larges déplacent des colonnes entières de centres, U ne tourne que la couche du haut. Ensemble, ils forment un commutateur :</p>
+<p><strong>[large, U] = large + U + large inverse + U inverse</strong></p>
+<p>Avantage : <strong>seuls les centres U et F bougent, les quatre autres restent intacts</strong>. Les trois triggers ci-dessous ont tous cette forme, vérifiés par simulation 6x6.</p>
+<p>Notation : <code>2R</code> = 2 couches depuis la droite, <code>3R</code> = 3 couches, <code>U</code> = couche externe du haut seulement.</p>
+<h2>Trois triggers : quand le mauvais bloc est sur le bord droit</h2>
+<p>Chaque schéma ci-dessous montre le mauvais bloc déjà amené sur le bord droit. En vrai solve, amène juste ton mauvais bloc à cette place, puis applique la formule.</p>
+<h3>Cas 1 : Colonne extérieure, 3 pièces échangées</h3>
+<p>Les 3 du bas de la colonne droite de U sont vertes, les 3 du haut de la colonne droite de F sont blanches.</p>
+<canvas id="l2c-case1-fr" width="300" height="170"></canvas>
+<p>Solution : <strong>U 2R U' 2R'</strong></p>
+<p>Seule la colonne extérieure bouge, 2x2 intérieur intact.</p>
+<h3>Cas 2 : Bloc 2x2 bas-droite / haut-droite échangé</h3>
+<p>Le 2x2 bas-droite de U est vert, le 2x2 haut-droite de F est blanc.</p>
+<canvas id="l2c-case2-fr" width="300" height="170"></canvas>
+<p>Solution : <strong>U 3R U' 3R'</strong></p>
+<p>Déplace un bloc 2x2 d'un coup — version plus large du Cas 1.</p>
+<h3>Cas 3 : 3e colonne intérieure, 3 pièces échangées</h3>
+<p>3 pièces dans la 3e colonne de U (depuis la gauche) sont vertes, 3 dans la 3e colonne de F sont blanches, colonne extérieure entièrement correcte.</p>
+<canvas id="l2c-case3-fr" width="300" height="170"></canvas>
+<p>Solution : <strong>U 2R' 3R U' 3R' 2R</strong></p>
+<p><code>2R' 3R</code> n'est que la tranche du milieu — seule la 3e colonne bouge, colonne extérieure intacte.</p>
+<h2>En pratique : Setup → Trigger → Annuler le setup</h2>
+<ol><li>Regarde l'interface U/F, trouve quelle colonne et quel groupe (C / E / I) est faux.</li><li><strong>Setup</strong> : ne tourne que U ou F (U / U' / U2 / F / F'), amène le mauvais bloc à la position droite des schémas. Ne tourne pas tout le cube.</li><li>Applique le trigger correspondant.</li><li><strong>Annule le setup</strong> : si setup était U, fais U' ; si U2, refais U2.</li><li>Répète jusqu'à ce que U et F soient résolus.</li></ol>
+<p>Ordre : <strong>d'abord l'intérieur, puis l'extérieur</strong>. Le Cas 3 ne touche que la colonne 3, le Cas 1 que la colonne extérieure — ils ne se gênent pas. Le Cas 2 touche deux colonnes à la fois, garde-le en raccourci pour la fin.</p>
+<h2>Erreurs fréquentes</h2>
+<ul><li>Oublier d'annuler le setup — le trigger est bon, mais sans annulation les autres colonnes dérivent.</li><li>Tourner le cube (y / x) en cours de route — U/F changent, donc « à droite » n'est plus pareil. Garde la prise, ne tourne que U/F.</li><li>Essayer de corriger avec un seul U — U fait tourner le centre U sur lui-même ; ça a l'air résolu mais les positions sont fausses. Utilise un trigger, pas un U seul.</li></ul>
+<h2>Lien avec le L2E 5x5</h2>
+<p>Le L2E 5x5 de la page Yau, c'est « deux dernières arêtes », ici ce sont « deux derniers centres ». Même style de dessin, même idée : trouver l'interface, faire un commutateur, protéger ce qui est résolu. En L2C, pas besoin d'une longue liste de cas — trois triggers + setup suffisent.</p>
+</div>
+
+<div id="content-it" style="display:none;">
+<h1>6x6 Last Two Centers (L2C)</h1>
+<p>Gli ultimi due centri del 6x6. In Reduction / Yau, quando restano solo due centri irrisolti, è L2C.</p>
+<p>Setup: metti gli ultimi due centri su <strong>U (sopra) e F (fronte)</strong>. Gli altri quattro centri sono già risolti — non romperli.</p>
+<p>Diagrammi nello stesso stile del L2E 5x5 nella pagina Yau: solo le facce che servono, non tutto il cubo.</p>
+<h2>Come leggere i diagrammi</h2>
+<p>Sinistra = centro U 4x4, destra = centro F 4x4. Bianco = pezzi di U, verde = pezzi di F.</p>
+<p>Il bordo inferiore di U è il bordo superiore di F — i due diagrammi condividono quel bordo.</p>
+<canvas id="l2c-howto-it" width="300" height="170"></canvas>
+<p>Sopra è risolto: tutto bianco a sinistra, tutto verde a destra.</p>
+<h2>Tre tipi di pezzi di centro</h2>
+<p>Un centro di faccia è 4x4 = 16 pezzi, in tre gruppi che non si mescolano mai:</p>
+<canvas id="l2c-orbit-it" width="170" height="165"></canvas>
+<ul><li><strong>C centro-angolo x4</strong>: i quattro angoli.</li><li><strong>E centro-spigolo x8</strong>: due per spigolo.</li><li><strong>I centro interno x4</strong>: il 2x2 centrale.</li></ul>
+<p>Quindi L2C non è “16 pezzi mescolati” — ogni gruppo si scambia tra U e F per conto suo. Individua quale gruppo è sbagliato prima di muovere.</p>
+<h2>Idea chiave: solo commutatori</h2>
+<p>Le mosse larghe spostano intere colonne di centri, U gira solo lo strato in alto. Insieme formano un commutatore:</p>
+<p><strong>[larga, U] = larga + U + larga inversa + U inversa</strong></p>
+<p>Vantaggio: <strong>solo i centri U e F si muovono, gli altri quattro restano intatti</strong>. I tre trigger sotto hanno tutti questa forma, verificati con simulazione 6x6.</p>
+<p>Notazione: <code>2R</code> = 2 strati da destra, <code>3R</code> = 3 strati, <code>U</code> = solo lo strato esterno in alto.</p>
+<h2>Tre trigger: quando il blocco sbagliato è sul bordo destro</h2>
+<p>Ogni diagramma sotto mostra il blocco sbagliato già portato sul bordo destro. In una solve vera, porta solo il tuo blocco sbagliato in quella posizione, poi applica la formula.</p>
+<h3>Caso 1: Colonna esterna, 3 pezzi scambiati</h3>
+<p>I 3 in basso della colonna destra di U sono verdi, i 3 in alto della colonna destra di F sono bianchi.</p>
+<canvas id="l2c-case1-it" width="300" height="170"></canvas>
+<p>Soluzione: <strong>U 2R U' 2R'</strong></p>
+<p>Si muove solo la colonna esterna, 2x2 interno intatto.</p>
+<h3>Caso 2: Blocco 2x2 basso-destra / alto-destra scambiato</h3>
+<p>Il 2x2 basso-destra di U è verde, il 2x2 alto-destra di F è bianco.</p>
+<canvas id="l2c-case2-it" width="300" height="170"></canvas>
+<p>Soluzione: <strong>U 3R U' 3R'</strong></p>
+<p>Sposta un blocco 2x2 in una volta — versione più larga del Caso 1.</p>
+<h3>Caso 3: 3a colonna interna, 3 pezzi scambiati</h3>
+<p>3 pezzi nella 3a colonna di U (da sinistra) sono verdi, 3 nella 3a colonna di F sono bianchi, colonna esterna tutta corretta.</p>
+<canvas id="l2c-case3-it" width="300" height="170"></canvas>
+<p>Soluzione: <strong>U 2R' 3R U' 3R' 2R</strong></p>
+<p><code>2R' 3R</code> è solo la fetta centrale — si muove solo la 3a colonna, colonna esterna intatta.</p>
+<h2>In pratica: Setup → Trigger → Annulla setup</h2>
+<ol><li>Guarda l'interfaccia U/F, trova quale colonna e quale gruppo (C / E / I) è sbagliato.</li><li><strong>Setup</strong>: gira solo U o F (U / U' / U2 / F / F'), porta il blocco sbagliato nella posizione destra dei diagrammi. Non ruotare tutto il cubo.</li><li>Applica il trigger corrispondente.</li><li><strong>Annulla setup</strong>: se il setup era U, fai U'; se U2, rifai U2.</li><li>Ripeti finché U e F sono risolti.</li></ol>
+<p>Ordine: <strong>prima l'interno, poi l'esterno</strong>. Il Caso 3 tocca solo la colonna 3, il Caso 1 solo la colonna esterna — non interferiscono. Il Caso 2 tocca due colonne insieme, tienilo come scorciatoia per la fine.</p>
+<h2>Errori comuni</h2>
+<ul><li>Dimenticare di annullare il setup — il trigger è giusto, ma senza annullamento le altre colonne si spostano.</li><li>Ruotare il cubo (y / x) a metà — U/F cambiano, quindi “a destra” non è più lo stesso. Tieni la presa, gira solo U/F.</li><li>Provare a sistemare con una sola U — U ruota il centro U su sé stesso; sembra risolto ma le posizioni sono sbagliate. Usa un trigger, non una U sola.</li></ul>
+<h2>Relazione con L2E 5x5</h2>
+<p>Il L2E 5x5 nella pagina Yau è “ultimi due spigoli”, qui sono “ultimi due centri”. Stesso stile di disegno, stessa idea: trova l'interfaccia, fai un commutatore, proteggi ciò che è risolto. In L2C non serve una lunga lista di casi — tre trigger + setup bastano.</p>
+</div>
 
 <script>
-    render6_l2c("l2c-howto", "wwww,wwww,wwww,wwww;gggg,gggg,gggg,gggg");
-    render6_orbit("l2c-orbit");
-    render6_l2c("l2c-case1", "wwww,wwwg,wwwg,wwwg;gggw,gggw,gggw,gggg");
-    render6_l2c("l2c-case2", "wwww,wwww,wwgg,wwgg;ggww,ggww,gggg,gggg");
-    render6_l2c("l2c-case3", "wwgw,wwww,wwgw,wwgw;ggwg,ggwg,gggg,ggwg");
+(function () {
+  var KEY = 'cubingpro-lang';
+  var LANGS = ['en', 'zh-cn', 'zh-tw', 'ja', 'de', 'fr', 'it'];
+  var HTML_LANG = {'en': 'en', 'zh-cn': 'zh-CN', 'zh-tw': 'zh-TW', 'ja': 'ja', 'de': 'de', 'fr': 'fr', 'it': 'it'};
+  function defaultLang() {
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      if (/Asia\/(Shanghai|Chongqing|Urumqi)/.test(tz)) return 'zh-cn';
+      if (/Asia\/(Taipei|Hong_Kong|Macau)/.test(tz)) return 'zh-tw';
+      if (tz === 'Asia/Tokyo') return 'ja';
+      if (/Europe\/(Berlin|Vienna|Zurich)/.test(tz)) return 'de';
+      if (/Europe\/(Paris|Brussels|Monaco|Luxembourg)/.test(tz)) return 'fr';
+      if (/Europe\/(Rome|Vatican|San_Marino)/.test(tz)) return 'it';
+    } catch (e) {}
+    var off = new Date().getTimezoneOffset();
+    if (off / 60 === -8) return 'zh-cn';
+    if (off / 60 === -9) return 'ja';
+    return 'en';
+  }
+  var lang = null;
+  try { lang = localStorage.getItem(KEY); } catch (e) {}
+  if (LANGS.indexOf(lang) === -1) lang = defaultLang();
+  var toggle = document.getElementById('lang-toggle');
+  var btns = {};
+  LANGS.forEach(function (k) { btns[k] = document.getElementById('btn-' + k); });
+  function show(l) {
+    lang = l;
+    try { localStorage.setItem(KEY, l); } catch (e) {}
+    LANGS.forEach(function (k) {
+      var el = document.getElementById('content-' + k);
+      if (el) el.style.display = (k === l ? 'block' : 'none');
+      var b = btns[k];
+      if (b) { b.classList.toggle('active', k === l); b.setAttribute('aria-pressed', k === l ? 'true' : 'false'); }
+    });
+    document.querySelectorAll('.i18n').forEach(function (el) {
+      var t = el.getAttribute('data-' + l);
+      if (t) el.textContent = t;
+    });
+    if (toggle) {
+      var tt = toggle.getAttribute('data-title-' + l);
+      if (tt) document.title = tt;
+    }
+    document.documentElement.lang = HTML_LANG[l] || 'en';
+  }
+  LANGS.forEach(function (k) {
+    if (btns[k]) btns[k].addEventListener('click', function () { if (lang !== k) show(k); });
+  });
+  show(lang);
+})();
+    render6_l2c("l2c-howto-en", "wwww,wwww,wwww,wwww;gggg,gggg,gggg,gggg");
+    render6_orbit("l2c-orbit-en");
+    render6_l2c("l2c-case1-en", "wwww,wwwg,wwwg,wwwg;gggw,gggw,gggw,gggg");
+    render6_l2c("l2c-case2-en", "wwww,wwww,wwgg,wwgg;ggww,ggww,gggg,gggg");
+    render6_l2c("l2c-case3-en", "wwgw,wwww,wwgw,wwgw;ggwg,ggwg,gggg,ggwg");
+    render6_l2c("l2c-howto-zh-cn", "wwww,wwww,wwww,wwww;gggg,gggg,gggg,gggg");
+    render6_orbit("l2c-orbit-zh-cn");
+    render6_l2c("l2c-case1-zh-cn", "wwww,wwwg,wwwg,wwwg;gggw,gggw,gggw,gggg");
+    render6_l2c("l2c-case2-zh-cn", "wwww,wwww,wwgg,wwgg;ggww,ggww,gggg,gggg");
+    render6_l2c("l2c-case3-zh-cn", "wwgw,wwww,wwgw,wwgw;ggwg,ggwg,gggg,ggwg");
+    render6_l2c("l2c-howto-zh-tw", "wwww,wwww,wwww,wwww;gggg,gggg,gggg,gggg");
+    render6_orbit("l2c-orbit-zh-tw");
+    render6_l2c("l2c-case1-zh-tw", "wwww,wwwg,wwwg,wwwg;gggw,gggw,gggw,gggg");
+    render6_l2c("l2c-case2-zh-tw", "wwww,wwww,wwgg,wwgg;ggww,ggww,gggg,gggg");
+    render6_l2c("l2c-case3-zh-tw", "wwgw,wwww,wwgw,wwgw;ggwg,ggwg,gggg,ggwg");
+    render6_l2c("l2c-howto-ja", "wwww,wwww,wwww,wwww;gggg,gggg,gggg,gggg");
+    render6_orbit("l2c-orbit-ja");
+    render6_l2c("l2c-case1-ja", "wwww,wwwg,wwwg,wwwg;gggw,gggw,gggw,gggg");
+    render6_l2c("l2c-case2-ja", "wwww,wwww,wwgg,wwgg;ggww,ggww,gggg,gggg");
+    render6_l2c("l2c-case3-ja", "wwgw,wwww,wwgw,wwgw;ggwg,ggwg,gggg,ggwg");
+    render6_l2c("l2c-howto-de", "wwww,wwww,wwww,wwww;gggg,gggg,gggg,gggg");
+    render6_orbit("l2c-orbit-de");
+    render6_l2c("l2c-case1-de", "wwww,wwwg,wwwg,wwwg;gggw,gggw,gggw,gggg");
+    render6_l2c("l2c-case2-de", "wwww,wwww,wwgg,wwgg;ggww,ggww,gggg,gggg");
+    render6_l2c("l2c-case3-de", "wwgw,wwww,wwgw,wwgw;ggwg,ggwg,gggg,ggwg");
+    render6_l2c("l2c-howto-fr", "wwww,wwww,wwww,wwww;gggg,gggg,gggg,gggg");
+    render6_orbit("l2c-orbit-fr");
+    render6_l2c("l2c-case1-fr", "wwww,wwwg,wwwg,wwwg;gggw,gggw,gggw,gggg");
+    render6_l2c("l2c-case2-fr", "wwww,wwww,wwgg,wwgg;ggww,ggww,gggg,gggg");
+    render6_l2c("l2c-case3-fr", "wwgw,wwww,wwgw,wwgw;ggwg,ggwg,gggg,ggwg");
+    render6_l2c("l2c-howto-it", "wwww,wwww,wwww,wwww;gggg,gggg,gggg,gggg");
+    render6_orbit("l2c-orbit-it");
+    render6_l2c("l2c-case1-it", "wwww,wwwg,wwwg,wwwg;gggw,gggw,gggw,gggg");
+    render6_l2c("l2c-case2-it", "wwww,wwww,wwgg,wwgg;ggww,ggww,gggg,gggg");
+    render6_l2c("l2c-case3-it", "wwgw,wwww,wwgw,wwgw;ggwg,ggwg,gggg,ggwg");
 </script>
 
 
