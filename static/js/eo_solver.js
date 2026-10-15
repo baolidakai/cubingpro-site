@@ -130,7 +130,59 @@ if (typeof window !== 'undefined') {
   window.EOSolver2 = { solveEO, getEOState, randomScramble, getRZPState, findRZPSetup, findAllRZPSetups, getRZPStateFull, findRZPSetups };
 }
 if (typeof module !== 'undefined') {
-  module.exports = { solveEO, getEOState, randomScramble, applyMoveEO, eoFromScramble, getRZPState, findRZPSetup, findAllRZPSetups, getRZPStateFull, findRZPSetups };
+  
+// RZP Continuation: find path to pure trigger case using restricted moves
+// Main axis: HT only. Secondary axis: QT + HT. Remaining axis: HT only.
+// For EOUD + RZP on RL: main=UD (U2,D2), secondary=RL (R,R',R2,L,L',L2), remaining=FB (F2,B2)
+// For EOUD + RZP on FB: main=UD (U2,D2), secondary=FB (F,F',F2,B,B',B2), remaining=RL (R2,L2)
+function getContinuationMoves(mainAxis, secondaryAxis) {
+  const ht = { 'UD': ['U2','D2'], 'FB': ['F2','B2'], 'RL': ['R2','L2'] };
+  const qt = { 'UD': ['U',"U'",'U2','D',"D'",'D2'], 'FB': ['F',"F'",'F2','B',"B'",'B2'], 'RL': ['R',"R'",'R2','L',"L'",'L2'] };
+  const axes = ['UD','FB','RL'];
+  const remaining = axes.find(a => a !== mainAxis && a !== secondaryAxis);
+  return [...ht[mainAxis], ...qt[secondaryAxis], ...ht[remaining]];
+}
+
+function findRZPContinuation(scramble, eoAxis, rzpAxis, maxDepth) {
+  // Find continuation from current state to a pure trigger case
+  // Pure trigger cases: 4c2e -> R, 3c1e -> R U R, 4c1e -> R U2 R
+  const start = getRZPStateFull(scramble, eoAxis);
+  const moves = getContinuationMoves(eoAxis, rzpAxis);
+  const results = [];
+  const queue = [{ pieces: start.pieces, orients: start.orients, epos: start.epos, path: [] }];
+  const seen = new Set();
+  seen.add(start.pieces.join(',') + '|' + start.orients.join('') + '|' + start.epos.join(','));
+  while (queue.length) {
+    const cur = queue.shift();
+    if (cur.path.length >= (maxDepth || 4)) continue;
+    for (const m of moves) {
+      if (cur.path.length && m[0] === cur.path[cur.path.length-1][0]) continue;
+      const [npieces, norients] = applyCornerPieces(cur.pieces, cur.orients, m);
+      const nepos = applyEdgePos(cur.epos, m);
+      const key = npieces.join(',') + '|' + norients.join('') + '|' + nepos.join(',');
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const npath = [...cur.path, m];
+      const badC = countBadForAxis(npieces, norients, rzpAxis);
+      const badE = countBadEEdges(nepos);
+      const caseStr = badC + 'c' + badE + 'e';
+      let trigger = null;
+      if (caseStr === '4c2e') trigger = 'R';
+      else if (caseStr === '3c1e') trigger = 'R U R';
+      else if (caseStr === '4c1e') trigger = 'R U2 R';
+      if (trigger) {
+        results.push({ continuation: npath.join(' '), case: caseStr, trigger, axis: rzpAxis });
+        if (results.length >= 5) return results;
+      }
+      if (npath.length < (maxDepth || 4)) {
+        queue.push({ pieces: npieces, orients: norients, epos: nepos, path: npath });
+      }
+    }
+  }
+  return results;
+}
+
+module.exports = { solveEO, getEOState, randomScramble, applyMoveEO, eoFromScramble, getRZPState, findRZPSetup, findAllRZPSetups, getRZPStateFull, findRZPSetups, findRZPContinuation, getContinuationMoves };
 }
 
 // ===== RZP: Corner Orientation + E-edge tracking =====
