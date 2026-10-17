@@ -135,6 +135,65 @@ if (typeof module !== 'undefined') {
 // Main axis: HT only. Secondary axis: QT + HT. Remaining axis: HT only.
 // For EOUD + RZP on RL: main=UD (U2,D2), secondary=RL (R,R',R2,L,L',L2), remaining=FB (F2,B2)
 // For EOUD + RZP on FB: main=UD (U2,D2), secondary=FB (F,F',F2,B,B',B2), remaining=RL (R2,L2)
+
+// RZP Categories: EO axis x setup axis x trigger axis
+// Setup: setup axis can QT, others only HT (to preserve XCYE)
+// Trigger: trigger axis moves (RZP CO counted for trigger axis)
+// Example: EOFB + U' setup + R trigger = EO=FB, setup=UD, trigger=RL
+const RZP_CATEGORIES = {
+  'UD-FB-RL': { eo: 'UD', setup: 'FB', trigger: 'RL' },
+  'UD-RL-FB': { eo: 'UD', setup: 'RL', trigger: 'FB' },
+  'FB-UD-RL': { eo: 'FB', setup: 'UD', trigger: 'RL' },
+  'FB-RL-UD': { eo: 'FB', setup: 'RL', trigger: 'UD' },
+  'RL-UD-FB': { eo: 'RL', setup: 'UD', trigger: 'FB' },
+  'RL-FB-UD': { eo: 'RL', setup: 'FB', trigger: 'UD' },
+};
+
+function getCategoryMoves(eoAxis, setupAxis, triggerAxis) {
+  // Category key: EO-Setup-Trigger
+  const key = eoAxis + '-' + setupAxis + '-' + triggerAxis;
+  const cat = RZP_CATEGORIES[key];
+  if (!cat) return null;
+  // Setup moves: setup axis QT+HT, others HT only
+  const ht = { 'UD': ['U2','D2'], 'FB': ['F2','B2'], 'RL': ['R2','L2'] };
+  const qt = { 'UD': ['U',"U'",'U2','D',"D'",'D2'], 'FB': ['F',"F'",'F2','B',"B'",'B2'], 'RL': ['R',"R'",'R2','L',"L'",'L2'] };
+  return [...qt[cat.setup], ...ht[cat.eo], ...ht[cat.trigger]];
+}
+
+function getTriggersForCategory(eoAxis, setupAxis, triggerAxis, caseStr) {
+  const key = eoAxis + '-' + setupAxis + '-' + triggerAxis;
+  const cat = RZP_CATEGORIES[key];
+  if (!cat) return [];
+  const movesFor = (ax) => ax === 'UD' ? ['U',"U'",'D',"D'"] : ax === 'FB' ? ['F',"F'",'B',"B'"] : ['R',"R'",'L',"L'"];
+  const setupMoves = movesFor(cat.setup);
+  const triggerMoves = movesFor(cat.trigger);
+  const setup2 = cat.setup === 'UD' ? ['U2','D2'] : cat.setup === 'FB' ? ['F2','B2'] : ['R2','L2'];
+  const triggers = [];
+  const inv = (m) => m.endsWith("'") ? m[0] : m + "'";
+  if (caseStr === '4c2e') {
+    for (const t of triggerMoves) triggers.push(t);
+  } else if (caseStr === '3c1e') {
+    for (const t1 of triggerMoves) {
+      for (const s of setupMoves) {
+        triggers.push(t1 + ' ' + s + ' ' + inv(t1));
+      }
+    }
+  } else if (caseStr === '4c1e') {
+    for (const t1 of triggerMoves) {
+      for (const s2 of setup2) {
+        triggers.push(t1 + ' ' + s2 + ' ' + t1);
+      }
+    }
+    for (const s1 of setupMoves) {
+      for (const t of triggerMoves) {
+        triggers.push(s1 + ' ' + t + ' ' + inv(s1));
+      }
+    }
+  }
+  return triggers;
+}
+
+
 function getContinuationMoves(mainAxis, secondaryAxis) {
   const ht = { 'UD': ['U2','D2'], 'FB': ['F2','B2'], 'RL': ['R2','L2'] };
   const qt = { 'UD': ['U',"U'",'U2','D',"D'",'D2'], 'FB': ['F',"F'",'F2','B',"B'",'B2'], 'RL': ['R',"R'",'R2','L',"L'",'L2'] };
@@ -163,7 +222,7 @@ function findRZPContinuation(scramble, eoAxis, rzpAxis, maxDepth) {
       if (seen.has(key)) continue;
       seen.add(key);
       const npath = [...cur.path, m];
-      const badC = countBadForAxis(npieces, norients, rzpAxis);
+      const badC = countBadForAxis(npieces, norients, triggerAxis);
       const badE = countBadEEdges(nepos);
       const caseStr = badC + 'c' + badE + 'e';
       let trigger = null;
@@ -182,7 +241,114 @@ function findRZPContinuation(scramble, eoAxis, rzpAxis, maxDepth) {
   return results;
 }
 
-module.exports = { solveEO, getEOState, randomScramble, applyMoveEO, eoFromScramble, getRZPState, findRZPSetup, findAllRZPSetups, getRZPStateFull, findRZPSetups, findRZPContinuation, getContinuationMoves };
+
+// Check if state is DR: CO=0 (for EO axis), EO=0, E-edges in E-layer
+function isDRState(pieces, orients, epos, eoAxis, eoValue) {
+  if (eoValue !== 0) return false;
+  // CO for EO axis must be 0
+  const badC = countBadForAxis(pieces, orients, eoAxis);
+  if (badC !== 0) return false;
+  // E-edges in E-layer
+  const badE = countBadEEdges(epos);
+  if (badE !== 0) return false;
+  return true;
+}
+
+// Find RZP solutions: EO-preserving moves to XCYE, then category setup + trigger, verified to DR
+function findRZPVerified(scramble, eoAxis, setupAxis, triggerAxis, maxDepth) {
+  // If only 3 args, try all categories for EO axis
+  if (typeof setupAxis === 'number') { maxDepth = setupAxis; setupAxis = null; }
+  if (!setupAxis) {
+    const cats = Object.keys(RZP_CATEGORIES).filter(k => k.startsWith(eoAxis + '-'));
+    for (const k of cats) {
+      const parts = k.split('-');
+      const res = findRZPVerified(scramble, eoAxis, parts[1], parts[2], maxDepth);
+      if (res.length) return res;
+    }
+    return [];
+  }
+  const cat = RZP_CATEGORIES[eoAxis + '-' + setupAxis + '-' + triggerAxis];
+  if (!cat) return [];
+  const eoMoves = getEOPreservingMoves(eoAxis);
+  const catMoves = getCategoryMoves(eoAxis, setupAxis, triggerAxis);
+  const start = getRZPStateFull(scramble, eoAxis);
+  const results = [];
+  // Phase 1: BFS with EO-preserving moves to XCYE
+  const queue = [{ pieces: start.pieces, orients: start.orients, epos: start.epos, eo: start.eo, path: [] }];
+  const seen = new Set();
+  seen.add(start.pieces.join(',') + '|' + start.orients.join('') + '|' + start.epos.join(',') + '|' + start.eo);
+  while (queue.length) {
+    const cur = queue.shift();
+    if (cur.path.length >= (maxDepth || 4)) continue;
+    for (const m of eoMoves) {
+      if (cur.path.length && m[0] === cur.path[cur.path.length-1][0]) continue;
+      const neo = applyMoveEO(cur.eo, m, eoAxis);
+      const [npieces, norients] = applyCornerPieces(cur.pieces, cur.orients, m);
+      const nepos = applyEdgePos(cur.epos, m);
+      const key = npieces.join(',') + '|' + norients.join('') + '|' + nepos.join(',') + '|' + neo;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const npath = [...cur.path, m];
+      const badC = countBadForAxis(npieces, norients, triggerAxis);
+      const badE = countBadEEdges(nepos);
+      const caseStr = badC + 'c' + badE + 'e';
+      if (caseStr === '4c2e' || caseStr === '3c1e' || caseStr === '4c1e') {
+        // Phase 2: Try direct trigger, and category setup + trigger
+        const triggers = getTriggersForCategory(eoAxis, setupAxis, triggerAxis, caseStr);
+        let found = false;
+        // Direct trigger
+        for (const trig of triggers) {
+          let tpieces = [...npieces], torients = [...norients], tepos = [...nepos], teo = neo;
+          for (const tm of trig.split(' ')) {
+            teo = applyMoveEO(teo, tm, eoAxis);
+            [tpieces, torients] = applyCornerPieces(tpieces, torients, tm);
+            tepos = applyEdgePos(tepos, tm);
+          }
+          if (isDRState(tpieces, torients, tepos, eoAxis, teo)) {
+            results.push({ setup: npath.join(' '), case: caseStr, trigger: trig, axis: triggerAxis, category: eoAxis + '-' + setupAxis + '-' + triggerAxis });
+            if (results.length >= 5) return results;
+            found = true;
+            break;
+          }
+        }
+        // Category setup (1 move) + trigger
+        if (!found) {
+          for (const sm of catMoves) {
+            if (sm[0] === npath[npath.length-1]?.[0]) continue;
+            let spieces = [...npieces], sorients = [...norients], sepos = [...nepos], seo = neo;
+            seo = applyMoveEO(seo, sm, eoAxis);
+            [spieces, sorients] = applyCornerPieces(spieces, sorients, sm);
+            sepos = applyEdgePos(sepos, sm);
+            const sC = countBadForAxis(spieces, sorients, triggerAxis);
+            const sE = countBadEEdges(sepos);
+            if (sC + 'c' + sE + 'e' !== caseStr) continue; // Must preserve XCYE
+            for (const trig of triggers) {
+              let tpieces = [...spieces], torients = [...sorients], tepos = [...sepos], teo = seo;
+              for (const tm of trig.split(' ')) {
+                teo = applyMoveEO(teo, tm, eoAxis);
+                [tpieces, torients] = applyCornerPieces(tpieces, torients, tm);
+                tepos = applyEdgePos(tepos, tm);
+              }
+              if (isDRState(tpieces, torients, tepos, eoAxis, teo)) {
+                results.push({ setup: npath.join(' ') + ' ' + sm, case: caseStr, trigger: trig, axis: triggerAxis, category: eoAxis + '-' + setupAxis + '-' + triggerAxis });
+                if (results.length >= 5) return results;
+                found = true;
+                break;
+              }
+            }
+            if (found) break;
+          }
+        }
+      }
+      if (npath.length < (maxDepth || 4)) {
+        queue.push({ pieces: npieces, orients: norients, epos: nepos, eo: neo, path: npath });
+      }
+    }
+  }
+  return results;
+}
+
+module.exports = { solveEO, getEOState, randomScramble, applyMoveEO, eoFromScramble, getRZPState, findRZPSetup, findAllRZPSetups, getRZPStateFull, findRZPSetups, findRZPContinuation, getContinuationMoves, findRZPVerified, getTriggersForCategory, getCategoryMoves, isDRState };
 }
 
 // ===== RZP: Corner Orientation + E-edge tracking =====
