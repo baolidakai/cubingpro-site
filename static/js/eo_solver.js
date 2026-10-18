@@ -293,54 +293,65 @@ function findRZPVerified(scramble, eoAxis, setupAxis, triggerAxis, maxDepth) {
       const badE = countBadEEdges(nepos);
       const caseStr = badC + 'c' + badE + 'e';
       if (caseStr === '4c2e' || caseStr === '3c1e' || caseStr === '4c1e') {
-        // Phase 2: Try direct trigger, and category setup + trigger
+        // Phase 2: BFS setup search (preserve XCYE) + trigger, verified to DR
+        // From XCYE, search setup moves (category moves, must keep XCYE shape)
+        // up to 4 deep, trying triggers at each state
         const triggers = getTriggersForCategory(eoAxis, setupAxis, triggerAxis, caseStr);
-        let found = false;
-        // Direct trigger
-        for (const trig of triggers) {
-          let tpieces = [...npieces], torients = [...norients], tepos = [...nepos], teo = neo;
-          for (const tm of trig.split(' ')) {
-            teo = applyMoveEO(teo, tm, eoAxis);
-            [tpieces, torients] = applyCornerPieces(tpieces, torients, tm);
-            tepos = applyEdgePos(tepos, tm);
+        const tryTriggers = (pieces, orients, epos, eo, setupPath) => {
+          for (const trig of triggers) {
+            let tpieces = [...pieces], torients = [...orients], tepos = [...epos], teo = eo;
+            for (const tm of trig.split(' ')) {
+              teo = applyMoveEO(teo, tm, eoAxis);
+              [tpieces, torients] = applyCornerPieces(tpieces, torients, tm);
+              tepos = applyEdgePos(tepos, tm);
+            }
+            if (isDRState(tpieces, torients, tepos, eoAxis, teo)) {
+              return trig;
+            }
           }
-          if (isDRState(tpieces, torients, tepos, eoAxis, teo)) {
-            results.push({ setup: npath.join(' '), case: caseStr, trigger: trig, axis: triggerAxis, category: eoAxis + '-' + setupAxis + '-' + triggerAxis });
-            if (results.length >= 5) return results;
-            found = true;
-            break;
-          }
-        }
-        // Category setup (1 move) + trigger
-        if (!found) {
-          for (const sm of catMoves) {
-            if (sm[0] === npath[npath.length-1]?.[0]) continue;
-            let spieces = [...npieces], sorients = [...norients], sepos = [...nepos], seo = neo;
-            seo = applyMoveEO(seo, sm, eoAxis);
-            [spieces, sorients] = applyCornerPieces(spieces, sorients, sm);
-            sepos = applyEdgePos(sepos, sm);
-            const sC = countBadForAxis(spieces, sorients, triggerAxis);
-            const sE = countBadEEdges(sepos);
-            if (sC + 'c' + sE + 'e' !== caseStr) continue; // Must preserve XCYE
-            for (const trig of triggers) {
-              let tpieces = [...spieces], torients = [...sorients], tepos = [...sepos], teo = seo;
-              for (const tm of trig.split(' ')) {
-                teo = applyMoveEO(teo, tm, eoAxis);
-                [tpieces, torients] = applyCornerPieces(tpieces, torients, tm);
-                tepos = applyEdgePos(tepos, tm);
-              }
-              if (isDRState(tpieces, torients, tepos, eoAxis, teo)) {
-                results.push({ setup: npath.join(' ') + ' ' + sm, case: caseStr, trigger: trig, axis: triggerAxis, category: eoAxis + '-' + setupAxis + '-' + triggerAxis });
+          return null;
+        };
+        // Direct trigger (0 setup moves)
+        let trig = tryTriggers(npieces, norients, nepos, neo, npath);
+        if (trig) {
+          results.push({ setup: npath.join(' '), case: caseStr, trigger: trig, axis: triggerAxis, category: eoAxis + '-' + setupAxis + '-' + triggerAxis });
+          if (results.length >= 5) return results;
+        } else {
+          // BFS setup: up to 4 moves, must preserve XCYE shape
+          const sq = [{ pieces: npieces, orients: norients, epos: nepos, eo: neo, path: [...npath] }];
+          const sseen = new Set();
+          sseen.add(npieces.join(',') + '|' + norients.join('') + '|' + nepos.join(','));
+          let sFound = false;
+          while (sq.length && !sFound) {
+            const cur = sq.shift();
+            const setupDepth = cur.path.length - npath.length;
+            if (setupDepth >= 4) continue;
+            for (const sm of catMoves) {
+              if (cur.path.length && sm[0] === cur.path[cur.path.length-1][0]) continue;
+              let spieces = [...cur.pieces], sorients = [...cur.orients], sepos = [...cur.epos], seo = cur.eo;
+              seo = applyMoveEO(seo, sm, eoAxis);
+              [spieces, sorients] = applyCornerPieces(spieces, sorients, sm);
+              sepos = applyEdgePos(sepos, sm);
+              const sC = countBadForAxis(spieces, sorients, triggerAxis);
+              const sE = countBadEEdges(sepos);
+              if (sC + 'c' + sE + 'e' !== caseStr) continue; // Must preserve XCYE
+              const skey = spieces.join(',') + '|' + sorients.join('') + '|' + sepos.join(',');
+              if (sseen.has(skey)) continue;
+              sseen.add(skey);
+              const spath = [...cur.path, sm];
+              trig = tryTriggers(spieces, sorients, sepos, seo, spath);
+              if (trig) {
+                results.push({ setup: spath.join(' '), case: caseStr, trigger: trig, axis: triggerAxis, category: eoAxis + '-' + setupAxis + '-' + triggerAxis });
                 if (results.length >= 5) return results;
-                found = true;
+                sFound = true;
                 break;
               }
+              sq.push({ pieces: spieces, orients: sorients, epos: sepos, eo: seo, path: spath });
             }
-            if (found) break;
           }
         }
       }
-      if (npath.length < (maxDepth || 4)) {
+      if (npath.length < (maxDepth || 6)) {
         queue.push({ pieces: npieces, orients: norients, epos: nepos, eo: neo, path: npath });
       }
     }

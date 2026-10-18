@@ -75,16 +75,16 @@ function toggleEO(eoId, scr, eoMoves, axis) {
   if (el.style.display === 'none') {
     try {
       const afterEO = (scr + ' ' + eoMoves).trim();
-      const rzpList = window.EOSolver2.findAllRZPSetups(afterEO, axis, 3);
+      const rzpList = window.EOSolver2.findRZPVerified(afterEO, axis, 6);
       let html = '';
       if (rzpList.length > 0) {
-        html += `<b>🎯 RZP (0-3 moves):</b><br/>`;
+        html += `<b>🎯 RZP (verified to DR):</b><br/>`;
         for (const r of rzpList.slice(0, 10)) {
           const setupDisp = r.setup ? `<code>${r.setup}</code>` : '<i>(0 moves)</i>';
-          html += `<div>${setupDisp} → <b>${r.case}</b> <span style="color:#666;font-size:0.85em;">(${r.axis || 'UD'})</span> → <code>${r.trigger}</code></div>`;
+          html += `<div>${setupDisp} → <b>${r.case}</b> <span style="color:#666;font-size:0.85em;">(${r.axis || 'UD'})</span> → <code>${r.trigger}</code> <span style="color:#666;font-size:0.8em;">[${r.category}]</span></div>`;
         }
       } else {
-        html += `<span style="color:#999;">RZP: N/A (no 0-3 move setup)</span>`;
+        html += `<span style="color:#999;">RZP: N/A (no verified path to DR)</span>`;
       }
       el.innerHTML = html;
     } catch(e) { el.innerHTML = 'Error: ' + e.message; }
@@ -107,15 +107,15 @@ function checkCustomEO() {
     const isValid = eoState === 0;
     if (isValid) {
       let html = `<span style="color:#4caf50;">✅ Valid EO for ${axis} axis!</span><br/>`;
-      const rzpList = window.EOSolver2.findAllRZPSetups(afterEO, 3);
+      const rzpList = window.EOSolver2.findRZPVerified(afterEO, axis, 6);
       if (rzpList.length > 0) {
-        html += `<b>🎯 RZP:</b><br/>`;
+        html += `<b>🎯 RZP (verified to DR):</b><br/>`;
         for (const r of rzpList.slice(0, 10)) {
           const setupDisp = r.setup ? `<code>${r.setup}</code>` : '<i>(0 moves)</i>';
-          html += `<div>${setupDisp} → <b>${r.case}</b> <span style="color:#666;font-size:0.85em;">(${r.axis || 'UD'})</span> → <code>${r.trigger}</code></div>`;
+          html += `<div>${setupDisp} → <b>${r.case}</b> <span style="color:#666;font-size:0.85em;">(${r.axis || 'UD'})</span> → <code>${r.trigger}</code> <span style="color:#666;font-size:0.8em;">[${r.category}]</span></div>`;
         }
       } else {
-        html += `<span style="color:#999;">RZP: N/A</span>`;
+        html += `<span style="color:#999;">RZP: N/A (no verified path to DR)</span>`;
       }
       resultEl.innerHTML = html;
     } else {
