@@ -277,9 +277,13 @@ function findRZPVerified(scramble, eoAxis, setupAxis, triggerAxis, maxDepth) {
   const queue = [{ pieces: start.pieces, orients: start.orients, epos: start.epos, eo: start.eo, path: [] }];
   const seen = new Set();
   seen.add(start.pieces.join(',') + '|' + start.orients.join('') + '|' + start.epos.join(',') + '|' + start.eo);
-  while (queue.length) {
+  const maxStates = 20000; // Performance cap
+  const p1Depth = Math.min(maxDepth || 6, 5);
+  let phase2Count = 0;
+  const maxPhase2 = 30; // Limit Phase 2 searches
+  while (queue.length && seen.size < maxStates && phase2Count < maxPhase2) {
     const cur = queue.shift();
-    if (cur.path.length >= (maxDepth || 4)) continue;
+    if (cur.path.length >= p1Depth) continue;
     for (const m of catMoves) {
       if (cur.path.length && m[0] === cur.path[cur.path.length-1][0]) continue;
       const neo = applyMoveEO(cur.eo, m, eoAxis);
@@ -293,6 +297,7 @@ function findRZPVerified(scramble, eoAxis, setupAxis, triggerAxis, maxDepth) {
       const badE = countBadEEdges(nepos);
       const caseStr = badC + 'c' + badE + 'e';
       if (caseStr === '4c2e' || caseStr === '3c1e' || caseStr === '4c1e') {
+        phase2Count++;
         // Phase 2: BFS setup search (preserve XCYE) + trigger, verified to DR
         // From XCYE, search setup moves (category moves, must keep XCYE shape)
         // up to 4 deep, trying triggers at each state
@@ -317,15 +322,15 @@ function findRZPVerified(scramble, eoAxis, setupAxis, triggerAxis, maxDepth) {
           results.push({ setup: npath.join(' '), case: caseStr, trigger: trig, axis: triggerAxis, category: eoAxis + '-' + setupAxis + '-' + triggerAxis });
           if (results.length >= 5) return results;
         } else {
-          // BFS setup: up to 4 moves, must preserve XCYE shape
+          // BFS setup: up to 3 moves, must preserve XCYE shape
           const sq = [{ pieces: npieces, orients: norients, epos: nepos, eo: neo, path: [...npath] }];
           const sseen = new Set();
           sseen.add(npieces.join(',') + '|' + norients.join('') + '|' + nepos.join(','));
           let sFound = false;
-          while (sq.length && !sFound) {
+          while (sq.length && !sFound && sseen.size < 5000) {
             const cur = sq.shift();
             const setupDepth = cur.path.length - npath.length;
-            if (setupDepth >= 4) continue;
+            if (setupDepth >= 3) continue;
             for (const sm of catMoves) {
               if (cur.path.length && sm[0] === cur.path[cur.path.length-1][0]) continue;
               let spieces = [...cur.pieces], sorients = [...cur.orients], sepos = [...cur.epos], seo = cur.eo;
@@ -351,7 +356,7 @@ function findRZPVerified(scramble, eoAxis, setupAxis, triggerAxis, maxDepth) {
           }
         }
       }
-      if (npath.length < (maxDepth || 6)) {
+      if (npath.length < p1Depth) {
         queue.push({ pieces: npieces, orients: norients, epos: nepos, eo: neo, path: npath });
       }
     }
