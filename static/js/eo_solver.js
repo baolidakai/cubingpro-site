@@ -269,18 +269,18 @@ function findRZPVerified(scramble, eoAxis, setupAxis, triggerAxis, maxDepth) {
   }
   const cat = RZP_CATEGORIES[eoAxis + '-' + setupAxis + '-' + triggerAxis];
   if (!cat) return [];
-  const eoMoves = getEOPreservingMoves(eoAxis);
   const catMoves = getCategoryMoves(eoAxis, setupAxis, triggerAxis);
   const start = getRZPStateFull(scramble, eoAxis);
   const results = [];
-  // Phase 1: BFS with EO-preserving moves to XCYE
+  // Phase 1: BFS with category moves (setup QT+HT, EO HT, trigger HT) to XCYE
+  // Category rule: only setup axis does QT, others HT only (preserves XCYE shape)
   const queue = [{ pieces: start.pieces, orients: start.orients, epos: start.epos, eo: start.eo, path: [] }];
   const seen = new Set();
   seen.add(start.pieces.join(',') + '|' + start.orients.join('') + '|' + start.epos.join(',') + '|' + start.eo);
   while (queue.length) {
     const cur = queue.shift();
     if (cur.path.length >= (maxDepth || 4)) continue;
-    for (const m of eoMoves) {
+    for (const m of catMoves) {
       if (cur.path.length && m[0] === cur.path[cur.path.length-1][0]) continue;
       const neo = applyMoveEO(cur.eo, m, eoAxis);
       const [npieces, norients] = applyCornerPieces(cur.pieces, cur.orients, m);
