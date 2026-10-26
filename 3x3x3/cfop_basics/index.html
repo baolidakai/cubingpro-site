@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>三阶魔方CFOP基础教程 - Cubing Pro</title>
+<meta name="description" content="三阶魔方CFOP基础：从七步法到CFOP的桥，Cross、F2L、OLL、PLL四步与2-look入门路线。">
+<meta name="keywords" content="三阶魔方CFOP,CFOP基础,CFOP入门,魔方进阶教程,三阶魔方教程">
+<!-- Baidu site verification: replace with your code from zhanjiang.baidu.com -->
+<!-- <meta name="baidu-site-verification" content="YOUR_CODE_HERE"> -->
+<link rel="stylesheet" href="../../static/css/main.css">
+
+
+<style>
+.oll-cases,.pll-cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1em;margin-bottom:2.5em}
+.oll-case,.pll-case{display:flex;gap:1em;align-items:center;border:1px solid #e5e5e5;border-radius:10px;padding:.9em;background:#fff}
+.oll-fig,.pll-fig{flex:0 0 auto}
+.oll-diagram{width:150px;height:auto;display:block}
+.pll-diagram{width:172px;height:auto;display:block}
+.oll-body,.pll-body{min-width:0;flex:1;display:flex;flex-direction:column;gap:.4em}
+.oll-name,.pll-name{font-weight:600;font-size:.95em;color:#333}
+.oll-body code,.pll-body code{font-size:.92em;word-break:break-all;background:#fafafa;border:1px solid #eee;border-radius:6px;padding:.35em .5em}
+@media (max-width:480px){.oll-cases,.pll-cases{grid-template-columns:1fr}.pll-diagram{width:150px}}
+</style>
+
+
+</head>
+<body>
+<header class="site-header">
+  <button id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">&#9776;</button>
+  <a class="site-title" href="../../">Cubing Pro</a>
+</header>
+<div class="layout">
+  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details><summary>Timer</summary><ul><li><a href="../../timer">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details open><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../../fmc/recon.html">FMC Recon</a></li><li><a href="../../fmc/theory.html">FMC Theory</a></li><li><a href="../../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../../3x3x3/beginner">Beginner tutorial</a></li><li><a href="../../3x3x3/cfop">CFOP method</a></li><li><a href="../../3x3x3/cfop_basics" aria-current="page">CFOP basics</a></li><li><a href="../../3x3x3/cross">Cross tutorial</a></li><li><a href="../../3x3x3/f2l">F2L algorithms</a></li><li><a href="../../3x3x3/oll">OLL algorithms</a></li><li><a href="../../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../../3x3x3/pll">PLL algorithms</a></li><li><a href="../../3x3x3/oh_cmll">OH CMLL algorithms</a></li><li><a href="../../3x3x3/cll_vs_cmll">CLL vs CMLL comparison</a></li><li><a href="../../3x3x3/roux">Roux Method</a></li><li><a href="../../3x3x3/zb_stepping_stone">VHLS + COLL</a></li><li><a href="../../fmc/dr_htr_trainer">FMC DR HTR Trainer</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../../2x2x2/eg_intro">EG method</a></li><li><a href="../../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../../big_cube/yau.html">Yau method</a></li><li><a href="../../big_cube/l2c_6x6.html">6x6 Last Two Centers</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../../fto/tutorial">FTO Beginner Tutorial</a></li><li><a href="../../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../../sq1/eo">EO</a></li><li><a href="../../sq1/obl">OBL</a></li><li><a href="../../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details><summary>Misc</summary><ul><li><a href="../../game/geoguesser.html">GeoGuesser Tips</a></li><li><a href="../../game/flag_trainer.html">Flag Trainer</a></li><li><a href="../../game/turtle_soup.html">海龟汤题库</a></li></ul></details></li></ul></nav>
+  <main class="content">
+    <h1>CFOP 基础 · CFOP Basics</h1><p>CFOP 是三阶速拧最主流的方法：Cross、F2L、OLL、PLL 四步。它和七步法解的是同一个魔方，只是每一步都更快：十字在观察阶段就规划好，F2L 一次做一对，最后一层只用两个公式。</p><p class="cf-en">CFOP is the standard speedcubing method: Cross, F2L, OLL, PLL. It solves the same cube as the beginner method, but faster at every step: the cross is planned during inspection, F2L solves one pair at a time, and the last layer takes two algorithms.</p>
+<style>
+.cf-section { margin: 28px 0; }
+.cf-section h2 { margin-bottom: 6px; }
+.cf-step { border: 1px solid #e0e0e0; border-radius: 10px; padding: 14px 16px;
+  background: #fff; margin: 14px 0; }
+.cf-step h3 { margin: 0 0 6px; font-size: 17px; }
+.cf-step .goal { color: #555; }
+.cf-tip { background: #fff8e1; border-left: 4px solid #ffb300; padding: 8px 12px;
+  margin: 10px 0; font-size: 14px; }
+.cf-note { background: #e8f5e9; border-left: 4px solid #43a047; padding: 8px 12px;
+  margin: 10px 0; font-size: 14px; }
+.cf-table { border-collapse: collapse; margin: 10px 0; }
+.cf-table td, .cf-table th { border: 1px solid #ddd; padding: 6px 10px; font-size: 14px; }
+.cf-table th { background: #f5f5f5; text-align: left; }
+.cf-en { color: #555; }
+</style>
+<div class="cf-section"><h2>七步法 vs CFOP</h2><table class="cf-table"><tr><th></th><th>七步法</th><th>CFOP</th></tr><tr><td>第一步</td><td>白十字（顶面做）</td><td>Cross（底面做，观察时规划）</td></tr><tr><td>中间层</td><td>第 2 步角 + 第 3 步棱，分开做</td><td>F2L：角和棱配对，一次插一对</td></tr><tr><td>最后一层</td><td>第 4–7 步：黄十字 → 黄角翻色 → 黄角归位 → 黄棱归位</td><td>OLL：一次翻色（57 个公式）；PLL：一次归位（21 个公式）</td></tr><tr><td>公式量</td><td>6 个</td><td>2-look 入门约 16 个，全套 78 个</td></tr></table><p class="cf-en">Beginner method: 6 algorithms. CFOP: about 16 to start (2-look), 78 for the full set.</p><div class="cf-tip">不用一次全学会。CFOP 是渐进的：先只换 Cross 和 F2L，最后一层继续用七步法的第 4–7 步，成绩就会明显变快。再慢慢把最后一层换成 2-look，最后再补全套。</div></div><div class="cf-section"><h2>1. Cross：底面十字</h2><div class="cf-step"><h3>和七步法最大的不同：十字在底面做</h3><p class="goal">目标：底面 4 条白棱，8 步以内完成，全部在观察阶段规划好。</p><p>七步法的白十字在顶面做；CFOP 的十字在底面（D）做。这样做完十字，顶层是空的，正好留给 F2L 观察。观察时（15 秒）把 4 条棱的顺序记下来，比如顺时针“绿-橙-蓝-红”，然后闭眼做完。</p><p class="cf-en">Unlike the beginner cross on top, the CFOP cross is solved on the bottom (D). That leaves the top layer free for F2L lookahead. Plan it fully during the 15-second inspection — memorise the order, e.g. clockwise “green-orange-blue-red” — then execute.</p><p>入门：先不管步数，能在底面做出十字就行；熟了再练 8 步以内。进阶技巧见 <a href="../../3x3x3/cross">Cross 教程</a>。（最后一棱翻色、一次做两条棱、XCross。）</p></div></div><div class="cf-section"><h2>2. F2L：前两层</h2><div class="cf-step"><h3>角和棱配对，一次插一对</h3><p class="goal">目标：4 对角+棱，分别插进 4 个槽位。</p><p>七步法是先做 4 个角、再做 4 条棱；F2L 是把一个角和它对应的棱在顶层配成一对，再一起插进槽位。4 对做完，前两层就完成了。</p><p class="cf-en">Instead of corners first, then edges, F2L pairs each corner with its edge in the top layer and inserts the pair together. Four pairs and the first two layers are done.</p><p>入门不用背公式：先凭直觉配对。把角和棱都转到顶层，让它们颜色对上、挨在一起，再找个空槽插进去。41 个标准 case 是给提速用的，见 <a href="../../3x3x3/f2l">F2L 公式</a>。F2L 占还原的大部分时间，是最值得练的阶段。</p></div></div><div class="cf-section"><h2>3. OLL：顶层翻色</h2><div class="cf-step"><h3>一个公式让顶面全变黄</h3><p class="goal">目标：顶层所有块黄色朝上。57 个 case，每个一个公式。</p><p>七步法用第 4 步（黄十字）+ 第 5 步（黄角翻色）两步做完；OLL 一个公式就做完。但 57 个公式不用一次背完。</p><p class="cf-en">The beginner method takes two steps (yellow cross, then corner orientation); OLL does it in one algorithm. 57 cases, but you don't learn them all at once.</p><p><b>先学 2-look OLL（10 个公式）：</b>先做黄十字（3 个棱的 case），再翻黄角（7 个角的 case）。这 10 个就是七步法第 4–5 步的公式版，见 <a href="../../3x3x3/oll">OLL 公式</a>。熟了再把 57 个补全。</p></div></div><div class="cf-section"><h2>4. PLL：顶层归位</h2><div class="cf-step"><h3>一个公式把顶层块换到正确位置</h3><p class="goal">目标：顶层块全部归位。21 个 case，每个一个公式。</p><p>七步法用第 6 步（黄角归位）+ 第 7 步（黄棱归位）两步做完；PLL 一个公式就做完。</p><p class="cf-en">The beginner method takes two steps (corner permutation, then edge permutation); PLL does it in one algorithm.</p><p><b>先学 2-look PLL：</b>先换角（Aa / Ab / E），再换棱 （Ua / Ub / H / Z）。先认角的位置，再认棱的位置，见 <a href="../../3x3x3/pll">PLL 公式</a>。熟了再把 21 个补全。</p></div></div><div class="cf-section"><h2>学习顺序</h2><p>1. Cross 改到底面做（观察规划，8 步以内）。<br>2. F2L 直觉配对（先不背 41 个公式）。<br>3. 2-look OLL（10 个）+ 2-look PLL（先角后棱）。<br>4. 再补全套 OLL（57）+ PLL（21）。</p><p class="cf-en">1. Cross on the bottom. 2. Intuitive F2L. 3. 2-look OLL + 2-look PLL. 4. Full OLL + PLL.</p><div class="cf-note">每一步都可以单独换：只换 Cross 和 F2L、最后一层继续用七步法，成绩就已经快很多了。不用等全套学会才开始用 CFOP。Each stage can be swapped in on its own — you don't need the full set before CFOP starts paying off.</div><p>完整进阶路线见 <a href="../../3x3x3/roadmap">进阶 Roadmap</a>。</p></div>
+  </main>
+</div>
+<footer class="site-footer">
+  <span>&copy; 2025 Bowen Deng</span>
+  <span class="dot">&middot;</span>
+  <span>Cubing Pro</span>
+  <span class="dot">&middot;</span>
+  <span>&#129352; 5% off at TheCubicle &amp; SpeedCubeShop with code <button id="discount-code" title="Click to copy">CUBINGPRO</button></span>
+</footer>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var nav = document.getElementById('site-nav');
+  toggle.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && window.innerWidth <= 900) {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  var code = document.getElementById('discount-code');
+  code.addEventListener('click', function () {
+    var done = function () {
+      code.textContent = 'COPIED!';
+      setTimeout(function () { code.textContent = 'CUBINGPRO'; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('CUBINGPRO').then(done, done);
+    } else { done(); }
+  });
+})();
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850" crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-CK6MWC01K0');
+</script>
+</body>
+</html>
