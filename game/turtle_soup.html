@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>海龟汤题库 | Cubing Pro</title>
-<meta name="description" content="在线海龟汤（ lateral thinking puzzles ）题库：20 道经典开胃汤，支持搜索筛选，还能让 AI 现场出一碗。纯静态页面实现。">
+<meta name="description" content="在线海龟汤（ lateral thinking puzzles ）题库：60 道汤面+汤底，悬疑、生活、职场、爱情、校园、科技全都有，纯静态页面，点击看提示、看汤底。">
 <meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs">
 <!-- Baidu site verification: replace with your code from zhanjiang.baidu.com -->
 <!-- <meta name="baidu-site-verification" content="YOUR_CODE_HERE"> -->
@@ -18,12 +18,12 @@
   <a class="site-title" href="../">Cubing Pro</a>
 </header>
 <div class="layout">
-  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details><summary>Timer</summary><ul><li><a href="../timer">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../fmc/recon.html">FMC Recon</a></li><li><a href="../fmc/theory.html">FMC Theory</a></li><li><a href="../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../3x3x3/beginner">Beginner tutorial</a></li><li><a href="../3x3x3/cfop">CFOP method</a></li><li><a href="../3x3x3/cfop_basics">CFOP basics</a></li><li><a href="../3x3x3/cross">Cross tutorial</a></li><li><a href="../3x3x3/f2l">F2L algorithms</a></li><li><a href="../3x3x3/oll">OLL algorithms</a></li><li><a href="../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../3x3x3/pll">PLL algorithms</a></li><li><a href="../3x3x3/oh_cmll">OH CMLL algorithms</a></li><li><a href="../3x3x3/cll_vs_cmll">CLL vs CMLL comparison</a></li><li><a href="../3x3x3/roux">Roux Method</a></li><li><a href="../3x3x3/zb_stepping_stone">VHLS + COLL</a></li><li><a href="../fmc/dr_htr_trainer">FMC DR HTR Trainer</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../2x2x2/eg_intro">EG method</a></li><li><a href="../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../big_cube/yau.html">Yau method</a></li><li><a href="../big_cube/l2c_6x6.html">6x6 Last Two Centers</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../fto/tutorial">FTO Beginner Tutorial</a></li><li><a href="../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../sq1/eo">EO</a></li><li><a href="../sq1/obl">OBL</a></li><li><a href="../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details open><summary>Misc</summary><ul><li><a href="../game/geoguesser.html">GeoGuesser Tips</a></li><li><a href="../game/flag_trainer.html">Flag Trainer</a></li><li><a href="../game/turtle_soup.html" aria-current="page">海龟汤题库</a></li></ul></details></li></ul></nav>
+  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details><summary>Timer</summary><ul><li><a href="../timer">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../fmc/recon.html">FMC Recon</a></li><li><a href="../fmc/theory.html">FMC Theory</a></li><li><a href="../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../3x3x3/beginner">Beginner tutorial</a></li><li><a href="../3x3x3/cfop">CFOP method</a></li><li><a href="../3x3x3/cfop_basics">CFOP basics</a></li><li><a href="../3x3x3/cross">Cross tutorial</a></li><li><a href="../3x3x3/f2l">F2L algorithms</a></li><li><a href="../3x3x3/oll">OLL algorithms</a></li><li><a href="../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../3x3x3/pll">PLL algorithms</a></li><li><a href="../3x3x3/oh_cmll">OH CMLL algorithms</a></li><li><a href="../3x3x3/cll_vs_cmll">CLL vs CMLL comparison</a></li><li><a href="../3x3x3/roux">Roux Method</a></li><li><a href="../3x3x3/zb_stepping_stone">VHLS + COLL</a></li><li><a href="../fmc/dr_htr_trainer">FMC DR HTR Trainer</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../2x2x2/eg_intro">EG method</a></li><li><a href="../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../big_cube/yau.html">Yau method</a></li><li><a href="../big_cube/l2c_6x6.html">6x6 Last Two Centers</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../clock/7simul_simplified.html">7 Simul Simplified (4 Memo)</a></li><li><a href="../clock/bowens_7simul.html">Bowen&#x27;s 7 Simul (5 Memo)</a></li><li><a href="../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../fto/tutorial">FTO Beginner Tutorial</a></li><li><a href="../fto/algorithms">FTO Algorithms</a></li><li><a href="../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../sq1/eo">EO</a></li><li><a href="../sq1/obl">OBL</a></li><li><a href="../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details open><summary>Misc</summary><ul><li><a href="../game/geoguesser.html">GeoGuesser Tips</a></li><li><a href="../game/flag_trainer.html">Flag Trainer</a></li><li><a href="../game/turtle_soup.html" aria-current="page">海龟汤题库</a></li></ul></details></li></ul></nav>
   <main class="content">
     
 
 <h1>海龟汤题库</h1>
-<p class="lede">海龟汤就是"情境猜谜"：先看一碗"汤面"（奇怪的事件），靠提问/推理还原"汤底"（真相）。下面 20 碗是开胃汤，点击看提示、看汤底。想喝新的？往下翻，有 AI 现场出题。</p>
+<p class="lede">海龟汤就是"情境猜谜"：先看一碗"汤面"（奇怪的事件），靠提问/推理还原"汤底"（真相）。下面 60 碗，点击看提示、看汤底。先猜，再看答案。</p>
 
 <style>
 .soup-toolbar { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
@@ -59,7 +59,7 @@
   <input id="searchInput" type="search" placeholder="搜索题目 / 汤底关键词…">
   <select id="catSel">
     <option value="">全部分类</option>
-    <option>悬疑</option><option>生活</option><option>本格</option><option>趣味</option>
+    <option>悬疑</option><option>生活</option><option>职场</option><option>爱情</option><option>校园</option><option>科技</option><option>本格</option><option>趣味</option>
   </select>
   <select id="lvlSel">
     <option value="">全部难度</option>
@@ -70,38 +70,6 @@
 <p class="countline" id="countLine"></p>
 <div id="randomSpot"></div>
 <div id="soupList"></div>
-
-<h2>🤖 AI 现场出一碗</h2>
-<div class="ai-box">
-  <p class="note">纯静态页面没有服务器：你的 Key 只保存在这台设备的浏览器里（localStorage），请求从你的手机直接发到 AI 服务商，不经过任何中间服务器。OpenAI 兼容接口一般都允许浏览器跨域调用；Anthropic 官方接口不支持浏览器直连，如需用 Claude 请走 OpenAI 兼容中转。</p>
-  <input id="apiKey" type="password" placeholder="API Key（sk-…），只存本地" autocomplete="off">
-  <div class="ai-row">
-    <input id="baseUrl" placeholder="Base URL">
-    <input id="modelName" placeholder="Model">
-  </div>
-  <button class="bigbtn" id="genBtn">出一碗新汤</button>
-  <button class="sbtn" id="clearKeyBtn">清除已保存的 Key</button>
-  <div class="err" id="aiErr" hidden></div>
-  <div id="aiResult"></div>
-</div>
-
-<h2>📚 我的题库</h2>
-<p class="note">AI 生成的汤可以存进来，也可以自己写 JSON 导入；全部只存在本机，可导出备份。</p>
-<div class="soup-toolbar">
-  <button class="sbtn" id="exportBtn">导出 JSON</button>
-  <button class="sbtn" id="importBtn">导入 JSON</button>
-  <input type="file" id="importFile" accept="application/json" hidden>
-</div>
-<div id="myList"></div>
-
-<div class="howto">
-  <b>这个页面是怎么在纯静态站上"调 LLM"的？</b>
-  <ol>
-    <li><b>题库预生成（本站 20 碗就这么来的）：</b>题目是静态 JSON，随页面一起发布。零成本、秒开、不需要 Key——海龟汤这种固定内容，最适合这个方案。</li>
-    <li><b>浏览器直连（上面的 AI 出题）：</b>用 <code>fetch</code> 直接调 OpenAI 兼容的 <code>/chat/completions</code> 接口，Key 存在你自己的 localStorage。页面是静态的，但请求是从你的浏览器发出去的，不需要服务器。</li>
-    <li><b>没采用的方案：</b>自己搭代理服务器把 Key 藏在服务端——需要服务器，GitHub Pages 纯静态托管做不到，所以本站不用。</li>
-  </ol>
-</div>
 
 <script>
 (function () {
@@ -125,7 +93,47 @@
     {t:"山谷回音", q:"男子在雪山山谷里大喊，听到了两声回音，他脸色大变，转身就跑。", h:"第二声不是回音。", a:"山谷地形只能产生一声回音。第二声是雪崩的声音——他喊出的声波震松了积雪，大喊引发了雪崩。", c:"悬疑", l:2, o:1},
     {t:"按错的电梯", q:"女子进电梯想按1楼，手一抖按成了3楼。电梯却直接下到1楼，她长舒了一口气。", h:"3楼最近出过事。", a:"3楼刚发生过命案，整层被封锁，她害怕去3楼。电梯故障直接下到1楼——按错楼层反而救了她一命。", c:"悬疑", l:1, o:1},
     {t:"煤气与蜡烛", q:"停电的夜里，男子点起一根蜡烛，几秒后又迅速吹灭，然后摸黑逃出了家门。", h:"他闻到了味道。", a:"他闻到了煤气味——家里煤气泄漏了。点燃的蜡烛随时可能引发爆炸，他吹灭蜡烛逃了出去。", c:"生活", l:1},
-    {t:"颠倒的红绿灯", q:"女子过马路，绿灯亮了她一动不动，等红灯亮起她才快步通过。", h:"她不闯红灯，信号灯也没有故障。", a:"她发现这个路口的信号灯被人恶作剧调了方向——“绿灯”时横向车流根本没停。她等的是车流真正停下的时机，而不是灯的颜色。", c:"悬疑", l:2, o:1}
+    {t:"颠倒的红绿灯", q:"女子过马路，绿灯亮了她一动不动，等红灯亮起她才快步通过。", h:"她不闯红灯，信号灯也没有故障。", a:"她发现这个路口的信号灯被人恶作剧调了方向——“绿灯”时横向车流根本没停。她等的是车流真正停下的时机，而不是灯的颜色。", c:"悬疑", l:2, o:1},
+    {t:"中了五百万，他哭着去自首", q:"男子刮开一张彩票，中了头奖。他把号码核对了三遍，然后哭着拨打了110。", h:"彩票是真的，他也确实是中奖人。", a:"他是网上通缉的逃犯，躲了三年。兑奖必须本人持身份证实名登记，还要联网核验身份——领奖那天就是被抓那天。他哭着报警，是决定先自首：自首可以减刑，奖金也能留给家人。", c:"悬疑", l:2, o:1},
+    {t:"她每天准时下班，从没离开公司", q:"女白领每天18点准时打卡下班，同事却说，她一次也没离开过公司。", h:"打卡记录是真的，她也确实每天都“下班”了。", a:"公司大楼顶层就是员工宿舍。她下班后直接乘电梯上楼回宿舍——人是下班了，但一步也没走出过这栋楼。", c:"职场", l:1, o:1},
+    {t:"他每晚给妻子发晚安，却从没结过婚", q:"男子每晚11点准时给妻子发“晚安”，朋友却说他单身一辈子，从没结过婚。", h:"短信是真的，他也确实每天都发。", a:"妻子三年前就去世了，那个手机号早已注销。他每晚仍给那个号码发晚安，短信根本发不出去——他只是在和回忆说话。", c:"爱情", l:2, o:1},
+    {t:"他的手机每天凌晨三点准时亮屏", q:"男子的手机放在床头，每天凌晨三点准时亮一下屏，他却从没设过闹钟。", h:"不是闹钟，也不是来电。", a:"他家路由器每天凌晨三点自动重启。手机断网重连，屏幕亮起显示“已连接 Wi-Fi”——吵醒他的不是手机，是路由器。", c:"科技", l:1, o:1},
+    {t:"她把戒指扔进海里，第二天又戴上了", q:"女子和男友吵架，一气之下把戒指扔进了海里。第二天早上，戒指又戴在了她手上。", h:"戒指是真的扔进了海里。", a:"男友整夜没睡，在海边找了一夜。退潮时，戒指被海浪冲回了沙滩——他天没亮就找到了，趁她睡着又给她戴上了。", c:"爱情", l:1, o:1},
+    {t:"空电梯里，他对着空气说了你好", q:"男子走进空无一人的电梯，按下楼层，轻声说了句“你好”。", h:"电梯里确实只有他一个人。", a:"他戴着蓝牙耳机，正在和电话那头的客户打招呼——“你好”是对着电话说的，不是跟电梯说的。", c:"趣味", l:1, o:1},
+    {t:"他十年从不迟到，今天却迟到三小时", q:"男子工作十年从不迟到，今天却迟到了整整三个小时，老板却没扣他工资。", h:"他确实迟到了三个小时。", a:"公司周末搬了新址，他按老地址去了旧楼，扑空后才赶过来。老板没扣钱，是因为全公司一半人都走错了地方。", c:"职场", l:1, o:1},
+    {t:"全班都交了作业，只有他被表扬", q:"老师布置作业，全班都按时交了，只有他一个人被表扬。", h:"他的作业不是写得最好的。", a:"全班其他人的作业都是 AI 代写的，只有他是手写的——有错别字，有涂改，但是真的。老师一眼就看出来了。", c:"校园", l:1, o:1},
+    {t:"她每天给花浇水，花却越长越小", q:"女子每天给阳台的花浇水，花却一天比一天小。", h:"花是真的，水也是真的。", a:"她每天用刚烧开的水浇花——她以为“热水能杀菌”，其实是把花活活烫死了，越浇缩得越小。", c:"生活", l:1, o:1},
+    {t:"他买了最贵的保险，却一分钱都赔不到", q:"男子买了最贵的一档重疾险，生病住院后，保险公司一分钱都不赔。", h:"保单是真的，病也是真的。", a:"投保时他隐瞒了三年的高血压病史。理赔时保险公司调出他的体检记录，以“未如实告知”为由拒赔，合同直接作废。", c:"生活", l:2, o:1},
+    {t:"她赢了比赛，奖金却发给了第二名", q:"女子在比赛中得了第一名，奖金却发给了第二名。", h:"成绩没错，奖金也没发错。", a:"她是比赛赞助商的员工，按规则内部人员不能领奖。第一名的奖金顺延，第二名白捡了一个冠军奖。", c:"职场", l:1, o:1},
+    {t:"他每天准时到健身房，却一次也没练过", q:"男子办了年卡，每天准时到健身房打卡，却一次器械也没碰过。", h:"他确实每天都去了。", a:"他家热水器坏了三个月，健身房年卡比修热水器便宜。他每天去健身房，只为洗个热水澡。", c:"生活", l:1, o:1},
+    {t:"雨下得越大，他越往外跑", q:"下雨天，所有人都往屋里躲，只有一个男子越下越大越往外跑。", h:"他不是在躲雨，也不是疯了。", a:"他是卖雨伞的小贩。雨越大，伞越好卖——他跑出去不是躲雨，是抢生意。", c:"趣味", l:1, o:1},
+    {t:"她把密码告诉了所有人，账户却更安全了", q:"女子把自己的银行卡密码告诉了所有同事，账户反而比以前更安全了。", h:"密码是真的，账户也没被盗。", a:"她告诉大家密码的当天就改了新密码。同事们记住的，全是已经作废的旧密码——等于什么都没告诉。", c:"科技", l:2, o:1},
+    {t:"他每天第一个到公司，最后一个离开，却被开除了", q:"男子每天第一个到公司、最后一个离开，考勤全满，试用期结束时却被开除了。", h:"考勤是真的，他也确实每天都在。", a:"他根本不是这家公司的员工。他是楼下公司的，前公司倒闭了，他每天来这栋楼蹭工位、蹭 Wi-Fi、蹭免费咖啡——保安一直以为他是员工。", c:"职场", l:2, o:1},
+    {t:"她从没出过国，却会说八国语言", q:"女子从没出过国，却能流利地说八种语言。", h:"她确实没出过国，八种语言也确实都会。", a:"她是一名游戏本地化翻译，每天的工作就是和八个国家的玩家打交道——八种语言全是在网上跟网友学会的。", c:"趣味", l:2, o:1},
+    {t:"她每天给陌生人发红包，对方却从不领", q:"女子每天给一个陌生人发微信红包，对方从来不领，红包每天都原路退回。", h:"红包是真的发了，对方也确实没领。", a:"那个“陌生人”是她去世父亲的微信号，账号早已注销。红包发过去没人领，24 小时后自动退回——她只是想每天跟爸爸说句话。", c:"爱情", l:2, o:1},
+    {t:"他住在顶楼，却从没见过阳光", q:"男子住在顶楼大平层，落地窗朝南，却说自己从没见过阳光。", h:"房子是真的，窗户也是真的。", a:"他上夜班。白天他拉着遮光窗帘睡觉，晚上出门时天已经黑了——住在顶楼也没用，他的生活里根本没有白天。", c:"生活", l:2, o:1},
+    {t:"他的闹钟每天响八次，他却从没起床", q:"男子手机里设了八个闹钟，每天都响，他却一次也没被吵醒过。", h:"闹钟是真的响了。", a:"他是早餐摊主，每天凌晨四点就起床去菜市场进货。八个闹钟是留给妻子的——闹钟响的时候，他早就出门了。", c:"生活", l:1, o:1},
+    {t:"她考了全校第一，却哭着退了学", q:"女子考了全校第一名，站在领奖台上，却哭着宣布退学。", h:"成绩是真的，退学也是真的。", a:"奶奶病重需要人照顾，第一名的出国留学名额她用不上。她退学去打工，要留在国内守着奶奶。", c:"校园", l:2, o:1},
+    {t:"他每天给公司省一万块，公司却亏了一百万", q:"男子每天想方设法给公司省钱，一年省了三百多万，公司年底却亏了一百万。", h:"省的钱是真的，亏的钱也是真的。", a:"他为了省电费，每天晚上把公司服务器全部关机。结果第二天网站打不开，丢了一个百万大单——省下的电费还不够赔零头。", c:"职场", l:2, o:1},
+    {t:"她把家里的灯全换了，电费却涨了一倍", q:"女子把家里所有灯泡换成节能灯，电费不降反升，涨了一倍。", h:"灯泡是真的节能灯。", a:"换了节能灯后她觉得“开灯不花钱”，改掉了随手关灯的习惯，开始整夜开着所有灯——电费反而翻倍了。", c:"生活", l:1, o:1},
+    {t:"她每天跑步五公里，却越来越胖", q:"女子每天跑步五公里，饮食也没变，三个月胖了十斤。", h:"跑步是真的，饮食也没变。", a:"她跑完步每天奖励自己一杯奶茶。奶茶的热量比跑步消耗的还多——跑得越多，喝得越多。", c:"生活", l:1, o:1},
+    {t:"她把钥匙藏在门口的地垫下，小偷却找不到", q:"女子把备用钥匙藏在门口地垫下，家里进贼那天，小偷翻遍了全屋也没找到钥匙。", h:"钥匙确实在地垫下。", a:"她把钥匙藏在了楼下邻居家的地垫下——她记错了门。小偷翻的是她家，当然找不到。", c:"悬疑", l:1, o:1},
+    {t:"他每天准时打卡，却从没上过班", q:"男子每天准时在公司打卡，却一次也没上过班。", h:"打卡记录是真的。", a:"他是公司的夜班保安。白天来打卡是下班打卡——他上的班都在夜里，白天来公司的人一次也没见过他上班。", c:"职场", l:1, o:1},
+    {t:"她从没谈过恋爱，却写了十本言情小说", q:"女子从没谈过恋爱，却出版了十本畅销言情小说。", h:"她确实没谈过恋爱，书也确实是她写的。", a:"十本书的素材全是闺蜜和读者的真实恋爱投稿。她自己是母胎单身，专门替别人写爱情。", c:"爱情", l:1, o:1},
+    {t:"她每天给狗喂三顿饭，狗却越来越瘦", q:"女子每天给狗喂三顿饭，狗却越来越瘦。", h:"饭是真的喂了，狗也确实吃了……吗？", a:"她每天喂的“三顿饭”全被家里的猫抢走了。狗一口都没吃到——瘦的不是狗，是猫的胃口太好了。", c:"生活", l:1, o:1},
+    {t:"他赢了马拉松，却没跑完全程", q:"男子在马拉松比赛中得了第一名，却没有跑完全程。", h:"成绩有效，没有作弊。", a:"当天突降暴雨，组委会临时把路线缩短了一半。所有选手都没跑完全程——他依然是第一名。", c:"趣味", l:2, o:1},
+    {t:"她把所有的衣服都洗了，却一件也没干净", q:"女子把所有衣服放进洗衣机洗了一遍，拿出来却一件也没洗干净。", h:"洗衣机是好的，洗衣液也放了。", a:"她把衣服放进洗衣机，却忘了按启动键。衣服只是在洗衣机里泡了一晚上——水都没换过。", c:"生活", l:1, o:1},
+    {t:"她每天准时睡觉，却每天都做噩梦", q:"女子每天十点准时睡觉，却每天晚上都做噩梦。", h:"睡眠时间是真的，噩梦也是真的。", a:"她每晚睡前都要看一集恐怖片当“助眠”。噩梦全是片里的剧情——她是自己吓自己。", c:"生活", l:1, o:1},
+    {t:"他从不看新闻，却比谁都知道得多", q:"男子从不看新闻，公司的八卦、行业的动态，他却比谁都知道得早。", h:"他确实不看新闻。", a:"他是公司楼下的保安，每天听进进出出的人聊天。全公司的消息都在他这儿汇总——他不是看新闻，他就是新闻的源头。", c:"职场", l:1, o:1},
+    {t:"她把手机调成静音，却总被吵醒", q:"女子把手机调成静音放在床头，却每天半夜都被吵醒。", h:"手机确实静音了。", a:"她把手机放在床头柜的玻璃杯上。静音的振动让玻璃杯整夜嗡嗡响——吵醒她的不是铃声，是振动。", c:"生活", l:1, o:1},
+    {t:"他每天喝八杯水，却总是口渴", q:"男子每天喝八杯水，还是总觉得口渴。", h:"水是真的喝了。", a:"他喝的八杯全是咖啡和奶茶。咖啡因利尿，越喝越渴——他喝的根本不是水。", c:"生活", l:1, o:1},
+    {t:"她把所有的照片都删了，却一张也没少", q:"女子把手机里的照片全删了，打开相册却发现一张也没少。", h:"她确实点了删除。", a:"她删的是手机本地的照片，云端相册自动同步，又把它们全下载回来了——删了个寂寞。", c:"科技", l:1, o:1},
+    {t:"他每天准时下班，却每天都加班", q:"男子每天18点准时离开公司，却每天都加班到半夜。", h:"他确实18点就走了，加班也是真的。", a:"他把工作带回家做，在家加班到半夜——准时下班和天天加班，都是真的。", c:"职场", l:1, o:1},
+    {t:"她从没去过健身房，却有一身肌肉", q:"女子从没去过健身房，却练出了一身肌肉。", h:"她确实没去过健身房。", a:"她是快递员，每天搬上百件包裹。健身房练的肌肉，她搬快递练出来了。", c:"趣味", l:1, o:1},
+    {t:"他每天给妻子打电话，妻子却从没接过", q:"男子每天给妻子打电话，妻子一次也没接过，他却从不生气。", h:"电话是真的打了，妻子也确实一次没接。", a:"妻子在远洋科考船上，没有信号。他每天打电话是给她留语音，让她靠岸后一次听完——接不接不重要，重要的是她回来能听到。", c:"爱情", l:2, o:1},
+    {t:"她把试卷藏起来，成绩却提高了", q:"女子把每次考试的试卷都藏起来不给父母看，成绩却一次比一次好。", h:"试卷是真的藏了，成绩也是真的提高了。", a:"她藏试卷不是怕挨骂，是为了留着反复做错题。错题本越做越厚，成绩自然越来越好。", c:"校园", l:1, o:1},
+    {t:"他每天第一个到教室，却从没听过课", q:"男子每天第一个到教室，却一节课也没听过。", h:"他确实每天第一个到。", a:"他是班长，每天第一个到教室是来给全班占座的。占完座他就去图书馆自习——课从来不在教室上。", c:"校园", l:1, o:1},
+    {t:"他从不吃辣，却开了一家火锅店", q:"男子一点辣都吃不了，却在市中心开了一家火锅店，生意还特别好。", h:"他确实不能吃辣，店也确实是他的。", a:"他的店主打清汤锅和番茄锅，辣锅是给客人准备的——他自己只吃清汤那一半。", c:"趣味", l:1, o:1},
   ];
 
   var $ = function (id) { return document.getElementById(id); };
@@ -191,119 +199,7 @@
 
   bindToggles(document);
 
-  // ---------- AI 出题（BYOK：浏览器直连 LLM） ----------
-  var DEF_BASE = "https://api.openai.com/v1", DEF_MODEL = "gpt-4o-mini";
-  $("baseUrl").value = localStorage.getItem("soupBase") || DEF_BASE;
-  $("modelName").value = localStorage.getItem("soupModel") || DEF_MODEL;
-  $("apiKey").value = localStorage.getItem("soupKey") || "";
-
-  var SYS = "你是海龟汤出题人。每次返回一道原创中文海龟汤，只返回 JSON，不要多余文字。字段：title（标题，4字以内）、question（汤面：描述一件奇怪的事，1-2句，不剧透）、hint（提示，一句话）、answer（汤底：完整解释，必须逻辑闭环、能唯一解释汤面）、category（只能是 悬疑/生活/本格/趣味 之一）、level（1入门 或 2进阶）。要求：逻辑必须严密，不能有漏洞；不要重复经典老题。";
-
-  function extractJSON(text) {
-    var m = text.match(/```(?:json)?\s*([\s\S]*?)```/);
-    var raw = m ? m[1] : text;
-    var s = raw.indexOf("{"), e = raw.lastIndexOf("}");
-    if (s < 0 || e < 0) throw new Error("bad json");
-    return JSON.parse(raw.slice(s, e + 1));
-  }
-
-  $("genBtn").addEventListener("click", function () {
-    var key = $("apiKey").value.trim();
-    var base = ($("baseUrl").value.trim() || DEF_BASE).replace(/\/+$/, "");
-    var model = $("modelName").value.trim() || DEF_MODEL;
-    var errBox = $("aiErr"), resBox = $("aiResult");
-    errBox.hidden = true; resBox.innerHTML = "";
-    if (!key) { errBox.textContent = "请先填写 API Key（只保存在本机）。"; errBox.hidden = false; return; }
-    localStorage.setItem("soupKey", key);
-    localStorage.setItem("soupBase", base);
-    localStorage.setItem("soupModel", model);
-    var btn = $("genBtn"); btn.disabled = true; btn.textContent = "正在出题…";
-    fetch(base + "/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
-      body: JSON.stringify({
-        model: model,
-        messages: [{ role: "system", content: SYS }, { role: "user", content: "出一道原创海龟汤。" }],
-        temperature: 0.9
-      })
-    }).then(function (r) {
-      if (r.status === 401) throw new Error("Key 无效（401），请检查。");
-      if (r.status === 404) throw new Error("接口 404：Base URL 或模型名不对？");
-      if (!r.ok) throw new Error("请求失败（" + r.status + "）。");
-      return r.json();
-    }).then(function (j) {
-      var text = j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
-      if (!text) throw new Error("返回为空。");
-      var s = extractJSON(text);
-      if (!s.title || !s.question || !s.answer) throw new Error("返回格式不对，再试一次。");
-      s.h = s.hint || s.h || "暂无提示。"; s.a = s.answer; s.t = s.title; s.q = s.question;
-      s.c = s.category || "悬疑"; s.l = (s.level === 2 ? 2 : 1); s.o = 1; s.ai = 1;
-      resBox.innerHTML = cardHTML(s, -1, false) +
-        '<div style="margin:8px 0 16px"><button class="bigbtn" id="saveAiBtn">💾 存入我的题库</button></div>';
-      bindToggles(resBox);
-      $("saveAiBtn").addEventListener("click", function () {
-        var mine = loadMine(); mine.push(s); saveMine(mine); renderMine();
-        this.textContent = "已存入 ✅"; this.disabled = true;
-      });
-    }).catch(function (e) {
-      var msg = String((e && e.message) || e);
-      if (msg.indexOf("Failed to fetch") >= 0 || msg.indexOf("NetworkError") >= 0)
-        msg = "网络不通或接口不支持浏览器跨域（CORS）。OpenAI 兼容接口一般没问题；Anthropic 官方接口不支持浏览器直连。";
-      errBox.textContent = msg; errBox.hidden = false;
-    }).then(function () {
-      btn.disabled = false; btn.textContent = "出一碗新汤";
-    });
-  });
-  $("clearKeyBtn").addEventListener("click", function () {
-    localStorage.removeItem("soupKey"); $("apiKey").value = "";
-  });
-
-  // ---------- 我的题库（localStorage + 导入导出） ----------
-  function loadMine() {
-    try { return JSON.parse(localStorage.getItem("mySoups") || "[]"); } catch (e) { return []; }
-  }
-  function saveMine(a) { localStorage.setItem("mySoups", JSON.stringify(a)); }
-  function renderMine() {
-    var mine = loadMine();
-    $("myList").innerHTML = mine.length ? mine.map(function (s, i) {
-      return cardHTML(s, i, true);
-    }).join("") : '<p class="note">还没有收藏。AI 出的汤可以点"存入我的题库"。</p>';
-  }
-  $("exportBtn").addEventListener("click", function () {
-    var blob = new Blob([JSON.stringify(loadMine(), null, 2)], { type: "application/json" });
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "my-turtle-soups.json";
-    a.click();
-    setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
-  });
-  $("importBtn").addEventListener("click", function () { $("importFile").click(); });
-  $("importFile").addEventListener("change", function () {
-    var f = this.files[0]; if (!f) return;
-    var rd = new FileReader();
-    rd.onload = function () {
-      try {
-        var arr = JSON.parse(rd.result);
-        if (!Array.isArray(arr)) throw new Error("not array");
-        var mine = loadMine();
-        arr.forEach(function (s) {
-          if (s && (s.t || s.title) && (s.q || s.question)) {
-            mine.push({
-              t: s.t || s.title, q: s.q || s.question, h: s.h || s.hint || "",
-              a: s.a || s.answer, c: s.c || s.category || "悬疑",
-              l: s.l || 1, o: 1
-            });
-          }
-        });
-        saveMine(mine); renderMine();
-      } catch (e) { alert("导入失败：不是有效的题库 JSON。"); }
-    };
-    rd.readAsText(f);
-    this.value = "";
-  });
-
   renderList();
-  renderMine();
 })();
 </script>
 

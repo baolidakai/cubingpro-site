@@ -4,9 +4,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cubing Pro</title>
-<meta name="description" content="Home for competitive speedcubers.">
-<meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs">
+<title>Rubik's Cube Timer Online — Free Speedcubing Timer with Scrambles | Cubing Pro</title>
+<meta name="description" content="Free online Rubik's Cube timer for speedcubing. Hold SPACE to start, 15-second inspection, Ao5 / Ao12 stats, and random-move scrambles for 2x2, 3x3, 4x4 and 5x5. No account needed — your times are saved in your browser. A fast, simple csTimer alternative.">
+<meta name="keywords" content="rubik's cube timer, cube timer, speedcubing timer, online cube timer, 3x3 timer, free timer, cstimer alternative, wca timer, random move scramble, ao5, ao12, speedcube timer">
 <!-- Baidu site verification: replace with your code from zhanjiang.baidu.com -->
 <!-- <meta name="baidu-site-verification" content="YOUR_CODE_HERE"> -->
 <link rel="stylesheet" href="../static/css/main.css">
@@ -18,167 +18,117 @@
   <a class="site-title" href="../">Cubing Pro</a>
 </header>
 <div class="layout">
-  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details open><summary>Timer</summary><ul><li><a href="../timer" aria-current="page">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../fmc/recon.html">FMC Recon</a></li><li><a href="../fmc/theory.html">FMC Theory</a></li><li><a href="../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../3x3x3/beginner">Beginner tutorial</a></li><li><a href="../3x3x3/cfop">CFOP method</a></li><li><a href="../3x3x3/cfop_basics">CFOP basics</a></li><li><a href="../3x3x3/cross">Cross tutorial</a></li><li><a href="../3x3x3/f2l">F2L algorithms</a></li><li><a href="../3x3x3/oll">OLL algorithms</a></li><li><a href="../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../3x3x3/pll">PLL algorithms</a></li><li><a href="../3x3x3/oh_cmll">OH CMLL algorithms</a></li><li><a href="../3x3x3/cll_vs_cmll">CLL vs CMLL comparison</a></li><li><a href="../3x3x3/roux">Roux Method</a></li><li><a href="../3x3x3/zb_stepping_stone">VHLS + COLL</a></li><li><a href="../fmc/dr_htr_trainer">FMC DR HTR Trainer</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../2x2x2/eg_intro">EG method</a></li><li><a href="../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../big_cube/yau.html">Yau method</a></li><li><a href="../big_cube/l2c_6x6.html">6x6 Last Two Centers</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../clock/7simul_simplified.html">7 Simul Simplified (4 Memo)</a></li><li><a href="../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../fto/tutorial">FTO Beginner Tutorial</a></li><li><a href="../fto/algorithms">FTO Algorithms</a></li><li><a href="../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../sq1/eo">EO</a></li><li><a href="../sq1/obl">OBL</a></li><li><a href="../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details><summary>Misc</summary><ul><li><a href="../game/geoguesser.html">GeoGuesser Tips</a></li><li><a href="../game/flag_trainer.html">Flag Trainer</a></li><li><a href="../game/turtle_soup.html">海龟汤题库</a></li></ul></details></li></ul></nav>
+  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details open><summary>Timer</summary><ul><li><a href="../timer" aria-current="page">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../fmc/recon.html">FMC Recon</a></li><li><a href="../fmc/theory.html">FMC Theory</a></li><li><a href="../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../3x3x3/beginner">Beginner tutorial</a></li><li><a href="../3x3x3/cfop">CFOP method</a></li><li><a href="../3x3x3/cfop_basics">CFOP basics</a></li><li><a href="../3x3x3/cross">Cross tutorial</a></li><li><a href="../3x3x3/f2l">F2L algorithms</a></li><li><a href="../3x3x3/oll">OLL algorithms</a></li><li><a href="../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../3x3x3/pll">PLL algorithms</a></li><li><a href="../3x3x3/oh_cmll">OH CMLL algorithms</a></li><li><a href="../3x3x3/cll_vs_cmll">CLL vs CMLL comparison</a></li><li><a href="../3x3x3/roux">Roux Method</a></li><li><a href="../3x3x3/zb_stepping_stone">VHLS + COLL</a></li><li><a href="../fmc/dr_htr_trainer">FMC DR HTR Trainer</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../2x2x2/eg_intro">EG method</a></li><li><a href="../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../big_cube/yau.html">Yau method</a></li><li><a href="../big_cube/l2c_6x6.html">6x6 Last Two Centers</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../clock/7simul_simplified.html">7 Simul Simplified (4 Memo)</a></li><li><a href="../clock/bowens_7simul.html">Bowen&#x27;s 7 Simul (5 Memo)</a></li><li><a href="../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../fto/tutorial">FTO Beginner Tutorial</a></li><li><a href="../fto/algorithms">FTO Algorithms</a></li><li><a href="../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../sq1/eo">EO</a></li><li><a href="../sq1/obl">OBL</a></li><li><a href="../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details><summary>Misc</summary><ul><li><a href="../game/geoguesser.html">GeoGuesser Tips</a></li><li><a href="../game/flag_trainer.html">Flag Trainer</a></li><li><a href="../game/turtle_soup.html">海龟汤题库</a></li></ul></details></li></ul></nav>
   <main class="content">
     
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "WebApplication", "name": "Cubing Pro Cube Timer", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Free online Rubik's Cube timer for speedcubing with random-move scrambles, 15-second inspection, and Ao5 / Ao12 session statistics."}
+</script>
+<style>
+.timer-wrap { max-width: 860px; margin: 0 auto; }
+.timer-topbar { display: flex; flex-wrap: wrap; gap: 0.6em; align-items: center; margin-bottom: 0.4em; }
+.timer-topbar label { font-weight: 600; }
+#cube-selector { font-size: 1em; padding: 0.4em 0.6em; border-radius: 8px; border: 1px solid #dee2e6; }
+#scramble-box { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; padding: 0.9em 1em; margin: 0.5em 0 0.2em; }
+#scramble { font-size: 1.25em; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; text-align: center; line-height: 1.6; word-break: break-word; }
+#scramble-note { text-align: center; font-size: 0.85em; color: #6c757d; margin-top: 0.4em; }
+.scramble-actions { display: flex; gap: 0.5em; justify-content: center; margin-top: 0.6em; }
+#timer { font-size: clamp(3.2em, 12vw, 6em); font-variant-numeric: tabular-nums; text-align: center; padding: 0.35em 0; user-select: none; -webkit-user-select: none; touch-action: none; cursor: pointer; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; border-radius: 12px; }
+#timer.arming { color: #e03131; background: #fff5f5; }
+#timer.ready { color: #2b8a3e; background: #ebfbee; }
+#timer.inspecting { color: #1971c2; }
+#timer.inspecting-warn { color: #e8590c; }
+#timer.running { color: #1c1c1e; }
+#timer-hint { text-align: center; color: #6c757d; font-size: 0.95em; margin-bottom: 0.6em; }
+.timer-settings { display: flex; flex-wrap: wrap; gap: 1.2em; align-items: center; justify-content: center; margin: 0.4em 0 1em; font-size: 0.95em; }
+.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6em; margin: 1em 0; }
+.stat-card { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 10px; padding: 0.6em 0.4em; text-align: center; }
+.stat-card .stat-label { font-size: 0.8em; color: #6c757d; }
+.stat-card .stat-value { font-size: 1.25em; font-weight: 700; font-variant-numeric: tabular-nums; font-family: ui-monospace, monospace; }
+#solve-list { list-style: none; margin: 0; padding: 0; }
+.solve-row { display: flex; gap: 0.6em; align-items: baseline; padding: 0.45em 0.2em; border-bottom: 1px solid #f1f3f5; font-variant-numeric: tabular-nums; }
+.solve-row.is-dnf .solve-time { color: #868e96; text-decoration: line-through; }
+.solve-num { color: #868e96; font-size: 0.85em; min-width: 2.2em; }
+.solve-time { font-weight: 700; font-family: ui-monospace, monospace; min-width: 5.5em; }
+.solve-scr { flex: 1; color: #6c757d; font-size: 0.85em; font-family: ui-monospace, monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.solve-actions button { border: 1px solid #dee2e6; background: #fff; border-radius: 6px; padding: 0.1em 0.5em; cursor: pointer; font-size: 0.85em; margin-left: 0.25em; }
+.solve-actions button:hover { background: #f1f3f5; }
+#solve-empty { color: #868e96; text-align: center; padding: 1em 0; }
+.timer-article { margin-top: 2.5em; border-top: 1px solid #e9ecef; padding-top: 1.5em; }
+.timer-article h2 { margin-top: 1.2em; }
+@media (max-width: 640px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } .solve-scr { display: none; } }
+</style>
 
-<h1>Rubik's Cube Timer</h1>
-
-<header>
-    <div class="topbar">
-        <div>
-            Cube type:
-            <select id="cube-selector">
-                <option value="3x3x3">3x3x3</option>
-                <option value="2x2x2">2x2x2</option>
-                <option value="Clock">Clock</option>
-            </select>
-        </div>
-        <div>PB: <span id="personal-best">--</span> seconds</div>
-    </div>
-    <div id="scramble">Select a cube type to get scramble</div>
-</header>
-
-<div id="timer">Whitespace to start inspection, start solving, and complete</div>
-
-<div id="history">
-    <table>
-        <thead>
-            <tr>
-                <th>Inspection</th>
-                <th>Solve</th>
-            </tr>
-        </thead>
-        <tbody id="history-body">
-        </tbody>
-    </table>
+<div class="timer-wrap">
+<div id="lang-toggle" role="group" aria-label="Language">
+  <button type="button" data-lang="en" id="btn-en" class="active" aria-pressed="true">English</button>
+  <button type="button" data-lang="zh-cn" id="btn-zh-cn" aria-pressed="false">简体中文</button>
+  <button type="button" data-lang="zh-tw" id="btn-zh-tw" aria-pressed="false">繁體中文</button>
+  <button type="button" data-lang="ja" id="btn-ja" aria-pressed="false">日本語</button>
+  <button type="button" data-lang="de" id="btn-de" aria-pressed="false">Deutsch</button>
+  <button type="button" data-lang="fr" id="btn-fr" aria-pressed="false">Français</button>
+  <button type="button" data-lang="it" id="btn-it" aria-pressed="false">Italiano</button>
+  <button type="button" data-lang="ko" id="btn-ko" aria-pressed="false">한국어</button>
 </div>
 
-<script>
-    let state = 0;  // 0 = idle, 1 = inspecting, 2 = solving
-    let t0, t1, t2;
-    let interval;
-    let lastSolveTime = null;
+<h1>Rubik's Cube Timer — Free Online Speedcubing Timer</h1>
 
-    const timerDisplay = document.getElementById('timer');
-    const historyBody = document.getElementById('history-body');
-    const pbDisplay = document.getElementById('personal-best');
-    const scrambleDisplay = document.getElementById('scramble');
-    const cubeSelector = document.getElementById('cube-selector');
+<div class="timer-topbar">
+  <label for="cube-selector"><span data-i18n="event">Event</span>:</label>
+  <select id="cube-selector">
+    <option value="2x2">2x2x2</option>
+    <option value="3x3" selected>3x3x3</option>
+    <option value="4x4">4x4x4</option>
+    <option value="5x5">5x5x5</option>
+  </select>
+  <button type="button" class="button" id="new-scramble-btn" data-i18n="newScramble">New scramble</button>
+  <button type="button" class="button" id="copy-scramble-btn" data-i18n="copy">Copy scramble</button>
+</div>
 
-    let currentScramble = "";
+<div id="scramble-box">
+  <div id="scramble">Loading scramble…</div>
+  <div id="scramble-note"></div>
+</div>
 
-    function updateTimerDisplay(startTime) {
-        interval = setInterval(() => {
-            const elapsed = (Date.now() - startTime) / 1000;
-            timerDisplay.textContent = elapsed.toFixed(2);
-        }, 100);
-    }
+<div id="timer" role="timer" aria-label="Cube timer">0.00</div>
+<div id="timer-hint" data-i18n="hold">Hold SPACE to start</div>
 
-    function stopTimer() {
-        clearInterval(interval);
-    }
+<div class="timer-settings">
+  <label><input type="checkbox" id="inspection-toggle" checked> <span data-i18n="inspection">Inspection (15 s)</span></label>
+</div>
 
-    function updateHistory(inspectionTime, solveTime) {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td>${inspectionTime.toFixed(2)}</td><td>${solveTime.toFixed(2)}</td>`;
-        historyBody.insertBefore(row, historyBody.firstChild);
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-label" data-i18n="best">Best</div><div class="stat-value" id="stat-best">--</div></div>
+  <div class="stat-card"><div class="stat-label" data-i18n="ao5">Ao5</div><div class="stat-value" id="stat-ao5">--</div></div>
+  <div class="stat-card"><div class="stat-label" data-i18n="ao12">Ao12</div><div class="stat-value" id="stat-ao12">--</div></div>
+  <div class="stat-card"><div class="stat-label" data-i18n="mean">Mean</div><div class="stat-value" id="stat-mean">--</div></div>
+  <div class="stat-card"><div class="stat-label" data-i18n="solves">Solves</div><div class="stat-value" id="stat-count">0</div></div>
+</div>
 
-        const history = JSON.parse(localStorage.getItem('solves') || '[]');
-        history.unshift({ inspection: inspectionTime, solve: solveTime });
-        localStorage.setItem('solves', JSON.stringify(history));
+<h2>Session</h2>
+<p id="solve-empty" data-i18n="noSolves">No solves yet — hold SPACE to start your first one.</p>
+<ol id="solve-list"></ol>
 
-        updatePB();
-    }
+<div class="timer-article">
+<h2>How to use this cube timer</h2>
+<p>Hold <b>SPACE</b> (or press and hold the timer on a phone) until it turns green, then release to start. If inspection is on, you get the standard 15 seconds to look at the cube first — press SPACE again to start solving. Press <b>SPACE</b> again (or tap) to stop. Press <b>ESC</b> to cancel. Your times are saved in your browser automatically, so your session is still here when you come back.</p>
 
-    function updatePB() {
-        const history = JSON.parse(localStorage.getItem('solves') || '[]');
-        if (history.length === 0) return;
-        const best = Math.min(...history.map(e => e.solve));
-        pbDisplay.textContent = best.toFixed(2);
-    }
+<h2>Random-move scrambles — read this first</h2>
+<p><b>Scrambles on this page are random moves, not random-state scrambles.</b> A 3x3 scramble here is 20 random turns (2x2: 11, 4x4: 40, 5x5: 60), with no face repeated twice in a row. That is the classic, easy way to scramble — the same kind most timers have used for years. It is <b>not</b> a WCA random-state scramble (a scramble generated from a random cube state, which guarantees a uniform distribution and usually needs a server or a heavy algorithm). For practice and timing yourself, random-move scrambles are perfectly fine. We label them honestly so you know exactly what you are solving.</p>
 
-    function loadHistory() {
-        const history = JSON.parse(localStorage.getItem('solves') || '[]');
-        historyBody.innerHTML = '';
-        history.forEach(({ inspection, solve }) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `<td>${inspection.toFixed(2)}</td><td>${solve.toFixed(2)}</td>`;
-            historyBody.appendChild(row);
-        });
-        updatePB();
-    }
+<h2>What do Ao5 and Ao12 mean?</h2>
+<p><b>Ao5</b> is the average of your last 5 solves, with the best and worst times removed. <b>Ao12</b> is the same over your last 12. These trimmed averages are how speedcubers track real progress — one lucky or unlucky solve does not move them much. Click <b>+2</b> on a solve to add the 2-second inspection penalty, <b>DNF</b> if the solve did not finish, or <b>&times;</b> to delete it. Averages follow WCA rules: one DNF is dropped as the worst time, two or more make the average a DNF.</p>
 
-    // Static-site port of generate_scramble() from hello/views.py (no server needed).
-    function generateScramble(cubeType) {
-        const moves = ["U", "D", "L", "R", "F", "B"];
-        const modifiers = ["", "'", "2"];
-        const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-        if (cubeType === '3x3x3') {
-            const scramble = [];
-            let lastMove = "";
-            while (scramble.length < 20) {
-                const move = pick(moves);
-                if (move !== lastMove) {
-                    scramble.push(move + pick(modifiers));
-                    lastMove = move;
-                }
-            }
-            return scramble.join(' ');
-        } else if (cubeType === '2x2x2') {
-            const scramble = [];
-            for (let i = 0; i < 11; i++) scramble.push(pick(moves) + pick(modifiers));
-            return scramble.join(' ');
-        } else if (cubeType === 'Clock') {
-            return "UR6+ DR3- DL5+ UL6- U6+ R3- D5+ L6- ALL4+ y2";
-        }
-        return "Invalid cube type";
-    }
+<h2>FAQ</h2>
+<p><b>Is this Rubik's Cube timer free?</b> Yes — free, no account, no install. It runs entirely in your browser.</p>
+<p><b>Is this a csTimer alternative?</b> It is inspired by csTimer's way of working (hold SPACE to start, scramble on top, session averages), but it is a simpler, lighter timer built for this site: fewer settings to get lost in, and the scramble method is stated up front.</p>
+<p><b>Does it work on mobile?</b> Yes. Press and hold the big timer to arm it, release to start, and tap to stop.</p>
+<p><b>Where are my times stored?</b> In your browser's local storage, on your device only. Clearing your browser data clears your session. Nothing is uploaded anywhere.</p>
+<p><b>Which events are supported?</b> 2x2, 3x3, 4x4 and 5x5, all with random-move scrambles.</p>
+</div>
+</div>
 
-    function getScramble(cubeType) {
-        currentScramble = generateScramble(cubeType);
-        scrambleDisplay.textContent = currentScramble;
-    }
-
-    document.body.addEventListener('keydown', (e) => {
-        if (e.code !== 'Space') return;
-
-        e.preventDefault();
-
-        if (state === 0) {
-            t0 = Date.now();
-            updateTimerDisplay(t0);
-            state = 1;
-        } else if (state === 1) {
-            stopTimer();
-            t1 = Date.now();
-            updateTimerDisplay(t1);
-            state = 2;
-        } else if (state === 2) {
-            stopTimer();
-            t2 = Date.now();
-
-            const inspectionTime = (t1 - t0) / 1000;
-            const solveTime = (t2 - t1) / 1000;
-
-            timerDisplay.textContent = `Inspection: ${inspectionTime.toFixed(2)}s, Solve: ${solveTime.toFixed(2)}s`;
-
-            updateHistory(inspectionTime, solveTime);
-
-            state = 0;
-
-            // Refresh scramble
-            getScramble(cubeSelector.value);
-        }
-    });
-
-    cubeSelector.addEventListener('change', () => {
-        getScramble(cubeSelector.value);
-    });
-
-    loadHistory();
-</script>
-
+<script src="../static/js/timer.js"></script>
 
   </main>
 </div>
