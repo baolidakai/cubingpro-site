@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cubing Pro</title>
+<meta name="description" content="Home for competitive speedcubers.">
+<meta name="keywords" content="rubik's cube, cubing, speedcubing, algorithms, algs">
+<!-- Baidu site verification: replace with your code from zhanjiang.baidu.com -->
+<!-- <meta name="baidu-site-verification" content="YOUR_CODE_HERE"> -->
+<link rel="stylesheet" href="../static/css/main.css">
+<script src="../static/js/clock.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <button id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">&#9776;</button>
+  <a class="site-title" href="../">Cubing Pro</a>
+</header>
+<div class="layout">
+  <nav id="site-nav" aria-label="Tutorials"><ul class="nav-cats"><li><details><summary>Timer</summary><ul><li><a href="../timer">Rubik&#x27;s Cube Timer</a></li></ul></details></li><li><details><summary>3x3x3 Rubik&#x27;s Cube</summary><ul><li><a href="../fmc/dr.html">FMC Domino Reduction</a></li><li><a href="../fmc/recon.html">FMC Recon</a></li><li><a href="../fmc/theory.html">FMC Theory</a></li><li><a href="../3x3x3/oh_pll">OH PLL algorithms</a></li><li><a href="../3x3x3/beginner">Beginner tutorial</a></li><li><a href="../3x3x3/cfop">CFOP method</a></li><li><a href="../3x3x3/cfop_basics">CFOP basics</a></li><li><a href="../3x3x3/cross">Cross tutorial</a></li><li><a href="../3x3x3/f2l">F2L algorithms</a></li><li><a href="../3x3x3/oll">OLL algorithms</a></li><li><a href="../3x3x3/roadmap">Progression roadmap</a></li><li><a href="../3x3x3/pll">PLL algorithms</a></li><li><a href="../3x3x3/oh_cmll">OH CMLL algorithms</a></li><li><a href="../3x3x3/cll_vs_cmll">CLL vs CMLL comparison</a></li><li><a href="../3x3x3/roux">Roux Method</a></li><li><a href="../3x3x3/zb_stepping_stone">VHLS + COLL</a></li><li><a href="../fmc/dr_htr_trainer">FMC DR HTR Trainer</a></li></ul></details></li><li><details><summary>2x2x2</summary><ul><li><a href="../2x2x2/eg_intro">EG method</a></li><li><a href="../2x2x2/eg_alg">EG algorithms</a></li><li><a href="../2x2x2/eg_trainer">EG trainer</a></li></ul></details></li><li><details><summary>Big Cube</summary><ul><li><a href="../big_cube/yau.html">Yau method</a></li><li><a href="../big_cube/l2c_6x6.html">6x6 Last Two Centers</a></li></ul></details></li><li><details><summary>Blindfolded</summary><ul><li><a href="../3bld/memo.html">3x3x3 blindfolded memo</a></li><li><a href="../3bld/exec_trainer.html">3x3x3 blindfolded exec trainer</a></li><li><a href="../3bld/m2op.html">3x3x3 blindfolded with M2 and OP</a></li><li><a href="../3bld/orozco.html">3x3x3 blindfolded with Orozco</a></li><li><a href="../4bld/u2r2.html">4x4x4 blindfolded with U2 and r2</a></li><li><a href="../5bld/u2r2.html">5x5x5 blindfolded with U2 and r2</a></li><li><a href="../5bld/trainer.html">5x5x5 blindfolded trainer</a></li></ul></details></li><li><details><summary>Clock</summary><ul><li><a href="../clock/7simul_intro.html">Tommy&#x27;s 7 Simul</a></li><li><a href="../clock/7simul_simplified.html">7 Simul Simplified (4 Memo)</a></li><li><a href="../clock/7simul_flip_intro.html">7 Simul Flip</a></li><li><a href="../clock/7simul_flip_improved.html">7sf+ and speed BLD</a></li><li><a href="../clock/7simul_flip_theory.html">Math Theory</a></li><li><a href="../clock/7simul_flip_tool.html">7 Simul Flip Tool</a></li></ul></details></li><li><details><summary>Pyraminx</summary><ul><li><a href="../pyraminx/corner_first_intro.html">Corner First method</a></li><li><a href="../pyraminx/corner_first_alg.html">Corner First algorithms</a></li><li><a href="../pyraminx/v_first_alg.html">V-first algorithms</a></li></ul></details></li><li><details><summary>Skewb</summary><ul><li><a href="../skewb/sarah_beginner.html">Sarah&#x27;s Beginner</a></li><li><a href="../skewb/sarah_intermediate.html">Sarah&#x27;s Intermediate</a></li><li><a href="../skewb/sarah_advanced.html">Sarah&#x27;s Advanced with Trainer</a></li></ul></details></li><li><details><summary>Face-Turning Octahedron (FTO)</summary><ul><li><a href="../fto/tutorial">FTO Beginner Tutorial</a></li><li><a href="../fto/algorithms">FTO Algorithms</a></li><li><a href="../fto/bencisco.html">Bencisco Method &amp; Hardware</a></li></ul></details></li><li><details><summary>Square-1</summary><ul><li><a href="../sq1/cube_shape">Cube Shape (WIP)</a></li><li><a href="../sq1/eo">EO</a></li><li><a href="../sq1/obl">OBL</a></li><li><a href="../sq1/trainer">SQ1 Trainer</a></li></ul></details></li><li><details><summary>Competition Tools</summary><ul><li><a href="../comp_visualization.html">WCA visualization</a></li></ul></details></li><li><details><summary>Misc</summary><ul><li><a href="../game/geoguesser.html">GeoGuesser Tips</a></li><li><a href="../game/flag_trainer.html">Flag Trainer</a></li><li><a href="../game/turtle_soup.html">海龟汤题库</a></li></ul></details></li></ul></nav>
+  <main class="content">
+    
+<h1>
+    Bowen's 7 Simul (5 Memo): No-Flip 7 Simul for 7sf Solvers Who Hate Tracing
+</h1>
+<p>
+    You can solve Clock with 7 Simul Flip, but Tommy's 7 Simul feels like too much — too many dials to trace,
+    too much mental arithmetic under pressure, and the memo just won't stick in 15 seconds.
+    This method is for you.<br>
+    It's a no-flip variant of <a href="../clock/7simul_intro.html">Tommy's 7 Simul</a> with a different pin order,
+    built as the easiest bridge from 7sf to no-flip 7 Simul. It memorizes the same 5 numbers as Tommy's,
+    but the total memo is shorter: 19 terms instead of 22.<br>
+    Four of the five memo formulas are identical to Tommy's, and they keep Tommy's relative order:
+    M2, M3, M4, M5 here are Tommy's M1, M2, M4, M6. Only M1 is new — it replaces Tommy's 7-term M5 with a 4-term one.<br>
+    The pinky count is the same (2 bottom-dial moves), and it costs 2 extra pin changes (8 vs Tommy's 6).
+    All memo coefficients are ±1, so no memo ever needs a doubled value.
+</p>
+
+<h2>
+    Method
+</h2>
+<p>
+    In 7 simul, we use a fixed pin order to solve the clock.
+</p>
+<p>
+    Then we memorize 5 numbers based on modulo arithmetics of 12 (e.g. 5 = -7, 3 + 8 = 11 = -1, 5 + 8 = 13 = 1, 2 - 3 =
+    -1, 2 - 8 = -6 = 6).<br>
+    You will have the flexibility on how to memorize them. But we recommend several common strategies:
+<ol>
+    <li>Remember numbers as-is in your native language.</li>
+    <li>Encode numbers into A for 1, B for 2, ..., K for 11.</li>
+    <li>Combine both, e.g. 1-6 with native language, and E for 7, D for 8, etc.</li>
+    <li>Similarly, but instead of native language, use a language (e.g. Japanese/Korean/Chinese) which has low syllabus
+        count for numbers.</li>
+</ol>
+</p>
+<p>
+    The memos, in the order you compute them (uppercase = front face, lowercase = back face):
+<ol>
+    <li><b>M1:</b> (R - DR) + (l - u). 4 terms. Used in step 1, top-right dial. (New — replaces Tommy's 7-term M5.)</li>
+    <li><b>M2:</b> c - d. 2 terms. Used in step 2, bottom-left dial. (Same as Tommy's M1.)</li>
+    <li><b>M3:</b> U - UR - L - r. 4 terms. Used in step 2, top-left dial. (Same value as Tommy's M2, <i>dr - r + U - L</i>, via the constraint <i>dr = -UR</i> — but reads front-face UR instead of back-face dr.)</li>
+    <li><b>M4:</b> d - r. 2 terms. Used in step 3, top-left dial. (Same as Tommy's M4.)</li>
+    <li><b>M5:</b> UL - L - R + DR + u - c + d. 7 terms. Used in step 5, top-right dial. (Same as Tommy's M6.)</li>
+</ol>
+</p>
+<p>
+    After memorizing these 5 numbers, we will solve the clock with the aforementioned pin order.<br>
+    Each time, you will adjust two dials simultaneously (unless the adjustment required is 0), either based on the
+    memorized number, or based on intuitively matching two clock faces (similar to flip method).
+</p>
+<p>
+    The best way to illustrate this method is to use a
+    demo example. We use the same scramble as <a href="../clock/7simul_intro.html">Tommy's 7 Simul</a> so you can
+    compare the two methods move by move.<br>
+</p>
+
+<div id="appendable-div">
+</div>
+
+<p>Now the clock is solved!</p>
+<p><b>Tip: you don't need to memorize M2.</b> M2 = c − d is only 2 terms, and it's used at step 2 —
+    the second move of the solve. Just glance at the back-face dials c and d at the end of inspection,
+    hold the number for about 2 seconds, and use it at step 2. That leaves only 4 numbers to actually memorize.</p>
+<p>You may also check out <a href="../clock/7simul_simplified.html">7 Simul Simplified (4 Memo)</a> for a
+    memo-order trick on Tommy's pin order.</p>
+
+<script>
+    // Get Django variable safely into JavaScript
+    const table_data = JSON.parse('[{\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u0022, \u0022change_pins\u0022: \u0022\u0022, \u0022annotation\u0022: \u0022\u0022, \u0022paragraph\u0022: \u0022\u003Cp\u003EScramble: UR5+ DR3+ DL3+ UL2+ U5\u002D R1+ D5+ L1+ ALL1\u002D y2 U3\u002D R2+ D3+ L4\u002D ALL1+\u003C/p\u003E\u005Cn\u003Cp\u003EThis is the same scramble as Tommy\u0027s 7 Simul demo, so you can compare the two methods move by move. Bowen\u0027s method never flips the clock.\u003C/p\u003E\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u0022\u0022, \u0022change_pins\u0022: \u0022\u0022, \u0022annotation\u0022: \u0022UL,L,DL,U,C,D,UR,R,DR,ul,l,dl,u,c,d,ur,r,dr\u0022, \u0022paragraph\u0022: \u0022Memorize 5 numbers using aforementioned arithmetics applying modulo 12.\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u00223,1,,,,,,,,,,,,\u0022, \u0022change_pins\u0022: \u00220,1,1,1\u0022, \u0022annotation\u0022: \u00223,,,,,,1,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u003Col\u003E\u005Cn\u003Cli\u003EMemo 1: memorize M1 \u003D R \u002D DR + l \u002D u. M1 \u003D 1\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 2: memorize M2 \u003D c \u002D d. M2 \u003D \u002D1\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 3: memorize M3 \u003D U \u002D UR \u002D L \u002D r. M3 \u003D 3\u003C/li\u003E\u005Cn\u003Cli\u003EMemo 4: memorize M4 \u003D d \u002D r. M4 \u003D \u002D2\u003C/li\u003E\u005Cn\u005Cn\u003Cli\u003EMemo 5: memorize M5 \u003D UL \u002D L \u002D R + DR + u \u002D c + d. M5 \u003D 5\u003C/li\u003E\u005Cn\u003C/ol\u003E\u005Cn\u003Cp\u003ENow we should execute 7 simultaneous moves (14 moves in total).\u003C/p\u003E\u005Cn\u003Cp\u003E\u003Cu\u003EIn our visualization, white pin means the pin is sticking out, otherwise it\u0027s black pin.\u003C/u\u003E\u003C/p\u003E\u005Cn\u003Cp\u003EAs mentioned above, the execution requires some operation on the two bottom dials.\u003C/p\u003E\u005Cn\u003Cp\u003EStart the solve on the white face. There is no flip in this method.\u003C/p\u003E\u005Cn\u003Cp\u003EStep 1: pins up are UR, DL, DR (top\u002Dleft pin down). Align C to D with the top\u002Dleft dial, and execute \u003Cstrong\u003EM1\u003C/strong\u003E with the top\u002Dright dial.\u003C/p\u003E\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u00223,1,3,\u002D1,,,,,,,,,,\u0022, \u0022change_pins\u0022: \u00220,0,1,0\u0022, \u0022annotation\u0022: \u00223,,\u002D1,,,,,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u003Cp\u003EStep 2: only the bottom\u002Dleft pin is up. Execute \u003Cstrong\u003EM3\u003C/strong\u003E with the top\u002Dleft dial, and \u003Cstrong\u003EM2\u003C/strong\u003E with the bottom\u002Dleft dial (pinky).\u003C/p\u003E\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u00223,1,3,\u002D1,\u002D2,1,,,,,,,,\u0022, \u0022change_pins\u0022: \u00221,0,1,0\u0022, \u0022annotation\u0022: \u0022\u002D2,,,,,,1,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u003Cp\u003EAt this point, U and L should be equal, otherwise it indicates memo/execution was incorrect.\u003C/p\u003E\u005Cn\u003Cp\u003EStep 3: press up the top\u002Dleft pin too (pins up: UL, DL). Execute \u003Cstrong\u003EM4\u003C/strong\u003E with the top\u002Dleft dial, and align U to L with the top\u002Dright dial.\u003C/p\u003E\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u00223,1,3,\u002D1,\u002D2,1,5,\u002D3,,,,,,\u0022, \u0022change_pins\u0022: \u00221,1,1,0\u0022, \u0022annotation\u0022: \u0022,,,,,,5,,\u002D3,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u003Cp\u003EStep 4: press up the top\u002Dright pin too (pins up: UL, UR, DL). Align UL to U with the top\u002Dright dial, and align UL to C with the bottom\u002Dright dial (pinky).\u003C/p\u003E\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u00223,1,3,\u002D1,\u002D2,1,5,\u002D3,5,\u002D3,,,,\u0022, \u0022change_pins\u0022: \u00220,1,1,0\u0022, \u0022annotation\u0022: \u0022\u002D3,,,,,,5,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u003Cp\u003EStep 5: press down the top\u002Dleft pin (pins up: UR, DL). Execute \u003Cstrong\u003EM5\u003C/strong\u003E with the top\u002Dright dial, and align UL to DL with the top\u002Dleft dial.\u003C/p\u003E\u005Cn\u003Cp\u003EYou may forget all the memos now, as they are used up already.\u003C/p\u003E\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u00223,1,3,\u002D1,\u002D2,1,5,\u002D3,5,\u002D3,4,1,,\u0022, \u0022change_pins\u0022: \u00220,1,0,1\u0022, \u0022annotation\u0022: \u00221,,,,,,4,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u003Cp\u003EStep 6: press down the bottom\u002Dleft pin and press up the bottom\u002Dright pin (pins up: UR, DR). Align R to DR with the top\u002Dright dial, and align UL to R with the top\u002Dleft dial.\u003C/p\u003E\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}, {\u0022scramble\u0022: \u00225, 3, 3, 2, 7, 1, 5, 1, 11, 9, 2, 3, 8, 1\u0022, \u0022operations\u0022: \u00223,1,3,\u002D1,\u002D2,1,5,\u002D3,5,\u002D3,4,1,2,\u002D1\u0022, \u0022change_pins\u0022: \u00220,1,0,0\u0022, \u0022annotation\u0022: \u0022\u002D1,,,,,,2,,,,,,,,,,,\u0022, \u0022paragraph\u0022: \u0022\u003Cp\u003EStep 7: now the last step, press down the bottom\u002Dright pin (only the top\u002Dright pin is up). Point UR to 12 with the top\u002Dright dial, then align UL to UR with the top\u002Dleft dial.\u003C/p\u003E\u0022, \u0022CLL_viz\u0022: \u0022\u0022, \u0022CLL_inv\u0022: \u0022\u0022, \u0022EG1_viz\u0022: \u0022\u0022, \u0022EG1_inv\u0022: \u0022\u0022, \u0022EG2_viz\u0022: \u0022\u0022, \u0022EG2_inv\u0022: \u0022\u0022}]');
+
+    for (let i = 0; i < table_data.length; i++) {
+        const li = document.createElement("div");
+        li.innerHTML = table_data[i].paragraph;
+        li.id = `item-${i}`;
+        document.getElementById("appendable-div").appendChild(li);
+        const viz = document.createElement("div");
+        viz.style = "max-width: 640px; margin: auto;";
+        const adj = document.createElement("div");
+        adj.id = `adjuster-${i}`;
+        adj.className = "has-text-centered";
+        const canvas = document.createElement("canvas");
+        canvas.id = `canvas-${i}`;
+        adj.appendChild(canvas);
+        viz.appendChild(adj);
+        document.getElementById("appendable-div").appendChild(viz);
+        let scramble = table_data[i].scramble.split(',').map(Number);
+        let operations = table_data[i].operations.split(',').map(Number);
+        let clocks = makeClocksBowen(scramble, operations);
+        if (!table_data[i].annotation) {
+            table_data[i].annotation = null;
+        }
+        if (!table_data[i].operations) {
+            table_data[i].operations = null;
+        }
+        if (!table_data[i].change_pins) {
+            table_data[i].change_pins = null;
+        }
+        let plot_pointer = true;
+        if (table_data[i].annotation && table_data[i].annotation.startsWith("UL")) {
+            plot_pointer = false;            
+        }
+        render(clocks, "x2", adj.id, canvas.id, convert_to_matrix(table_data[i].annotation), convert_to_change_pin_matrix(table_data[i].change_pins), plot_pointer);
+    }
+</script>
+
+
+  </main>
+</div>
+<footer class="site-footer">
+  <span>&copy; 2025 Bowen Deng</span>
+  <span class="dot">&middot;</span>
+  <span>Cubing Pro</span>
+  <span class="dot">&middot;</span>
+  <span>&#129352; 5% off at TheCubicle &amp; SpeedCubeShop with code <button id="discount-code" title="Click to copy">CUBINGPRO</button></span>
+</footer>
+<script>
+(function () {
+  var toggle = document.getElementById('nav-toggle');
+  var nav = document.getElementById('site-nav');
+  toggle.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && window.innerWidth <= 900) {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  var code = document.getElementById('discount-code');
+  code.addEventListener('click', function () {
+    var done = function () {
+      code.textContent = 'COPIED!';
+      setTimeout(function () { code.textContent = 'CUBINGPRO'; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('CUBINGPRO').then(done, done);
+    } else { done(); }
+  });
+})();
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1397403119979850" crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CK6MWC01K0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-CK6MWC01K0');
+</script>
+</body>
+</html>
