@@ -22,7 +22,7 @@
   <main class="content">
     
 
-<div id="lang-toggle" role="group" aria-label="Language toggle" data-title-en="6x6 Last Two Centers - Cubing Pro" data-title-zh-cn="6x6 最后两个中心 - Cubing Pro" data-title-zh-tw="6x6 最後兩個中心 - Cubing Pro" data-title-ja="6x6 ラスト2センター - Cubing Pro" data-title-de="6x6 Letzte zwei Center - Cubing Pro" data-title-fr="6x6 Deux derniers centres - Cubing Pro" data-title-it="6x6 Ultimi due centri - Cubing Pro"><button id="btn-en" aria-pressed="false">English</button><button id="btn-zh-cn" aria-pressed="false">简体</button><button id="btn-zh-tw" aria-pressed="false">繁體</button><button id="btn-ja" aria-pressed="false">日本語</button><button id="btn-de" aria-pressed="false">Deutsch</button><button id="btn-fr" aria-pressed="false">Français</button><button id="btn-it" aria-pressed="false">Italiano</button></div>
+<div id="lang-toggle" role="group" aria-label="Language toggle" data-title-en="6x6 Last Two Centers - Cubing Pro" data-title-zh-cn="6x6 最后两个中心 - Cubing Pro" data-title-zh-tw="6x6 最後兩個中心 - Cubing Pro" data-title-ja="6x6 ラスト2センター - Cubing Pro" data-title-de="6x6 Letzte zwei Center - Cubing Pro" data-title-fr="6x6 Deux derniers centres - Cubing Pro" data-title-it="6x6 Ultimi due centri - Cubing Pro" data-title-ko="6x6 Last Two Centers - Cubing Pro"><button id="btn-en" aria-pressed="false">English</button><button id="btn-zh-cn" aria-pressed="false">简体</button><button id="btn-zh-tw" aria-pressed="false">繁體</button><button id="btn-ja" aria-pressed="false">日本語</button><button id="btn-de" aria-pressed="false">Deutsch</button><button id="btn-fr" aria-pressed="false">Français</button><button id="btn-it" aria-pressed="false">Italiano</button><button id="btn-ko" aria-pressed="false">한국어</button></div>
 
 <h1><span class="i18n" data-en="6x6 Last Two Centers (L2C)" data-zh-cn="6x6 最后两个中心 (L2C)" data-zh-tw="6x6 最後兩個中心 (L2C)" data-ja="6x6 ラスト2センター (L2C)" data-de="6x6 Letzte zwei Center (L2C)" data-fr="6x6 Deux derniers centres (L2C)" data-it="6x6 Ultimi due centri (L2C)">6x6 Last Two Centers (L2C)</span></h1>
 <p><span class="i18n" data-en="Left = U center, right = F center. White belongs to U, green belongs to F." data-zh-cn="左 = U 中心，右 = F 中心。白属于 U，绿属于 F。" data-zh-tw="左 = U 中心，右 = F 中心。白屬於 U，綠屬於 F。" data-ja="左 = U センター、右 = F センター。白は U、緑は F。" data-de="Links = U-Center, rechts = F-Center. Weiß gehört zu U, grün zu F." data-fr="Gauche = centre U, droite = centre F. Blanc = U, vert = F." data-it="Sinistra = centro U, destra = centro F. Bianco = U, verde = F.">Left = U center, right = F center. White belongs to U, green belongs to F.</span></p>
@@ -112,17 +112,28 @@
 <script>
 (function () {
   var KEY = 'cubingpro-lang';
-  var LANGS = ['en', 'zh-cn', 'zh-tw', 'ja', 'de', 'fr', 'it'];
-  var HTML_LANG = {'en': 'en', 'zh-cn': 'zh-CN', 'zh-tw': 'zh-TW', 'ja': 'ja', 'de': 'de', 'fr': 'fr', 'it': 'it'};
+  var LANGS = ['en', 'zh-cn', 'zh-tw', 'ja', 'de', 'fr', 'it', 'ko'];
+  var HTML_LANG = {'en': 'en', 'zh-cn': 'zh-CN', 'zh-tw': 'zh-TW', 'ja': 'ja', 'de': 'de', 'fr': 'fr', 'it': 'it', 'ko': 'ko'};
   function defaultLang() {
     try {
       var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
       if (/Asia\/(Shanghai|Chongqing|Urumqi)/.test(tz)) return 'zh-cn';
       if (/Asia\/(Taipei|Hong_Kong|Macau)/.test(tz)) return 'zh-tw';
+      if (tz === 'Asia/Seoul') return 'ko';
       if (tz === 'Asia/Tokyo') return 'ja';
       if (/Europe\/(Berlin|Vienna|Zurich)/.test(tz)) return 'de';
       if (/Europe\/(Paris|Brussels|Monaco|Luxembourg)/.test(tz)) return 'fr';
       if (/Europe\/(Rome|Vatican|San_Marino)/.test(tz)) return 'it';
+    } catch (e) {}
+    try {
+      var nav = (navigator.language || navigator.userLanguage || '').toLowerCase();
+      if (nav.indexOf('ko') === 0) return 'ko';
+      if (nav.indexOf('ja') === 0) return 'ja';
+      if (nav.indexOf('zh-tw') === 0 || nav.indexOf('zh-hk') === 0 || nav.indexOf('zh-mo') === 0) return 'zh-tw';
+      if (nav.indexOf('zh') === 0) return 'zh-cn';
+      if (nav.indexOf('de') === 0) return 'de';
+      if (nav.indexOf('fr') === 0) return 'fr';
+      if (nav.indexOf('it') === 0) return 'it';
     } catch (e) {}
     var off = new Date().getTimezoneOffset();
     if (off / 60 === -8) return 'zh-cn';

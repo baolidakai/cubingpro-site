@@ -23,7 +23,7 @@
     
 
 <div id="lang-toggle" role="group" aria-label="Language toggle"
-     data-title-en="Cubing Pro" data-title-zh-cn="Cubing Pro" data-title-zh-tw="Cubing Pro" data-title-ja="Cubing Pro" data-title-de="Cubing Pro" data-title-fr="Cubing Pro" data-title-it="Cubing Pro">
+     data-title-en="Cubing Pro" data-title-zh-cn="Cubing Pro" data-title-zh-tw="Cubing Pro" data-title-ja="Cubing Pro" data-title-de="Cubing Pro" data-title-fr="Cubing Pro" data-title-it="Cubing Pro" data-title-ko="Cubing Pro">
   <button id="btn-en" aria-pressed="false">English</button>
   <button id="btn-zh-cn" aria-pressed="false">简体</button>
   <button id="btn-zh-tw" aria-pressed="false">繁體</button>
@@ -31,6 +31,7 @@
   <button id="btn-de" aria-pressed="false">Deutsch</button>
   <button id="btn-fr" aria-pressed="false">Français</button>
   <button id="btn-it" aria-pressed="false">Italiano</button>
+  <button id="btn-ko" aria-pressed="false">한국어</button>
 </div>
 
 <div id="content-en" style="display:none;">
@@ -147,21 +148,47 @@
   </p>
 </div>
 
+<div id="content-ko" style="display:none;">
+  <p>
+    안녕하세요, 저는 <a href="https://www.worldcubeassociation.org/persons/2009DENG01" target="_blank"
+      rel="noopener noreferrer">Bowen Deng</a>입니다. 2007년부터 스피드큐빙을 하고 있습니다.
+  </p>
+
+  <p>
+    이 사이트의 최종 목표는 경쟁 스피드큐빙의 최첨단과 함께 나아가는 것입니다. 상급 스피드큐버들이 최신 알고리즘을 정기적으로 확인하고, 실용적인 큐빙 이론을 배우며, 실력 향상 계획을 세우는 데 도움이 되는 공간이 되고자 합니다.
+  </p>
+
+  <p>
+    연락은 제 WCA ID @ gmail.com으로 메일 주세요.
+  </p>
+</div>
+
 <script>
 (function () {
   var KEY = 'cubingpro-lang';
-  var LANGS = ['en', 'zh-cn', 'zh-tw', 'ja', 'de', 'fr', 'it'];
+  var LANGS = ['en', 'zh-cn', 'zh-tw', 'ja', 'de', 'fr', 'it', 'ko'];
   var HTML_LANG = {'en': 'en', 'zh-cn': 'zh-CN', 'zh-tw': 'zh-TW',
-                   'ja': 'ja', 'de': 'de', 'fr': 'fr', 'it': 'it'};
+                   'ja': 'ja', 'de': 'de', 'fr': 'fr', 'it': 'it', 'ko': 'ko'};
   function defaultLang() {
     try {
       var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
       if (/Asia\/(Shanghai|Chongqing|Urumqi)/.test(tz)) return 'zh-cn';
       if (/Asia\/(Taipei|Hong_Kong|Macau)/.test(tz)) return 'zh-tw';
+      if (tz === 'Asia/Seoul') return 'ko';
       if (tz === 'Asia/Tokyo') return 'ja';
       if (/Europe\/(Berlin|Vienna|Zurich)/.test(tz)) return 'de';
       if (/Europe\/(Paris|Brussels|Monaco|Luxembourg)/.test(tz)) return 'fr';
       if (/Europe\/(Rome|Vatican|San_Marino)/.test(tz)) return 'it';
+    } catch (e) {}
+    try {
+      var nav = (navigator.language || navigator.userLanguage || '').toLowerCase();
+      if (nav.indexOf('ko') === 0) return 'ko';
+      if (nav.indexOf('ja') === 0) return 'ja';
+      if (nav.indexOf('zh-tw') === 0 || nav.indexOf('zh-hk') === 0 || nav.indexOf('zh-mo') === 0) return 'zh-tw';
+      if (nav.indexOf('zh') === 0) return 'zh-cn';
+      if (nav.indexOf('de') === 0) return 'de';
+      if (nav.indexOf('fr') === 0) return 'fr';
+      if (nav.indexOf('it') === 0) return 'it';
     } catch (e) {}
     var off = new Date().getTimezoneOffset();
     if (off / 60 === -8) return 'zh-cn';
